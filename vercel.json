@@ -1,14 +1,13 @@
 {
+  "_INSTRUCOES_REATIVAR_METRICAS": "Para reativar a coleta de metricas: 1. Adicione em 'builds': {'src': 'api/metricas_coleta.py', 'use': '@vercel/python', 'config': {'maxDuration': 60}} e em 'routes': {'src': '/api/metricas_coleta', 'dest': 'api/metricas_coleta.py'}. 2. Remova o return em api/metricas_coleta.py. 3. Descomente o menu em index.html",
   "version": 2,
   "builds": [
     { "src": "api/escalas.py", "use": "@vercel/python", "config": { "maxDuration": 60 } },
-    { "src": "api/metricas_coleta.py", "use": "@vercel/python", "config": { "maxDuration": 60 } },
     { "src": "api/pedidos.py", "use": "@vercel/python", "config": { "maxDuration": 60 } },
     { "src": "**", "use": "@vercel/static" }
   ],
   "routes": [
     { "src": "/api/escalas", "dest": "api/escalas.py" },
-    { "src": "/api/metricas_coleta", "dest": "api/metricas_coleta.py" },
     { "src": "/api/pedidos", "dest": "api/pedidos.py" },
     { "src": "/(.*)", "dest": "/$1" }
   ]

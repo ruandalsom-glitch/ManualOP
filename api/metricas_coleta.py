@@ -337,8 +337,29 @@ def coletar_regiao(sessao, regiao, horario):
         
     return registros
 
+# ==============================================================================
+# INSTRUÇÕES PARA REATIVAR O MÉTRICAS COMPLETO:
+# 1. Remova o bloco de 'COLETA DESATIVADA' dentro do método do_GET abaixo nesta mesma função.
+# 2. No arquivo vercel.json, adicione novamente em 'builds':
+#    { "src": "api/metricas_coleta.py", "use": "@vercel/python", "config": { "maxDuration": 60 } }
+#    e em 'routes':
+#    { "src": "/api/metricas_coleta", "dest": "api/metricas_coleta.py" }
+# 3. No arquivo index.html, descomente a linha do menu:
+#    <li><a href="metricas.html" target="_blank" style="color:var(--menta-viva);font-weight:700;">Métricas</a></li>
+# ==============================================================================
+
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
+        # ----------------------------------------------------------------------
+        # COLETA DESATIVADA TEMPORARIAMENTE
+        # Para reativar, comente ou apague as 5 linhas abaixo:
+        self.send_response(200)
+        self.send_header('Content-type','application/json')
+        self.end_headers()
+        self.wfile.write(b'{"status": "disabled", "message": "Coleta de metricas desativada temporariamente."}')
+        return
+        # ----------------------------------------------------------------------
+
         if not SUPABASE_URL or not SUPABASE_KEY:
             self.send_response(500)
             self.end_headers()
