@@ -1,0 +1,13 @@
+{
+  "functions": {
+    "api/index.py": {
+      "maxDuration": 60
+    },
+    "api/escalas.py": {
+      "maxDuration": 60
+    },
+    "api/pedidos.py": {
+      "maxDuration": 60
+    }
+  }
+}

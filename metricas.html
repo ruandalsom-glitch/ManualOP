@@ -1,0 +1,2415 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acompanhamento de Praças - EntreGô</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Poppins:wght@500;700;900&display=swap" rel="stylesheet">
+    <!-- Supabase e Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+    <script src="polygons_kml.js"></script>
+    
+    <style>
+        :root {
+            /* Cores padrão EntreGô Premium */
+            --bg-dark: #04081c;
+            --bg-card: rgba(11, 18, 52, 0.65);
+            --primary: #2CEABC; /* Menta Viva */
+            --primary-glow: rgba(44, 234, 188, 0.45);
+            --secondary: #2C67EA; /* Azul principal */
+            --text-main: #ffffff;
+            --text-muted: #CBE6FF; /* Azul gelo */
+            --border-color: rgba(44, 234, 188, 0.16);
+
+            --radius-sm: 12px;
+            --radius-md: 18px;
+            --radius-lg: 26px;
+            --radius-full: 9999px;
+
+            --shadow-card: 0 12px 36px rgba(0, 0, 0, 0.38), 0 1px 0 rgba(255, 255, 255, 0.05) inset;
+            --shadow-card-hover: 0 20px 50px rgba(0, 0, 0, 0.45), 0 0 24px rgba(44, 234, 188, 0.2), 0 0 0 1px rgba(44, 234, 188, 0.3);
+
+            /* Status */
+            --st-working: #2CEABC; /* Menta Viva */
+            --st-offline: #B4E4FF; /* Azul gelo */
+            --st-paused: #B4FFED; /* Menta Suave */
+            --st-blocked: #009B7F; /* Menta Escura */
+            --st-available: #2C67EA; /* Azul */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(4, 8, 28, 0.8); }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, rgba(44, 234, 188, 0.4), rgba(44, 103, 234, 0.4)); border-radius: var(--radius-full); }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); box-shadow: 0 0 10px var(--primary); }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.6;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed; inset: 0; z-index: -1;
+            background: 
+                radial-gradient(ellipse 90% 65% at 20% -10%, rgba(44, 103, 234, 0.35) 0%, transparent 65%),
+                radial-gradient(ellipse 70% 60% at 85% 110%, rgba(44, 234, 188, 0.15) 0%, transparent 60%),
+                radial-gradient(circle 600px at 50% 50%, rgba(13, 22, 60, 0.8) 0%, transparent 100%),
+                #04081c;
+            pointer-events: none;
+        }
+
+        /* HEADER REFINADO */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 40px;
+            background: rgba(4, 8, 28, 0.85);
+            border-bottom: 1px solid rgba(44, 234, 188, 0.12);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            z-index: 10;
+            position: relative;
+        }
+        header::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1.5px;
+            background: linear-gradient(90deg, transparent, var(--primary), var(--secondary), transparent);
+        }
+
+        header .logo {
+            display: flex;
+            flex-direction: column;
+        }
+
+        header .logo .title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        header .logo .title span {
+            color: var(--primary);
+            text-shadow: 0 0 20px rgba(44, 234, 188, 0.4);
+        }
+
+        header .logo .subtitle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            margin-top: 2px;
+            opacity: 0.8;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .controls select, .controls input[type="date"] {
+            padding: 10px 20px;
+            background: rgba(13, 22, 60, 0.85);
+            border: 1.5px solid rgba(44, 234, 188, 0.3);
+            color: var(--primary);
+            border-radius: var(--radius-full);
+            font-weight: 700;
+            outline: none;
+            cursor: pointer;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+        
+        .controls select:hover, .controls input[type="date"]:hover {
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(44, 234, 188, 0.2);
+        }
+
+        .controls button {
+            padding: 10px 22px;
+            background: linear-gradient(135deg, rgba(44, 234, 188, 0.15), rgba(44, 103, 234, 0.1));
+            border: 1.5px solid rgba(44, 234, 188, 0.4);
+            color: var(--primary);
+            border-radius: var(--radius-full);
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+        }
+
+        .controls button:hover {
+            background: linear-gradient(135deg, var(--primary), #00c49a);
+            color: #04081c;
+            box-shadow: 0 0 24px rgba(44, 234, 188, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .clock-container {
+            text-align: right;
+            border-left: 1px solid rgba(44, 234, 188, 0.15);
+            padding-left: 20px;
+        }
+
+        .clock {
+            font-size: 1.2rem;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .date {
+            font-size: 0.75rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* MAIN CONTENT */
+        main {
+            flex: 1;
+            padding: 24px 40px 40px 40px;
+            display: grid;
+            grid-template-columns: 420px minmax(0, 1fr);
+            gap: 24px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 1;
+        }
+
+        main.active {
+            opacity: 1;
+        }
+
+        /* LEFT PANEL */
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .praca-header {
+            background: rgba(11, 18, 52, 0.65);
+            border: 1px solid var(--border-color);
+            padding: 24px;
+            border-radius: var(--radius-lg);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+        }
+        
+        .praca-header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 3px;
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+        }
+
+        .praca-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+            color: var(--text-main);
+            letter-spacing: -0.8px;
+            text-shadow: 0 0 20px rgba(44, 234, 188, 0.3);
+        }
+
+        .praca-subtitle {
+            color: var(--primary);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            font-weight: 800;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            text-align: center;
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            box-shadow: var(--shadow-card);
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover {
+            border-color: rgba(44, 234, 188, 0.4);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-card-hover);
+        }
+
+        .stat-card.full-width {
+            grid-column: span 2;
+            background: linear-gradient(135deg, rgba(44, 234, 188, 0.12) 0%, rgba(13, 22, 60, 0.75) 100%);
+            border-color: rgba(44, 234, 188, 0.35);
+            padding: 18px;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 6px;
+            font-weight: 700;
+            font-weight: 700;
+        }
+
+        .stat-value {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .stat-pct {
+            display: inline-block;
+            margin-top: 5px;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.05);
+            font-weight: 700;
+        }
+
+        /* Specific colors */
+        .c-working .stat-value { color: var(--st-working); text-shadow: 0 0 15px rgba(29,185,84,0.4); }
+        .c-offline .stat-value { color: var(--st-offline); }
+        .c-paused .stat-value { color: var(--st-paused); }
+        .c-blocked .stat-value { color: var(--st-blocked); }
+        .c-available .stat-value { color: var(--st-available); }
+
+        /* RIGHT PANEL */
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .chart-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            height: 420px;
+            flex: none;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            backdrop-filter: blur(10px);
+            min-height: 0;
+            min-width: 0;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .chart-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .chart-wrapper {
+            flex: 1;
+            position: relative;
+            min-height: 0;
+            height: 100%;
+        }
+
+        /* TICKER BAR */
+        .ticker-wrap {
+            background: rgba(0, 15, 45, 0.95);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 0;
+            overflow: hidden;
+            display: flex;
+            white-space: nowrap;
+        }
+        
+        .ticker {
+            display: flex;
+            align-items: center;
+            width: max-content;
+            gap: 40px;
+            padding-right: 40px;
+            font-family: 'Poppins', sans-serif;
+            animation: tickerScroll 20s linear infinite;
+        }
+
+        @keyframes tickerScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        .ticker:hover {
+            animation-play-state: paused;
+        }
+        }
+        
+        .ticker-item {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+        }
+        
+        .ticker-item .t-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .ticker-item .t-val {
+            font-size: 1.25rem;
+            color: var(--text-main);
+            font-weight: 800;
+        }
+        
+        .ticker-item .t-time {
+            font-size: 0.7rem;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+        
+        .ticker-divider {
+            width: 1px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* LIVE BADGE */
+        .live-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 50, 50, 0.15);
+            border: 1px solid rgba(255, 50, 50, 0.3);
+            padding: 6px 12px;
+            border-radius: 20px;
+            color: #FF5050;
+            font-weight: 800;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .live-badge .dot {
+            width: 8px;
+            height: 8px;
+            background: #FF5050;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* PROGRESS BAR */
+        .progress-bar-container {
+            height: 4px;
+            background: rgba(0,0,0,0.5);
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.1s linear;
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        /* LOADER */
+        .loader-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 184, 0, 0.2);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        /* HEATMAP MATRIX */
+        .heatmap-container {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            overflow-y: auto; overflow-x: auto;
+            padding-right: 5px;
+        }
+        
+        .heatmap-container::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .heatmap-container::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+            border-radius: 4px;
+        }
+        .heatmap-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 184, 0, 0.5);
+            border-radius: 4px;
+        }
+        .heatmap-container::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+        
+        .hm-table {
+            display: grid;
+            grid-template-columns: 120px repeat(6, 1fr);
+            gap: 2px;
+            font-size: 0.75rem;
+            text-align: center;
+        }
+
+        .hm-header {
+            font-weight: 700; color: var(--primary);
+            padding: 8px 4px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .hm-row-label {
+            font-weight: 700; color: var(--text-muted);
+            text-align: left; padding-left: 5px;
+            display: flex; align-items: center;
+            border-right: 1px solid var(--border-color);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+
+        .hm-cell {
+            padding: 8px 4px;
+            color: #fff; font-weight: 700;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .hm-cell:hover { transform: scale(1.05); z-index: 2; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
+
+        /* MODERN ESCALAS TABLE (LEFT PANEL) */
+        .modern-table-container {
+            width: 100%;
+            max-height: 450px;
+            flex: none;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            margin-top: 15px;
+        }
+        .modern-table-container::-webkit-scrollbar { width: 6px; }
+        .modern-table-container::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+        .modern-table-container::-webkit-scrollbar-thumb { background: rgba(255, 184, 0, 0.5); border-radius: 4px; }
+        
+        .modern-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        .modern-table th {
+            background-color: rgba(0, 15, 45, 0.95);
+            color: var(--primary);
+            padding: 10px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            position: sticky;
+            top: 41px;
+            z-index: 2;
+            border-bottom: 2px solid var(--primary);
+            text-align: center;
+        }
+        .modern-table td {
+            padding: 8px 10px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #eee;
+        }
+        .modern-table tr:nth-child(even) td { background-color: rgba(255,255,255,0.02); }
+        .modern-table tr:hover td { background-color: rgba(44, 234, 188, 0.05); }
+        
+        .badge-modern {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 800;
+            font-size: 0.75rem;
+            color: #000;
+        }
+        .badge-green { background-color: #A5D6A7; }
+        .badge-yellow { background-color: #FFF59D; }
+        .badge-red { background-color: #EF9A9A; }
+
+        #login-container {
+            min-height: 100vh; display: flex; align-items: center;
+            justify-content: center; padding: 24px;
+            background: #061A0C; position: fixed; inset: 0; z-index: 10000;
+        }
+        .login-box {
+            background: rgba(13,20,65,0.75); backdrop-filter: blur(24px);
+            border: 1px solid var(--border-color); border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.28); padding: 44px 40px; width: 100%;
+            max-width: 420px; display: flex; flex-direction: column; gap: 16px;
+        }
+        .login-box img { max-width: 190px; height: auto; object-fit: contain; margin: 0 auto 12px; display: block; }
+        .login-box h2 { font-size: 22px; font-weight: 800; text-align: center; }
+        .login-subtitle { font-size: 13px; color: var(--text-muted); opacity: 0.7; text-align: center; margin-top: -8px; }
+        .login-field { position: relative; }
+        .login-field label {
+            position: absolute; top: 50%; left: 18px; transform: translateY(-50%);
+            color: rgba(180,228,255,0.5); font-size: 14px; font-weight: 500;
+            pointer-events: none; transition: all 0.2s ease; background: transparent;
+        }
+        .login-field input:not(:placeholder-shown) ~ label,
+        .login-field input:focus ~ label {
+            top: -8px; font-size: 11px; font-weight: 700; color: var(--primary);
+            background: #0d1441; padding: 0 6px; border-radius: 4px;
+        }
+        .login-input {
+            width: 100%; padding: 16px 18px 14px; border-radius: 10px;
+            border: 1px solid var(--border-color); background: rgba(255,255,255,0.04);
+            color: #fff; font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 15px; font-weight: 500; outline: none;
+        }
+        .login-input:focus { border-color: var(--primary); background: rgba(255,255,255,0.06); box-shadow: 0 0 0 3px rgba(44,234,188,0.08); }
+        .login-btn {
+            width: 100%; padding: 15px; background: linear-gradient(135deg,var(--primary),#00c49a);
+            color: #0A2E0A; border: none; border-radius: 10px;
+            font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; font-weight: 800;
+            cursor: pointer; transition: all 0.3s ease; margin-top: 4px;
+        }
+        .login-btn:hover:not(:disabled) { transform: translateY(-2px); }
+        .login-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        /* MAP FLOATING SIDEBAR UI */
+        .map-floating-sidebar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 220px;
+            max-height: 80vh;
+            overflow-y: auto;
+            background: rgba(22, 26, 32, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+            z-index: 1000;
+            backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            pointer-events: auto;
+            transition: all 0.3s ease;
+        }
+        .map-floating-sidebar.collapsed {
+            width: auto;
+            overflow: hidden;
+            gap: 0;
+            cursor: pointer;
+        }
+        .map-floating-sidebar.collapsed .card-modern {
+            display: none;
+        }
+        .map-floating-sidebar.collapsed .sub {
+            display: none;
+        }
+        #mapSidebarToggleIcon {
+            transition: transform 0.3s ease;
+        }
+        .map-floating-sidebar.collapsed #mapSidebarToggleIcon {
+            transform: rotate(-90deg);
+        }
+        .map-floating-sidebar h1 {
+            font-size: 14px;
+            margin: 0 0 2px 0;
+            font-weight: 700;
+            color: #fff;
+        }
+        .map-floating-sidebar .sub {
+            font-size: 10px;
+            color: #9aa2ad;
+            margin: 0;
+            line-height: 1.2;
+        }
+        .card-modern {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            padding: 10px;
+        }
+        .card-modern h2 {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: #9aa2ad;
+            margin: 0 0 6px 0;
+            font-weight: 600;
+        }
+        .stat-big {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+        }
+        .stat-label-mod {
+            font-size: 10px;
+            color: #9aa2ad;
+            margin-top: 2px;
+        }
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 4px 0;
+            font-size: 11px;
+            color: #fff;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .toggle-row:last-child { border-bottom: none; }
+        .switch {
+            position: relative;
+            width: 28px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background: #3a3f47;
+            border-radius: 16px;
+            transition: .2s;
+        }
+        .slider:before {
+            content: "";
+            position: absolute;
+            height: 12px;
+            width: 12px;
+            left: 2px;
+            bottom: 2px;
+            background: white;
+            border-radius: 50%;
+            transition: .2s;
+        }
+        input:checked + .slider { background: var(--primary); }
+        input:checked + .slider:before { transform: translateX(12px); }
+        
+        #rankingList {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            font-size: 10px;
+        }
+        #rankingList li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            gap: 6px;
+        }
+        #rankingList li:last-child { border-bottom: none; }
+        #rankingList .name {
+            color: #fff;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 80px;
+        }
+        #rankingList .bar-wrap {
+            flex: 1;
+            height: 4px;
+            background: #282e37;
+            border-radius: 2px;
+            margin: 0 4px;
+            overflow: hidden;
+        }
+        #rankingList .bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        #rankingList .count {
+            font-weight: 700;
+            color: var(--primary);
+            min-width: 20px;
+            text-align: right;
+        }
+        
+        /* Map relative container */
+        .map-relative-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="login-container" style="display:none;">
+        <div class="login-box">
+            <img src="https://i.imgur.com/ZEox7rf.png" alt="Logo EntreGô" style="width:160px; margin-bottom: 20px;">
+            <h2>Bem-vindo de volta</h2>
+            <p class="login-subtitle">Acesso restrito ao painel de métricas</p>
+            <div class="login-field">
+                <input type="text" id="loginUser" class="login-input" placeholder=" ">
+                <label for="loginUser">Usuário</label>
+            </div>
+            <div class="login-field">
+                <input type="password" id="loginPass" class="login-input" placeholder=" ">
+                <label for="loginPass">Senha</label>
+            </div>
+            <button id="btnEntrar" class="login-btn" onclick="fazerLogin()">
+                <span id="txtBtn">Entrar</span>
+            </button>
+        </div>
+    </div>
+
+    <header id="main-ui-header" style="display:none;">
+        <div class="logo">
+            <div class="title">🏆 Acompanhamento de Praças</div>
+            <div class="subtitle">EntreGô Sumarezinho, Recreio, Aldeota</div>
+        </div>
+        
+        <div class="controls">
+            <input type="date" id="dateSelect" onchange="manualSelectDate(this.value)">
+            <select id="pracaSelect" onchange="manualSelectPraca(this.value)">
+                <option value="">Carregando...</option>
+            </select>
+            <button id="playPauseBtn" onclick="togglePlayPause()">⏸ Pausar</button>
+            <div class="live-badge">
+                <div class="dot"></div> AO VIVO
+            </div>
+            <div class="clock-container">
+                <div class="clock" id="clock">00:00:00</div>
+                <div class="date" id="date">Carregando...</div>
+                <div id="weather-global" style="font-size: 0.8rem; color: var(--primary); font-weight: 700; margin-top: 4px; display: flex; align-items: center; justify-content: flex-end; gap: 4px;">☀️ --°C</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="ticker-wrap" id="main-ui-ticker" style="display:none;">
+        <div class="ticker">
+            <!-- Set 1 -->
+            <div class="ticker-item"><span class="t-label">Máx. Manhã</span> <span class="t-val t-val-manha" id="ui-peak-manha">0</span> <span class="t-time t-time-manha" id="ui-time-manha">--:--</span></div>
+            <div class="ticker-divider"></div>
+            <div class="ticker-item"><span class="t-label">Máx. Almoço</span> <span class="t-val t-val-almoco" id="ui-peak-almoco">0</span> <span class="t-time t-time-almoco" id="ui-time-almoco">--:--</span></div>
+            <div class="ticker-divider"></div>
+            <div class="ticker-item"><span class="t-label">Máx. Tarde</span> <span class="t-val t-val-tarde" id="ui-peak-tarde">0</span> <span class="t-time t-time-tarde" id="ui-time-tarde">--:--</span></div>
+            <div class="ticker-divider"></div>
+            <div class="ticker-item"><span class="t-label">Máx. Jantar</span> <span class="t-val t-val-jantar" id="ui-peak-jantar">0</span> <span class="t-time t-time-jantar" id="ui-time-jantar">--:--</span></div>
+            <div class="ticker-divider"></div>
+            <div class="ticker-item"><span class="t-label">Máx. J5</span> <span class="t-val t-val-j5" id="ui-peak-j5">0</span> <span class="t-time t-time-j5" id="ui-time-j5">--:--</span></div>
+            <div class="ticker-divider"></div>
+            <div class="ticker-item"><span class="t-label">Máx. Madruga</span> <span class="t-val t-val-madrugada" id="ui-peak-madrugada">0</span> <span class="t-time t-time-madrugada" id="ui-time-madrugada">--:--</span></div>
+            <div class="ticker-divider"></div>
+            
+            <!-- Set 2 -->
+            <div class="ticker-item"><span class="t-label">Máx. Manhã</span> <span class="t-val t-val-manha">0</span> <span class="t-time t-time-manha">--:--</span></div>
+            <div class="ticker-divider"></div>
+            <div class="ticker-item"><span class="t-label">Máx. Almoço</span> <span class="t-val t-val-almoco">0</span> <span class="t-time t-time-almoco">--:--</span></div>
+            <div class="ticker-divider"></div>
+            <div class="ticker-item"><span class="t-label">Máx. Tarde</span> <span class="t-val t-val-tarde">0</span> <span class="t-time t-time-tarde">--:--</span></div>
+            <div class="ticker-divider"></div>
+            <div class="ticker-item"><span class="t-label">Máx. Jantar</span> <span class="t-val t-val-jantar">0</span> <span class="t-time t-time-jantar">--:--</span></div>
+            <div class="ticker-divider"></div>
+            <div class="ticker-item"><span class="t-label">Máx. J5</span> <span class="t-val t-val-j5">0</span> <span class="t-time t-time-j5">--:--</span></div>
+            <div class="ticker-divider"></div>
+            <div class="ticker-item"><span class="t-label">Máx. Madruga</span> <span class="t-val t-val-madrugada">0</span> <span class="t-time t-time-madrugada">--:--</span></div>
+            <div class="ticker-divider"></div>
+            
+            <!-- Set 3 -->
+            <div class="ticker-item"><span class="t-label">Máx. Manhã</span> <span class="t-val t-val-manha">0</span> <span class="t-time t-time-manha">--:--</span></div>
+            <div class="ticker-divider"></div>
+            <div class="ticker-item"><span class="t-label">Máx. Almoço</span> <span class="t-val t-val-almoco">0</span> <span class="t-time t-time-almoco">--:--</span></div>
+            <div class="ticker-divider"></div>
+            <div class="ticker-item"><span class="t-label">Máx. Tarde</span> <span class="t-val t-val-tarde">0</span> <span class="t-time t-time-tarde">--:--</span></div>
+            <div class="ticker-divider"></div>
+            <div class="ticker-item"><span class="t-label">Máx. Jantar</span> <span class="t-val t-val-jantar">0</span> <span class="t-time t-time-jantar">--:--</span></div>
+            <div class="ticker-divider"></div>
+            <div class="ticker-item"><span class="t-label">Máx. J5</span> <span class="t-val t-val-j5">0</span> <span class="t-time t-time-j5">--:--</span></div>
+            <div class="ticker-divider"></div>
+            <div class="ticker-item"><span class="t-label">Máx. Madruga</span> <span class="t-val t-val-madrugada">0</span> <span class="t-time t-time-madrugada">--:--</span></div>
+            <div class="ticker-divider"></div>
+            
+            <!-- Set 4 -->
+            <div class="ticker-item"><span class="t-label">Máx. Manhã</span> <span class="t-val t-val-manha">0</span> <span class="t-time t-time-manha">--:--</span></div>
+            <div class="ticker-divider"></div>
+            <div class="ticker-item"><span class="t-label">Máx. Almoço</span> <span class="t-val t-val-almoco">0</span> <span class="t-time t-time-almoco">--:--</span></div>
+            <div class="ticker-divider"></div>
+            <div class="ticker-item"><span class="t-label">Máx. Tarde</span> <span class="t-val t-val-tarde">0</span> <span class="t-time t-time-tarde">--:--</span></div>
+            <div class="ticker-divider"></div>
+            <div class="ticker-item"><span class="t-label">Máx. Jantar</span> <span class="t-val t-val-jantar">0</span> <span class="t-time t-time-jantar">--:--</span></div>
+            <div class="ticker-divider"></div>
+            <div class="ticker-item"><span class="t-label">Máx. J5</span> <span class="t-val t-val-j5">0</span> <span class="t-time t-time-j5">--:--</span></div>
+            <div class="ticker-divider"></div>
+            <div class="ticker-item"><span class="t-label">Máx. Madruga</span> <span class="t-val t-val-madrugada">0</span> <span class="t-time t-time-madrugada">--:--</span></div>
+        </div>
+    </div>
+
+    <div class="progress-bar-container" id="main-ui-progress" style="display:none;">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="loader-overlay" id="loader">
+        <div class="spinner"></div>
+        <p id="loaderText" style="color: var(--text-muted); font-size: 1.1rem; font-weight:600;">Sincronizando banco de dados...</p>
+    </div>
+
+    <main id="dashboard" style="display:none;">
+        <div class="left-panel">
+            <div class="praca-header">
+                <div class="praca-subtitle">Praça em Exibição</div>
+                <div class="praca-title" id="ui-praca-name">--</div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card full-width c-working">
+                    <div class="stat-label"><span style="color:var(--st-working);">■</span> Trabalhando (Rotas Ativas)</div>
+                    <div class="stat-value" id="ui-val-working">0</div>
+                    <div class="stat-pct" id="ui-pct-working">0%</div>
+                </div>
+                <div class="stat-card c-offline">
+                    <div class="stat-label"><span style="color:var(--st-offline);">■</span> Offline</div>
+                    <div class="stat-value" id="ui-val-offline">0</div>
+                    <div class="stat-pct" id="ui-pct-offline">0%</div>
+                </div>
+                <div class="stat-card c-paused">
+                    <div class="stat-label"><span style="color:var(--st-paused);">■</span> Em Pausa</div>
+                    <div class="stat-value" id="ui-val-paused">0</div>
+                    <div class="stat-pct" id="ui-pct-paused">0%</div>
+                </div>
+                <div class="stat-card c-blocked">
+                    <div class="stat-label"><span style="color:var(--st-blocked);">■</span> Inativos</div>
+                    <div class="stat-value" id="ui-val-blocked">0</div>
+                    <div class="stat-pct" id="ui-pct-blocked">0%</div>
+                </div>
+                <div class="stat-card c-available">
+                    <div class="stat-label"><span style="color:var(--st-available);">■</span> Disponíveis</div>
+                    <div class="stat-value" id="ui-val-available">0</div>
+                    <div class="stat-pct" id="ui-pct-available">0%</div>
+                </div>
+            </div>
+            
+            <!-- ESCALAS (LEFT PANEL) -->
+            <div class="modern-table-container" id="leftEscalasContainer" style="margin-top: 15px;">
+                <!-- Preenchido via JS -->
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div class="charts-row" style="display:flex; gap:15px; flex:1; min-height: 0; min-width: 0;">
+                
+                <div class="charts-col" style="display:flex; flex-direction:column; gap:15px; flex:2; min-height: 0; min-width: 0;">
+                    <div class="chart-container" style="flex:1;">
+                        <div class="chart-header">
+                            <div class="chart-title">Drivers ativos e trabalhando no dia</div>
+                            <div class="chart-filters" style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end;">
+                                <label style="font-size: 0.75rem; color: var(--st-working); cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                                    <input type="checkbox" id="filter-working" checked onchange="applyChartFilters()"> Trabalhando
+                                </label>
+                                <label style="font-size: 0.75rem; color: var(--st-available); cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                                    <input type="checkbox" id="filter-available" checked onchange="applyChartFilters()"> Disponíveis
+                                </label>
+                                <label style="font-size: 0.75rem; color: var(--st-paused); cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                                    <input type="checkbox" id="filter-paused" checked onchange="applyChartFilters()"> Em Pausa
+                                </label>
+                                <label style="font-size: 0.75rem; color: var(--st-offline); cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                                    <input type="checkbox" id="filter-offline" checked onchange="applyChartFilters()"> Offline
+                                </label>
+                                <label style="font-size: 0.75rem; color: var(--st-blocked); cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                                    <input type="checkbox" id="filter-blocked" checked onchange="applyChartFilters()"> Inativos
+                                </label>
+                                <label style="font-size: 0.75rem; color: rgba(255, 184, 0, 0.6); cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                                    <input type="checkbox" id="filter-total" checked onchange="applyChartFilters()"> Total
+                                </label>
+                            </div>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="mainChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container" style="flex:0.8;">
+                        <div class="chart-header">
+                            <div class="chart-title">Tabela de Média (Trabalhando x Turno)</div>
+                        </div>
+                        <div class="chart-wrapper">
+                            <div class="heatmap-container" id="heatmapContainer"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chart-container" style="flex:1.5; height: auto;">
+                    <div class="chart-header">
+                        <div class="chart-title">Mapa de Calor (Pedidos 30min)</div>
+                    </div>
+                    <div class="chart-wrapper" style="overflow: hidden; border-radius: 8px;">
+                        <div class="map-relative-wrapper">
+                            <div id="realMapContainer" style="width: 100%; height: 100%; z-index: 1;"></div>
+                            
+                            <!-- Floating UI -->
+                            <div class="map-floating-sidebar" id="mapSidebar">
+                                <div style="display:flex; justify-content:space-between; align-items:center;" onclick="document.getElementById('mapSidebar').classList.toggle('collapsed')" style="cursor:pointer;">
+                                    <div>
+                                        <h1>🔥 Heatmap Analytics</h1>
+                                        <p class="sub">Densidade de entregas na praça</p>
+                                    </div>
+                                    <span style="font-size: 16px; color: var(--primary); cursor: pointer;" id="mapSidebarToggleIcon">▼</span>
+                                </div>
+                                <div class="card-modern">
+                                    <h2>Visão Geral</h2>
+                                    <div class="stat-big" id="ui-total-pedidos">0</div>
+                                    <div class="stat-label-mod">pedidos geolocalizados</div>
+                                </div>
+                                <div class="card-modern">
+                                    <h2>Camadas</h2>
+                                    <div class="toggle-row">
+                                        <span>Mapa de Calor</span>
+                                        <label class="switch"><input type="checkbox" id="toggleHeat" checked onchange="toggleMapLayer('heat')"><span class="slider"></span></label>
+                                    </div>
+                                    <div class="toggle-row">
+                                        <span>Zonas (KML)</span>
+                                        <label class="switch"><input type="checkbox" id="toggleZones" checked onchange="toggleMapLayer('zones')"><span class="slider"></span></label>
+                                    </div>
+                                </div>
+                                <div class="card-modern">
+                                    <h2>Top Origens (Volume)</h2>
+                                    <ul id="rankingList">
+                                        <!-- Preenchido via JS -->
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </main>
+
+    <script src="supabaseClient.js"></script>
+    <script>
+        // Clock
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleTimeString('pt-BR');
+            document.getElementById('date').innerText = now.toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        }, 1000);
+
+        const KML_COORDS = {
+  "APP-MIGRADO|RIO DE JANEIRO (UNIFICADO) - MASTER": { "lng": -43.2833, "lat": -22.9409 },
+  "CAMPO GRANDE|CENTRO": { "lng": -43.5651, "lat": -22.8893 },
+  "CAMPO GRANDE|MONTEIRO": { "lng": -43.5674, "lat": -22.9238 },
+  "CAMPO GRANDE|RIO CAMPO GRANDE UNIFICADO": { "lng": -43.5837, "lat": -22.9122 },
+  "CAMPO GRANDE|SANTA CRUZ": { "lng": -43.6681, "lat": -22.9116 },
+  "FORTALEZA|AEROPORTO": { "lng": -38.5471, "lat": -3.7884 },
+  "FORTALEZA|BARRA_DO_CEARA": { "lng": -38.5393, "lat": -3.7456 },
+  "FORTALEZA|IRACEMA": { "lng": -38.4845, "lat": -3.7407 },
+  "FORTALEZA|LAGOA_REDONDA": { "lng": -38.4856, "lat": -3.795 },
+  "FORTALEZA|PORTUGAL": { "lng": -38.5947, "lat": -3.7559 },
+  "FORTALEZA|UNIFICADA_GERAL": { "lng": -38.5108, "lat": -3.7641 },
+  "MADUREIRA|IRAJA": { "lng": -43.3138, "lat": -22.8359 },
+  "MADUREIRA|PENHA": { "lng": -43.2883, "lat": -22.8727 },
+  "MADUREIRA|REALENGO": { "lng": -43.4355, "lat": -22.8907 },
+  "MADUREIRA|RIO MADUREIRA UNIFICADO": { "lng": -43.3784, "lat": -22.8736 },
+  "MADUREIRA|ROCHA_MIRANDA": { "lng": -43.351, "lat": -22.876 },
+  "NITEROI|GRAGOATÁ": { "lng": -43.127, "lat": -22.8948 },
+  "NITEROI|ICARAÍ": { "lng": -43.0991, "lat": -22.9132 },
+  "NITEROI|LIVRE": { "lng": -43.0786, "lat": -22.9069 },
+  "NITEROI|NITERÓI - LIVRE": { "lng": -43.0786, "lat": -22.9069 },
+  "NITEROI|RIO - NITERÓI UNIFICADO": { "lng": -43.0855, "lat": -22.9059 },
+  "RIO BARRA|CENTRO": { "lng": -43.3765, "lat": -22.9981 },
+  "RIO BARRA|FREGUESIA": { "lng": -43.3487, "lat": -22.9409 },
+  "RIO BARRA|JACAREPAGUA": { "lng": -43.4005, "lat": -22.9711 },
+  "RIO BARRA|LIVRE": { "lng": -43.4295, "lat": -22.9798 },
+  "RIO BARRA|RECREIO": { "lng": -43.4498, "lat": -23.0132 },
+  "RIO BARRA|RIO - BARRA - LIVRE": { "lng": -43.4295, "lat": -22.9798 },
+  "RIO BARRA|RIO BARRA UNIFICADO": { "lng": -43.3855, "lat": -22.9815 },
+  "RIO BARRA|TAQUARA": { "lng": -43.371, "lat": -22.9304 },
+  "RIO ZONA SUL|CACHAMBI": { "lng": -43.2827, "lat": -22.8867 },
+  "RIO ZONA SUL|CENTRO": { "lng": -43.1761, "lat": -22.9051 },
+  "RIO ZONA SUL|COPACABANA E BOTAFOGO": { "lng": -43.1839, "lat": -22.9508 },
+  "RIO ZONA SUL|IPANEMA": { "lng": -43.2198, "lat": -22.9873 },
+  "RIO ZONA SUL|LIVRE": { "lng": -43.2125, "lat": -22.9324 },
+  "RIO ZONA SUL|RIO - ZONA SUL - LIVRE": { "lng": -43.2125, "lat": -22.9324 },
+  "RIO ZONA SUL|RIO ZONA SUL UNIFICADO": { "lng": -43.2264, "lat": -22.9199 },
+  "RIO ZONA SUL|VILA ISABEL E SAO CRISTOVAO": { "lng": -43.2415, "lat": -22.9241 },
+  "SÃO PAULO|ACLIMAÇÃO": { "lng": -46.626, "lat": -23.5918 },
+  "SÃO PAULO|ARICANDUVA": { "lng": -46.554, "lat": -23.5866 },
+  "SÃO PAULO|CACHOEIRINHA": { "lng": -46.6593, "lat": -23.4644 },
+  "SÃO PAULO|CIDADE DAS FLORES": { "lng": -46.7658, "lat": -23.57 },
+  "SÃO PAULO|INTERLAGOS": { "lng": -46.7125, "lat": -23.7226 },
+  "SÃO PAULO|ITAIM E BROOKLIN": { "lng": -46.6763, "lat": -23.6118 },
+  "SÃO PAULO|JABAQUARA E SANTO AMARO": { "lng": -46.6776, "lat": -23.6488 },
+  "SÃO PAULO|LIVRE": { "lng": -46.6535, "lat": -23.5758 },
+  "SÃO PAULO|MANDAQUI": { "lng": -46.6159, "lat": -23.4822 },
+  "SÃO PAULO|MAPA - SÃO PAULO LIVRE": { "lng": -46.6304, "lat": -23.6535 },
+  "SÃO PAULO|MOOCA": { "lng": -46.5784, "lat": -23.554 },
+  "SÃO PAULO|PANAMBY": { "lng": -46.7344, "lat": -23.6101 },
+  "SÃO PAULO|PERDIZES": { "lng": -46.6592, "lat": -23.5438 },
+  "SÃO PAULO|PINHEIROS": { "lng": -46.7066, "lat": -23.54 },
+  "SÃO PAULO|TATUAPÉ": { "lng": -46.5626, "lat": -23.55 },
+  "SÃO PAULO|VILA GUILHERMINA": { "lng": -46.4856, "lat": -23.5171 },
+  "SÃO PAULO|VILA JAGUARA E JARAGUA": { "lng": -46.722, "lat": -23.4968 }
+};
+
+        let weatherCache = {};
+
+        async function getWeatherForSubpraca(pracaName, subName) {
+            if (!pracaName) pracaName = '';
+            if (!subName) subName = '';
+            let target = null;
+            let upPraca = pracaName.toUpperCase().trim();
+            let upSub = subName.toUpperCase().trim();
+            
+            const normalize = s => {
+                if (!s) return '';
+                return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+            };
+            
+            const normPraca = normalize(upPraca);
+            const normSub = normalize(upSub);
+            
+            for(let k in KML_COORDS) {
+                let parts = k.split('|');
+                let kPraca = parts.length > 1 ? parts[0] : '';
+                let kSub = parts.length > 1 ? parts[1] : k;
+                
+                let normKPraca = normalize(kPraca);
+                let normKSub = normalize(kSub);
+                
+                let pracaMatch = (!normKPraca || normPraca === 'TODAS' || normPraca === 'GERAL' || normKPraca.includes(normPraca) || normPraca.includes(normKPraca));
+                if (!pracaMatch) continue;
+                
+                if (normSub === 'GERAL' || normSub === 'TODAS' || normSub === 'UNIFICADO') {
+                    if (normKSub.includes('UNIFICADO') || normKSub.includes('MASTER') || normKSub.includes('GERAL')) {
+                        target = KML_COORDS[k]; break;
+                    }
+                } else if (normKSub.includes(normSub) || normSub.includes(normKSub)) {
+                    target = KML_COORDS[k]; break;
+                }
+            }
+            
+            if (!target) {
+                for(let k in KML_COORDS) {
+                    let parts = k.split('|');
+                    let kPraca = parts.length > 1 ? parts[0] : '';
+                    let normKPraca = normalize(kPraca);
+                    if (normKPraca && (normKPraca.includes(normPraca) || normPraca.includes(normKPraca))) {
+                        target = KML_COORDS[k]; break;
+                    }
+                }
+            }
+            
+            if (!target) target = { lat: -23.5505, lng: -46.6333 }; // Default SP
+            
+            let key = target.lat.toFixed(2) + "," + target.lng.toFixed(2);
+            if (weatherCache[key]) return weatherCache[key];
+            
+            try {
+                const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${target.lat}&longitude=${target.lng}&current_weather=true`);
+                const data = await res.json();
+                const code = data.current_weather.weathercode;
+                const temp = data.current_weather.temperature;
+                
+                let icon = '☀️';
+                if (code >= 1 && code <= 3) icon = '⛅';
+                else if (code == 45 || code == 48) icon = '🌫️';
+                else if (code >= 51 && code <= 57) icon = '🌦️';
+                else if (code >= 61 && code <= 67) icon = '🌧️';
+                else if (code >= 71 && code <= 77) icon = '🌨️';
+                else if (code >= 80 && code <= 82) icon = '⛈️';
+                else if (code >= 95 && code <= 99) icon = '🌩️';
+                
+                const result = `${icon} ${Math.round(temp)}°C`;
+                weatherCache[key] = result;
+                return result;
+            } catch(e) {
+                return "☀️ --°C";
+            }
+        }
+
+        let chartInstance = null;
+        let dataByPraca = {};
+        let pracaNames = [];
+        let escalasDataByPraca = {};
+        let heatmapPoints = []; // Global para o Leaflet Heatmap
+        let realMap = null;
+        let heatLayer = null;
+        let polygonLayers = [];
+        let currentIndex = 0;
+        let slideTimeout;
+        let progressInterval;
+        let isPlaying = true;
+        let currentProgress = 0; // ms passed
+        const SLIDE_DURATION = 20000; // 20s per praca
+        
+        function getCoordsForPraca(pracaName) {
+            let upPraca = (pracaName || '').toUpperCase().trim();
+            const normalize = s => s ? s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase().replace(/[^A-Z0-9]/g, '') : '';
+            const normPraca = normalize(upPraca);
+            for(let k in KML_COORDS) {
+                let parts = k.split('|');
+                let kPraca = parts.length > 1 ? parts[0] : '';
+                let normKPraca = normalize(kPraca);
+                if (normKPraca && (normKPraca.includes(normPraca) || normPraca.includes(normKPraca))) {
+                    return KML_COORDS[k];
+                }
+            }
+            return { lat: -23.5505, lng: -46.6333 }; // Default SP
+        }
+        
+        function drawPolygonsGroup(pracaName) {
+            let upPraca = (pracaName || '').toUpperCase().trim();
+            const normalize = s => s ? s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase().replace(/[^A-Z0-9]/g, '') : '';
+            const normPraca = normalize(upPraca);
+            
+            if (typeof KML_POLYGONS !== 'undefined') {
+                // Primeira camada: Áreas LIVRE (por baixo, cor diferenciada)
+                for(let k in KML_POLYGONS) {
+                    let parts = k.split('|');
+                    let kPraca = parts.length > 1 ? parts[0] : '';
+                    let normKPraca = normalize(kPraca);
+                    if (normKPraca && (normKPraca.includes(normPraca) || normPraca.includes(normKPraca))) {
+                        let isLivre = normalize(k).includes('LIVRE');
+                        if (!isLivre) continue;
+                        
+                        let polys = KML_POLYGONS[k];
+                        polys.forEach(poly => {
+                            if (poly.length > 2) {
+                                L.polygon(poly, {
+                                    color: '#FFB800', // Amarelo EntreGô para identificar Livre
+                                    weight: 2,
+                                    fillOpacity: 0.04,
+                                    fillColor: '#FFB800',
+                                    interactive: false
+                                }).addTo(polygonGroup);
+                            }
+                        });
+                    }
+                }
+                
+                // Segunda camada: Sub-praças normais (por cima, cor verde padrão)
+                for(let k in KML_POLYGONS) {
+                    let parts = k.split('|');
+                    let kPraca = parts.length > 1 ? parts[0] : '';
+                    let normKPraca = normalize(kPraca);
+                    if (normKPraca && (normKPraca.includes(normPraca) || normPraca.includes(normKPraca))) {
+                        let isLivre = normalize(k).includes('LIVRE');
+                        if (isLivre) continue;
+                        
+                        let polys = KML_POLYGONS[k];
+                        polys.forEach(poly => {
+                            if (poly.length > 2) {
+                                L.polygon(poly, {
+                                    color: '#1DB954', // Verde padrão
+                                    weight: 2,
+                                    fillOpacity: 0.06,
+                                    fillColor: '#1DB954',
+                                    interactive: false
+                                }).addTo(polygonGroup);
+                            }
+                        });
+                    }
+                }
+            }
+        }
+        let baseMaps = {};
+        let layerControl = null;
+        let mapOverlays = {};
+        let polygonGroup = L.featureGroup(); // Group for polygons
+
+        function initRealMap() {
+            if (realMap) return;
+            // Enable zoom control
+            realMap = L.map('realMapContainer', { zoomControl: true }).setView([-23.5505, -46.6333], 12);
+            
+            const darkTile = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; CartoDB', maxZoom: 19
+            });
+            const positronTile = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; CartoDB', maxZoom: 19
+            });
+            const voyagerTile = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; CartoDB', maxZoom: 19
+            });
+            const osmTile = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap', maxZoom: 19
+            });
+
+            baseMaps = {
+                "Carto Escuro (Dark)": darkTile,
+                "Carto Claro (Positron)": positronTile,
+                "Carto Colorido (Voyager)": voyagerTile,
+                "OpenStreetMap": osmTile
+            };
+            
+            // Set default tile
+            darkTile.addTo(realMap);
+            polygonGroup.addTo(realMap);
+            
+            layerControl = L.control.layers(baseMaps, mapOverlays, { collapsed: true }).addTo(realMap);
+        }
+        
+        const SP_DEDICADO_STORES = [
+            "BRAZ ELETTRICA - PINHEIROS",
+            "GREENJOY - WRAPS & SALADAS - JARDINS",
+            "GREENJOY - WRAPS & SALADAS- PINHEIROS",
+            "GREENJOY - WRAPS & SALADAS- VILA OLIMPIA",
+            "GREENTABLE - BANDEIRANTES",
+            "GREENTABLE - REBOUCAS",
+            "JOHN'S BURGUER",
+            "MAKOTO/KOTO BY CHEF MAKOTO",
+            "NINO DELIVERY - ITAIM",
+            "PADARIA REAL - PINHEIROS",
+            "PAO COM CARNE HAMBURGUERIA - MOOCA",
+            "PATTIES BURGER - BANDEIRANTES",
+            "PATTIES REBOUCAS",
+            "PATTIES SANTANA",
+            "PATTIES TATUAPE",
+            "PERDOMO DOCES - PINHEIROS",
+            "PERDOMO DOCES - TATUAPE",
+            "POKE GARDEN  - JARDINS",
+            "POKE GARDEN - BROOKLIN",
+            "POKE GARDEN - TATUAPE",
+            "SAO CARLOS LANCHES - TATUAPE",
+            "SUSHI FAST - SANTANA",
+            "SUSHI GARDEN ONE - BROOKLIN",
+            "SUSHI GARDEN ONE - JARDINS",
+            "SUSHI GARDEN ONE - TATUAPE",
+            "VIP SUSHI - INTERLAGOS",
+            "VIP SUSHI - SANTANA",
+            "VIP SUSHI - VILA MATILDE",
+            "VIP SUSHI - VILA PRUDENTE",
+            "VIP SUSHI - MORUMBI",
+            "Z DELI - CENTRO",
+            "Z DELI - PINHEIROS",
+            "FE- PAPILA PINHEIROS | HUB VIRTUAL",
+            "FE- SUSHI POR 0,99 BUTANTÃ | HUB VIRTUAL",
+            "FE - Papila Perdizes | HUB Virtual",
+            "FE - Papila Itaim | HUB Virtual",
+            "FE- Vip Sushi Pirituba | HUB Virtual",
+            "FE - Johns Mooca | HUB Virtual",
+            "FE - Papila Brooklin | HUB Virtual",
+            "FE - Vip Sushi Osasco | HUB Virtual",
+            "FE - Vip Sushi Pompeia | HUB Virtual",
+            "FE - Vip Sushi Consolação | HUB Virtual",
+            "FE - Papila Centro | HUB Virtual",
+            "FE - Sushi por 0,99 Pompeia | HUB Virtual",
+            "FE - Vip Sushi Itaquera | HUB Virtual"
+        ].map(s => s.toUpperCase().trim().replace(/\s+/g, ' '));
+
+        function updateRealMap(pracaName) {
+            if (!realMap) initRealMap();
+            
+            if (heatLayer) {
+                layerControl.removeLayer(heatLayer);
+                realMap.removeLayer(heatLayer);
+            }
+            
+            let upPraca = (pracaName || '').toUpperCase().trim();
+            let normalizePraca = upPraca.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            
+            // Se a praça selecionada for SP DEDICADO, devemos renderizar os polígonos de SÃO PAULO
+            let polyPracaName = pracaName;
+            if (normalizePraca === 'SP DEDICADO' || normalizePraca === 'SP DEDICADOS') {
+                polyPracaName = 'SÃO PAULO';
+            }
+            
+            // Atualiza polígonos PRIMEIRO para pegar as margens (bounds)
+            layerControl.removeLayer(polygonGroup);
+            polygonGroup.clearLayers();
+            drawPolygonsGroup(polyPracaName);
+            layerControl.addOverlay(polygonGroup, "Limites das Sub-Praças");
+            
+            // Determina os limites geográficos para filtrar os pontos
+            let bounds = null;
+            if (polygonGroup.getLayers().length > 0) {
+                bounds = polygonGroup.getBounds().pad(0.1); // Adiciona 10% de margem
+            }
+            
+            // Filtra os pontos do heatmap
+            const filteredPoints = heatmapPoints.filter(p => {
+                if (!p.origin_lat || !p.origin_lng) return false;
+                
+                // Filtro exclusivo para SP DEDICADO
+                if (normalizePraca === 'SP DEDICADO' || normalizePraca === 'SP DEDICADOS') {
+                    if (!p.origin_name) return false;
+                    let normStore = p.origin_name.toUpperCase().trim().replace(/\s+/g, ' ');
+                    let isDedicado = SP_DEDICADO_STORES.some(s => normStore.includes(s) || s.includes(normStore));
+                    if (!isDedicado) return false;
+                }
+                
+                if (!bounds) return true; // Se não tem polígono, mostra tudo
+                
+                const latLng = L.latLng(parseFloat(p.origin_lat), parseFloat(p.origin_lng));
+                return bounds.contains(latLng);
+            });
+            
+            console.log(`Plotting ${filteredPoints.length} heatmap points for ${pracaName}.`);
+            
+            // Gera array de [lat, lng, intensity]
+            const heatData = filteredPoints.map(p => [parseFloat(p.origin_lat), parseFloat(p.origin_lng), 1]);
+            
+            heatLayer = L.heatLayer(heatData, {
+                radius: 25,
+                blur: 15,
+                maxZoom: 18,
+                minOpacity: 0.2
+            }).addTo(realMap);
+            
+            layerControl.addOverlay(heatLayer, "Manchas de Calor (Pedidos)");
+            
+            // --- UPDATE FLOATING UI ---
+            let totalEl = document.getElementById('ui-total-pedidos');
+            if (totalEl) totalEl.innerText = filteredPoints.length;
+            
+            // Calculate Top 5 Stores/Origins
+            let storeCounts = {};
+            filteredPoints.forEach(p => {
+                let name = p.origin_name ? p.origin_name.trim() : "Desconhecido";
+                if (!storeCounts[name]) storeCounts[name] = 0;
+                storeCounts[name]++;
+            });
+            let sortedStores = Object.entries(storeCounts).sort((a,b) => b[1] - a[1]).slice(0, 5);
+            let maxStore = sortedStores.length > 0 ? sortedStores[0][1] : 1;
+            
+            let rankingHTML = "";
+            sortedStores.forEach(([sName, sCount]) => {
+                let pct = (sCount / maxStore) * 100;
+                rankingHTML += `
+                <li>
+                    <div class="name" title="${sName}">${sName}</div>
+                    <div class="bar-wrap"><div class="bar" style="width:${pct}%"></div></div>
+                    <div class="count">${sCount}</div>
+                </li>`;
+            });
+            let rankingEl = document.getElementById('rankingList');
+            if (rankingEl) rankingEl.innerHTML = rankingHTML;
+            // --------------------------
+            
+            if (bounds) {
+                realMap.fitBounds(bounds, { padding: [20, 20] });
+            } else {
+                const coords = getCoordsForPraca(pracaName);
+                realMap.setView([coords.lat, coords.lng], 11);
+            }
+            
+            // Força um redimensionamento pra garantir que o mapa preencha o div flex
+            setTimeout(() => {
+                realMap.invalidateSize();
+            }, 300);
+        }
+
+        // Chart.js Default Config for Dark Theme
+        Chart.defaults.color = 'rgba(245, 245, 240, 0.6)';
+        Chart.defaults.font.family = 'Plus Jakarta Sans';
+
+        // Initialization
+        const today = new Date();
+        let selectedDateStr = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+        document.getElementById('dateSelect').value = selectedDateStr;
+        
+        let currentSubpraca = null;
+
+        async function initDashboard(targetDate = null) {
+            try {
+                if (targetDate) {
+                    selectedDateStr = targetDate;
+                }
+                
+                // Show loader for changes
+                document.getElementById('loader').style.display = 'flex';
+                document.getElementById('loader').style.opacity = '1';
+                document.querySelector('.spinner').style.display = 'block';
+                document.getElementById('loaderText').innerHTML = "Sincronizando banco de dados...";
+
+                // Paginacao para buscar mais de 1000 linhas (limite da API do Supabase)
+                // Paginacao para buscar mais de 1000 linhas (limite da API do Supabase)
+                // Dispara requisições em paralelo fixas (cobrindo até 20000 linhas) para máxima velocidade
+                const step = 999;
+                
+                const metricasPromises = [];
+                for (let i = 0; i < 20; i++) {
+                    const rangeStart = i * (step + 1);
+                    metricasPromises.push(
+                        supabaseClient
+                            .from('frota_metricas')
+                            .select('*')
+                            .like('horario', `${selectedDateStr}%`)
+                            .order('horario', { ascending: true })
+                            .range(rangeStart, rangeStart + step)
+                    );
+                }
+                
+                const escalasPromises = [];
+                for (let i = 0; i < 50; i++) {
+                    const rangeStart = i * (step + 1);
+                    escalasPromises.push(
+                        supabaseClient
+                            .from('frota_escalas')
+                            .select('*')
+                            .eq('data', selectedDateStr)
+                            .order('horario_coleta', { ascending: true })
+                            .range(rangeStart, rangeStart + step)
+                    );
+                }
+                
+                // Pedidos heatmap promises (até ~15000 pedidos, os ultimos de hj)
+                const pedidosPromises = [];
+                for (let i = 0; i < 15; i++) {
+                    const rangeStart = i * (step + 1);
+                    pedidosPromises.push(
+                        supabaseClient
+                            .from('frota_pedidos_heatmap')
+                            .select('origin_lat, origin_lng')
+                            .like('created_at', `${selectedDateStr}%`)
+                            .range(rangeStart, rangeStart + step)
+                    );
+                }
+
+                const [metricasResults, escalasResults, pedidosResults] = await Promise.all([
+                    Promise.all(metricasPromises),
+                    Promise.all(escalasPromises).catch(e => { console.warn("Erro ao buscar escalas:", e); return []; }),
+                    Promise.all(pedidosPromises).catch(e => { console.warn("Erro ao buscar heatmap pedidos:", e); return []; })
+                ]);
+                
+                let data = [];
+                if (metricasResults) {
+                    metricasResults.forEach(res => { if (res.data) data = data.concat(res.data); });
+                }
+                data.sort((a, b) => a.horario.localeCompare(b.horario));
+                
+                let allDataEscalas = [];
+                if (escalasResults) {
+                    escalasResults.forEach(res => { if (res.data) allDataEscalas = allDataEscalas.concat(res.data); });
+                }
+                
+                // Sort allDataEscalas properly by time so that latest entry overwrites older ones
+                if (allDataEscalas.length > 0) {
+                    allDataEscalas.sort((a, b) => {
+                        const tA = a.horario_coleta || "";
+                        const tB = b.horario_coleta || "";
+                        return tA.localeCompare(tB);
+                    });
+                }
+                
+                heatmapPoints = [];
+                if (pedidosResults) {
+                    pedidosResults.forEach(res => { 
+                        if (res.data) {
+                            res.data.forEach(p => {
+                                if (p.origin_lat && p.origin_lng) heatmapPoints.push(p);
+                            });
+                        }
+                    });
+                }
+
+                if (!data || data.length === 0) {
+                    const brDate = selectedDateStr.split('-').reverse().join('/');
+                    throw new Error(`Nenhum dado registrado para o dia ${brDate}.`);
+                }
+
+                dataByPraca = {};
+                data.forEach(row => {
+                    if (!dataByPraca[row.praca]) dataByPraca[row.praca] = [];
+                    dataByPraca[row.praca].push(row);
+                });
+
+                escalasDataByPraca = {};
+                allDataEscalas.forEach(row => {
+                    const pracaKey = (row.praca || "").toUpperCase();
+                    if (!escalasDataByPraca[pracaKey]) escalasDataByPraca[pracaKey] = [];
+                    escalasDataByPraca[pracaKey].push(row);
+                });
+
+                pracaNames = Object.keys(dataByPraca).sort();
+                
+                if (pracaNames.length === 0) throw new Error("Sem praças ativas.");
+
+                // Populate Dropdown
+                const selectEl = document.getElementById('pracaSelect');
+                selectEl.innerHTML = '';
+                pracaNames.forEach((p, idx) => {
+                    selectEl.innerHTML += `<option value="${idx}">${p}</option>`;
+                });
+
+                // Hide loader
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(() => document.getElementById('loader').style.display = 'none', 500);
+
+                // Start Carousel
+                showPraca(0);
+
+            } catch (err) {
+                console.error(err);
+                document.getElementById('loaderText').innerHTML = `
+                    <span style="color:#FF5050; margin-bottom: 15px; display:block;">${err.message || err}</span>
+                    <button onclick="location.reload()" style="padding: 10px 20px; background: var(--primary); color: #000; font-weight: bold; border-radius: 8px; cursor: pointer; border: none; font-family: 'Plus Jakarta Sans', sans-serif;">Voltar para Hoje</button>
+                `;
+                document.querySelector('.spinner').style.display = 'none';
+            }
+        }
+
+        function getShift(timeStr) {
+            const hour = parseInt(timeStr.split(':')[0]);
+            if (hour >= 6 && hour < 11) return 'manha';
+            if (hour >= 11 && hour < 15) return 'almoco';
+            if (hour >= 15 && hour < 18) return 'tarde';
+            if (hour >= 18 && hour < 22) return 'jantar';
+            if (hour >= 22) return 'j5';
+            if (hour < 6) return 'madrugada';
+            return null;
+        }
+
+        function calculatePeaks(history) {
+            let peaks = {
+                manha: 0,
+                almoco: 0,
+                tarde: 0,
+                jantar: 0,
+                j5: 0,
+                madrugada: 0
+            };
+
+            history.forEach(row => {
+                const time = row.horario.split(' ')[1];
+                const shift = getShift(time);
+                if (shift) {
+                    const activeTotal = row.total || 0;
+                    if (activeTotal > peaks[shift]) {
+                        peaks[shift] = activeTotal;
+                    }
+                }
+            });
+
+            return peaks;
+        }
+
+        function updateChart(history) {
+            const ctx = document.getElementById('mainChart').getContext('2d');
+            
+            const labels = history.map(row => row.horario.split(' ')[1]);
+            const dataWorking = history.map(row => row.trabalhando);
+            const dataOffline = history.map(row => row.offline);
+            const dataPaused = history.map(row => row.em_pausa);
+            const dataBlocked = history.map(row => row.bloqueados);
+            const dataAvailable = history.map(row => row.disponiveis);
+            const dataTotal = history.map(row => row.total);
+
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            // Gradient for Working line
+            const gradWorking = ctx.createLinearGradient(0, 0, 0, 400);
+            gradWorking.addColorStop(0, 'rgba(29, 185, 84, 0.6)');
+            gradWorking.addColorStop(0.5, 'rgba(29, 185, 84, 0.2)');
+            gradWorking.addColorStop(1, 'rgba(29, 185, 84, 0.0)');
+
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Trabalhando',
+                            data: dataWorking,
+                            borderColor: '#1DB954',
+                            backgroundColor: gradWorking,
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.45,
+                            pointRadius: 0,
+                            pointHitRadius: 20
+                        },
+                        {
+                            label: 'Disponíveis',
+                            data: dataAvailable,
+                            borderColor: '#2C67EA',
+                            backgroundColor: 'rgba(44, 103, 234, 0.4)',
+                            borderWidth: 2,
+                            fill: false,
+                            tension: 0.4,
+                            pointRadius: 0
+                        },
+                        {
+                            label: 'Em Pausa',
+                            data: dataPaused,
+                            borderColor: '#FFB800',
+                            backgroundColor: 'rgba(255, 184, 0, 0.4)',
+                            borderWidth: 2,
+                            fill: false,
+                            tension: 0.4,
+                            pointRadius: 0
+                        },
+                        {
+                            label: 'Offline',
+                            data: dataOffline,
+                            borderColor: '#FF5050',
+                            backgroundColor: 'rgba(255, 80, 80, 0.4)',
+                            borderWidth: 2,
+                            fill: false,
+                            tension: 0.4,
+                            pointRadius: 0
+                        },
+                        {
+                            label: 'Inativos',
+                            data: dataBlocked,
+                            borderColor: '#A855F7',
+                            backgroundColor: 'rgba(168, 85, 247, 0.4)',
+                            borderWidth: 2,
+                            fill: false,
+                            tension: 0.4,
+                            pointRadius: 0
+                        },
+                        {
+                            label: 'Total Drivers',
+                            data: dataTotal,
+                            borderColor: 'rgba(255, 184, 0, 0.6)',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            fill: false,
+                            tension: 0.4,
+                            pointRadius: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    onClick: (e, activeElements, chart) => {
+                        let idx = -1;
+                        if (activeElements && activeElements.length > 0) {
+                            idx = activeElements[0].index;
+                        } else if (e && e.x !== undefined) {
+                            const dataX = chart.scales.x.getValueForPixel(e.x);
+                            if (dataX != null && dataX >= 0 && dataX < chart.data.labels.length) {
+                                idx = Math.round(dataX);
+                            }
+                        }
+                        
+                        if (idx < 0 || idx >= chart.data.labels.length) return;
+                        
+                        const timeStr = chart.data.labels[idx]; // Extracts HH:MM:SS
+                        
+                        const praca = pracaNames[currentIndex];
+                        const pracaKey = (praca || "").toUpperCase();
+                        let escalas = escalasDataByPraca[pracaKey] || [];
+                        
+                        if (currentSubpraca) {
+                            escalas = escalas.filter(esc => esc.subpraca === currentSubpraca);
+                        }
+                        
+                        const shiftKey = getShift(timeStr);
+                        if (!shiftKey) return;
+                        
+                        // format to HH:MM to remove seconds if present
+                        const cleanTime = timeStr.substring(0, 5); 
+                        let shiftLabel = cleanTime + 'h';
+                        if (shiftKey === 'manha') shiftLabel = 'Manhã (' + cleanTime + 'h)';
+                        if (shiftKey === 'almoco') shiftLabel = 'Almoço (' + cleanTime + 'h)';
+                        if (shiftKey === 'tarde') shiftLabel = 'Tarde (' + cleanTime + 'h)';
+                        if (shiftKey === 'jantar') shiftLabel = 'Jantar (' + cleanTime + 'h)';
+                        if (shiftKey === 'j5') shiftLabel = 'J5 (' + cleanTime + 'h)';
+                        if (shiftKey === 'madrugada') shiftLabel = 'Madruga (' + cleanTime + 'h)';
+                        
+                        updateEscalasTable(praca, escalas, shiftKey, shiftLabel, cleanTime);
+
+                        // Update Status Cards
+                        const workingVal = chart.data.datasets[0].data[idx] || 0;
+                        const availableVal = chart.data.datasets[1].data[idx] || 0;
+                        const pausedVal = chart.data.datasets[2].data[idx] || 0;
+                        const offlineVal = chart.data.datasets[3].data[idx] || 0;
+                        const blockedVal = chart.data.datasets[4].data[idx] || 0;
+                        const totalVal = chart.data.datasets[5].data[idx] || 0;
+
+                        const calcPct = (val) => totalVal > 0 ? (val / totalVal * 100).toFixed(2) + '%' : '0.00%';
+
+                        const elWorking = document.getElementById('ui-val-working'); if(elWorking) elWorking.innerText = workingVal;
+                        const elPctWorking = document.getElementById('ui-pct-working'); if(elPctWorking) elPctWorking.innerText = calcPct(workingVal);
+                        
+                        const elOffline = document.getElementById('ui-val-offline'); if(elOffline) elOffline.innerText = offlineVal;
+                        const elPctOffline = document.getElementById('ui-pct-offline'); if(elPctOffline) elPctOffline.innerText = calcPct(offlineVal);
+                        
+                        const elPaused = document.getElementById('ui-val-paused'); if(elPaused) elPaused.innerText = pausedVal;
+                        const elPctPaused = document.getElementById('ui-pct-paused'); if(elPctPaused) elPctPaused.innerText = calcPct(pausedVal);
+                        
+                        const elBlocked = document.getElementById('ui-val-blocked'); if(elBlocked) elBlocked.innerText = blockedVal;
+                        const elPctBlocked = document.getElementById('ui-pct-blocked'); if(elPctBlocked) elPctBlocked.innerText = calcPct(blockedVal);
+                        
+                        const elAvailable = document.getElementById('ui-val-available'); if(elAvailable) elAvailable.innerText = availableVal;
+                        const elPctAvailable = document.getElementById('ui-pct-available'); if(elPctAvailable) elPctAvailable.innerText = calcPct(availableVal);
+                    },
+                    plugins: {
+                        legend: { position: 'top', align: 'end', labels: { font: { family: 'Poppins' } } },
+                        tooltip: {
+                            backgroundColor: 'rgba(0,15,45,0.9)',
+                            titleFont: { size: 14, family: 'Poppins' },
+                            bodyFont: { size: 13, family: 'Plus Jakarta Sans' },
+                            padding: 12,
+                            cornerRadius: 8,
+                            borderColor: 'rgba(255, 184, 0, 0.3)',
+                            borderWidth: 1,
+                            callbacks: {
+                                title: function(context) {
+                                    let title = context[0].label;
+                                    let wEl = document.getElementById('weather-global');
+                                    let wth = wEl ? wEl.innerText : '';
+                                    if (wth && wth.includes('°C')) {
+                                        return [title, wth];
+                                    }
+                                    return title;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            stacked: false,
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { maxTicksLimit: 12 }
+                        },
+                        y: {
+                            stacked: false,
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255,255,255,0.05)' }
+                        }
+                    }
+                }
+            });
+            applyChartFilters();
+        }
+
+        function applyChartFilters() {
+            if (!chartInstance) return;
+            const w = document.getElementById('filter-working');
+            const a = document.getElementById('filter-available');
+            const p = document.getElementById('filter-paused');
+            const o = document.getElementById('filter-offline');
+            const b = document.getElementById('filter-blocked');
+            const t = document.getElementById('filter-total');
+            
+            if (chartInstance.data.datasets[0]) chartInstance.data.datasets[0].hidden = !(w && w.checked);
+            if (chartInstance.data.datasets[1]) chartInstance.data.datasets[1].hidden = !(a && a.checked);
+            if (chartInstance.data.datasets[2]) chartInstance.data.datasets[2].hidden = !(p && p.checked);
+            if (chartInstance.data.datasets[3]) chartInstance.data.datasets[3].hidden = !(o && o.checked);
+            if (chartInstance.data.datasets[4]) chartInstance.data.datasets[4].hidden = !(b && b.checked);
+            if (chartInstance.data.datasets[5]) chartInstance.data.datasets[5].hidden = !(t && t.checked);
+            
+            chartInstance.update();
+        }
+
+        function mapTurnoToShift(turnoStr) {
+            if (!turnoStr) return null;
+            turnoStr = turnoStr.toUpperCase();
+            if (turnoStr.includes('MANHA') || turnoStr.includes('MANHÃ')) return 'manha';
+            if (turnoStr.includes('ALMOÇO') || turnoStr.includes('ALMOCO')) return 'almoco';
+            if (turnoStr.includes('TARDE')) return 'tarde';
+            if (turnoStr.includes('J5')) return 'j5';
+            if (turnoStr.includes('J6') || turnoStr.includes('J7') || turnoStr.includes('JANTAR') || turnoStr.includes('NOITE')) return 'jantar';
+            if (turnoStr.includes('MADRUGADA') || turnoStr.includes('MADRUGA')) return 'madrugada';
+            return null;
+        }
+
+        function updateHeatmap(subHistory) {
+            const container = document.getElementById('heatmapContainer');
+            
+            // Turnos padrao
+            const turnos = ['manha', 'almoco', 'tarde', 'jantar', 'j5', 'madrugada'];
+            const turnosLabels = ['Manhã', 'Almoço', 'Tarde', 'Jantar', 'J5', 'Madruga'];
+
+            let matrix = {};
+            let maxVal = 0;
+
+            subHistory.forEach(r => {
+                const shift = getShift(r.horario.split(' ')[1]);
+                if (!shift) return;
+                
+                if (!matrix[r.subpraca]) {
+                    matrix[r.subpraca] = { manha: 0, almoco: 0, tarde: 0, jantar: 0, j5: 0, madrugada: 0 };
+                    // Extra properties for average calc
+                    matrix[r.subpraca]._s = { manha: 0, almoco: 0, tarde: 0, jantar: 0, j5: 0, madrugada: 0 };
+                    matrix[r.subpraca]._c = { manha: 0, almoco: 0, tarde: 0, jantar: 0, j5: 0, madrugada: 0 };
+                }
+                
+                matrix[r.subpraca]._s[shift] += r.trabalhando;
+                matrix[r.subpraca]._c[shift] += 1;
+            });
+
+            // Convert sums to averages
+            const sortedSubs = Object.keys(matrix).sort();
+            sortedSubs.forEach(sub => {
+                turnos.forEach(t => {
+                    const s = matrix[sub]._s[t];
+                    const c = matrix[sub]._c[t];
+                    const avg = c > 0 ? Math.round(s / c) : 0;
+                    matrix[sub][t] = avg;
+                    if (avg > maxVal) maxVal = avg;
+                });
+            });
+
+            let html = '<div class="hm-table">';
+            
+            // Header
+            html += '<div class="hm-header" style="justify-content: flex-start; padding-left:5px;">Subpraça</div>';
+            turnosLabels.forEach((t, idx) => {
+                html += `<div class="hm-header" style="cursor:pointer; color:var(--primary); text-decoration:underline;" onclick="selectShiftFromHeatmap('${turnos[idx]}', '${t}')" title="Clique para ver a escala deste turno">${t}</div>`;
+            });
+
+            // Rows
+            sortedSubs.forEach(sub => {
+                html += `<div class="hm-row-label" title="${sub}" onclick="selectSubpraca('${sub}')" style="cursor:pointer; text-decoration:underline; color:var(--primary);">${sub}</div>`;
+                turnos.forEach(t => {
+                    const val = matrix[sub][t];
+                    let alpha = 0.05;
+                    if (val > 0 && maxVal > 0) {
+                        alpha = 0.2 + (val / maxVal) * 0.8;
+                    }
+                    const textColor = alpha > 0.6 ? '#000' : '#fff';
+                    const bgColor = `rgba(29, 185, 84, ${alpha})`;
+                    
+                    html += `<div class="hm-cell" style="background-color: ${bgColor}; color: ${textColor};">${val}</div>`;
+                });
+            });
+
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function selectShiftFromHeatmap(shiftKey, shiftLabel) {
+            const pracaName = document.getElementById('ui-praca-name').innerText;
+            const pracaKey = pracaName.toUpperCase();
+            const currentPracaEscalas = escalasDataByPraca[pracaKey] || [];
+            
+            let fullLabel = shiftLabel;
+            if (shiftKey === 'manha') fullLabel = 'Manhã (06h-11h)';
+            else if (shiftKey === 'almoco') fullLabel = 'Almoço (11h-15h)';
+            else if (shiftKey === 'tarde') fullLabel = 'Tarde (15h-18h)';
+            else if (shiftKey === 'jantar') fullLabel = 'Jantar (18h-22h)';
+            else if (shiftKey === 'j5') fullLabel = 'J5 (22h-00h)';
+            else if (shiftKey === 'madrugada') fullLabel = 'Madruga (00h-06h)';
+
+            updateEscalasTable(pracaName, currentPracaEscalas, shiftKey, fullLabel, null);
+            
+            // Scroll to escalas table
+            document.getElementById('leftEscalasContainer').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function updateEscalasTable(praca, pracaEscalas, forceShiftKey = null, forceShiftLabel = null, forceTimeStr = null) {
+            const container = document.getElementById('leftEscalasContainer');
+            
+            let currentShiftKey = 'madrugada';
+            let shiftLabel = 'Madruga (00h-06h)';
+            
+            if (forceShiftKey) {
+                currentShiftKey = forceShiftKey;
+                shiftLabel = forceShiftLabel || currentShiftKey;
+            } else {
+                const nowHour = new Date().getHours();
+                if (nowHour >= 6 && nowHour < 11) { currentShiftKey = 'manha'; shiftLabel = 'Manhã (06h-11h)'; }
+                else if (nowHour >= 11 && nowHour < 15) { currentShiftKey = 'almoco'; shiftLabel = 'Almoço (11h-15h)'; }
+                else if (nowHour >= 15 && nowHour < 18) { currentShiftKey = 'tarde'; shiftLabel = 'Tarde (15h-18h)'; }
+                else if (nowHour >= 18 && nowHour < 22) { currentShiftKey = 'jantar'; shiftLabel = 'Jantar (18h-22h)'; }
+                else if (nowHour >= 22) { currentShiftKey = 'j5'; shiftLabel = 'J5 (22h-00h)'; }
+            }
+            
+            let matrix = {};
+            if (pracaEscalas) {
+                let latestBySub = {};
+                
+                pracaEscalas.forEach(e => {
+                    if (e.subpraca === 'GERAL') return;
+                    const shift = mapTurnoToShift(e.turno);
+                    if (shift !== currentShiftKey) return;
+                    
+                    let modal = e.modal || e.modals || 'Todos';
+                    let rawSubKey = e.subpraca + '|' + modal;
+                    let subKey = rawSubKey;
+                    
+                    for (let existingSub of Object.keys(latestBySub)) {
+                        if (existingSub.toUpperCase() === rawSubKey.toUpperCase()) {
+                            subKey = existingSub;
+                            break;
+                        }
+                    }
+                    
+                    if (forceTimeStr && e.horario_coleta) {
+                        const recTime = e.horario_coleta.includes(' ') ? e.horario_coleta.split(' ')[1].substring(0, 5) : e.horario_coleta.substring(0, 5);
+                        
+                        const [fH, fM] = forceTimeStr.split(':').map(Number);
+                        const [rH, rM] = recTime.split(':').map(Number);
+                        
+                        const fTotal = fH * 60 + fM;
+                        const rTotal = rH * 60 + rM;
+                        
+                        // Handle midnight wrap-around
+                        const diff = Math.min(Math.abs(fTotal - rTotal), 1440 - Math.abs(fTotal - rTotal));
+                        
+                        if (!latestBySub[subKey] || diff < latestBySub[subKey].diff) {
+                            latestBySub[subKey] = { record: e, diff: diff };
+                        }
+                    } else {
+                        latestBySub[subKey] = { record: e, diff: 0 };
+                    }
+                });
+                
+                Object.values(latestBySub).forEach(item => {
+                    const e = item.record;
+                    let modal = e.modal || e.modals || 'Todos';
+                    let rawSubKey = e.subpraca + '|' + modal;
+                    let subKey = rawSubKey;
+                    
+                    for (let existingSub of Object.keys(matrix)) {
+                        if (existingSub.toUpperCase() === rawSubKey.toUpperCase()) {
+                            subKey = existingSub;
+                            break;
+                        }
+                    }
+                    
+                    if (!matrix[subKey]) matrix[subKey] = { subpraca: e.subpraca, modal: modal, logados: 0, slots: 0, pct: '0%' };
+                    matrix[subKey].logados = e.logados;
+                    matrix[subKey].slots = e.slots;
+                    matrix[subKey].pct = e.pct_logados;
+                });
+            }
+
+            const sortedSubs = Object.keys(matrix).sort();
+            
+            let html = `<table class="modern-table">
+                            <thead>
+                                <tr>
+                                    <th colspan="5" style="position: sticky; top: 0; z-index: 3; background-color: rgba(0, 15, 45, 1); padding: 12px; border-bottom: 2px solid var(--primary); color: #fff; font-size: 0.85rem; font-weight: 800; text-transform: uppercase;">
+                                        Escalas - ${shiftLabel}
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th style="text-align:left;">Sub-Praça</th>
+                                    <th>Modal</th>
+                                    <th>Clima</th>
+                                    <th>L/S</th>
+                                    <th>%</th>
+                                </tr>
+                            </thead>
+                            <tbody>`;
+            
+            if (sortedSubs.length === 0) {
+                html += '<tr><td colspan="5" style="color:var(--text-muted); padding:20px;">Nenhum dado...</td></tr>';
+            } else {
+                sortedSubs.forEach(subKey => {
+                    const esc = matrix[subKey];
+                    const sub = esc.subpraca;
+                    const modal = esc.modal;
+                    
+                    let badgeClass = 'badge-modern';
+                    const pctVal = parseFloat(esc.pct.replace('%', ''));
+                    if (!isNaN(pctVal)) {
+                        if (pctVal >= 90) badgeClass += ' badge-green';
+                        else if (pctVal >= 70) badgeClass += ' badge-yellow';
+                        else badgeClass += ' badge-red';
+                    }
+                    
+                    const subId = "wth-" + subKey.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+                    html += `<tr>
+                                <td style="text-align:left; color:var(--primary); cursor:pointer; text-decoration:underline; font-size:0.75rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width: 100px;" onclick="selectSubpraca('${sub}')" title="${sub}">${sub}</td>
+                                <td style="font-size:0.75rem; color:#fff; font-weight:700;">${modal}</td>
+                                <td id="${subId}" style="font-size: 0.75rem; color: #fff;">--</td>
+                                <td>${esc.logados}/${esc.slots}</td>
+                                <td><span class="${badgeClass}">${esc.pct}</span></td>
+                             </tr>`;
+                    
+                    // Trigger async fetch
+                    getWeatherForSubpraca(praca, sub).then(w => {
+                        const el = document.getElementById(subId);
+                        if (el) el.innerText = w;
+                    });
+                });
+            }
+            html += '</tbody></table>';
+            
+            container.innerHTML = html;
+        }
+
+        function showPraca(index) {
+            currentIndex = index;
+            document.getElementById('pracaSelect').value = index;
+
+            const dashboard = document.getElementById('dashboard');
+            dashboard.classList.remove('active'); // fade out
+
+            setTimeout(() => {
+                const praca = pracaNames[index];
+                const pracaKey = (praca || "").toUpperCase();
+                const history = dataByPraca[praca];
+                const escalas = escalasDataByPraca[pracaKey] || [];
+                
+                let mainHist = [];
+                if (currentSubpraca) {
+                    mainHist = history.filter(r => r.subpraca === currentSubpraca);
+                    if (mainHist.length === 0) {
+                        currentSubpraca = null; // Fallback se der erro
+                    }
+                }
+                
+                if (!currentSubpraca) {
+                    mainHist = history.filter(r => r.subpraca === 'GERAL');
+                    if (mainHist.length === 0) {
+                        // Caso nao tenha GERAL (ex: Fortaleza com varias subpracas mas sem root), somar tudo
+                        let grouped = {};
+                        history.forEach(r => {
+                            if (r.subpraca === 'LIVRE') return; // Ignora livres do total geral
+                            if (!grouped[r.horario]) {
+                                grouped[r.horario] = { 
+                                    horario: r.horario, 
+                                    trabalhando: 0, total: 0, offline: 0, em_pausa: 0, 
+                                    bloqueados: 0, disponiveis: 0 
+                                };
+                            }
+                            grouped[r.horario].trabalhando += r.trabalhando || 0;
+                            grouped[r.horario].total += r.total || 0;
+                            grouped[r.horario].offline += r.offline || 0;
+                            grouped[r.horario].em_pausa += r.em_pausa || 0;
+                            grouped[r.horario].bloqueados += r.bloqueados || 0;
+                            grouped[r.horario].disponiveis += r.disponiveis || 0;
+                        });
+                        
+                        mainHist = Object.values(grouped).sort((a, b) => a.horario.localeCompare(b.horario));
+                        
+                        // Se ainda assim for vazio (ex: so tinha Livre), usa o history puro
+                        if (mainHist.length === 0) mainHist = history;
+                    }
+                }
+                
+                const latest = mainHist[mainHist.length - 1]; // Current state
+
+                // Update UI Text
+                if (currentSubpraca) {
+                    document.getElementById('ui-praca-name').innerText = praca + ' - ' + currentSubpraca;
+                } else {
+                    document.getElementById('ui-praca-name').innerText = praca;
+                }
+                
+                document.getElementById('ui-val-working').innerText = latest.trabalhando;
+                document.getElementById('ui-pct-working').innerText = latest.pct_trabalhando;
+                
+                document.getElementById('ui-val-offline').innerText = latest.offline;
+                document.getElementById('ui-pct-offline').innerText = latest.pct_offline;
+                
+                document.getElementById('ui-val-paused').innerText = latest.em_pausa;
+                document.getElementById('ui-pct-paused').innerText = latest.pct_em_pausa;
+                
+                document.getElementById('ui-val-blocked').innerText = latest.bloqueados;
+                document.getElementById('ui-pct-blocked').innerText = latest.pct_bloqueados;
+                
+                document.getElementById('ui-val-available').innerText = latest.disponiveis;
+                document.getElementById('ui-pct-available').innerText = latest.pct_disponiveis;
+
+                // Fetch global weather for chart
+                getWeatherForSubpraca(praca, 'GERAL').then(w => {
+                    const wEl = document.getElementById('weather-global');
+                    if (wEl) wEl.innerText = w;
+                });
+
+                // Calculate Peaks for GERAL
+                const peaks = calculatePeaks(mainHist);
+                if (!window.prevPeaks) window.prevPeaks = {};
+                const prev = window.prevPeaks[praca] || {};
+
+                const updateTicker = (shiftKey, val) => {
+                    const elVals = document.querySelectorAll(`.t-val-${shiftKey}`);
+                    const elTimes = document.querySelectorAll(`.t-time-${shiftKey}`);
+                    if (!elVals.length || !elTimes.length) return;
+                    
+                    elVals.forEach(el => el.innerText = val);
+                    if (val === 0) {
+                        elTimes.forEach(el => el.innerText = '--:--');
+                        return;
+                    }
+                    
+                    const pVal = prev[shiftKey] || val;
+                    let icon = '•';
+                    let color = 'var(--text-muted)';
+                    if (val > pVal) {
+                        icon = '↗'; color = 'var(--st-working)';
+                    } else if (val < pVal) {
+                        icon = '↘'; color = 'var(--st-offline)';
+                    } else if (pVal > 0) {
+                        icon = '=';
+                    }
+                    
+                    elTimes.forEach(el => el.innerHTML = `<span style="color:${color}; font-size:1.1em; font-weight:900;">${icon}</span>`);
+                };
+
+                updateTicker('manha', peaks.manha);
+                updateTicker('almoco', peaks.almoco);
+                updateTicker('tarde', peaks.tarde);
+                updateTicker('jantar', peaks.jantar);
+                updateTicker('j5', peaks.j5);
+                updateTicker('madrugada', peaks.madrugada);
+
+                window.prevPeaks[praca] = peaks;
+
+                // Draw Main Chart
+                updateChart(mainHist);
+
+                // Build Heatmap Matrix Data
+                const subHistory = history.filter(r => r.subpraca !== 'GERAL' && r.subpraca !== praca);
+                updateHeatmap(subHistory);
+
+                // Build Escalas Table Data (Left Panel)
+                updateEscalasTable(praca, escalas);
+                
+                // Atualiza o mapa de calor do leaflet com base na praça
+                updateRealMap(praca);
+
+                // Fade In
+                dashboard.classList.add('active');
+
+                // Reset progress and start
+                currentProgress = 0;
+                manageProgress();
+
+            }, 400); // Wait for fade out
+        }
+
+        function manageProgress() {
+            clearInterval(progressInterval);
+            clearTimeout(slideTimeout);
+            
+            if (!isPlaying) {
+                document.getElementById('progressBar').style.width = '100%';
+                document.getElementById('progressBar').style.backgroundColor = 'var(--text-muted)';
+                return;
+            }
+
+            document.getElementById('progressBar').style.backgroundColor = 'var(--primary)';
+
+            progressInterval = setInterval(() => {
+                currentProgress += 50;
+                let percent = (currentProgress / SLIDE_DURATION) * 100;
+                if (percent > 100) percent = 100;
+                document.getElementById('progressBar').style.width = percent + '%';
+                
+                const container = document.getElementById('leftEscalasContainer');
+                if (container) {
+                    const maxScroll = container.scrollHeight - container.clientHeight;
+                    if (maxScroll > 0) {
+                        // Fica parado 3 segundos no topo, 3 segundos no final. Scrolla lentamente no meio.
+                        const startScrollTime = 3000;
+                        const endScrollTime = SLIDE_DURATION - 3000;
+                        let scrollPercent = 0;
+                        
+                        if (currentProgress > startScrollTime && currentProgress < endScrollTime) {
+                            scrollPercent = (currentProgress - startScrollTime) / (endScrollTime - startScrollTime);
+                        } else if (currentProgress >= endScrollTime) {
+                            scrollPercent = 1;
+                        }
+                        
+                        container.scrollTo({
+                            top: scrollPercent * maxScroll,
+                            behavior: 'auto'
+                        });
+                    }
+                }
+
+                // Removing manual ticker JS since we use CSS infinite scroll
+                
+                if (currentProgress >= SLIDE_DURATION) {
+                    clearInterval(progressInterval);
+                    currentSubpraca = null; // Clear when auto-advancing
+                    let nextIndex = (currentIndex + 1) % pracaNames.length;
+                    if (nextIndex === 0) {
+                        // Refetch data from DB when loop completes
+                        initDashboard(); 
+                    } else {
+                        showPraca(nextIndex);
+                    }
+                }
+            }, 50);
+        }
+
+        function togglePlayPause() {
+            isPlaying = !isPlaying;
+            const btn = document.getElementById('playPauseBtn');
+            if (isPlaying) {
+                btn.innerText = '⏸ Pausar';
+                btn.style.background = 'rgba(255, 184, 0, 0.1)';
+                btn.style.color = 'var(--primary)';
+                manageProgress();
+            } else {
+                btn.innerText = '▶️ Retomar';
+                btn.style.background = 'var(--primary)';
+                btn.style.color = '#000';
+                manageProgress();
+            }
+        }
+
+        function manualSelectPraca(indexStr) {
+            if(indexStr === '') return;
+            // Force pause when manually selecting
+            isPlaying = false;
+            currentSubpraca = null; // Clear subpraca selection
+            const btn = document.getElementById('playPauseBtn');
+            btn.innerText = '▶️ Retomar';
+            btn.style.background = 'var(--primary)';
+            btn.style.color = '#000';
+            
+            showPraca(parseInt(indexStr));
+        }
+
+        function selectSubpraca(subName) {
+            currentSubpraca = subName;
+            isPlaying = false;
+            const btn = document.getElementById('playPauseBtn');
+            btn.innerText = '▶️ Retomar';
+            btn.style.background = 'var(--primary)';
+            btn.style.color = '#000';
+            showPraca(currentIndex);
+        }
+
+        function manualSelectDate(dateStr) {
+            if(!dateStr) return;
+            clearInterval(progressInterval);
+            clearTimeout(slideTimeout);
+            initDashboard(dateStr);
+        }
+
+        // ================= MAP FLOATING CONTROLS =================
+        function toggleMapLayer(layerType) {
+            if(!realMap) return;
+            
+            if(layerType === 'heat') {
+                const isChecked = document.getElementById('toggleHeat').checked;
+                if(isChecked && heatLayer) {
+                    if(!realMap.hasLayer(heatLayer)) realMap.addLayer(heatLayer);
+                } else if (!isChecked && heatLayer) {
+                    if(realMap.hasLayer(heatLayer)) realMap.removeLayer(heatLayer);
+                }
+            }
+            
+            if(layerType === 'zones') {
+                const isChecked = document.getElementById('toggleZones').checked;
+                if(isChecked && polygonGroup) {
+                    if(!realMap.hasLayer(polygonGroup)) realMap.addLayer(polygonGroup);
+                } else if (!isChecked && polygonGroup) {
+                    if(realMap.hasLayer(polygonGroup)) realMap.removeLayer(polygonGroup);
+                }
+            }
+        }
+
+        // ================= AUTHENTICATION =================
+        window.addEventListener('load', async function() {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (session) {
+                document.getElementById('login-container').style.display = 'none';
+                document.getElementById('main-ui-header').style.display = 'flex';
+                document.getElementById('main-ui-ticker').style.display = 'flex';
+                document.getElementById('main-ui-progress').style.display = 'block';
+                document.getElementById('dashboard').style.display = 'grid';
+                initDashboard();
+            } else {
+                document.getElementById('login-container').style.display = 'flex';
+                document.getElementById('loader').style.display = 'none';
+            }
+        });
+
+        async function fazerLogin() {
+            var usr = document.getElementById('loginUser').value;
+            var pwd = document.getElementById('loginPass').value;
+            if (!usr || !pwd) { alert('Preencha usuário e senha!'); return; }
+            document.getElementById('btnEntrar').disabled = true;
+            document.getElementById('txtBtn').innerText = 'Sincronizando...';
+            
+            const { data, error } = await supabaseClient.auth.signInWithPassword({
+                email: usr,
+                password: pwd,
+            });
+
+            if (error) {
+                document.getElementById('btnEntrar').disabled = false;
+                document.getElementById('txtBtn').innerText = 'Entrar';
+                alert('Erro: ' + error.message);
+            } else {
+                document.getElementById('login-container').style.display = 'none';
+                document.getElementById('main-ui-header').style.display = 'flex';
+                document.getElementById('main-ui-ticker').style.display = 'flex';
+                document.getElementById('main-ui-progress').style.display = 'block';
+                document.getElementById('dashboard').style.display = 'grid';
+                initDashboard();
+            }
+        }
+    </script>
+</body>
+</html>
