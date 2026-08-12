@@ -1,16 +1,15 @@
 {
-  "rewrites": [
-    { "source": "/", "destination": "/index.html" }
+  "version": 2,
+  "builds": [
+    { "src": "api/escalas.py", "use": "@vercel/python", "config": { "maxDuration": 60 } },
+    { "src": "api/metricas_coleta.py", "use": "@vercel/python", "config": { "maxDuration": 60 } },
+    { "src": "api/pedidos.py", "use": "@vercel/python", "config": { "maxDuration": 60 } },
+    { "src": "**", "use": "@vercel/static" }
   ],
-  "functions": {
-    "api/metricas_coleta.py": {
-      "maxDuration": 60
-    },
-    "api/escalas.py": {
-      "maxDuration": 60
-    },
-    "api/pedidos.py": {
-      "maxDuration": 60
-    }
-  }
+  "routes": [
+    { "src": "/api/escalas", "dest": "api/escalas.py" },
+    { "src": "/api/metricas_coleta", "dest": "api/metricas_coleta.py" },
+    { "src": "/api/pedidos", "dest": "api/pedidos.py" },
+    { "src": "/(.*)", "dest": "/$1" }
+  ]
 }
