@@ -1,6 +1,9 @@
 {
+  "rewrites": [
+    { "source": "/", "destination": "/index.html" }
+  ],
   "functions": {
-    "api/index.py": {
+    "api/metricas_coleta.py": {
       "maxDuration": 60
     },
     "api/escalas.py": {
