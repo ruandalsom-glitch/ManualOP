@@ -1538,14 +1538,14 @@
                 }
                 
                 const escalasPromises = [];
-                for (let i = 0; i < 3; i++) {
+                for (let i = 0; i < 6; i++) {
                     const rangeStart = i * (step + 1);
                     escalasPromises.push(
                         supabaseClient
                             .from('frota_escalas')
                             .select('*')
                             .eq('data', selectedDateStr)
-                            .order('horario_coleta', { ascending: true })
+                            .order('horario_coleta', { ascending: false })
                             .range(rangeStart, rangeStart + step)
                     );
                 }
