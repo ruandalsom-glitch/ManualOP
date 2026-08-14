@@ -1433,13 +1433,21 @@
             drawPolygonsGroup(polyPracaName);
             layerControl.addOverlay(polygonGroup, "Limites das Sub-Praças");
             
-            // Filtra os pontos do heatmap com precisão cirúrgica (Ray-Casting Point-in-Polygon)
+            // Determina os limites geográficos para enquadrar o mapa (fitBounds)
+            let bounds = polygonGroup.getLayers().length > 0 ? polygonGroup.getBounds() : null;
+
+            // Filtra os pontos do heatmap com precisão cirúrgica (Point-in-Polygon)
             const filteredPoints = heatmapPoints.filter(p => {
                 if (!p.origin_lat || !p.origin_lng) return false;
                 const lat = parseFloat(p.origin_lat);
                 const lng = parseFloat(p.origin_lng);
                 
                 if (activePolygonCoords.length === 0) return true;
+                
+                // Pré-filtro rápido pela bounding box para performance
+                if (bounds && !bounds.contains(L.latLng(lat, lng))) return false;
+                
+                // Checagem exata se está dentro do polígono desenhado
                 return activePolygonCoords.some(poly => isPointInPoly(lat, lng, poly));
             }); 
             
