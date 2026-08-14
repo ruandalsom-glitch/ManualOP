@@ -1547,9 +1547,9 @@
                     );
                 }
                 
-                // Pedidos heatmap promises (até ~3000 pedidos mais recentes do dia)
+                // Pedidos heatmap promises (até ~6000 pedidos mais recentes do dia D0)
                 const pedidosPromises = [];
-                for (let i = 0; i < 3; i++) {
+                for (let i = 0; i < 6; i++) {
                     const rangeStart = i * (step + 1);
                     pedidosPromises.push(
                         supabaseClient

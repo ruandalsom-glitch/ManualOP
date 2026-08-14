@@ -365,6 +365,16 @@ class handler(BaseHTTPRequestHandler):
                     "Prefer": "resolution=merge-duplicates"
                 }
                 
+                # MODO D0: Limpar histórico de pedidos de dias anteriores para manter banco leve
+                today_date = now_utc.strftime("%Y-%m-%d")
+                del_old_url = f"{supa_url}/rest/v1/frota_pedidos_heatmap?created_at=lt.{urllib.parse.quote(today_date)}"
+                del_old_req = urllib.request.Request(del_old_url, headers=headers, method="DELETE")
+                try:
+                    with urllib.request.urlopen(del_old_req) as resp:
+                        pass
+                except Exception as edel_old:
+                    pass
+
                 body = json.dumps(todos_registros).encode("utf-8")
                 req = urllib.request.Request(url, headers=headers, data=body, method="POST")
                 with urllib.request.urlopen(req) as resp:
