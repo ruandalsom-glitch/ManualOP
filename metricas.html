@@ -194,9 +194,9 @@
         /* MAIN CONTENT */
         main {
             flex: 1;
-            padding: 24px 40px 40px 40px;
+            padding: 24px 30px 30px 30px;
             display: grid;
-            grid-template-columns: 420px minmax(0, 1fr);
+            grid-template-columns: 500px minmax(0, 1fr);
             gap: 24px;
             opacity: 0;
             transition: opacity 0.5s ease;
@@ -2112,10 +2112,10 @@
                     
                     const subId = "wth-" + subKey.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
                     html += `<tr>
-                                <td style="text-align:left; color:var(--primary); cursor:pointer; text-decoration:underline; font-size:0.75rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width: 100px;" onclick="selectSubpraca('${sub}')" title="${sub}">${sub}</td>
-                                <td style="font-size:0.75rem; color:#fff; font-weight:700;">${modal}</td>
-                                <td id="${subId}" style="font-size: 0.75rem; color: #fff;">--</td>
-                                <td>${esc.logados}/${esc.slots}</td>
+                                <td style="text-align:left; color:var(--primary); cursor:pointer; text-decoration:underline; font-size:0.85rem; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width: 150px;" onclick="selectSubpraca('${sub}')" title="${sub}">${sub}</td>
+                                <td style="font-size:0.85rem; color:#fff; font-weight:700;">${modal}</td>
+                                <td id="${subId}" style="font-size: 0.85rem; color: #fff;">--</td>
+                                <td style="font-size:0.85rem; font-weight:800;">${esc.logados}/${esc.slots}</td>
                                 <td><span class="${badgeClass}">${esc.pct}</span></td>
                              </tr>`;
                     
@@ -2129,6 +2129,25 @@
             html += '</tbody></table>';
             
             container.innerHTML = html;
+            startTableAutoScroll();
+        }
+
+        let tableScrollInterval = null;
+        function startTableAutoScroll() {
+            if (tableScrollInterval) clearInterval(tableScrollInterval);
+            const container = document.getElementById('leftEscalasContainer');
+            if (!container) return;
+            container.scrollTop = 0;
+            
+            tableScrollInterval = setInterval(() => {
+                if (container.scrollHeight <= container.clientHeight) return;
+                
+                if (container.scrollTop + container.clientHeight >= container.scrollHeight - 2) {
+                    setTimeout(() => { container.scrollTop = 0; }, 1500);
+                } else {
+                    container.scrollTop += 1;
+                }
+            }, 60);
         }
 
         function showPraca(index) {
@@ -2140,9 +2159,17 @@
 
             setTimeout(() => {
                 const praca = pracaNames[index];
-                const pracaKey = (praca || "").toUpperCase();
+                const normalizeKey = s => s ? s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase().replace(/[^A-Z0-9]/g, '') : '';
+                const normPraca = normalizeKey(praca);
                 const history = dataByPraca[praca];
-                const escalas = escalasDataByPraca[pracaKey] || [];
+                
+                let escalas = [];
+                for (let k in escalasDataByPraca) {
+                    const normK = normalizeKey(k);
+                    if (normK === normPraca || normPraca.includes(normK) || normK.includes(normPraca)) {
+                        escalas = escalas.concat(escalasDataByPraca[k]);
+                    }
+                }
                 
                 let mainHist = [];
                 if (currentSubpraca) {
