@@ -350,16 +350,6 @@ def coletar_regiao(sessao, regiao, horario):
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
-        # ----------------------------------------------------------------------
-        # COLETA DESATIVADA TEMPORARIAMENTE
-        # Para reativar, comente ou apague as 5 linhas abaixo:
-        self.send_response(200)
-        self.send_header('Content-type','application/json')
-        self.end_headers()
-        self.wfile.write(b'{"status": "disabled", "message": "Coleta de metricas desativada temporariamente."}')
-        return
-        # ----------------------------------------------------------------------
-
         if not SUPABASE_URL or not SUPABASE_KEY:
             self.send_response(500)
             self.end_headers()
@@ -435,6 +425,16 @@ class handler(BaseHTTPRequestHandler):
                 url = f"{supa_url}/rest/v1/frota_metricas"
                 headers = {"apikey": SUPABASE_KEY, "Authorization": f"Bearer {SUPABASE_KEY}", "Content-Type": "application/json"}
                 
+                # MODO D0: Limpar histórico de dias anteriores para manter banco leve e Egress nulo
+                today_date = now_br.strftime("%Y-%m-%d")
+                del_old_url = f"{supa_url}/rest/v1/frota_metricas?horario=lt.{urllib.parse.quote(today_date)}"
+                del_old_req = urllib.request.Request(del_old_url, headers=headers, method="DELETE")
+                try:
+                    with urllib.request.urlopen(del_old_req) as resp:
+                        pass
+                except Exception as edel_old:
+                    pass
+
                 # Deletar registros do mesmo horario e regiao para evitar duplicatas (caso a cron-job de retry)
                 regioes_nomes = list(set([r["regiao"] for r in todos_registros]))
                 if regioes_nomes:

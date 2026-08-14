@@ -1492,13 +1492,11 @@
                 document.querySelector('.spinner').style.display = 'block';
                 document.getElementById('loaderText').innerHTML = "Sincronizando banco de dados...";
 
-                // Paginacao para buscar mais de 1000 linhas (limite da API do Supabase)
-                // Paginacao para buscar mais de 1000 linhas (limite da API do Supabase)
-                // Dispara requisições em paralelo fixas (cobrindo até 20000 linhas) para máxima velocidade
+                // Paginacao otimizada para D0 (minimizando Egress no Supabase)
                 const step = 999;
                 
                 const metricasPromises = [];
-                for (let i = 0; i < 20; i++) {
+                for (let i = 0; i < 2; i++) {
                     const rangeStart = i * (step + 1);
                     metricasPromises.push(
                         supabaseClient
@@ -1511,7 +1509,7 @@
                 }
                 
                 const escalasPromises = [];
-                for (let i = 0; i < 50; i++) {
+                for (let i = 0; i < 3; i++) {
                     const rangeStart = i * (step + 1);
                     escalasPromises.push(
                         supabaseClient
@@ -1523,9 +1521,9 @@
                     );
                 }
                 
-                // Pedidos heatmap promises (até ~15000 pedidos, os ultimos de hj)
+                // Pedidos heatmap promises (até ~3000 pedidos do dia)
                 const pedidosPromises = [];
-                for (let i = 0; i < 15; i++) {
+                for (let i = 0; i < 3; i++) {
                     const rangeStart = i * (step + 1);
                     pedidosPromises.push(
                         supabaseClient
