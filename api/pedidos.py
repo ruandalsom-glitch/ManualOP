@@ -310,10 +310,15 @@ class handler(BaseHTTPRequestHandler):
             sessao_erros = []
             
             def processar_pedido(r):
-                order_id = r.get("orderId")
+                order_id = r.get("orderId") or r.get("id")
                 if not order_id: return None
                 try:
-                    # Removemos o sleep abusivo para caber no limite serverless (15s a 30s)
+                    # Tenta extrair primeiro do objeto da lista para evitar chamadas extras de detalhe
+                    campos = extrair_campos_heatmap(r)
+                    if campos.get("origin_lat") and campos.get("origin_lng"):
+                        return campos
+                    
+                    # Se não tiver coordenadas na listagem, busca o detalhe do pedido
                     detalhe = sessao.buscar_detalhe(order_id)
                     return extrair_campos_heatmap(detalhe)
                 except Exception as e:
