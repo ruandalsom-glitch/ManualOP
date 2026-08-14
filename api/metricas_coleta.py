@@ -438,7 +438,6 @@ class handler(BaseHTTPRequestHandler):
                 # Deletar registros do mesmo horario e regiao para evitar duplicatas (caso a cron-job de retry)
                 regioes_nomes = list(set([r["regiao"] for r in todos_registros]))
                 if regioes_nomes:
-                    import urllib.parse
                     regioes_param = ",".join([urllib.parse.quote(f'"{n}"') for n in regioes_nomes])
                     del_url = f"{supa_url}/rest/v1/frota_metricas?horario=eq.{urllib.parse.quote(horario)}&regiao=in.({regioes_param})"
                     del_req = urllib.request.Request(del_url, headers=headers, method="DELETE")
