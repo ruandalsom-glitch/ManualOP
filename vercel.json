@@ -10,6 +10,7 @@
     { "src": "/api/escalas", "dest": "api/escalas.py" },
     { "src": "/api/metricas_coleta", "dest": "api/metricas_coleta.py" },
     { "src": "/api/pedidos", "dest": "api/pedidos.py" },
+    { "src": "/api", "dest": "api/metricas_coleta.py" },
     { "src": "/(.*)", "dest": "/$1" }
   ]
 }
