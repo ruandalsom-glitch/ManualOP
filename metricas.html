@@ -212,6 +212,7 @@
             display: flex;
             flex-direction: column;
             gap: 18px;
+            height: 100%;
         }
 
         .praca-header {
@@ -551,8 +552,9 @@
         /* MODERN ESCALAS TABLE (LEFT PANEL) */
         .modern-table-container {
             width: 100%;
-            max-height: 450px;
-            flex: none;
+            flex: 1;
+            min-height: 400px;
+            max-height: calc(100vh - 240px);
             display: flex;
             flex-direction: column;
             overflow-y: auto;
@@ -561,7 +563,7 @@
             border: 1px solid var(--border-color);
             border-radius: 12px;
             backdrop-filter: blur(10px);
-            margin-top: 15px;
+            margin-top: 5px;
         }
         .modern-table-container::-webkit-scrollbar { width: 4px; }
         .modern-table-container::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
@@ -2144,21 +2146,34 @@
         }
 
         let tableScrollInterval = null;
+        let isTableAutoScrollingPaused = false;
+
         function startTableAutoScroll() {
             if (tableScrollInterval) clearInterval(tableScrollInterval);
             const container = document.getElementById('leftEscalasContainer');
             if (!container) return;
             container.scrollTop = 0;
+            isTableAutoScrollingPaused = false;
             
             tableScrollInterval = setInterval(() => {
-                if (container.scrollHeight <= container.clientHeight) return;
+                const container = document.getElementById('leftEscalasContainer');
+                if (!container || isTableAutoScrollingPaused) return;
                 
-                if (container.scrollTop + container.clientHeight >= container.scrollHeight - 2) {
-                    setTimeout(() => { container.scrollTop = 0; }, 1500);
+                const maxScroll = container.scrollHeight - container.clientHeight;
+                if (maxScroll <= 5) return;
+                
+                if (container.scrollTop >= maxScroll - 2) {
+                    isTableAutoScrollingPaused = true;
+                    setTimeout(() => {
+                        if (container) container.scrollTop = 0;
+                        setTimeout(() => {
+                            isTableAutoScrollingPaused = false;
+                        }, 1200);
+                    }, 2500);
                 } else {
                     container.scrollTop += 1;
                 }
-            }, 60);
+            }, 50);
         }
 
         function showPraca(index) {
