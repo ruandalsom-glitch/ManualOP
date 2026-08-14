@@ -1227,7 +1227,22 @@
             return { lat: -23.5505, lng: -46.6333 }; // Default SP
         }
         
+        let activePolygonCoords = [];
+
+        function isPointInPoly(lat, lng, poly) {
+            let x = lat, y = lng;
+            let inside = false;
+            for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+                let xi = poly[i][0], yi = poly[i][1];
+                let xj = poly[j][0], yj = poly[j][1];
+                let intersect = ((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+                if (intersect) inside = !inside;
+            }
+            return inside;
+        }
+
         function drawPolygonsGroup(pracaName) {
+            activePolygonCoords = [];
             let upPraca = (pracaName || '').toUpperCase().trim();
             const normalize = s => s ? s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase().replace(/[^A-Z0-9]/g, '') : '';
             const normPraca = normalize(upPraca);
@@ -1258,6 +1273,7 @@
                         let polys = KML_POLYGONS[k];
                         polys.forEach(poly => {
                             if (poly.length > 2) {
+                                activePolygonCoords.push(poly);
                                 L.polygon(poly, {
                                     color: '#00E676', // Menta/Verde diferenciado para Áreas Livre
                                     weight: 2,
@@ -1293,6 +1309,7 @@
                         let polys = KML_POLYGONS[k];
                         polys.forEach(poly => {
                             if (poly.length > 2) {
+                                activePolygonCoords.push(poly);
                                 L.polygon(poly, {
                                     color: '#2CEABC', // Menta Viva brilhante padrão
                                     weight: 2,
@@ -1416,20 +1433,15 @@
             drawPolygonsGroup(polyPracaName);
             layerControl.addOverlay(polygonGroup, "Limites das Sub-Praças");
             
-            // Determina os limites geográficos para filtrar os pontos
-            let bounds = null;
-            if (polygonGroup.getLayers().length > 0) {
-                bounds = polygonGroup.getBounds().pad(0.1); // Adiciona 10% de margem
-            }
-            
-            // Filtra os pontos do heatmap com base no perímetro geográfico da praça/região
+            // Filtra os pontos do heatmap com precisão cirúrgica (Ray-Casting Point-in-Polygon)
             const filteredPoints = heatmapPoints.filter(p => {
                 if (!p.origin_lat || !p.origin_lng) return false;
-                if (!bounds) return true; // Se não tem polígono, mostra tudo
+                const lat = parseFloat(p.origin_lat);
+                const lng = parseFloat(p.origin_lng);
                 
-                const latLng = L.latLng(parseFloat(p.origin_lat), parseFloat(p.origin_lng));
-                return bounds.contains(latLng);
-            });
+                if (activePolygonCoords.length === 0) return true;
+                return activePolygonCoords.some(poly => isPointInPoly(lat, lng, poly));
+            }); 
             
             console.log(`Plotting ${filteredPoints.length} heatmap points for ${pracaName}.`);
             
