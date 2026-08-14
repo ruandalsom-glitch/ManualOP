@@ -1914,6 +1914,7 @@
 
         function updateHeatmap(subHistory) {
             const container = document.getElementById('heatmapContainer');
+            if (!container) return;
             
             // Turnos padrao
             const turnos = ['manha', 'almoco', 'tarde', 'jantar', 'j5', 'madrugada'];
