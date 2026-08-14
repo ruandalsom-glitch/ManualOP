@@ -1422,18 +1422,9 @@
                 bounds = polygonGroup.getBounds().pad(0.1); // Adiciona 10% de margem
             }
             
-            // Filtra os pontos do heatmap
+            // Filtra os pontos do heatmap com base no perímetro geográfico da praça/região
             const filteredPoints = heatmapPoints.filter(p => {
                 if (!p.origin_lat || !p.origin_lng) return false;
-                
-                // Filtro exclusivo para SP DEDICADO
-                if (normalizePraca === 'SP DEDICADO' || normalizePraca === 'SP DEDICADOS') {
-                    if (!p.origin_name) return false;
-                    let normStore = p.origin_name.toUpperCase().trim().replace(/\s+/g, ' ');
-                    let isDedicado = SP_DEDICADO_STORES.some(s => normStore.includes(s) || s.includes(normStore));
-                    if (!isDedicado) return false;
-                }
-                
                 if (!bounds) return true; // Se não tem polígono, mostra tudo
                 
                 const latLng = L.latLng(parseFloat(p.origin_lat), parseFloat(p.origin_lng));
