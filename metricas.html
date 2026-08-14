@@ -1232,13 +1232,26 @@
             const normalize = s => s ? s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase().replace(/[^A-Z0-9]/g, '') : '';
             const normPraca = normalize(upPraca);
             
+            const isRioUnificado = normPraca.includes('RJ') || normPraca.includes('RIO');
+            const isSpDedicado = normPraca.includes('SPDEDICADO') || normPraca.includes('SPDEDICADOS') || normPraca === 'SAOPAULO';
+
             if (typeof KML_POLYGONS !== 'undefined') {
-                // Primeira camada: Áreas LIVRE (por baixo, cor diferenciada)
+                // Primeira camada: Áreas LIVRE (por baixo, cor Menta/Verde com tom diferenciado e perímetro pontilhado)
                 for(let k in KML_POLYGONS) {
                     let parts = k.split('|');
                     let kPraca = parts.length > 1 ? parts[0] : '';
                     let normKPraca = normalize(kPraca);
-                    if (normKPraca && (normKPraca.includes(normPraca) || normPraca.includes(normKPraca))) {
+
+                    let isMatch = false;
+                    if (isRioUnificado && (normPraca.includes('DEDICADO') || normPraca.includes('UNIFICADO') || normPraca === 'RIO' || normPraca === 'RIODEJANEIRO' || normPraca === 'RJ')) {
+                        isMatch = normKPraca.includes('RIO') || normKPraca.includes('MADUREIRA') || normKPraca.includes('CAMPOGRANDE') || normKPraca.includes('NITEROI') || normKPraca.includes('APPMIGRADO');
+                    } else if (isSpDedicado) {
+                        isMatch = normKPraca.includes('SAOPAULO') || normKPraca.includes('SP');
+                    } else {
+                        isMatch = normKPraca && (normKPraca.includes(normPraca) || normPraca.includes(normKPraca));
+                    }
+
+                    if (isMatch) {
                         let isLivre = normalize(k).includes('LIVRE');
                         if (!isLivre) continue;
                         
@@ -1246,10 +1259,11 @@
                         polys.forEach(poly => {
                             if (poly.length > 2) {
                                 L.polygon(poly, {
-                                    color: '#FFB800', // Amarelo EntreGô para identificar Livre
+                                    color: '#00E676', // Menta/Verde diferenciado para Áreas Livre
                                     weight: 2,
+                                    dashArray: '5, 5', // Estilo de perímetro diferenciado (pontilhado)
                                     fillOpacity: 0.04,
-                                    fillColor: '#FFB800',
+                                    fillColor: '#00E676',
                                     interactive: false
                                 }).addTo(polygonGroup);
                             }
@@ -1257,12 +1271,22 @@
                     }
                 }
                 
-                // Segunda camada: Sub-praças normais (por cima, cor verde padrão)
+                // Segunda camada: Sub-praças normais (por cima, Verde Menta contínuo)
                 for(let k in KML_POLYGONS) {
                     let parts = k.split('|');
                     let kPraca = parts.length > 1 ? parts[0] : '';
                     let normKPraca = normalize(kPraca);
-                    if (normKPraca && (normKPraca.includes(normPraca) || normPraca.includes(normKPraca))) {
+
+                    let isMatch = false;
+                    if (isRioUnificado && (normPraca.includes('DEDICADO') || normPraca.includes('UNIFICADO') || normPraca === 'RIO' || normPraca === 'RIODEJANEIRO' || normPraca === 'RJ')) {
+                        isMatch = normKPraca.includes('RIO') || normKPraca.includes('MADUREIRA') || normKPraca.includes('CAMPOGRANDE') || normKPraca.includes('NITEROI') || normKPraca.includes('APPMIGRADO');
+                    } else if (isSpDedicado) {
+                        isMatch = normKPraca.includes('SAOPAULO') || normKPraca.includes('SP');
+                    } else {
+                        isMatch = normKPraca && (normKPraca.includes(normPraca) || normPraca.includes(normKPraca));
+                    }
+
+                    if (isMatch) {
                         let isLivre = normalize(k).includes('LIVRE');
                         if (isLivre) continue;
                         
@@ -1270,9 +1294,9 @@
                         polys.forEach(poly => {
                             if (poly.length > 2) {
                                 L.polygon(poly, {
-                                    color: '#1DB954', // Verde padrão
+                                    color: '#2CEABC', // Menta Viva brilhante padrão
                                     weight: 2,
-                                    fillOpacity: 0.06,
+                                    fillOpacity: 0.08,
                                     fillColor: '#1DB954',
                                     interactive: false
                                 }).addTo(polygonGroup);
@@ -1378,10 +1402,12 @@
             let upPraca = (pracaName || '').toUpperCase().trim();
             let normalizePraca = upPraca.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
             
-            // Se a praça selecionada for SP DEDICADO, devemos renderizar os polígonos de SÃO PAULO
+            // Mapeamento especial de polígonos para SP-DEDICADO e RJ-DEDICADO
             let polyPracaName = pracaName;
-            if (normalizePraca === 'SP DEDICADO' || normalizePraca === 'SP DEDICADOS') {
+            if (normalizePraca.includes('SP') && normalizePraca.includes('DEDICADO')) {
                 polyPracaName = 'SÃO PAULO';
+            } else if ((normalizePraca.includes('RJ') || normalizePraca.includes('RIO')) && normalizePraca.includes('DEDICADO')) {
+                polyPracaName = 'RIO DE JANEIRO';
             }
             
             // Atualiza polígonos PRIMEIRO para pegar as margens (bounds)
@@ -1521,15 +1547,16 @@
                     );
                 }
                 
-                // Pedidos heatmap promises (até ~3000 pedidos do dia)
+                // Pedidos heatmap promises (até ~3000 pedidos mais recentes do dia)
                 const pedidosPromises = [];
                 for (let i = 0; i < 3; i++) {
                     const rangeStart = i * (step + 1);
                     pedidosPromises.push(
                         supabaseClient
                             .from('frota_pedidos_heatmap')
-                            .select('origin_lat, origin_lng')
+                            .select('origin_lat, origin_lng, origin_name, created_at')
                             .like('created_at', `${selectedDateStr}%`)
+                            .order('created_at', { ascending: false })
                             .range(rangeStart, rangeStart + step)
                     );
                 }
