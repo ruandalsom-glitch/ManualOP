@@ -1398,6 +1398,7 @@
                 var borderColor = isOpen ? 'rgba(44,234,188,0.38)' : 'rgba(234,44,85,0.38)';
                 var textColor = isOpen ? 'var(--menta-viva)' : '#FFA7A7';
                 var statusText = isOpen ? 'ABERTO' : 'FECHADO';
+                var subName = item.Subpraca || '-';
                 return `
                     <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.03); padding:10px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.05);">
                         <span style="font-weight:600; font-size:14px;">${subName}</span>
