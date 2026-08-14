@@ -551,8 +551,8 @@
         /* MODERN ESCALAS TABLE (LEFT PANEL) */
         .modern-table-container {
             width: 100%;
-            max-height: 450px;
-            flex: none;
+            flex: 1;
+            min-height: 0;
             display: flex;
             flex-direction: column;
             overflow-y: auto;
@@ -574,32 +574,33 @@
         .modern-table th {
             background-color: rgba(0, 15, 45, 0.95);
             color: var(--primary);
-            padding: 10px;
-            font-size: 0.7rem;
+            padding: 12px 10px;
+            font-size: 0.85rem;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
             position: sticky;
-            top: 41px;
+            top: 0;
             z-index: 2;
             border-bottom: 2px solid var(--primary);
             text-align: center;
         }
         .modern-table td {
-            padding: 8px 10px;
+            padding: 11px 12px;
             text-align: center;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #eee;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #fff;
         }
         .modern-table tr:nth-child(even) td { background-color: rgba(255,255,255,0.02); }
-        .modern-table tr:hover td { background-color: rgba(44, 234, 188, 0.05); }
+        .modern-table tr:hover td { background-color: rgba(44, 234, 188, 0.08); }
         
         .badge-modern {
             display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
+            padding: 5px 10px;
+            border-radius: 6px;
             font-weight: 800;
-            font-size: 0.75rem;
+            font-size: 0.85rem;
             color: #000;
         }
         .badge-green { background-color: #A5D6A7; }
@@ -994,15 +995,6 @@
                         </div>
                         <div class="chart-wrapper">
                             <canvas id="mainChart"></canvas>
-                        </div>
-                    </div>
-                    
-                    <div class="chart-container" style="flex:0.8;">
-                        <div class="chart-header">
-                            <div class="chart-title">Tabela de Média (Trabalhando x Turno)</div>
-                        </div>
-                        <div class="chart-wrapper">
-                            <div class="heatmap-container" id="heatmapContainer"></div>
                         </div>
                     </div>
                 </div>
