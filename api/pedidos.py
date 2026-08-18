@@ -139,18 +139,34 @@ class Sessao:
         supa_url = SUPABASE_URL.rstrip('/') if SUPABASE_URL else ""
         if not supa_url or not SUPABASE_KEY: return
         try:
-            url = f"{supa_url}/rest/v1/frota_tokens"
-            headers = {
+            # Tenta PATCH primeiro (update)
+            url_patch = f"{supa_url}/rest/v1/frota_tokens?email=eq.{urllib.parse.quote(self.email)}"
+            headers_patch = {
                 "apikey": SUPABASE_KEY, 
                 "Authorization": f"Bearer {SUPABASE_KEY}", 
                 "Content-Type": "application/json",
-                "Prefer": "resolution=merge-duplicates"
+                "Prefer": "return=representation"
             }
-            body = json.dumps({"email": self.email, "jwt": jwt}).encode("utf-8")
-            req = urllib.request.Request(url, headers=headers, data=body, method="POST")
-            with urllib.request.urlopen(req, timeout=15) as resp:
+            body = json.dumps({"jwt": jwt}).encode("utf-8")
+            req_patch = urllib.request.Request(url_patch, headers=headers_patch, data=body, method="PATCH")
+            with urllib.request.urlopen(req_patch, timeout=15) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+                if data:
+                    self.log("JWT salvo no banco (PATCH)")
+                    return
+            
+            # Se PATCH nao alterou nenhuma linha (linha nao existe), tenta POST
+            url_post = f"{supa_url}/rest/v1/frota_tokens"
+            headers_post = {
+                "apikey": SUPABASE_KEY, 
+                "Authorization": f"Bearer {SUPABASE_KEY}", 
+                "Content-Type": "application/json"
+            }
+            body_post = json.dumps({"email": self.email, "jwt": jwt}).encode("utf-8")
+            req_post = urllib.request.Request(url_post, headers=headers_post, data=body_post, method="POST")
+            with urllib.request.urlopen(req_post, timeout=15) as resp:
                 pass
-            self.log("JWT salvo no banco (UPSERT)")
+            self.log("JWT salvo no banco (POST)")
         except Exception as e:
             self.log(f"Erro salvar JWT: {str(e)}")
 
@@ -196,9 +212,8 @@ class Sessao:
         self.log("Solicitado novo codigo de auth")
 
     def autenticar(self, codigo, jwt_antigo):
-        self.cookie_jar.clear()
         body = json.dumps({"email": self.email, "code": codigo}).encode("utf-8")
-        h = {**HEADERS_BASE, "content-type": "application/json; charset=UTF-8", "cookie": f"entregolog_jwt={jwt_antigo}" if jwt_antigo else ""}
+        h = {**HEADERS_BASE, "content-type": "application/json; charset=UTF-8"}
         req = urllib.request.Request(URL_TOKEN, headers=h, data=body)
         with self.opener.open(req, timeout=15) as resp:
             resp.read()

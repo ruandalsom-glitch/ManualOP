@@ -571,8 +571,8 @@
         .praca-subs-toggle:hover { opacity: 1; background: rgba(44, 234, 188, 0.06); }
         .praca-subs-toggle .toggle-arrow { font-size: 10px; transition: transform 0.3s ease; }
         .praca-subs-toggle.open .toggle-arrow { transform: rotate(180deg); }
-        .praca-subs-body { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(.4,0,.2,1); }
-        .praca-subs-body.open { max-height: 650px; }
+        .praca-subs-body { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(.4,0,.2,1); }
+        .praca-subs-body.open { max-height: 3000px; }
 
         #read-progress { position: fixed; top: 0; left: 0; width: 0%; height: 3px; background: linear-gradient(90deg, var(--azul-principal), var(--menta-viva)); z-index: 9999; transition: width 0.1s linear; box-shadow: 0 0 12px rgba(44, 234, 188, 0.7); border-radius: 0 2px 2px 0; }
         
@@ -1400,9 +1400,9 @@
                 var statusText = isOpen ? 'ABERTO' : 'FECHADO';
                 var subName = item.Subpraca || '-';
                 return `
-                    <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.03); padding:10px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.05);">
-                        <span style="font-weight:600; font-size:14px;">${subName}</span>
-                        <span style="font-size:11px; font-weight:800; padding:4px 10px; border-radius:10px; background:${bgColor}; border:1px solid ${borderColor}; color:${textColor}; letter-spacing:0.5px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.03); padding:10px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.05); gap:12px;">
+                        <span style="font-weight:600; font-size:13.5px; word-break:break-word; flex:1; min-width:0;">${subName}</span>
+                        <span style="font-size:11px; font-weight:800; padding:4px 10px; border-radius:10px; background:${bgColor}; border:1px solid ${borderColor}; color:${textColor}; letter-spacing:0.5px; flex-shrink:0;">
                             ${statusText}
                         </span>
                     </div>`;

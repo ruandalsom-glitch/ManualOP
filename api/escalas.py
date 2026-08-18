@@ -203,9 +203,8 @@ class Sessao:
         self.log("Solicitado novo codigo de auth")
 
     def autenticar(self, codigo, jwt_antigo):
-        self.cookie_jar.clear()
         body = json.dumps({"email": self.email, "code": codigo}).encode("utf-8")
-        h = {**HEADERS_BASE, "content-type": "application/json; charset=UTF-8", "cookie": f"entregolog_jwt={jwt_antigo}" if jwt_antigo else ""}
+        h = {**HEADERS_BASE, "content-type": "application/json; charset=UTF-8"}
         req = urllib.request.Request(URL_TOKEN, headers=h, data=body)
         with self.opener.open(req) as resp:
             resp.read()
