@@ -1443,7 +1443,7 @@
             layerControl.addOverlay(polygonGroup, "Limites das Sub-Praças");
             
             // Determina os limites geográficos para enquadrar o mapa (fitBounds)
-            let bounds = polygonGroup.getLayers().length > 0 ? polygonGroup.getBounds() : null;
+            let bounds = polygonGroup.getLayers().length > 0 ? polygonGroup.getBounds().pad(0.08) : null;
 
             // Filtra os pontos do heatmap com precisão cirúrgica (Point-in-Polygon)
             const filteredPoints = heatmapPoints.filter(p => {

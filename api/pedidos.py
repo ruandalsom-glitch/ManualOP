@@ -385,9 +385,10 @@ class handler(BaseHTTPRequestHandler):
                     "Prefer": "resolution=merge-duplicates"
                 }
                 
-                # MODO D0: Limpar histórico de pedidos de dias anteriores para manter banco leve
-                today_date = now_utc.strftime("%Y-%m-%d")
-                del_old_url = f"{supa_url}/rest/v1/frota_pedidos_heatmap?created_at=lt.{urllib.parse.quote(today_date)}"
+                # Limpar histórico com mais de 2 dias (utilizando fuso horário de Brasília para evitar apagar D0 após 21h UTC)
+                fuso_br = timezone(timedelta(hours=-3))
+                data_corte = (datetime.now(fuso_br) - timedelta(days=2)).strftime("%Y-%m-%d")
+                del_old_url = f"{supa_url}/rest/v1/frota_pedidos_heatmap?created_at=lt.{urllib.parse.quote(data_corte)}"
                 del_old_req = urllib.request.Request(del_old_url, headers=headers, method="DELETE")
                 try:
                     with urllib.request.urlopen(del_old_req) as resp:
