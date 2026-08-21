@@ -628,6 +628,52 @@
         .lazy-spin { width: 16px; height: 16px; border: 2.5px solid rgba(44, 234, 188, 0.2); border-top-color: var(--menta-viva); border-radius: 50%; animation: spin 0.8s linear infinite; display: inline-block; }
 
         #btnAtualizarMetricas.loading { opacity: 0.6; cursor: not-allowed; pointer-events: none; }
+
+        /* GOOGLE NEWS STYLE CARDS & LAYOUT */
+        .news-header-bar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; }
+        .news-filters { display: flex; align-items: center; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+        .news-filters::-webkit-scrollbar { display: none; }
+        .news-chip { padding: 7px 18px; border-radius: 999px; border: 1px solid rgba(44, 234, 188, 0.2); background: rgba(13, 22, 60, 0.6); color: var(--azul-gelo); font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: all 0.2s ease; }
+        .news-chip:hover, .news-chip.active { background: var(--menta-viva); color: #000; border-color: var(--menta-viva); box-shadow: 0 0 12px rgba(44, 234, 188, 0.3); }
+        
+        .news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+        @media (max-width: 1080px) { .news-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 680px) { .news-grid { grid-template-columns: 1fr; } }
+        
+        .news-card-column { background: rgba(11, 19, 48, 0.78); border: 1px solid rgba(44, 234, 188, 0.2); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; gap: 16px; backdrop-filter: blur(12px); box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4); transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease; }
+        .news-card-column:hover { border-color: rgba(44, 234, 188, 0.5); transform: translateY(-4px); box-shadow: 0 16px 44px rgba(0, 0, 0, 0.5), 0 0 20px rgba(44, 234, 188, 0.15); }
+        
+        .news-publisher-bar { display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+        .news-publisher-info { display: flex; align-items: center; gap: 10px; }
+        .news-publisher-logo { width: 28px; height: 28px; border-radius: 6px; object-fit: contain; background: rgba(255,255,255,0.06); padding: 2px; }
+        .news-publisher-name { font-weight: 800; font-size: 13.5px; letter-spacing: 0.5px; color: #fff; text-transform: uppercase; }
+        
+        .btn-follow { display: inline-flex; align-items: center; gap: 5px; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 999px; padding: 5px 14px; color: #fff; font-size: 11.5px; font-weight: 700; cursor: pointer; transition: all 0.2s ease; }
+        .btn-follow:hover, .btn-follow.following { background: var(--menta-viva); color: #000; border-color: var(--menta-viva); }
+        
+        .news-banner-tag { background: rgba(44, 103, 234, 0.4); color: #fff; font-size: 10.5px; font-weight: 800; letter-spacing: 0.8px; text-transform: uppercase; padding: 5px 12px; border-radius: 8px; display: inline-block; align-self: flex-start; border: 1px solid rgba(44, 103, 234, 0.3); }
+        .news-banner-tag.purple { background: rgba(168, 85, 247, 0.35); border-color: rgba(168, 85, 247, 0.5); color: #e9d5ff; }
+        .news-banner-tag.green { background: rgba(44, 234, 188, 0.2); border-color: rgba(44, 234, 188, 0.4); color: var(--menta-viva); }
+        
+        .news-item { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.06); cursor: pointer; transition: opacity 0.2s ease, transform 0.2s ease; }
+        .news-item:first-of-type { border-top: none; padding-top: 0; }
+        .news-item:hover { opacity: 0.95; transform: translateX(2px); }
+        .news-item:hover .news-item-title { color: var(--menta-viva); }
+        
+        .news-item-category { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: var(--azul-gelo); opacity: 0.75; margin-bottom: 3px; }
+        .news-item-title { font-size: 14px; font-weight: 700; color: #fff; line-height: 1.35; margin: 0 0 5px 0; transition: color 0.2s ease; }
+        .news-item-desc { font-size: 12px; color: var(--azul-gelo); opacity: 0.75; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        
+        .news-item-thumb { width: 80px; height: 64px; border-radius: 10px; object-fit: cover; flex-shrink: 0; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
+        
+        .news-footer { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--azul-gelo); opacity: 0.65; margin-top: 6px; }
+        .news-footer-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--menta-viva); }
+        
+        /* NEWS MODAL DETALHES */
+        .news-modal { display: none; position: fixed; inset: 0; z-index: 10000; background: rgba(4, 8, 28, 0.88); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); align-items: center; justify-content: center; padding: 20px; }
+        .news-modal-box { background: #0b1234; border: 1.5px solid rgba(44, 234, 188, 0.35); border-radius: 24px; max-width: 680px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 28px; box-shadow: 0 24px 60px rgba(0,0,0,0.7), 0 0 30px rgba(44, 234, 188, 0.2); position: relative; animation: contentFadeIn 0.3s cubic-bezier(.4,0,.2,1); }
+        .news-modal-close { position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: #fff; width: 36px; height: 36px; border-radius: 50%; font-size: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; }
+        .news-modal-close:hover { background: var(--vermelho-ifood); border-color: var(--vermelho-ifood); }
     </style>
 </head>
 <body>
@@ -677,18 +723,11 @@
             <img class="logo-img" src="https://i.imgur.com/ZEox7rf.png" alt="Logo" loading="eager">
             <span class="logo-texto">Manual Operacional</span>
         </div>
-        <div class="search-box">
-            <input type="text" id="searchInput" class="search-input" placeholder="Buscar no manual..." oninput="debounceFiltro(this.value)"/>
-            <div class="search-inside">
-                <span class="search-counter" id="searchCounter"></span>
-                <button onclick="navegarResultado(-1)" title="Anterior">▲</button>
-                <button onclick="navegarResultado(1)" title="Próximo">▼</button>
-            </div>
-        </div>
         <nav>
             <ul class="menu" id="mainMenu">
                 <div class="menu-indicator" id="menuIndicator"></div>
                 <li><a href="#home">Home</a></li>
+                <li><a href="#news" style="color:var(--menta-viva);font-weight:800;letter-spacing:0.5px;">⚡ News!</a></li>
                 <li><a href="#elite">Elite</a></li>
                 <li><a href="#promocoes">Promoções</a></li>
                 <li class="menu-has-sub" style="position:relative;">
@@ -710,6 +749,14 @@
 
     <main id="main-content" style="display:none;"></main>
 
+    <!-- MODAL DETALHES DE NOTÍCIA (GOOGLE NEWS) -->
+    <div id="newsModal" class="news-modal" onclick="fecharNewsModal(event)">
+        <div class="news-modal-box" onclick="event.stopPropagation()">
+            <button class="news-modal-close" onclick="fecharNewsModal()">✕</button>
+            <div id="newsModalBody"></div>
+        </div>
+    </div>
+
     <div id="imgModal" class="img-modal" onclick="fecharZoom(event)">
         <div class="img-modal-content" onclick="event.stopPropagation()">
             <img id="imgZoom" class="img-zoom" alt="Imagem ampliada">
@@ -726,6 +773,131 @@
     <script>
     var dadosPromocoes = [], pracasDisponiveis = [], dadosDedicado = [];
     var modaisDisponiveis = [], dadosMapas = [], pracasMapasDisponiveis = [], dadosMetricas = [];
+
+    // --- SEÇÃO NEWS / NOVIDADES (ESTILO GOOGLE NEWS) ---
+    var fallbackNews = [
+        {
+            publisher: 'EQUIPE DE OPERAÇÕES',
+            publisher_logo: 'https://i.imgur.com/ZEox7rf.png',
+            tag: 'DESTAQUES 21/08',
+            tag_color: 'purple',
+            categoria: 'Operação',
+            titulo: 'Expansão de Subpraças em São Paulo: Novos pontos dedicados',
+            subtitulo: 'Atualização da malha de atendimento e direcionamento prioritário de entregadores em polos de alta demanda.',
+            conteudo: 'A equipe de logística concluiu o mapeamento das novas subpraças em São Paulo. As regiões de Itaim, Brooklin e Moema receberão reforço na escala do turno de almoço e jantar. Confira no manual os novos endereços e direcionamentos estratégicos para aumentar a produtividade da frota.',
+            imagem_url: 'news_banner_op.png',
+            data: 'Há 2 horas',
+            autor: 'Op Master',
+            destaque: true
+        },
+        {
+            publisher: 'MANUAL OP',
+            publisher_logo: 'https://entreego.com.br/wp-content/uploads/2023/12/logo-vertical-1.png?v=2',
+            tag: 'REGRAS & ELITE',
+            tag_color: 'green',
+            categoria: 'Regras',
+            titulo: 'Nova Bonificação Aceleradora para o Programa Elite',
+            subtitulo: 'Pedidos dedicados agora contam com peso 2x no Score semanal do programa de fidelidade.',
+            conteudo: 'Com o objetivo de valorizar os entregadores que atendem praças exclusivas, cada corrida dedicada concluída valerá 2 pontos corridos na pontuação final do Ranking Elite semanal. Regra válida a partir do próximo ciclo de fechamento.',
+            imagem_url: 'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=600&q=80',
+            data: 'Há 5 horas',
+            autor: 'Equipe de Frota'
+        },
+        {
+            publisher: 'SUPORTE TÉCNICO',
+            publisher_logo: 'https://i.imgur.com/ZEox7rf.png',
+            tag: 'AVISOS DO DIA',
+            tag_color: '',
+            categoria: 'Avisos',
+            titulo: 'Métricas de Frota em Tempo Real atualizadas',
+            subtitulo: 'Painel de mapa de calor e monitoramento de login de motoristas com refresh automático.',
+            conteudo: 'A aba de Métricas do portal passou por uma otimização de performance. O acompanhamento da taxa de logados por slots agora é atualizado continuamente a cada 10 minutos com mapas interativos e snapshot em tempo real.',
+            imagem_url: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80',
+            data: 'Ontem às 18:40',
+            autor: 'Tecnologia'
+        }
+    ];
+
+    var dadosNewsGlobal = [];
+
+    function formatarDataNews(dStr) {
+        if (!dStr) return 'Recente';
+        if (typeof dStr === 'string' && (dStr.includes('Há') || dStr.includes('Ontem') || dStr.includes('Hoje'))) return dStr;
+        try {
+            var d = new Date(dStr);
+            return d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+        } catch(e) {
+            return dStr;
+        }
+    }
+
+    function toggleSeguir(btn, evt) {
+        if (evt) evt.stopPropagation();
+        if (btn.classList.contains('following')) {
+            btn.classList.remove('following');
+            btn.innerHTML = '☆ Seguir';
+        } else {
+            btn.classList.add('following');
+            btn.innerHTML = '★ Seguindo';
+        }
+    }
+
+    function filtrarNoticias(chipBtn, categoria) {
+        var container = document.getElementById('newsGrid');
+        if (!container) return;
+        
+        var chips = document.querySelectorAll('.news-chip');
+        chips.forEach(function(c) { c.classList.remove('active'); });
+        if (chipBtn) chipBtn.classList.add('active');
+
+        var cols = container.querySelectorAll('.news-card-column');
+        cols.forEach(function(col) {
+            var cat = col.getAttribute('data-cat') || '';
+            if (categoria === 'TODAS' || cat.toLowerCase() === categoria.toLowerCase()) {
+                col.style.display = 'flex';
+            } else {
+                col.style.display = 'none';
+            }
+        });
+    }
+
+    function abrirNewsModal(idx) {
+        var item = dadosNewsGlobal[idx];
+        if (!item) return;
+        var modal = document.getElementById('newsModal');
+        var body = document.getElementById('newsModalBody');
+        if (!modal || !body) return;
+
+        var imgUrl = item.imagem_url || item.Imagem_URL || '';
+        var imgHTML = imgUrl ? '<img src="' + imgUrl + '" style="width:100%;max-height:280px;object-fit:cover;border-radius:16px;margin:16px 0;border:1px solid rgba(255,255,255,0.1);" alt="News Img">' : '';
+        var pubName = item.publisher || item.Autor || 'MANUAL OP';
+        var catTxt = item.categoria || item.Categoria || 'Novidade';
+        var dateTxt = formatarDataNews(item.created_at || item.data);
+        var subTxt = item.subtitulo || item.Subtitulo || '';
+        var contentTxt = (item.conteudo || item.Texto || subTxt || '').replace(/\n|\r\n/g, '<br><br>');
+        var titTxt = item.titulo || item.Titulo || 'Novidade';
+
+        body.innerHTML = 
+            '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">' +
+                '<span class="news-banner-tag green">' + catTxt + '</span>' +
+                '<span style="font-size:12px;color:var(--azul-gelo);opacity:0.7;">' + dateTxt + ' • Por ' + pubName + '</span>' +
+            '</div>' +
+            '<h2 style="font-size:22px;font-weight:800;color:#fff;line-height:1.3;margin-bottom:10px;">' + titTxt + '</h2>' +
+            (subTxt ? '<p style="font-size:14.5px;color:var(--menta-suave);line-height:1.5;margin-bottom:14px;font-weight:600;">' + subTxt + '</p>' : '') +
+            imgHTML +
+            '<div style="font-size:14px;color:var(--azul-gelo);line-height:1.7;opacity:0.9;">' +
+                contentTxt +
+            '</div>';
+
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function fecharNewsModal(evt) {
+        var modal = document.getElementById('newsModal');
+        if (modal) modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
 
     function showToast(msg, type, duration) {
         type = type||'error'; duration = duration||4000;
@@ -754,9 +926,6 @@
         }, 300); // Alivia a sobrecarga de recálculo da página
     }
 
-
-    /* --- FIM REFATORAÇÃO DE PERFORMANCE --- */
-
     function restaurarBotaoLogin() {
         var b = document.getElementById('btnEntrar');
         if(b){ b.disabled=false; document.getElementById('txtBtn').innerText='Entrar'; document.getElementById('spinBtn').style.display='none'; }
@@ -780,6 +949,16 @@
                 }
             }
 
+            let newsFetch = { data: [] };
+            try {
+                newsFetch = await supabaseClient.from('frota_news').select('*').order('created_at', { ascending: false });
+                if(!newsFetch.data || newsFetch.error) {
+                    newsFetch = await supabaseClient.from('novidades').select('*').order('created_at', { ascending: false });
+                }
+            } catch(e) {
+                console.log('Sem tabela frota_news/novidades. Usando novidades padrão.');
+            }
+
             const [hc, el, pr, de, ma, ca, pe] = await Promise.all([
                 supabaseClient.from('home_config').select('*').order('ordem', { ascending: true }),
                 supabaseClient.from('elite').select('*').order('ordem', { ascending: true }),
@@ -795,7 +974,6 @@
             if(el.error) console.error('Erro Elite:', el.error);
             if(pr.error) console.error('Erro Promocoes:', pr.error);
             if(pe.error) console.error('Erro Procedimentos:', pe.error);
-            
             
             // Função para garantir as chaves no formato esperado (PascalCase) e valores nulos como string vazia para evitar erro de undefined
             const mapKeys = (arr) => {
@@ -833,7 +1011,8 @@
                     Dedicado: mapKeys(de.data),
                     Mapas: mapKeys(ma.data),
                     Cadastro: mapKeys(ca.data),
-                    Procedimentos: mapKeys(pe.data)
+                    Procedimentos: mapKeys(pe.data),
+                    News: (newsFetch && newsFetch.data && newsFetch.data.length > 0) ? mapKeys(newsFetch.data) : null
                 },
                 temAcessoDashboard: true, 
                 urlDashboard: 'https://app.powerbi.com/view?r=eyJrIjoiNTEzMDg1ZmQtZjVkMi00OGFjLWE1NzQtNTJlZWU2ODYyNGNhIiwidCI6IjJlNDUwMmZiLWFmOTQtNDU1Yi05M2Y0LWIzNDU5MDMwY2UxNiJ9', 
@@ -920,6 +1099,69 @@
                 }).join('');
                 if(cardsH) finalHTML += '<section><div class="grid-container">'+cardsH+'</div></section>';
             }
+
+            // ── SEÇÃO NEWS / NOVIDADES (ESTILO GOOGLE NEWS) ─────────────────
+            var newsData = (dados.News && dados.News.length > 0) ? dados.News : fallbackNews;
+            dadosNewsGlobal = newsData;
+            
+            finalHTML += '<section id="news">';
+            finalHTML += '  <div class="news-header-bar">';
+            finalHTML += '    <div>';
+            finalHTML += '      <h2 class="section-title">News <span class="text-neon">& Novidades</span></h2>';
+            finalHTML += '      <p class="section-desc" style="margin-top:2px;">Fique por dentro das últimas atualizações, alertas e mudanças na operação</p>';
+            finalHTML += '    </div>';
+            finalHTML += '    <div class="news-filters">';
+            finalHTML += '      <button class="news-chip active" onclick="filtrarNoticias(this, \'TODAS\')">Todas</button>';
+            finalHTML += '      <button class="news-chip" onclick="filtrarNoticias(this, \'Operação\')">Operação</button>';
+            finalHTML += '      <button class="news-chip" onclick="filtrarNoticias(this, \'Regras\')">Regras</button>';
+            finalHTML += '      <button class="news-chip" onclick="filtrarNoticias(this, \'Avisos\')">Avisos</button>';
+            finalHTML += '    </div>';
+            finalHTML += '  </div>';
+            
+            finalHTML += '  <div class="news-grid" id="newsGrid">';
+            
+            newsData.forEach(function(item, idx) {
+                var pubLogo = item.publisher_logo || item.Publisher_Logo || 'https://i.imgur.com/ZEox7rf.png';
+                var pubName = item.publisher || item.Publisher || item.Autor || 'MANUAL OP';
+                var tagTxt = item.tag || item.Tag || item.Categoria || 'DESTAQUE';
+                var tagClass = item.tag_color ? ('news-banner-tag ' + item.tag_color) : 'news-banner-tag purple';
+                var catTxt = item.categoria || item.Categoria || 'NOVIDADE';
+                var titTxt = item.titulo || item.Titulo || 'Título da Notícia';
+                var descTxt = item.subtitulo || item.Subtitulo || item.Texto || item.conteudo || '';
+                var imgUrl = item.imagem_url || item.Imagem_URL || '';
+                var dateTxt = formatarDataNews(item.created_at || item.data || item.Data);
+                
+                finalHTML += '<div class="news-card-column" data-cat="' + catTxt + '">';
+                finalHTML += '  <div class="news-publisher-bar">';
+                finalHTML += '    <div class="news-publisher-info">';
+                finalHTML += '      <img src="' + pubLogo + '" class="news-publisher-logo" alt="Logo">';
+                finalHTML += '      <span class="news-publisher-name">' + pubName + '</span>';
+                finalHTML += '    </div>';
+                finalHTML += '    <button class="btn-follow" onclick="toggleSeguir(this, event)">☆ Seguir</button>';
+                finalHTML += '  </div>';
+                
+                finalHTML += '  <div class="' + tagClass + '">' + tagTxt + '</div>';
+                
+                finalHTML += '  <div class="news-item" onclick="abrirNewsModal(' + idx + ')">';
+                finalHTML += '    <div style="flex:1;min-width:0;">';
+                finalHTML += '      <div class="news-item-category">' + catTxt + '</div>';
+                finalHTML += '      <h3 class="news-item-title">' + titTxt + '</h3>';
+                if(descTxt) finalHTML += '      <p class="news-item-desc">' + descTxt + '</p>';
+                finalHTML += '      <div class="news-footer">';
+                finalHTML += '        <span>' + dateTxt + '</span>';
+                finalHTML += '        <span class="news-footer-dot"></span>';
+                finalHTML += '        <span>Destaques</span>';
+                finalHTML += '      </div>';
+                finalHTML += '    </div>';
+                if(imgUrl) {
+                    finalHTML += '    <img src="' + imgUrl + '" class="news-item-thumb" alt="Thumb" loading="lazy">';
+                }
+                finalHTML += '  </div>';
+                finalHTML += '</div>';
+            });
+            
+            finalHTML += '  </div>';
+            finalHTML += '</section>';
 
             if (dados.Elite) {
                 var sections = dados.Elite.reduce(function(acc,item){
