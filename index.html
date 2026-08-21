@@ -1012,7 +1012,7 @@
                     Mapas: mapKeys(ma.data),
                     Cadastro: mapKeys(ca.data),
                     Procedimentos: mapKeys(pe.data),
-                    News: (newsFetch && newsFetch.data && newsFetch.data.length > 0) ? mapKeys(newsFetch.data) : null
+                    News: (newsFetch && newsFetch.data) ? mapKeys(newsFetch.data) : null
                 },
                 temAcessoDashboard: true, 
                 urlDashboard: 'https://app.powerbi.com/view?r=eyJrIjoiNTEzMDg1ZmQtZjVkMi00OGFjLWE1NzQtNTJlZWU2ODYyNGNhIiwidCI6IjJlNDUwMmZiLWFmOTQtNDU1Yi05M2Y0LWIzNDU5MDMwY2UxNiJ9', 
@@ -1101,7 +1101,7 @@
             }
 
             // ── SEÇÃO NEWS / NOVIDADES (ESTILO GOOGLE NEWS) ─────────────────
-            var newsData = (dados.News && dados.News.length > 0) ? dados.News : fallbackNews;
+            var newsData = (dados.News !== null && dados.News !== undefined) ? dados.News : fallbackNews;
             dadosNewsGlobal = newsData;
             
             finalHTML += '<section id="news">';
@@ -1110,68 +1110,79 @@
             finalHTML += '      <h2 class="section-title">News <span class="text-neon">& Novidades</span></h2>';
             finalHTML += '      <p class="section-desc" style="margin-top:2px;">Fique por dentro das últimas atualizações, alertas e mudanças na operação</p>';
             finalHTML += '    </div>';
-            // Extrai categorias únicas dinamicamente a partir dos dados (planilha / Supabase)
-            var categoriasUnicas = ['TODAS'];
-            newsData.forEach(function(item) {
-                var cat = (item.categoria || item.Categoria || '').trim();
-                if (cat && categoriasUnicas.indexOf(cat) === -1) {
-                    categoriasUnicas.push(cat);
-                }
-            });
+            
+            if (newsData.length > 0) {
+                // Extrai categorias únicas dinamicamente a partir dos dados
+                var categoriasUnicas = ['TODAS'];
+                newsData.forEach(function(item) {
+                    var cat = (item.categoria || item.Categoria || '').trim();
+                    if (cat && categoriasUnicas.indexOf(cat) === -1) {
+                        categoriasUnicas.push(cat);
+                    }
+                });
 
-            finalHTML += '    <div class="news-filters">';
-            categoriasUnicas.forEach(function(catName, i) {
-                var isAct = (i === 0) ? ' active' : '';
-                var catEscaped = catName.replace(/'/g, "\\'");
-                var label = (catName === 'TODAS') ? 'Todas' : catName;
-                finalHTML += '      <button class="news-chip' + isAct + '" onclick="filtrarNoticias(this, \'' + catEscaped + '\')">' + label + '</button>';
-            });
-            finalHTML += '    </div>';
-            finalHTML += '  </div>';
-            
-            finalHTML += '  <div class="news-grid" id="newsGrid">';
-            
-            newsData.forEach(function(item, idx) {
-                var pubLogo = item.publisher_logo || item.Publisher_Logo || 'https://i.imgur.com/ZEox7rf.png';
-                var pubName = item.publisher || item.Publisher || item.Autor || 'MANUAL OP';
-                var tagTxt = item.tag || item.Tag || item.Categoria || 'DESTAQUE';
-                var tagClass = item.tag_color ? ('news-banner-tag ' + item.tag_color) : 'news-banner-tag purple';
-                var catTxt = item.categoria || item.Categoria || 'NOVIDADE';
-                var titTxt = item.titulo || item.Titulo || 'Título da Notícia';
-                var descTxt = item.subtitulo || item.Subtitulo || item.Texto || item.conteudo || '';
-                var imgUrl = item.imagem_url || item.Imagem_URL || '';
-                var dateTxt = formatarDataNews(item.created_at || item.data || item.Data);
-                
-                finalHTML += '<div class="news-card-column" data-cat="' + catTxt + '">';
-                finalHTML += '  <div class="news-publisher-bar">';
-                finalHTML += '    <div class="news-publisher-info">';
-                finalHTML += '      <img src="' + pubLogo + '" class="news-publisher-logo" alt="Logo">';
-                finalHTML += '      <span class="news-publisher-name">' + pubName + '</span>';
+                finalHTML += '    <div class="news-filters">';
+                categoriasUnicas.forEach(function(catName, i) {
+                    var isAct = (i === 0) ? ' active' : '';
+                    var catEscaped = catName.replace(/'/g, "\\'");
+                    var label = (catName === 'TODAS') ? 'Todas' : catName;
+                    finalHTML += '      <button class="news-chip' + isAct + '" onclick="filtrarNoticias(this, \'' + catEscaped + '\')">' + label + '</button>';
+                });
                 finalHTML += '    </div>';
-                finalHTML += '    <button class="btn-follow" onclick="toggleSeguir(this, event)">☆ Seguir</button>';
                 finalHTML += '  </div>';
                 
-                finalHTML += '  <div class="' + tagClass + '">' + tagTxt + '</div>';
+                finalHTML += '  <div class="news-grid" id="newsGrid">';
                 
-                finalHTML += '  <div class="news-item" onclick="abrirNewsModal(' + idx + ')">';
-                finalHTML += '    <div style="flex:1;min-width:0;">';
-                finalHTML += '      <div class="news-item-category">' + catTxt + '</div>';
-                finalHTML += '      <h3 class="news-item-title">' + titTxt + '</h3>';
-                if(descTxt) finalHTML += '      <p class="news-item-desc">' + descTxt + '</p>';
-                finalHTML += '      <div class="news-footer">';
-                finalHTML += '        <span>' + dateTxt + '</span>';
-                finalHTML += '        <span class="news-footer-dot"></span>';
-                finalHTML += '        <span>Destaques</span>';
-                finalHTML += '      </div>';
-                finalHTML += '    </div>';
-                if(imgUrl) {
-                    finalHTML += '    <img src="' + imgUrl + '" class="news-item-thumb" alt="Thumb" loading="lazy">';
-                }
+                newsData.forEach(function(item, idx) {
+                    var pubLogo = item.publisher_logo || item.Publisher_Logo || 'https://i.imgur.com/ZEox7rf.png';
+                    var pubName = item.publisher || item.Publisher || item.Autor || 'MANUAL OP';
+                    var tagTxt = item.tag || item.Tag || item.Categoria || 'DESTAQUE';
+                    var tagClass = item.tag_color ? ('news-banner-tag ' + item.tag_color) : 'news-banner-tag purple';
+                    var catTxt = item.categoria || item.Categoria || 'NOVIDADE';
+                    var titTxt = item.titulo || item.Titulo || 'Título da Notícia';
+                    var descTxt = item.subtitulo || item.Subtitulo || item.Texto || item.conteudo || '';
+                    var imgUrl = item.imagem_url || item.Imagem_URL || '';
+                    var dateTxt = formatarDataNews(item.created_at || item.data || item.Data);
+                    
+                    finalHTML += '<div class="news-card-column" data-cat="' + catTxt + '">';
+                    finalHTML += '  <div class="news-publisher-bar">';
+                    finalHTML += '    <div class="news-publisher-info">';
+                    finalHTML += '      <img src="' + pubLogo + '" class="news-publisher-logo" alt="Logo">';
+                    finalHTML += '      <span class="news-publisher-name">' + pubName + '</span>';
+                    finalHTML += '    </div>';
+                    finalHTML += '    <button class="btn-follow" onclick="toggleSeguir(this, event)">☆ Seguir</button>';
+                    finalHTML += '  </div>';
+                    
+                    finalHTML += '  <div class="' + tagClass + '">' + tagTxt + '</div>';
+                    
+                    finalHTML += '  <div class="news-item" onclick="abrirNewsModal(' + idx + ')">';
+                    finalHTML += '    <div style="flex:1;min-width:0;">';
+                    finalHTML += '      <div class="news-item-category">' + catTxt + '</div>';
+                    finalHTML += '      <h3 class="news-item-title">' + titTxt + '</h3>';
+                    if(descTxt) finalHTML += '      <p class="news-item-desc">' + descTxt + '</p>';
+                    finalHTML += '      <div class="news-footer">';
+                    finalHTML += '        <span>' + dateTxt + '</span>';
+                    finalHTML += '        <span class="news-footer-dot"></span>';
+                    finalHTML += '        <span>Destaques</span>';
+                    finalHTML += '      </div>';
+                    finalHTML += '    </div>';
+                    if(imgUrl) {
+                        finalHTML += '    <img src="' + imgUrl + '" class="news-item-thumb" alt="Thumb" loading="lazy">';
+                    }
+                    finalHTML += '  </div>';
+                    finalHTML += '</div>';
+                });
+                
                 finalHTML += '  </div>';
-                finalHTML += '</div>';
-            });
-            
-            finalHTML += '  </div>';
+            } else {
+                finalHTML += '  </div>'; // fecha news-header-bar
+                finalHTML += '  <div class="glass-panel" style="padding: 40px 20px; text-align: center; border-radius: 20px; background: rgba(11, 19, 48, 0.6); border: 1px dashed rgba(44, 234, 188, 0.3); margin-top: 10px;">';
+                finalHTML += '    <div style="font-size: 36px; margin-bottom: 10px;">📰</div>';
+                finalHTML += '    <h3 style="color: #fff; font-size: 18px; font-weight: 700; margin-bottom: 6px;">Nenhuma novidade cadastrada</h3>';
+                finalHTML += '    <p style="color: var(--azul-gelo); font-size: 13.5px; opacity: 0.75; max-width: 480px; margin: 0 auto;">Adicione postagens na aba <b>News</b> da planilha e execute o script de sincronização para publicar novidades aqui.</p>';
+                finalHTML += '  </div>';
+            }
+
             finalHTML += '</section>';
 
             if (dados.Elite) {
