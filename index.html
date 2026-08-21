@@ -1136,8 +1136,15 @@
                 newsData.forEach(function(item, idx) {
                     var pubLogo = item.publisher_logo || item.Publisher_Logo || 'https://i.imgur.com/ZEox7rf.png';
                     var pubName = item.publisher || item.Publisher || item.Autor || 'MANUAL OP';
-                    var tagTxt = item.tag || item.Tag || item.Categoria || 'DESTAQUE';
-                    var tagClass = item.tag_color ? ('news-banner-tag ' + item.tag_color) : 'news-banner-tag purple';
+                    
+                    var tagRaw = (item.tag || item.Tag || '').trim();
+                    var tagColorRaw = (item.tag_color || item.Tag_Color || '').trim().toLowerCase();
+                    
+                    var knownColors = ['purple', 'green', 'blue'];
+                    var colorClass = knownColors.indexOf(tagColorRaw) !== -1 ? tagColorRaw : (knownColors.indexOf(tagRaw.toLowerCase()) !== -1 ? tagRaw.toLowerCase() : 'purple');
+                    var tagClass = 'news-banner-tag ' + colorClass;
+                    
+                    var tagTxt = (tagRaw && knownColors.indexOf(tagRaw.toLowerCase()) === -1) ? tagRaw : (item.categoria || item.Categoria || 'DESTAQUE');
                     var catTxt = item.categoria || item.Categoria || 'NOVIDADE';
                     var titTxt = item.titulo || item.Titulo || 'Título da Notícia';
                     var descTxt = item.subtitulo || item.Subtitulo || item.Texto || item.conteudo || '';
@@ -1147,7 +1154,7 @@
                     finalHTML += '<div class="news-card-column" data-cat="' + catTxt + '">';
                     finalHTML += '  <div class="news-publisher-bar">';
                     finalHTML += '    <div class="news-publisher-info">';
-                    finalHTML += '      <img src="' + pubLogo + '" class="news-publisher-logo" alt="Logo">';
+                    finalHTML += '      <img src="' + pubLogo + '" class="news-publisher-logo" alt="Logo" onerror="this.src=\'https://i.imgur.com/ZEox7rf.png\'">';
                     finalHTML += '      <span class="news-publisher-name">' + pubName + '</span>';
                     finalHTML += '    </div>';
                     finalHTML += '    <button class="btn-follow" onclick="toggleSeguir(this, event)">☆ Seguir</button>';
@@ -1167,7 +1174,7 @@
                     finalHTML += '      </div>';
                     finalHTML += '    </div>';
                     if(imgUrl) {
-                        finalHTML += '    <img src="' + imgUrl + '" class="news-item-thumb" alt="Thumb" loading="lazy">';
+                        finalHTML += '    <img src="' + imgUrl + '" class="news-item-thumb" alt="Thumb" loading="lazy" onerror="this.style.display=\'none\'">';
                     }
                     finalHTML += '  </div>';
                     finalHTML += '</div>';
