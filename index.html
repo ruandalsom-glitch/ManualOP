@@ -872,7 +872,7 @@
         var linkUrl = item.link || item.Link || item.link_url || '';
         var linkBtn = linkUrl ? '<div style="margin-top:20px;text-align:right;"><a href="' + linkUrl + '" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:12px;background:var(--menta-viva);color:#000;font-weight:700;text-decoration:none;font-size:13px;transition:transform 0.2s ease;">🔗 Abrir Link Externo</a></div>' : '';
 
-        var imgHTML = imgUrl ? '<div style="background:rgba(5, 10, 28, 0.6);border-radius:16px;margin:16px 0;border:1px solid rgba(44, 234, 188, 0.15);overflow:hidden;text-align:center;"><img src="' + imgUrl + '" onclick="abrirZoom(\'' + imgUrl + '\')" style="width:100%;max-height:420px;object-fit:contain;cursor:pointer;display:block;margin:0 auto;" alt="News Img" title="Clique para ampliar" onerror="this.parentNode.style.display=\'none\'"></div>' : '';
+        var imgHTML = imgUrl ? '<img src="' + imgUrl + '" onclick="abrirZoom(\'' + imgUrl + '\')" style="width:100%;height:auto;max-height:500px;border-radius:16px;margin:16px 0;border:1px solid rgba(44, 234, 188, 0.2);display:block;cursor:pointer;" alt="News Img" title="Clique para ampliar" onerror="this.style.display=\'none\'">' : '';
         var pubName = item.publisher || item.Autor || 'MANUAL OP';
         var catTxt = item.categoria || item.Categoria || 'Novidade';
         var dateTxt = formatarDataNews(item.data || item.Data || item.created_at);
