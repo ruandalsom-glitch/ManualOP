@@ -872,7 +872,7 @@
         var imgHTML = imgUrl ? '<img src="' + imgUrl + '" style="width:100%;max-height:280px;object-fit:cover;border-radius:16px;margin:16px 0;border:1px solid rgba(255,255,255,0.1);" alt="News Img">' : '';
         var pubName = item.publisher || item.Autor || 'MANUAL OP';
         var catTxt = item.categoria || item.Categoria || 'Novidade';
-        var dateTxt = formatarDataNews(item.created_at || item.data);
+        var dateTxt = formatarDataNews(item.data || item.Data || item.created_at);
         var subTxt = item.subtitulo || item.Subtitulo || '';
         var contentTxt = (item.conteudo || item.Texto || subTxt || '').replace(/\n|\r\n/g, '<br><br>');
         var titTxt = item.titulo || item.Titulo || 'Novidade';
@@ -1149,7 +1149,7 @@
                     var titTxt = item.titulo || item.Titulo || 'Título da Notícia';
                     var descTxt = item.subtitulo || item.Subtitulo || item.Texto || item.conteudo || '';
                     var imgUrl = item.imagem_url || item.Imagem_URL || '';
-                    var dateTxt = formatarDataNews(item.created_at || item.data || item.Data);
+                    var dateTxt = formatarDataNews(item.data || item.Data || item.created_at);
                     
                     finalHTML += '<div class="news-card-column" data-cat="' + catTxt + '">';
                     finalHTML += '  <div class="news-publisher-bar">';
