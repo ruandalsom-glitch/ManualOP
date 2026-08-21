@@ -1110,11 +1110,22 @@
             finalHTML += '      <h2 class="section-title">News <span class="text-neon">& Novidades</span></h2>';
             finalHTML += '      <p class="section-desc" style="margin-top:2px;">Fique por dentro das últimas atualizações, alertas e mudanças na operação</p>';
             finalHTML += '    </div>';
+            // Extrai categorias únicas dinamicamente a partir dos dados (planilha / Supabase)
+            var categoriasUnicas = ['TODAS'];
+            newsData.forEach(function(item) {
+                var cat = (item.categoria || item.Categoria || '').trim();
+                if (cat && categoriasUnicas.indexOf(cat) === -1) {
+                    categoriasUnicas.push(cat);
+                }
+            });
+
             finalHTML += '    <div class="news-filters">';
-            finalHTML += '      <button class="news-chip active" onclick="filtrarNoticias(this, \'TODAS\')">Todas</button>';
-            finalHTML += '      <button class="news-chip" onclick="filtrarNoticias(this, \'Operação\')">Operação</button>';
-            finalHTML += '      <button class="news-chip" onclick="filtrarNoticias(this, \'Regras\')">Regras</button>';
-            finalHTML += '      <button class="news-chip" onclick="filtrarNoticias(this, \'Avisos\')">Avisos</button>';
+            categoriasUnicas.forEach(function(catName, i) {
+                var isAct = (i === 0) ? ' active' : '';
+                var catEscaped = catName.replace(/'/g, "\\'");
+                var label = (catName === 'TODAS') ? 'Todas' : catName;
+                finalHTML += '      <button class="news-chip' + isAct + '" onclick="filtrarNoticias(this, \'' + catEscaped + '\')">' + label + '</button>';
+            });
             finalHTML += '    </div>';
             finalHTML += '  </div>';
             
