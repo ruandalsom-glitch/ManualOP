@@ -822,12 +822,19 @@
 
     function formatarDataNews(dStr) {
         if (!dStr) return 'Recente';
-        if (typeof dStr === 'string' && (dStr.includes('Há') || dStr.includes('Ontem') || dStr.includes('Hoje'))) return dStr;
+        if (typeof dStr === 'string') {
+            var trimmed = dStr.trim();
+            if (!trimmed) return 'Recente';
+            if (trimmed.includes('/') || trimmed.includes(':') || trimmed.includes('Há') || trimmed.includes('Ontem') || trimmed.includes('Hoje')) {
+                return trimmed;
+            }
+        }
         try {
             var d = new Date(dStr);
+            if (isNaN(d.getTime())) return String(dStr);
             return d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
         } catch(e) {
-            return dStr;
+            return String(dStr);
         }
     }
 
