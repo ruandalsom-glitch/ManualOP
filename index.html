@@ -743,6 +743,7 @@
                     <a href="#dedicado" class="menu-link-with-arrow" id="dedicadoMenuLink">Dedicado <span style="font-size:10px;opacity:0.7;">▼</span></a>
                     <div class="menu-submenu" id="menuSubmenu">
                         <a href="garantido.html" style="color:var(--menta-viva);font-weight:700;">↗ Garantido (página dedicada)</a>
+                        <a href="#info" style="color:var(--menta-viva);font-weight:700;">ℹ️ Informações (Info)</a>
                     </div>
                 </li>
                 <li><a href="#mapas">Mapas</a></li>
@@ -980,6 +981,13 @@
                 console.log('Sem tabela frota_news/novidades. Usando novidades padrão.');
             }
 
+            let infoFetch = { data: [] };
+            try {
+                infoFetch = await supabaseClient.from('info').select('*').order('ordem', { ascending: true });
+            } catch(e) {
+                console.log('Sem tabela info no Supabase.');
+            }
+
             const [hc, el, pr, de, ma, ca, pe] = await Promise.all([
                 supabaseClient.from('home_config').select('*').order('ordem', { ascending: true }),
                 supabaseClient.from('elite').select('*').order('ordem', { ascending: true }),
@@ -1033,7 +1041,8 @@
                     Mapas: mapKeys(ma.data),
                     Cadastro: mapKeys(ca.data),
                     Procedimentos: mapKeys(pe.data),
-                    News: (newsFetch && newsFetch.data) ? mapKeys(newsFetch.data) : null
+                    News: (newsFetch && newsFetch.data) ? mapKeys(newsFetch.data) : null,
+                    Info: (infoFetch && infoFetch.data) ? mapKeys(infoFetch.data) : []
                 },
                 temAcessoDashboard: true, 
                 urlDashboard: 'https://app.powerbi.com/view?r=eyJrIjoiNTEzMDg1ZmQtZjVkMi00OGFjLWE1NzQtNTJlZWU2ODYyNGNhIiwidCI6IjJlNDUwMmZiLWFmOTQtNDU1Yi05M2Y0LWIzNDU5MDMwY2UxNiJ9', 
@@ -1257,6 +1266,58 @@
             }
 
             finalHTML += '<section id="dedicado"><div class="section-header"><h2 class="section-title">Frota <span class="text-neon">Estratégica</span></h2></div><div class="praca-selector" id="modalSelector" style="margin-bottom:18px;min-height:48px;"></div><div id="dedicadoContent"><div class="lazy-loading-hint"><span class="lazy-spin"></span>Carregando frota...</div></div></section>';
+
+            if (dados.Info && dados.Info.length > 0) {
+                var infoCardsHTML = '';
+                dados.Info.forEach(function(c) {
+                    var isAtivo = (c.Ativo || c.ativo || 'SIM').toString().toUpperCase();
+                    if (isAtivo === 'NÃO' || isAtivo === 'NAO' || isAtivo === 'FALSE') return;
+                    
+                    var tit = c.Titulo || c.titulo || '';
+                    var sub = c.Subtitulo || c.subtitulo || '';
+                    var txt = (c.Texto || c.texto || '').replace(/\n|\r\n/g, '<br>');
+                    var txtVerso = (c.Texto_Verso || c.texto_verso || '').replace(/\n|\r\n/g, '<br>');
+                    var img = c.Imagem_URL || c.imagem_url || '';
+                    var link = c.Link || c.link || '';
+                    
+                    var imgHTML = img ? '<img src="' + img + '" onclick="abrirZoom(this)" loading="lazy" style="width:100%;height:180px;object-fit:cover;border-radius:14px;margin-bottom:14px;cursor:pointer;" alt="Info Img">' : '';
+                    var linkHTML = link ? '<a href="' + link + '" target="_blank" style="display:inline-flex;align-items:center;gap:6px;margin-top:14px;padding:8px 16px;border-radius:10px;background:var(--menta-viva);color:#000;font-weight:700;font-size:12.5px;text-decoration:none;">Saiba Mais ➔</a>' : '';
+
+                    if (txtVerso) {
+                        infoCardsHTML += '<div class="flip-card"><div class="flip-card-inner">';
+                        infoCardsHTML += '  <div class="flip-card-front glass-panel" style="display:flex;flex-direction:column;justify-content:space-between;padding:22px;">';
+                        infoCardsHTML += '    <div>';
+                        if (img) infoCardsHTML += imgHTML;
+                        if (tit) infoCardsHTML += '<h3 style="color:#fff;font-weight:800;font-size:17px;margin-bottom:6px;">' + tit + '</h3>';
+                        if (sub) infoCardsHTML += '<p style="color:var(--menta-viva);font-size:13px;font-weight:700;margin-bottom:10px;">' + sub + '</p>';
+                        if (txt) infoCardsHTML += '<p class="text-muted" style="font-size:13.5px;line-height:1.6;">' + txt + '</p>';
+                        infoCardsHTML += '    </div>';
+                        infoCardsHTML += '    <div style="margin-top:14px;font-size:11.5px;color:var(--menta-viva);font-weight:800;display:flex;align-items:center;gap:6px;">🔄 Clique para ver detalhes</div>';
+                        infoCardsHTML += '  </div>';
+                        infoCardsHTML += '  <div class="flip-card-back glass-panel" style="display:flex;flex-direction:column;justify-content:space-between;padding:22px;">';
+                        infoCardsHTML += '    <div>';
+                        if (tit) infoCardsHTML += '<h3 style="color:var(--menta-viva);font-weight:800;font-size:17px;margin-bottom:12px;">' + tit + '</h3>';
+                        infoCardsHTML += '      <p style="font-size:13.5px;line-height:1.7;color:var(--azul-gelo);">' + txtVerso + '</p>';
+                        if (linkHTML) infoCardsHTML += linkHTML;
+                        infoCardsHTML += '    </div>';
+                        infoCardsHTML += '    <div style="margin-top:14px;font-size:11.5px;color:rgba(255,255,255,0.6);font-weight:800;display:flex;align-items:center;gap:6px;">🔄 Clique para voltar</div>';
+                        infoCardsHTML += '  </div>';
+                        infoCardsHTML += '</div></div>';
+                    } else {
+                        infoCardsHTML += '<div class="glass-panel card-standard" style="display:flex;flex-direction:column;gap:10px;padding:22px;">';
+                        if (img) infoCardsHTML += imgHTML;
+                        if (tit) infoCardsHTML += '<h3 style="color:#fff;font-weight:800;font-size:17px;">' + tit + '</h3>';
+                        if (sub) infoCardsHTML += '<p style="color:var(--menta-viva);font-size:13px;font-weight:700;">' + sub + '</p>';
+                        if (txt) infoCardsHTML += '<p class="text-muted" style="font-size:13.5px;line-height:1.6;">' + txt + '</p>';
+                        if (linkHTML) infoCardsHTML += linkHTML;
+                        infoCardsHTML += '</div>';
+                    }
+                });
+
+                if (infoCardsHTML) {
+                    finalHTML += '<section id="info"><div class="section-header"><h2 class="section-title">Informações <span class="text-neon">Operacionais</span></h2><p class="section-desc">Central de avisos, orientações e informações da frota</p></div><div class="grid-container">' + infoCardsHTML + '</div></section>';
+                }
+            }
             finalHTML += '<section id="mapas"><div class="section-header"><h2 class="section-title">Nossos <span class="text-neon">Mapas</span></h2><p class="section-desc">Passe o mouse no menu abaixo para selecionar sua praça e região</p></div><div style="text-align:center;margin-bottom:40px;position:relative;z-index:50;"><div class="mapa-master-dropdown" onmouseenter="this.classList.add(\'hover-lock\')" onmouseleave="this.classList.remove(\'hover-lock\')"><button class="mapa-master-btn">Mapas</button><div class="mapa-lv1-menu"></div></div></div><div id="mapasContent"><div class="lazy-loading-hint"><span class="lazy-spin"></span>Carregando mapas...</div></div></section>';
             finalHTML += '<section id="cadastro"><div class="section-header"><h2 class="section-title">Status de <span class="text-neon">Cadastro</span></h2><p class="section-desc">Confira abaixo quais praças e subpraças estão com cadastro aberto ou fechado no momento.</p></div><div class="grid-container" id="cadastroGrid"><div style="grid-column:1/-1;" class="lazy-loading-hint"><span class="lazy-spin"></span>Carregando status...</div></div></section>';
 
