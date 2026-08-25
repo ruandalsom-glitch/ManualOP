@@ -983,7 +983,7 @@
 
             let infoFetch = { data: [] };
             try {
-                infoFetch = await supabaseClient.from('info').select('*').order('ordem', { ascending: true });
+                infoFetch = await supabaseClient.from('info').select('*');
             } catch(e) {
                 console.log('Sem tabela info no Supabase.');
             }
