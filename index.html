@@ -1280,35 +1280,30 @@
                     var img = c.Imagem_URL || c.imagem_url || '';
                     var link = c.Link || c.link || '';
                     
-                    var imgHTML = img ? '<img src="' + img + '" onclick="abrirZoom(this)" loading="lazy" style="width:100%;height:180px;object-fit:cover;border-radius:14px;margin-bottom:14px;cursor:pointer;" alt="Info Img">' : '';
                     var linkHTML = link ? '<a href="' + link + '" target="_blank" style="display:inline-flex;align-items:center;gap:6px;margin-top:14px;padding:8px 16px;border-radius:10px;background:var(--menta-viva);color:#000;font-weight:700;font-size:12.5px;text-decoration:none;">Saiba Mais ➔</a>' : '';
 
                     if (txtVerso) {
-                        infoCardsHTML += '<div class="flip-card"><div class="flip-card-inner">';
-                        infoCardsHTML += '  <div class="flip-card-front glass-panel" style="display:flex;flex-direction:column;justify-content:space-between;padding:22px;">';
-                        infoCardsHTML += '    <div>';
-                        if (img) infoCardsHTML += imgHTML;
-                        if (tit) infoCardsHTML += '<h3 style="color:#fff;font-weight:800;font-size:17px;margin-bottom:6px;">' + tit + '</h3>';
-                        if (sub) infoCardsHTML += '<p style="color:var(--menta-viva);font-size:13px;font-weight:700;margin-bottom:10px;">' + sub + '</p>';
-                        if (txt) infoCardsHTML += '<p class="text-muted" style="font-size:13.5px;line-height:1.6;">' + txt + '</p>';
-                        infoCardsHTML += '    </div>';
-                        infoCardsHTML += '    <div style="margin-top:14px;font-size:11.5px;color:var(--menta-viva);font-weight:800;display:flex;align-items:center;gap:6px;">🔄 Clique para ver detalhes</div>';
+                        infoCardsHTML += '<div class="flip-card"><div class="flip-inner">';
+                        infoCardsHTML += '  <div class="flip-front glass-panel card-standard">';
+                        if (img) infoCardsHTML += '    <div class="img-container"><img src="' + img + '" loading="lazy" class="responsive-img" onclick="abrirZoom(this)" alt="' + tit + '"></div>';
+                        if (tit) infoCardsHTML += '    <h3 style="margin-top:12px;">' + tit + '</h3>';
+                        if (sub) infoCardsHTML += '    <p style="color:var(--menta-viva);font-size:13px;font-weight:700;margin-bottom:8px;">' + sub + '</p>';
+                        if (txt) infoCardsHTML += '    <p class="promo-text">' + txt + '</p>';
+                        infoCardsHTML += '    <p class="flip-hint">Clique para ver detalhes ↩</p>';
                         infoCardsHTML += '  </div>';
-                        infoCardsHTML += '  <div class="flip-card-back glass-panel" style="display:flex;flex-direction:column;justify-content:space-between;padding:22px;">';
-                        infoCardsHTML += '    <div>';
-                        if (tit) infoCardsHTML += '<h3 style="color:var(--menta-viva);font-weight:800;font-size:17px;margin-bottom:12px;">' + tit + '</h3>';
-                        infoCardsHTML += '      <p style="font-size:13.5px;line-height:1.7;color:var(--azul-gelo);">' + txtVerso + '</p>';
+                        infoCardsHTML += '  <div class="flip-back glass-panel card-standard">';
+                        if (tit) infoCardsHTML += '    <h3>' + tit + '</h3>';
+                        infoCardsHTML += '    <p class="promo-text">' + txtVerso + '</p>';
                         if (linkHTML) infoCardsHTML += linkHTML;
-                        infoCardsHTML += '    </div>';
-                        infoCardsHTML += '    <div style="margin-top:14px;font-size:11.5px;color:rgba(255,255,255,0.6);font-weight:800;display:flex;align-items:center;gap:6px;">🔄 Clique para voltar</div>';
+                        infoCardsHTML += '    <p class="flip-hint">Clique para voltar ↩</p>';
                         infoCardsHTML += '  </div>';
                         infoCardsHTML += '</div></div>';
                     } else {
-                        infoCardsHTML += '<div class="glass-panel card-standard" style="display:flex;flex-direction:column;gap:10px;padding:22px;">';
-                        if (img) infoCardsHTML += imgHTML;
-                        if (tit) infoCardsHTML += '<h3 style="color:#fff;font-weight:800;font-size:17px;">' + tit + '</h3>';
-                        if (sub) infoCardsHTML += '<p style="color:var(--menta-viva);font-size:13px;font-weight:700;">' + sub + '</p>';
-                        if (txt) infoCardsHTML += '<p class="text-muted" style="font-size:13.5px;line-height:1.6;">' + txt + '</p>';
+                        infoCardsHTML += '<div class="glass-panel card-standard" style="display:flex;flex-direction:column;gap:10px;">';
+                        if (img) infoCardsHTML += '  <div class="img-container"><img src="' + img + '" loading="lazy" class="responsive-img" onclick="abrirZoom(this)" alt="' + tit + '"></div>';
+                        if (tit) infoCardsHTML += '  <h3 style="margin-top:8px;">' + tit + '</h3>';
+                        if (sub) infoCardsHTML += '  <p style="color:var(--menta-viva);font-size:13px;font-weight:700;">' + sub + '</p>';
+                        if (txt) infoCardsHTML += '  <p class="promo-text">' + txt + '</p>';
                         if (linkHTML) infoCardsHTML += linkHTML;
                         infoCardsHTML += '</div>';
                     }
