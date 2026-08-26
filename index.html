@@ -1080,7 +1080,7 @@
                     Mapas: mapKeys(ma.data),
                     Cadastro: mapKeys(ca.data),
                     Procedimentos: mapKeys(pe.data),
-                    News: (newsFetch && newsFetch.data) ? mapKeys(newsFetch.data) : null,
+                    News: (newsFetch && newsFetch.data && newsFetch.data.length > 0) ? mapKeys(newsFetch.data) : null,
                     Info: (infoFetch && infoFetch.data) ? mapKeys(infoFetch.data) : []
                 },
                 temAcessoDashboard: true, 
