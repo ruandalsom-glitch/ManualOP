@@ -1210,10 +1210,15 @@
                     var tagColorRaw = (item.tag_color || item.Tag_Color || '').trim().toLowerCase();
                     
                     var knownColors = ['purple', 'green', 'blue', 'red', 'orange', 'yellow', 'cyan'];
-                    var colorClass = knownColors.indexOf(tagColorRaw) !== -1 ? tagColorRaw : (knownColors.indexOf(tagRaw.toLowerCase()) !== -1 ? tagRaw.toLowerCase() : 'purple');
+                    var colorClass = 'purple';
+                    if (tagColorRaw && knownColors.indexOf(tagColorRaw) !== -1) {
+                        colorClass = tagColorRaw;
+                    } else if (tagRaw && knownColors.indexOf(tagRaw.toLowerCase()) !== -1) {
+                        colorClass = tagRaw.toLowerCase();
+                    }
                     var tagClass = 'news-banner-tag ' + colorClass;
                     
-                    var tagTxt = (tagRaw && knownColors.indexOf(tagRaw.toLowerCase()) === -1) ? tagRaw : (item.categoria || item.Categoria || 'DESTAQUE');
+                    var tagTxt = tagRaw ? tagRaw : (item.categoria || item.Categoria || 'DESTAQUE');
                     var catTxt = item.categoria || item.Categoria || 'NOVIDADE';
                     var titTxt = item.titulo || item.Titulo || 'Título da Notícia';
                     var descTxt = item.subtitulo || item.Subtitulo || item.Texto || item.conteudo || '';
