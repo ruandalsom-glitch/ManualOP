@@ -921,8 +921,8 @@
         var imgHTML = imgUrl ? '<img src="' + imgUrl + '" onclick="abrirZoom(\'' + imgUrl + '\')" style="width:100%;height:auto;max-height:500px;border-radius:16px;margin:16px 0;border:1px solid rgba(44, 234, 188, 0.2);display:block;cursor:pointer;" alt="News Img" title="Clique para ampliar" onerror="this.style.display=\'none\'">' : '';
         var pubName = item.publisher || item.Autor || 'MANUAL OP';
         var catTxt = item.categoria || item.Categoria || 'Novidade';
-        var rawDate = (item.data !== undefined && item.data !== null && String(item.data).trim() !== '') ? item.data : ((item.Data !== undefined && item.Data !== null && String(item.Data).trim() !== '') ? item.Data : (item.data_postagem || item.Data_Postagem));
-        var dateTxt = rawDate ? formatarDataNews(rawDate) : formatarDataNews(item.created_at || item.data);
+        var rawDate = (item.data !== undefined && item.data !== null && String(item.data).trim() !== '') ? item.data : ((item.Data !== undefined && item.Data !== null && String(item.Data).trim() !== '') ? item.Data : (item.data_postagem || item.Data_Postagem || item.created_at));
+        var dateTxt = formatarDataNews(rawDate);
         var subTxt = item.subtitulo || item.Subtitulo || '';
         var contentTxt = (item.conteudo || item.Texto || subTxt || '').replace(/\n|\r\n/g, '<br><br>');
         var titTxt = item.titulo || item.Titulo || 'Novidade';
@@ -1208,8 +1208,8 @@
                     var titTxt = item.titulo || item.Titulo || 'Título da Notícia';
                     var descTxt = item.subtitulo || item.Subtitulo || item.Texto || item.conteudo || '';
                     var imgUrl = item.imagem_url || item.Imagem_URL || '';
-                    var rawDate = (item.data !== undefined && item.data !== null && String(item.data).trim() !== '') ? item.data : ((item.Data !== undefined && item.Data !== null && String(item.Data).trim() !== '') ? item.Data : (item.data_postagem || item.Data_Postagem));
-                    var dateTxt = rawDate ? formatarDataNews(rawDate) : formatarDataNews(item.created_at || item.data);
+                    var rawDate = (item.data !== undefined && item.data !== null && String(item.data).trim() !== '') ? item.data : ((item.Data !== undefined && item.Data !== null && String(item.Data).trim() !== '') ? item.Data : (item.data_postagem || item.Data_Postagem || item.created_at));
+                    var dateTxt = formatarDataNews(rawDate);
                     
                     finalHTML += '<div class="news-card-column" data-cat="' + catTxt + '">';
                     finalHTML += '  <div class="news-publisher-bar">';
@@ -2191,7 +2191,7 @@
 
     /* HAMBURGER */
     function toggleMobileNav(){ var btn=document.getElementById('hamburgerBtn'); var nav=document.getElementById('mobileNav'); var isOpen=btn.classList.toggle('open'); if(isOpen) nav.classList.add('open'); else nav.classList.remove('open'); }
-    function buildMobileNav(){ var nav=document.getElementById('mobileNav'); var links=document.querySelectorAll('#mainMenu a'); nav.innerHTML=''; links.forEach(function(a){ var c=a.cloneNode(true); c.addEventListener('click',function(){ document.getElementById('hamburgerBtn').classList.remove('open'); nav.classList.remove('open'); }); nav.appendChild(c); }); }
+    function buildMobileNav(){ var nav=document.getElementById('mobileNav'); var links=document.querySelectorAll('#mainMenu a, #mainMenu .menu-submenu a'); nav.innerHTML=''; links.forEach(function(a){ var c=a.cloneNode(true); c.addEventListener('click',function(){ document.getElementById('hamburgerBtn').classList.remove('open'); nav.classList.remove('open'); }); nav.appendChild(c); }); }
     document.addEventListener('click',function(e){ var nav=document.getElementById('mobileNav'); var btn=document.getElementById('hamburgerBtn'); if(nav&&nav.classList.contains('open')&&!nav.contains(e.target)&&!btn.contains(e.target)){ nav.classList.remove('open'); btn.classList.remove('open'); } });
 
     /* SKELETON */
