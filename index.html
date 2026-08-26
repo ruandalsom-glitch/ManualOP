@@ -860,19 +860,25 @@
 
     function formatarDataNews(dStr) {
         if (!dStr) return 'Recente';
-        if (typeof dStr === 'string') {
-            var trimmed = dStr.trim();
-            if (!trimmed) return 'Recente';
-            if (trimmed.includes('/') || trimmed.includes(':') || trimmed.includes('Há') || trimmed.includes('Ontem') || trimmed.includes('Hoje')) {
-                return trimmed;
-            }
+        var str = String(dStr).trim();
+        if (!str) return 'Recente';
+        
+        // Se for string no formato YYYY-MM-DD pura da planilha
+        if (/^\d{4}-\d{2}-\d{2}$/.test(str)) {
+            var parts = str.split('-');
+            return parts[2] + '/' + parts[1];
         }
+        
+        if (str.includes('/') && !str.includes(':')) {
+            return str;
+        }
+
         try {
             var d = new Date(dStr);
-            if (isNaN(d.getTime())) return String(dStr);
-            return d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+            if (isNaN(d.getTime())) return str;
+            return d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', timeZone: 'UTC' });
         } catch(e) {
-            return String(dStr);
+            return str;
         }
     }
 
@@ -1053,7 +1059,7 @@
                     for(let k in obj) {
                         n[k] = obj[k];
                         let mapped = keyMap[k.toLowerCase().trim()] || (k.charAt(0).toUpperCase() + k.slice(1));
-                        n[mapped] = obj[k] !== null ? obj[k] : '';
+                        n[mapped] = (obj[k] !== null && obj[k] !== undefined) ? obj[k] : '';
                     }
                     return n;
                 });
