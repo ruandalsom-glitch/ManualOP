@@ -816,6 +816,7 @@
     <script>
     var dadosPromocoes = [], pracasDisponiveis = [], dadosDedicado = [];
     var modaisDisponiveis = [], dadosMapas = [], pracasMapasDisponiveis = [], dadosMetricas = [];
+    var dadosInfo = [], pracasInfoDisponiveis = [];
 
     // --- SEÇÃO NEWS / NOVIDADES (ESTILO GOOGLE NEWS) ---
     var fallbackNews = [
@@ -1312,50 +1313,25 @@
             finalHTML += '<section id="dedicado"><div class="section-header"><h2 class="section-title">Frota <span class="text-neon">Estratégica</span></h2></div><div class="praca-selector" id="modalSelector" style="margin-bottom:18px;min-height:48px;"></div><div id="dedicadoContent"><div class="lazy-loading-hint"><span class="lazy-spin"></span>Carregando frota...</div></div></section>';
 
             if (dados.Info && dados.Info.length > 0) {
-                var infoCardsHTML = '';
+                dadosInfo = dados.Info;
+                pracasInfoDisponiveis = [];
                 dados.Info.forEach(function(c) {
                     var isAtivo = (c.Ativo || c.ativo || 'SIM').toString().toUpperCase();
                     if (isAtivo === 'NÃO' || isAtivo === 'NAO' || isAtivo === 'FALSE') return;
-                    
-                    var tit = c.Titulo || c.titulo || '';
-                    var sub = c.Subtitulo || c.subtitulo || '';
-                    var txt = (c.Texto || c.texto || '').replace(/\n|\r\n/g, '<br>');
-                    var txtVerso = (c.Texto_Verso || c.texto_verso || '').replace(/\n|\r\n/g, '<br>');
-                    var img = c.Imagem_URL || c.imagem_url || '';
-                    var link = c.Link || c.link || '';
-                    
-                    var linkHTML = link ? '<a href="' + link + '" target="_blank" style="display:inline-flex;align-items:center;gap:6px;margin-top:14px;padding:8px 16px;border-radius:10px;background:var(--menta-viva);color:#000;font-weight:700;font-size:12.5px;text-decoration:none;">Saiba Mais ➔</a>' : '';
-
-                    if (txtVerso) {
-                        infoCardsHTML += '<div class="flip-card"><div class="flip-inner">';
-                        infoCardsHTML += '  <div class="flip-front glass-panel card-standard">';
-                        if (img) infoCardsHTML += '    <div class="img-container"><img src="' + img + '" loading="lazy" class="responsive-img" onclick="abrirZoom(this)" alt="' + tit + '"></div>';
-                        if (tit) infoCardsHTML += '    <h3 style="margin-top:12px;">' + tit + '</h3>';
-                        if (sub) infoCardsHTML += '    <p style="color:var(--menta-viva);font-size:13px;font-weight:700;margin-bottom:8px;">' + sub + '</p>';
-                        if (txt) infoCardsHTML += '    <p class="promo-text">' + txt + '</p>';
-                        infoCardsHTML += '    <p class="flip-hint">Clique para ver detalhes ↩</p>';
-                        infoCardsHTML += '  </div>';
-                        infoCardsHTML += '  <div class="flip-back glass-panel card-standard">';
-                        if (tit) infoCardsHTML += '    <h3>' + tit + '</h3>';
-                        infoCardsHTML += '    <p class="promo-text">' + txtVerso + '</p>';
-                        if (linkHTML) infoCardsHTML += linkHTML;
-                        infoCardsHTML += '    <p class="flip-hint">Clique para voltar ↩</p>';
-                        infoCardsHTML += '  </div>';
-                        infoCardsHTML += '</div></div>';
-                    } else {
-                        infoCardsHTML += '<div class="glass-panel card-standard" style="display:flex;flex-direction:column;gap:10px;">';
-                        if (img) infoCardsHTML += '  <div class="img-container"><img src="' + img + '" loading="lazy" class="responsive-img" onclick="abrirZoom(this)" alt="' + tit + '"></div>';
-                        if (tit) infoCardsHTML += '  <h3 style="margin-top:8px;">' + tit + '</h3>';
-                        if (sub) infoCardsHTML += '  <p style="color:var(--menta-viva);font-size:13px;font-weight:700;">' + sub + '</p>';
-                        if (txt) infoCardsHTML += '  <p class="promo-text">' + txt + '</p>';
-                        if (linkHTML) infoCardsHTML += linkHTML;
-                        infoCardsHTML += '</div>';
-                    }
+                    var pr = (c.Praca || c.praca || '').trim();
+                    if (pr && pracasInfoDisponiveis.indexOf(pr) === -1) pracasInfoDisponiveis.push(pr);
                 });
 
-                if (infoCardsHTML) {
-                    finalHTML += '<section id="info"><div class="section-header"><h2 class="section-title">Informações <span class="text-neon">Operacionais</span></h2><p class="section-desc">Central de avisos, orientações e informações da frota</p></div><div class="grid-container">' + infoCardsHTML + '</div></section>';
+                var selInfoHTML = '';
+                if (pracasInfoDisponiveis.length > 0) {
+                    selInfoHTML = '<div class="praca-selector" id="infoPracaSelector">';
+                    pracasInfoDisponiveis.forEach(function(praca, idx) {
+                        selInfoHTML += '<button class="praca-btn' + (idx === 0 ? ' active' : '') + '" onclick="selecionarInfoPraca(this,\'' + praca.replace(/'/g, "\\'") + '\')">' + praca + '</button>';
+                    });
+                    selInfoHTML += '</div>';
                 }
+
+                finalHTML += '<section id="info"><div class="section-header"><h2 class="section-title">Informações <span class="text-neon">Operacionais</span></h2><p class="section-desc">Central de avisos, orientações e informações da frota</p></div>' + selInfoHTML + '<div id="infoContent"><div class="grid-container"></div></div></section>';
             }
             finalHTML += '<section id="mapas"><div class="section-header"><h2 class="section-title">Nossos <span class="text-neon">Mapas</span></h2><p class="section-desc">Passe o mouse no menu abaixo para selecionar sua praça e região</p></div><div style="text-align:center;margin-bottom:40px;position:relative;z-index:50;"><div class="mapa-master-dropdown" onmouseenter="this.classList.add(\'hover-lock\')" onmouseleave="this.classList.remove(\'hover-lock\')"><button class="mapa-master-btn">Mapas</button><div class="mapa-lv1-menu"></div></div></div><div id="mapasContent"><div class="lazy-loading-hint"><span class="lazy-spin"></span>Carregando mapas...</div></div></section>';
             finalHTML += '<section id="cadastro"><div class="section-header"><h2 class="section-title">Status de <span class="text-neon">Cadastro</span></h2><p class="section-desc">Confira abaixo quais praças e subpraças estão com cadastro aberto ou fechado no momento.</p></div><div class="grid-container" id="cadastroGrid"><div style="grid-column:1/-1;" class="lazy-loading-hint"><span class="lazy-spin"></span>Carregando status...</div></div></section>';
@@ -1405,6 +1381,7 @@
                 : function(fn){ setTimeout(fn,50); };
 
             idle(function(){ if(pracasDisponiveis.length>0) renderPromosPraca(pracasDisponiveis[0]); });
+            idle(function(){ if(pracasInfoDisponiveis.length>0) renderInfoPraca(pracasInfoDisponiveis[0]); else if(dadosInfo.length>0) renderInfoPraca('TODAS'); });
             idle(function(){ ativarFlip(); aplicarZoomNasImagens(); });
 
             /* FIX 2: links de gestão usam classe, não style inline fixo */
@@ -1896,6 +1873,71 @@
             });
         }
         container.innerHTML = html;
+    }
+
+    function selecionarInfoPraca(btn, praca) {
+        document.querySelectorAll('#infoPracaSelector .praca-btn').forEach(function(b){ b.classList.remove('active'); });
+        if(btn) btn.classList.add('active');
+        renderInfoPraca(praca);
+    }
+
+    function renderInfoPraca(praca) {
+        var container = document.getElementById('infoContent');
+        if(!container) return;
+        
+        var itens = (praca === 'TODAS') ? dadosInfo : dadosInfo.filter(function(c){
+            var p = (c.Praca || c.praca || '').trim();
+            return p.toLowerCase() === praca.toLowerCase();
+        });
+        
+        var infoCardsHTML = '';
+        itens.forEach(function(c) {
+            var isAtivo = (c.Ativo || c.ativo || 'SIM').toString().toUpperCase();
+            if (isAtivo === 'NÃO' || isAtivo === 'NAO' || isAtivo === 'FALSE') return;
+            
+            var tit = c.Titulo || c.titulo || '';
+            var sub = c.Subtitulo || c.subtitulo || '';
+            var txt = (c.Texto || c.texto || '').replace(/\n|\r\n/g, '<br>');
+            var txtVerso = (c.Texto_Verso || c.texto_verso || '').replace(/\n|\r\n/g, '<br>');
+            var img = c.Imagem_URL || c.imagem_url || '';
+            var link = c.Link || c.link || '';
+            
+            var linkHTML = link ? '<a href="' + link + '" target="_blank" style="display:inline-flex;align-items:center;gap:6px;margin-top:14px;padding:8px 16px;border-radius:10px;background:var(--menta-viva);color:#000;font-weight:700;font-size:12.5px;text-decoration:none;">Saiba Mais ➔</a>' : '';
+
+            if (txtVerso) {
+                infoCardsHTML += '<div class="flip-card"><div class="flip-inner">';
+                infoCardsHTML += '  <div class="flip-front glass-panel card-standard">';
+                if (img) infoCardsHTML += '    <div class="img-container"><img src="' + img + '" loading="lazy" class="responsive-img" onclick="abrirZoom(this)" alt="' + tit + '"></div>';
+                if (tit) infoCardsHTML += '    <h3 style="margin-top:12px;">' + tit + '</h3>';
+                if (sub) infoCardsHTML += '    <p style="color:var(--menta-viva);font-size:13px;font-weight:700;margin-bottom:8px;">' + sub + '</p>';
+                if (txt) infoCardsHTML += '    <p class="promo-text">' + txt + '</p>';
+                infoCardsHTML += '    <p class="flip-hint">Clique para ver detalhes ↩</p>';
+                infoCardsHTML += '  </div>';
+                infoCardsHTML += '  <div class="flip-back glass-panel card-standard">';
+                if (tit) infoCardsHTML += '    <h3>' + tit + '</h3>';
+                infoCardsHTML += '    <p class="promo-text">' + txtVerso + '</p>';
+                if (linkHTML) infoCardsHTML += linkHTML;
+                infoCardsHTML += '    <p class="flip-hint">Clique para voltar ↩</p>';
+                infoCardsHTML += '  </div>';
+                infoCardsHTML += '</div></div>';
+            } else {
+                infoCardsHTML += '<div class="glass-panel card-standard" style="display:flex;flex-direction:column;gap:10px;">';
+                if (img) infoCardsHTML += '  <div class="img-container"><img src="' + img + '" loading="lazy" class="responsive-img" onclick="abrirZoom(this)" alt="' + tit + '"></div>';
+                if (tit) infoCardsHTML += '  <h3 style="margin-top:8px;">' + tit + '</h3>';
+                if (sub) infoCardsHTML += '  <p style="color:var(--menta-viva);font-size:13px;font-weight:700;">' + sub + '</p>';
+                if (txt) infoCardsHTML += '  <p class="promo-text">' + txt + '</p>';
+                if (linkHTML) infoCardsHTML += linkHTML;
+                infoCardsHTML += '</div>';
+            }
+        });
+
+        if (infoCardsHTML) {
+            container.innerHTML = '<div class="grid-container">' + infoCardsHTML + '</div>';
+        } else {
+            container.innerHTML = '<p style="text-align:center;color:var(--azul-gelo);font-size:15px;padding:40px 0;">Nenhuma informação disponível para esta praça.</p>';
+        }
+        ativarFlip();
+        aplicarZoomNasImagens();
     }
 
     function selecionarPraca(btn, praca) { document.querySelectorAll('#pracaSelector .praca-btn').forEach(function(b){ b.classList.remove('active'); }); if(btn) btn.classList.add('active'); renderPromosPraca(praca); }
