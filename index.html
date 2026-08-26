@@ -682,6 +682,11 @@
         .news-banner-tag { background: rgba(44, 103, 234, 0.4); color: #fff; font-size: 10.5px; font-weight: 800; letter-spacing: 0.8px; text-transform: uppercase; padding: 5px 12px; border-radius: 8px; display: inline-block; align-self: flex-start; border: 1px solid rgba(44, 103, 234, 0.3); }
         .news-banner-tag.purple { background: rgba(168, 85, 247, 0.35); border-color: rgba(168, 85, 247, 0.5); color: #e9d5ff; }
         .news-banner-tag.green { background: rgba(44, 234, 188, 0.2); border-color: rgba(44, 234, 188, 0.4); color: var(--menta-viva); }
+        .news-banner-tag.blue { background: rgba(44, 103, 234, 0.35); border-color: rgba(44, 103, 234, 0.55); color: #b4e4ff; }
+        .news-banner-tag.red { background: rgba(234, 29, 44, 0.3); border-color: rgba(234, 29, 44, 0.5); color: #ffb4b4; }
+        .news-banner-tag.orange { background: rgba(249, 115, 22, 0.3); border-color: rgba(249, 115, 22, 0.5); color: #ffedd5; }
+        .news-banner-tag.yellow { background: rgba(234, 179, 8, 0.3); border-color: rgba(234, 179, 8, 0.5); color: #fef08a; }
+        .news-banner-tag.cyan { background: rgba(6, 182, 212, 0.3); border-color: rgba(6, 182, 212, 0.5); color: #cffafe; }
         
         .news-item { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.06); cursor: pointer; transition: opacity 0.2s ease, transform 0.2s ease; }
         .news-item:first-of-type { border-top: none; padding-top: 0; }
@@ -1204,7 +1209,7 @@
                     var tagRaw = (item.tag || item.Tag || '').trim();
                     var tagColorRaw = (item.tag_color || item.Tag_Color || '').trim().toLowerCase();
                     
-                    var knownColors = ['purple', 'green', 'blue'];
+                    var knownColors = ['purple', 'green', 'blue', 'red', 'orange', 'yellow', 'cyan'];
                     var colorClass = knownColors.indexOf(tagColorRaw) !== -1 ? tagColorRaw : (knownColors.indexOf(tagRaw.toLowerCase()) !== -1 ? tagRaw.toLowerCase() : 'purple');
                     var tagClass = 'news-banner-tag ' + colorClass;
                     
