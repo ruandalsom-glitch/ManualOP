@@ -11,6 +11,7 @@
     { "src": "/api/metricas_coleta", "dest": "api/metricas_coleta.py" },
     { "src": "/api/pedidos", "dest": "api/pedidos.py" },
     { "src": "/api", "dest": "api/metricas_coleta.py" },
+    { "src": "/garantido", "dest": "/garantido.html" },
     { "src": "/(.*)", "dest": "/$1" }
   ]
 }
