@@ -668,8 +668,11 @@
         @media (max-width: 1080px) { .news-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 680px) { .news-grid { grid-template-columns: 1fr; } }
         
-        .news-card-column { background: rgba(11, 19, 48, 0.78); border: 1px solid rgba(44, 234, 188, 0.2); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; gap: 16px; backdrop-filter: blur(12px); box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4); transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease; }
+        .news-card-column { background: rgba(11, 19, 48, 0.78); border: 1px solid rgba(44, 234, 188, 0.2); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; gap: 16px; backdrop-filter: blur(12px); box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4); transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease; position: relative; }
         .news-card-column:hover { border-color: rgba(44, 234, 188, 0.5); transform: translateY(-4px); box-shadow: 0 16px 44px rgba(0, 0, 0, 0.5), 0 0 20px rgba(44, 234, 188, 0.15); }
+        .news-card-column.is-today { border-color: rgba(44, 234, 188, 0.6); background: linear-gradient(145deg, rgba(13, 28, 70, 0.88), rgba(11, 19, 48, 0.85)); box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4), 0 0 25px rgba(44, 234, 188, 0.18); }
+        .news-today-badge { position: absolute; top: -10px; right: 18px; background: linear-gradient(90deg, #2ceabc, #00b4d8); color: #04081c; font-size: 10px; font-weight: 900; letter-spacing: 0.8px; padding: 3px 10px; border-radius: 999px; text-transform: uppercase; box-shadow: 0 4px 12px rgba(44, 234, 188, 0.4); animation: pulseGlow 2s infinite alternate; }
+        @keyframes pulseGlow { 0% { box-shadow: 0 0 8px rgba(44, 234, 188, 0.4); } 100% { box-shadow: 0 0 18px rgba(44, 234, 188, 0.8); } }
         
         .news-publisher-bar { display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
         .news-publisher-info { display: flex; align-items: center; gap: 10px; }
@@ -1172,6 +1175,32 @@
 
             // ── SEÇÃO NEWS / NOVIDADES (ESTILO GOOGLE NEWS) ─────────────────
             var newsData = (dados.News !== null && dados.News !== undefined) ? dados.News : fallbackNews;
+            
+            // Auxiliar para obter timestamp da notícia (data da planilha ou created_at)
+            function getNewsTimestamp(item) {
+                var dVal = (item.data !== undefined && item.data !== null && String(item.data).trim() !== '') ? item.data : ((item.Data !== undefined && item.Data !== null && String(item.Data).trim() !== '') ? item.Data : (item.data_postagem || item.Data_Postagem || item.created_at));
+                if (!dVal) return 0;
+                var str = String(dVal).trim();
+                // Se for YYYY-MM-DD
+                if (/^\d{4}-\d{2}-\d{2}$/.test(str)) {
+                    var p = str.split('-');
+                    return new Date(parseInt(p[0]), parseInt(p[1]) - 1, parseInt(p[2])).getTime();
+                }
+                // Se for DD/MM
+                if (/^\d{1,2}\/\d{1,2}$/.test(str)) {
+                    var p2 = str.split('/');
+                    var anoAtual = new Date().getFullYear();
+                    return new Date(anoAtual, parseInt(p2[1]) - 1, parseInt(p2[0])).getTime();
+                }
+                var parsed = new Date(str).getTime();
+                return isNaN(parsed) ? 0 : parsed;
+            }
+
+            // Ordena as notícias da MAIS RECENTE para a MAIS ANTIGA
+            newsData.sort(function(a, b) {
+                return getNewsTimestamp(b) - getNewsTimestamp(a);
+            });
+
             dadosNewsGlobal = newsData;
             
             finalHTML += '<section id="news">';
@@ -1203,6 +1232,10 @@
                 
                 finalHTML += '  <div class="news-grid" id="newsGrid">';
                 
+                // Data de hoje formatada (DD/MM) para conferência de destaque
+                var hojeObj = new Date();
+                var hojeStr = String(hojeObj.getDate()).padStart(2, '0') + '/' + String(hojeObj.getMonth() + 1).padStart(2, '0');
+
                 newsData.forEach(function(item, idx) {
                     var pubLogo = item.publisher_logo || item.Publisher_Logo || 'https://i.imgur.com/ZEox7rf.png';
                     var pubName = item.publisher || item.Publisher || item.Autor || 'MANUAL OP';
@@ -1227,7 +1260,12 @@
                     var rawDate = (item.data !== undefined && item.data !== null && String(item.data).trim() !== '') ? item.data : ((item.Data !== undefined && item.Data !== null && String(item.Data).trim() !== '') ? item.Data : (item.data_postagem || item.Data_Postagem || item.created_at));
                     var dateTxt = formatarDataNews(rawDate);
                     
-                    finalHTML += '<div class="news-card-column" data-cat="' + catTxt + '">';
+                    var isHoje = (dateTxt === hojeStr);
+                    var extraColClass = isHoje ? ' is-today' : '';
+                    var badgeHoje = isHoje ? '<div class="news-today-badge">🔥 PUBLICADO HOJE</div>' : '';
+
+                    finalHTML += '<div class="news-card-column' + extraColClass + '" data-cat="' + catTxt + '">';
+                    finalHTML += badgeHoje;
                     finalHTML += '  <div class="news-publisher-bar">';
                     finalHTML += '    <div class="news-publisher-info">';
                     finalHTML += '      <img src="' + pubLogo + '" class="news-publisher-logo" alt="Logo" onerror="this.src=\'https://i.imgur.com/ZEox7rf.png\'">';
