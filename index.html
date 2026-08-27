@@ -1085,7 +1085,9 @@
             // Anexa as curtidas aos itens de notícias
             if (newsFetch && newsFetch.data) {
                 newsFetch.data.forEach(function(item) {
-                    var nId = item.id || item.UUID || item.uuid || ((item.categoria || item.Categoria || 'Novidade') + '_' + (item.titulo || item.Titulo || '')).replace(/\s+/g, '_');
+                    var catTxt = item.categoria || item.Categoria || 'NOVIDADE';
+                    var titTxt = item.titulo || item.Titulo || 'Título da Notícia';
+                    var nId = item.id || item.UUID || item.uuid || (catTxt + '_' + titTxt).replace(/\s+/g, '_');
                     if (newsLikesMap[nId] !== undefined) {
                         item.curtidas = newsLikesMap[nId];
                     }
@@ -1331,7 +1333,7 @@
                     
                     var userLikesObj = getLikesObj();
                     var isUserLiked = !!userLikesObj[newsId];
-                    var currentLikesCount = isUserLiked ? (baseLikes + 1) : baseLikes;
+                    var currentLikesCount = baseLikes;
                     var likeBtnClass = isUserLiked ? 'btn-like liked' : 'btn-like';
                     var heartIcon = isUserLiked ? '❤️' : '🤍';
 
