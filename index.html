@@ -900,29 +900,45 @@
         } catch(e) { return {}; }
     }
 
-    function toggleCurtida(btn, evt, newsId, baseCount) {
+    async function toggleCurtida(btn, evt, newsId, currentLikes) {
         if (evt) evt.stopPropagation();
         var likesObj = getLikesObj();
         var isLiked = !!likesObj[newsId];
         
-        var currentCount = parseInt(baseCount || '0', 10);
-        if (isNaN(currentCount)) currentCount = 0;
+        var delta = isLiked ? -1 : 1;
+        var countSpan = btn.querySelector('.like-count');
+        var nowCount = parseInt(countSpan ? countSpan.innerText : '0', 10);
+        if (isNaN(nowCount)) nowCount = 0;
 
+        // Atualização Otimista na Interface para ser super veloz
         if (isLiked) {
             delete likesObj[newsId];
-            currentCount = Math.max(0, currentCount);
+            nowCount = Math.max(0, nowCount - 1);
             btn.classList.remove('liked');
-            btn.innerHTML = '<span class="heart-icon">🤍</span> <span class="like-count">' + currentCount + '</span>';
+            btn.innerHTML = '<span class="heart-icon">🤍</span> <span class="like-count">' + nowCount + '</span>';
         } else {
             likesObj[newsId] = true;
-            currentCount = currentCount + 1;
+            nowCount = nowCount + 1;
             btn.classList.add('liked');
-            btn.innerHTML = '<span class="heart-icon">❤️</span> <span class="like-count">' + currentCount + '</span>';
+            btn.innerHTML = '<span class="heart-icon">❤️</span> <span class="like-count">' + nowCount + '</span>';
         }
-        
+
         try {
             localStorage.setItem('manualop_news_likes', JSON.stringify(likesObj));
         } catch(e){}
+
+        // Envia a curtida em tempo real para o Supabase
+        try {
+            const { data, error } = await supabaseClient.rpc('increment_like', {
+                target_news_id: String(newsId),
+                delta: delta
+            });
+            if (!error && data !== null && data !== undefined) {
+                if (countSpan) countSpan.innerText = data;
+            }
+        } catch(e) {
+            console.error('Erro ao enviar curtida para Supabase:', e);
+        }
     }
 
     function filtrarNoticias(chipBtn, categoria) {
@@ -1052,6 +1068,28 @@
                 infoFetch = await supabaseClient.from('info').select('*');
             } catch(e) {
                 console.log('Sem tabela info no Supabase.');
+            }
+
+            let newsLikesMap = {};
+            try {
+                const { data: likesData } = await supabaseClient.from('news_likes').select('news_id, likes_count');
+                if (likesData && likesData.length > 0) {
+                    likesData.forEach(function(l) {
+                        newsLikesMap[l.news_id] = l.likes_count;
+                    });
+                }
+            } catch(e) {
+                console.log('Sem dados de news_likes ainda.');
+            }
+
+            // Anexa as curtidas aos itens de notícias
+            if (newsFetch && newsFetch.data) {
+                newsFetch.data.forEach(function(item) {
+                    var nId = item.id || item.UUID || item.uuid || ((item.categoria || item.Categoria || 'Novidade') + '_' + (item.titulo || item.Titulo || '')).replace(/\s+/g, '_');
+                    if (newsLikesMap[nId] !== undefined) {
+                        item.curtidas = newsLikesMap[nId];
+                    }
+                });
             }
 
             const [hc, el, pr, de, ma, ca, pe] = await Promise.all([
@@ -1288,8 +1326,8 @@
                     var badgeHoje = isHoje ? '<div class="news-today-badge">🔥 PUBLICADO HOJE</div>' : '';
 
                     var newsId = item.id || item.UUID || item.uuid || (catTxt + '_' + titTxt).replace(/\s+/g, '_');
-                    var baseLikes = parseInt(item.curtidas || item.Curtidas || item.likes || item.Likes || '12', 10);
-                    if (isNaN(baseLikes)) baseLikes = 12;
+                    var baseLikes = parseInt(item.curtidas || item.Curtidas || item.likes || item.Likes || '0', 10);
+                    if (isNaN(baseLikes)) baseLikes = 0;
                     
                     var userLikesObj = getLikesObj();
                     var isUserLiked = !!userLikesObj[newsId];
