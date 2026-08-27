@@ -679,8 +679,11 @@
         .news-publisher-logo { width: 28px; height: 28px; border-radius: 6px; object-fit: contain; background: rgba(255,255,255,0.06); padding: 2px; }
         .news-publisher-name { font-weight: 800; font-size: 13.5px; letter-spacing: 0.5px; color: #fff; text-transform: uppercase; }
         
-        .btn-follow { display: inline-flex; align-items: center; gap: 5px; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 999px; padding: 5px 14px; color: #fff; font-size: 11.5px; font-weight: 700; cursor: pointer; transition: all 0.2s ease; }
-        .btn-follow:hover, .btn-follow.following { background: var(--menta-viva); color: #000; border-color: var(--menta-viva); }
+        .btn-like { display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 999px; padding: 4px 12px; color: var(--azul-gelo); font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.2s cubic-bezier(.4,0,.2,1); user-select: none; }
+        .btn-like:hover { background: rgba(234, 44, 85, 0.15); border-color: rgba(234, 44, 85, 0.4); color: #ff7b93; transform: scale(1.05); }
+        .btn-like.liked { background: rgba(234, 44, 85, 0.22); border-color: #ea2c55; color: #ff4b72; box-shadow: 0 0 12px rgba(234, 44, 85, 0.35); }
+        .btn-like.liked .heart-icon { animation: heartPop 0.4s cubic-bezier(.17,.89,.32,1.28); }
+        @keyframes heartPop { 0% { transform: scale(1); } 50% { transform: scale(1.4); } 100% { transform: scale(1); } }
         
         .news-banner-tag { background: rgba(44, 103, 234, 0.4); color: #fff; font-size: 10.5px; font-weight: 800; letter-spacing: 0.8px; text-transform: uppercase; padding: 5px 12px; border-radius: 8px; display: inline-block; align-self: flex-start; border: 1px solid rgba(44, 103, 234, 0.3); }
         .news-banner-tag.purple { background: rgba(168, 85, 247, 0.35); border-color: rgba(168, 85, 247, 0.5); color: #e9d5ff; }
@@ -891,15 +894,35 @@
         }
     }
 
-    function toggleSeguir(btn, evt) {
+    function getLikesObj() {
+        try {
+            return JSON.parse(localStorage.getItem('manualop_news_likes') || '{}');
+        } catch(e) { return {}; }
+    }
+
+    function toggleCurtida(btn, evt, newsId, baseCount) {
         if (evt) evt.stopPropagation();
-        if (btn.classList.contains('following')) {
-            btn.classList.remove('following');
-            btn.innerHTML = '☆ Seguir';
+        var likesObj = getLikesObj();
+        var isLiked = !!likesObj[newsId];
+        
+        var currentCount = parseInt(baseCount || '0', 10);
+        if (isNaN(currentCount)) currentCount = 0;
+
+        if (isLiked) {
+            delete likesObj[newsId];
+            currentCount = Math.max(0, currentCount);
+            btn.classList.remove('liked');
+            btn.innerHTML = '<span class="heart-icon">🤍</span> <span class="like-count">' + currentCount + '</span>';
         } else {
-            btn.classList.add('following');
-            btn.innerHTML = '★ Seguindo';
+            likesObj[newsId] = true;
+            currentCount = currentCount + 1;
+            btn.classList.add('liked');
+            btn.innerHTML = '<span class="heart-icon">❤️</span> <span class="like-count">' + currentCount + '</span>';
         }
+        
+        try {
+            localStorage.setItem('manualop_news_likes', JSON.stringify(likesObj));
+        } catch(e){}
     }
 
     function filtrarNoticias(chipBtn, categoria) {
@@ -1264,6 +1287,16 @@
                     var extraColClass = isHoje ? ' is-today' : '';
                     var badgeHoje = isHoje ? '<div class="news-today-badge">🔥 PUBLICADO HOJE</div>' : '';
 
+                    var newsId = item.id || item.UUID || item.uuid || (catTxt + '_' + titTxt).replace(/\s+/g, '_');
+                    var baseLikes = parseInt(item.curtidas || item.Curtidas || item.likes || item.Likes || '12', 10);
+                    if (isNaN(baseLikes)) baseLikes = 12;
+                    
+                    var userLikesObj = getLikesObj();
+                    var isUserLiked = !!userLikesObj[newsId];
+                    var currentLikesCount = isUserLiked ? (baseLikes + 1) : baseLikes;
+                    var likeBtnClass = isUserLiked ? 'btn-like liked' : 'btn-like';
+                    var heartIcon = isUserLiked ? '❤️' : '🤍';
+
                     finalHTML += '<div class="news-card-column' + extraColClass + '" data-cat="' + catTxt + '">';
                     finalHTML += badgeHoje;
                     finalHTML += '  <div class="news-publisher-bar">';
@@ -1271,6 +1304,7 @@
                     finalHTML += '      <img src="' + pubLogo + '" class="news-publisher-logo" alt="Logo" onerror="this.src=\'https://i.imgur.com/ZEox7rf.png\'">';
                     finalHTML += '      <span class="news-publisher-name">' + pubName + '</span>';
                     finalHTML += '    </div>';
+                    finalHTML += '    <button class="' + likeBtnClass + '" onclick="toggleCurtida(this, event, \'' + newsId.toString().replace(/'/g, "\\'") + '\', ' + baseLikes + ')"><span class="heart-icon">' + heartIcon + '</span> <span class="like-count">' + currentLikesCount + '</span></button>';
                     finalHTML += '  </div>';
                     
                     finalHTML += '  <div class="' + tagClass + '">' + tagTxt + '</div>';
