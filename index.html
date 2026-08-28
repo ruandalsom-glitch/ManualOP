@@ -1085,9 +1085,11 @@
             // Anexa as curtidas aos itens de notícias
             if (newsFetch && newsFetch.data) {
                 newsFetch.data.forEach(function(item) {
-                    var catTxt = item.categoria || item.Categoria || 'NOVIDADE';
-                    var titTxt = item.titulo || item.Titulo || 'Título da Notícia';
-                    var nId = item.id || item.UUID || item.uuid || (catTxt + '_' + titTxt).replace(/\s+/g, '_');
+                    var catTxt = (item.categoria || item.Categoria || 'NOVIDADE').trim();
+                    var titTxt = (item.titulo || item.Titulo || 'Título da Notícia').trim();
+                    var rawId = item.id || item.UUID || item.uuid || (catTxt + '_' + titTxt);
+                    var nId = String(rawId).trim().replace(/\s+/g, '_');
+                    item._news_calculated_id = nId;
                     if (newsLikesMap[nId] !== undefined) {
                         item.curtidas = newsLikesMap[nId];
                     }
@@ -1327,7 +1329,7 @@
                     var extraColClass = isHoje ? ' is-today' : '';
                     var badgeHoje = isHoje ? '<div class="news-today-badge">🔥 PUBLICADO HOJE</div>' : '';
 
-                    var newsId = item.id || item.UUID || item.uuid || (catTxt + '_' + titTxt).replace(/\s+/g, '_');
+                    var newsId = item._news_calculated_id || item.id || item.UUID || item.uuid || (catTxt + '_' + titTxt).trim().replace(/\s+/g, '_');
                     var baseLikes = parseInt(item.curtidas || item.Curtidas || item.likes || item.Likes || '0', 10);
                     if (isNaN(baseLikes)) baseLikes = 0;
                     
