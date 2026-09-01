@@ -1495,19 +1495,23 @@
             // Determina os limites geográficos para enquadrar o mapa (fitBounds)
             let bounds = polygonGroup.getLayers().length > 0 ? polygonGroup.getBounds().pad(0.08) : null;
 
-            // Filtra os pontos do heatmap com precisão cirúrgica (Point-in-Polygon)
+            // Filtra os pontos do heatmap com precisão cirúrgica (Point-in-Polygon ou Bounding Box da Praça)
             const filteredPoints = heatmapPoints.filter(p => {
                 if (!p.origin_lat || !p.origin_lng) return false;
                 const lat = parseFloat(p.origin_lat);
                 const lng = parseFloat(p.origin_lng);
+                if (isNaN(lat) || isNaN(lng)) return false;
                 
-                if (activePolygonCoords.length === 0) return true;
+                if (activePolygonCoords.length === 0) {
+                    return bounds ? bounds.pad(0.1).contains(L.latLng(lat, lng)) : true;
+                }
                 
-                // Pré-filtro rápido pela bounding box para performance
-                if (bounds && !bounds.contains(L.latLng(lat, lng))) return false;
+                // Checagem exata se está dentro de algum dos polígonos desenhados
+                const inPoly = activePolygonCoords.some(poly => isPointInPoly(lat, lng, poly));
+                if (inPoly) return true;
                 
-                // Checagem exata se está dentro do polígono desenhado
-                return activePolygonCoords.some(poly => isPointInPoly(lat, lng, poly));
+                // Caso esteja dentro das margens do mapa da praça
+                return bounds ? bounds.pad(0.05).contains(L.latLng(lat, lng)) : false;
             }); 
             
             console.log(`Plotting ${filteredPoints.length} heatmap points for ${pracaName}.`);
@@ -1666,6 +1670,24 @@
                             });
                         }
                     });
+                }
+
+                // Fallback: Se não houver pedidos gravados com a data de hoje, busca os mais recentes do banco
+                if (heatmapPoints.length === 0) {
+                    try {
+                        const fallbackRes = await supabaseClient
+                            .from('frota_pedidos_heatmap')
+                            .select('origin_lat, origin_lng, origin_name, created_at')
+                            .order('created_at', { ascending: false })
+                            .limit(3000);
+                        if (fallbackRes.data) {
+                            fallbackRes.data.forEach(p => {
+                                if (p.origin_lat && p.origin_lng) heatmapPoints.push(p);
+                            });
+                        }
+                    } catch (errFb) {
+                        console.warn("Erro ao buscar fallback de pedidos heatmap:", errFb);
+                    }
                 }
 
                 if (!data || data.length === 0) {
