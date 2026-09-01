@@ -910,7 +910,7 @@
         var nowCount = parseInt(countSpan ? countSpan.innerText : '0', 10);
         if (isNaN(nowCount)) nowCount = 0;
 
-        // Atualização Otimista na Interface para ser super veloz
+        // Atualização Otimista na Interface
         if (isLiked) {
             delete likesObj[newsId];
             nowCount = Math.max(0, nowCount - 1);
@@ -934,7 +934,10 @@
                 delta: delta
             });
             if (!error && data !== null && data !== undefined) {
-                if (countSpan) countSpan.innerText = data;
+                var updatedSpan = btn.querySelector('.like-count');
+                if (updatedSpan) updatedSpan.innerText = data;
+                if (!window.newsLikesMapGlobal) window.newsLikesMapGlobal = {};
+                window.newsLikesMapGlobal[newsId] = data;
             }
         } catch(e) {
             console.error('Erro ao enviar curtida para Supabase:', e);
@@ -1081,17 +1084,27 @@
             } catch(e) {
                 console.log('Sem dados de news_likes ainda.');
             }
+            window.newsLikesMapGlobal = newsLikesMap;
 
             // Anexa as curtidas aos itens de notícias
             if (newsFetch && newsFetch.data) {
                 newsFetch.data.forEach(function(item) {
+                    var realId = item.id || item.UUID || item.uuid;
                     var catTxt = (item.categoria || item.Categoria || 'NOVIDADE').trim();
                     var titTxt = (item.titulo || item.Titulo || 'Título da Notícia').trim();
-                    var rawId = item.id || item.UUID || item.uuid || (catTxt + '_' + titTxt);
-                    var nId = String(rawId).trim().replace(/\s+/g, '_');
+                    var fallbackId = (catTxt + '_' + titTxt).trim().replace(/\s+/g, '_');
+                    
+                    var nId = realId ? String(realId).trim() : fallbackId;
                     item._news_calculated_id = nId;
+                    
+                    // Busca quantidade de curtidas no Supabase news_likes ou no próprio item
                     if (newsLikesMap[nId] !== undefined) {
                         item.curtidas = newsLikesMap[nId];
+                    } else if (fallbackId && newsLikesMap[fallbackId] !== undefined) {
+                        item.curtidas = newsLikesMap[fallbackId];
+                    } else {
+                        var baseVal = parseInt(item.curtidas || item.Curtidas || item.likes || item.Likes || '0', 10);
+                        item.curtidas = isNaN(baseVal) ? 0 : baseVal;
                     }
                 });
             }
@@ -1330,7 +1343,8 @@
                     var badgeHoje = isHoje ? '<div class="news-today-badge">🔥 PUBLICADO HOJE</div>' : '';
 
                     var newsId = item._news_calculated_id || item.id || item.UUID || item.uuid || (catTxt + '_' + titTxt).trim().replace(/\s+/g, '_');
-                    var baseLikes = parseInt(item.curtidas || item.Curtidas || item.likes || item.Likes || '0', 10);
+                    var globalLikes = (window.newsLikesMapGlobal && window.newsLikesMapGlobal[newsId] !== undefined) ? window.newsLikesMapGlobal[newsId] : undefined;
+                    var baseLikes = (globalLikes !== undefined) ? globalLikes : parseInt(item.curtidas || item.Curtidas || item.likes || item.Likes || '0', 10);
                     if (isNaN(baseLikes)) baseLikes = 0;
                     
                     var userLikesObj = getLikesObj();

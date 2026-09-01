@@ -531,6 +531,8 @@
                     supabaseClient
                         .from('garantido')
                         .select('*')
+                        .order('data', { ascending: false })
+                        .order('id', { ascending: false })
                         .range(r[0], r[1])
                 );
                 

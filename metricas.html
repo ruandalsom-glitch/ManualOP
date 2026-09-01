@@ -62,6 +62,7 @@
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
+            overflow-y: auto;
             position: relative;
             line-height: 1.6;
         }
@@ -202,8 +203,8 @@
             transition: opacity 0.5s ease;
             z-index: 1;
             height: calc(100vh - 110px);
-            min-height: 0;
-            overflow: hidden;
+            min-height: 600px;
+            box-sizing: border-box;
         }
 
         main.active {
@@ -295,7 +296,6 @@
             letter-spacing: 1.5px;
             margin-bottom: 6px;
             font-weight: 700;
-            font-weight: 700;
         }
 
         .stat-value {
@@ -327,33 +327,35 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
+            min-height: 0;
+            min-width: 0;
+            flex: 1;
         }
 
         .chart-container {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: 16px;
-            padding: 20px;
-            height: 420px;
-            flex: none;
+            padding: 18px;
             display: flex;
             flex-direction: column;
             position: relative;
             backdrop-filter: blur(10px);
             min-height: 0;
             min-width: 0;
+            box-shadow: var(--shadow-card);
         }
 
         .chart-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .chart-title {
             font-family: 'Poppins', sans-serif;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             color: var(--primary);
             font-weight: 700;
         }
@@ -392,7 +394,6 @@
         
         .ticker:hover {
             animation-play-state: paused;
-        }
         }
         
         .ticker-item {
@@ -525,7 +526,7 @@
         
         .hm-table {
             display: grid;
-            grid-template-columns: 120px repeat(6, 1fr);
+            grid-template-columns: minmax(130px, 1.4fr) repeat(6, minmax(45px, 1fr));
             gap: 2px;
             font-size: 0.75rem;
             text-align: center;
@@ -534,23 +535,31 @@
         .hm-header {
             font-weight: 700; color: var(--primary);
             padding: 8px 4px;
-            border-bottom: 1px solid var(--border-color);
+            background: #0b1437;
+            border-bottom: 2px solid var(--border-color);
             display: flex; align-items: center; justify-content: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
         .hm-row-label {
             font-weight: 700; color: var(--text-muted);
-            text-align: left; padding-left: 5px;
+            text-align: left; padding-left: 6px;
             display: flex; align-items: center;
             border-right: 1px solid var(--border-color);
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            font-size: 0.72rem;
+            background: rgba(11, 18, 52, 0.6);
         }
 
         .hm-cell {
-            padding: 8px 4px;
+            padding: 6px 4px;
             color: #fff; font-weight: 700;
             border-radius: 4px;
             transition: all 0.2s;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.75rem;
         }
         .hm-cell:hover { transform: scale(1.05); z-index: 2; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
 
@@ -558,20 +567,20 @@
         .modern-table-container {
             width: 100%;
             flex: 1;
-            min-height: 0;
+            min-height: 200px;
             display: flex;
             flex-direction: column;
             overflow-y: auto;
-            overflow-x: hidden;
+            overflow-x: auto;
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: 12px;
             backdrop-filter: blur(10px);
             margin-top: 5px;
         }
-        .modern-table-container::-webkit-scrollbar { width: 4px; }
+        .modern-table-container::-webkit-scrollbar { width: 6px; height: 6px; }
         .modern-table-container::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
-        .modern-table-container::-webkit-scrollbar-thumb { background: rgba(255, 184, 0, 0.5); border-radius: 4px; }
+        .modern-table-container::-webkit-scrollbar-thumb { background: rgba(44, 234, 188, 0.4); border-radius: 4px; }
         
         .modern-table {
             width: 100%;
@@ -579,20 +588,33 @@
             border-spacing: 0;
             table-layout: auto;
         }
-        .modern-table th {
-            background-color: #0b1437;
-            color: var(--primary);
-            padding: 8px 4px;
-            font-size: 0.7rem;
-            text-transform: uppercase;
+        .modern-table thead tr:first-child th {
             position: sticky;
-            top: 41px;
-            z-index: 10;
+            top: 0;
+            z-index: 20;
+            background-color: #0b1437;
+            color: #fff;
+            padding: 8px 4px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
             border-bottom: 2px solid var(--primary);
             text-align: center;
         }
+        .modern-table thead tr:nth-child(2) th {
+            position: sticky;
+            top: 35px;
+            z-index: 19;
+            background-color: #0b1437;
+            color: var(--primary);
+            padding: 6px 4px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+        }
         .modern-table td {
-            padding: 6px 3px;
+            padding: 6px 4px;
             text-align: center;
             border-bottom: 1px solid rgba(255,255,255,0.05);
             font-size: 0.78rem;
@@ -601,6 +623,28 @@
         }
         .modern-table tr:nth-child(even) td { background-color: rgba(255,255,255,0.02); }
         .modern-table tr:hover td { background-color: rgba(44, 234, 188, 0.05); }
+
+        @media (max-width: 1200px) {
+            main {
+                display: flex;
+                flex-direction: column;
+                height: auto;
+                min-height: 0;
+                overflow-y: auto;
+            }
+            .left-panel {
+                height: 550px;
+            }
+            .right-panel {
+                height: auto;
+            }
+            .charts-row {
+                flex-direction: column;
+            }
+            .chart-container {
+                min-height: 350px;
+            }
+        }
         
         .badge-modern {
             display: inline-block;
