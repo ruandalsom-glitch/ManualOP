@@ -58,13 +58,14 @@
         body {
             background-color: var(--bg-dark);
             color: var(--text-main);
-            min-height: 100vh;
+            height: 100vh;
+            max-height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow-x: hidden;
-            overflow-y: auto;
+            overflow: hidden;
             position: relative;
-            line-height: 1.6;
+            line-height: 1.5;
+            box-sizing: border-box;
         }
         
         body::before {
@@ -80,10 +81,13 @@
 
         /* HEADER REFINADO */
         header {
+            flex: none;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 16px 40px;
+            padding: 10px 30px;
+            height: 64px;
+            box-sizing: border-box;
             background: rgba(4, 8, 28, 0.85);
             border-bottom: 1px solid rgba(44, 234, 188, 0.12);
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
@@ -104,7 +108,7 @@
 
         header .logo .title {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 1.4rem;
+            font-size: 1.25rem;
             font-weight: 800;
             color: var(--text-main);
             display: flex;
@@ -119,23 +123,23 @@
         }
 
         header .logo .subtitle {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 2px;
             font-weight: 700;
-            margin-top: 2px;
+            margin-top: 1px;
             opacity: 0.8;
         }
 
         .controls {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 12px;
         }
 
         .controls select, .controls input[type="date"] {
-            padding: 10px 20px;
+            padding: 7px 14px;
             background: rgba(13, 22, 60, 0.85);
             border: 1.5px solid rgba(44, 234, 188, 0.3);
             color: var(--primary);
@@ -144,7 +148,7 @@
             outline: none;
             cursor: pointer;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 13px;
+            font-size: 12px;
             transition: all 0.3s ease;
         }
         
@@ -154,7 +158,7 @@
         }
 
         .controls button {
-            padding: 10px 22px;
+            padding: 7px 16px;
             background: linear-gradient(135deg, rgba(44, 234, 188, 0.15), rgba(44, 103, 234, 0.1));
             border: 1.5px solid rgba(44, 234, 188, 0.4);
             color: var(--primary);
@@ -162,7 +166,7 @@
             font-weight: 800;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 13px;
+            font-size: 12px;
             letter-spacing: 0.5px;
         }
 
@@ -176,34 +180,36 @@
         .clock-container {
             text-align: right;
             border-left: 1px solid rgba(44, 234, 188, 0.15);
-            padding-left: 20px;
+            padding-left: 16px;
         }
 
         .clock {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-family: 'Plus Jakarta Sans', sans-serif;
             font-weight: 800;
             color: var(--text-main);
         }
 
         .date {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--primary);
             font-weight: 600;
         }
 
-        /* MAIN CONTENT */
+        /* MAIN CONTENT - FIT 100% VIEWPORT */
         main {
             flex: 1;
-            padding: 20px 30px;
+            padding: 12px 20px;
             display: grid;
-            grid-template-columns: 420px minmax(0, 1fr);
-            gap: 24px;
+            grid-template-columns: 360px minmax(0, 1fr);
+            gap: 16px;
             opacity: 0;
             transition: opacity 0.5s ease;
             z-index: 1;
-            height: calc(100vh - 110px);
-            min-height: 600px;
+            height: calc(100vh - 102px);
+            max-height: calc(100vh - 102px);
+            min-height: 0;
+            overflow: hidden;
             box-sizing: border-box;
         }
 
@@ -215,16 +221,18 @@
         .left-panel {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
             height: 100%;
+            max-height: 100%;
             min-height: 0;
             overflow: hidden;
         }
 
         .praca-header {
+            flex: none;
             background: rgba(11, 18, 52, 0.65);
             border: 1px solid var(--border-color);
-            padding: 24px;
+            padding: 12px 16px;
             border-radius: var(--radius-lg);
             text-align: center;
             position: relative;
@@ -243,33 +251,34 @@
 
         .praca-title {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: 800;
-            margin-bottom: 5px;
+            margin-bottom: 2px;
             color: var(--text-main);
-            letter-spacing: -0.8px;
+            letter-spacing: -0.5px;
             text-shadow: 0 0 20px rgba(44, 234, 188, 0.3);
         }
 
         .praca-subtitle {
             color: var(--primary);
-            font-size: 0.8rem;
+            font-size: 0.72rem;
             text-transform: uppercase;
-            letter-spacing: 2.5px;
+            letter-spacing: 2px;
             font-weight: 800;
         }
 
         .stats-grid {
+            flex: none;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 14px;
+            gap: 8px;
         }
 
         .stat-card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-md);
-            padding: 16px;
+            padding: 8px 10px;
             text-align: center;
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
@@ -278,7 +287,7 @@
         }
         .stat-card:hover {
             border-color: rgba(44, 234, 188, 0.4);
-            transform: translateY(-3px);
+            transform: translateY(-2px);
             box-shadow: var(--shadow-card-hover);
         }
 
@@ -286,31 +295,31 @@
             grid-column: span 2;
             background: linear-gradient(135deg, rgba(44, 234, 188, 0.12) 0%, rgba(13, 22, 60, 0.75) 100%);
             border-color: rgba(44, 234, 188, 0.35);
-            padding: 18px;
+            padding: 10px 12px;
         }
 
         .stat-label {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 6px;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
             font-weight: 700;
         }
 
         .stat-value {
             font-family: 'Poppins', sans-serif;
-            font-size: 1.8rem;
+            font-size: 1.35rem;
             font-weight: 800;
             line-height: 1;
         }
 
         .stat-pct {
             display: inline-block;
-            margin-top: 5px;
-            font-size: 0.75rem;
-            padding: 2px 8px;
-            border-radius: 20px;
+            margin-top: 3px;
+            font-size: 0.7rem;
+            padding: 1px 6px;
+            border-radius: 12px;
             background: rgba(255,255,255,0.05);
             font-weight: 700;
         }
@@ -326,36 +335,40 @@
         .right-panel {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
+            height: 100%;
+            max-height: 100%;
             min-height: 0;
-            min-width: 0;
+            overflow: hidden;
             flex: 1;
         }
 
         .chart-container {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 18px;
+            border-radius: 14px;
+            padding: 12px 14px;
             display: flex;
             flex-direction: column;
             position: relative;
             backdrop-filter: blur(10px);
             min-height: 0;
             min-width: 0;
+            overflow: hidden;
             box-shadow: var(--shadow-card);
         }
 
         .chart-header {
+            flex: none;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
 
         .chart-title {
             font-family: 'Poppins', sans-serif;
-            font-size: 1.05rem;
+            font-size: 0.95rem;
             color: var(--primary);
             font-weight: 700;
         }
@@ -365,6 +378,7 @@
             position: relative;
             min-height: 0;
             height: 100%;
+            overflow: hidden;
         }
 
         /* TICKER BAR */
@@ -1018,10 +1032,10 @@
         </div>
 
         <div class="right-panel">
-            <div class="charts-row" style="display:flex; gap:15px; flex:1; min-height: 0; min-width: 0;">
+            <div class="charts-row" style="display:flex; gap:12px; flex:1; height:100%; max-height:100%; min-height:0; overflow:hidden;">
                 
-                <div class="charts-col" style="display:flex; flex-direction:column; gap:15px; flex:2; min-height: 0; min-width: 0;">
-                    <div class="chart-container" style="flex:1;">
+                <div class="charts-col" style="display:flex; flex-direction:column; gap:12px; flex:1.1; height:100%; max-height:100%; min-height:0; overflow:hidden;">
+                    <div class="chart-container" style="flex:1.1; height:52%; max-height:52%; min-height:0; overflow:hidden;">
                         <div class="chart-header">
                             <div class="chart-title">Drivers ativos e trabalhando no dia</div>
                             <div class="chart-filters" style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end;">
@@ -1050,7 +1064,7 @@
                         </div>
                     </div>
                     
-                    <div class="chart-container" style="flex:0.8; height: 260px; min-height: 200px; overflow: hidden;">
+                    <div class="chart-container" style="flex:0.9; height:48%; max-height:48%; min-height:0; overflow:hidden;">
                         <div class="chart-header" style="flex: none;">
                             <div class="chart-title">Tabela de Média (Trabalhando x Turno)</div>
                         </div>
@@ -1060,7 +1074,7 @@
                     </div>
                 </div>
                 
-                <div class="chart-container" style="flex:1.5; height: auto;">
+                <div class="chart-container" style="flex:1.1; height:100%; max-height:100%; min-height:0; overflow:hidden;">
                     <div class="chart-header">
                         <div class="chart-title">Mapa de Calor (Pedidos 30min)</div>
                     </div>
@@ -2394,9 +2408,8 @@
                 if (container) {
                     const maxScroll = container.scrollHeight - container.clientHeight;
                     if (maxScroll > 0) {
-                        // Fica parado 3 segundos no topo, 3 segundos no final. Scrolla lentamente no meio.
-                        const startScrollTime = 3000;
-                        const endScrollTime = SLIDE_DURATION - 3000;
+                        const startScrollTime = 2500;
+                        const endScrollTime = SLIDE_DURATION - 2500;
                         let scrollPercent = 0;
                         
                         if (currentProgress > startScrollTime && currentProgress < endScrollTime) {
@@ -2407,6 +2420,27 @@
                         
                         container.scrollTo({
                             top: scrollPercent * maxScroll,
+                            behavior: 'auto'
+                        });
+                    }
+                }
+
+                const heatmap = document.getElementById('heatmapContainer');
+                if (heatmap) {
+                    const maxHeatmapScroll = heatmap.scrollHeight - heatmap.clientHeight;
+                    if (maxHeatmapScroll > 0) {
+                        const startScrollTime = 2500;
+                        const endScrollTime = SLIDE_DURATION - 2500;
+                        let scrollPercent = 0;
+                        
+                        if (currentProgress > startScrollTime && currentProgress < endScrollTime) {
+                            scrollPercent = (currentProgress - startScrollTime) / (endScrollTime - startScrollTime);
+                        } else if (currentProgress >= endScrollTime) {
+                            scrollPercent = 1;
+                        }
+                        
+                        heatmap.scrollTo({
+                            top: scrollPercent * maxHeatmapScroll,
                             behavior: 'auto'
                         });
                     }
