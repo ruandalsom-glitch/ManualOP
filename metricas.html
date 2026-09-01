@@ -1050,11 +1050,11 @@
                         </div>
                     </div>
                     
-                    <div class="chart-container" style="flex:0.8;">
-                        <div class="chart-header">
+                    <div class="chart-container" style="flex:0.8; height: 260px; min-height: 200px; overflow: hidden;">
+                        <div class="chart-header" style="flex: none;">
                             <div class="chart-title">Tabela de Média (Trabalhando x Turno)</div>
                         </div>
-                        <div class="chart-wrapper">
+                        <div class="chart-wrapper" style="flex: 1; position: relative; overflow: hidden; min-height: 0;">
                             <div class="heatmap-container" id="heatmapContainer"></div>
                         </div>
                     </div>
@@ -1386,24 +1386,16 @@
             // Enable zoom control
             realMap = L.map('realMapContainer', { zoomControl: true }).setView([-23.5505, -46.6333], 12);
             
-            const darkTile = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-                attribution: '&copy; CartoDB', maxZoom: 19
+            const darkTile = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+                attribution: '&copy; Esri, HERE, Garmin', maxZoom: 19
             });
-            const positronTile = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-                attribution: '&copy; CartoDB', maxZoom: 19
-            });
-            const voyagerTile = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-                attribution: '&copy; CartoDB', maxZoom: 19
-            });
-            const osmTile = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            const osmTile = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; OpenStreetMap', maxZoom: 19
             });
 
             baseMaps = {
-                "Carto Escuro (Dark)": darkTile,
-                "Carto Claro (Positron)": positronTile,
-                "Carto Colorido (Voyager)": voyagerTile,
-                "OpenStreetMap": osmTile
+                "Mapa Escuro (ArcGIS Dark)": darkTile,
+                "OpenStreetMap (Padrão)": osmTile
             };
             
             // Set default tile
