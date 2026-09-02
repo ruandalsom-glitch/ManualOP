@@ -266,6 +266,24 @@
         #promoContent .grid-container { justify-content: center; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); align-items: stretch; }
         #promoContent .flip-card { max-width: 390px; }
 
+        /* SEÇÃO INFORMAÇÕES - GRID 4x4 (4 COLUNAS) */
+        #infoContent .grid-container, #info .grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-md);
+            align-items: stretch;
+        }
+        @media (max-width: 1100px) {
+            #infoContent .grid-container, #info .grid-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 600px) {
+            #infoContent .grid-container, #info .grid-container {
+                grid-template-columns: repeat(1, 1fr);
+            }
+        }
+
         /* HERO REVOLUCIONADO */
         .hero {
             padding-top: var(--space-2xl); padding-bottom: var(--space-xl); padding-left: 5%; padding-right: 5%;
