@@ -1573,11 +1573,9 @@
         Chart.defaults.color = 'rgba(245, 245, 240, 0.6)';
         Chart.defaults.font.family = 'Plus Jakarta Sans';
 
-        // Initialization (Carregando dados de ontem D-1 conforme solicitado)
+        // Initialization (Carregando a data atual por padrão D0)
         const today = new Date();
-        const yesterday = new Date(today);
-        yesterday.setDate(today.getDate() - 1);
-        let selectedDateStr = yesterday.getFullYear() + '-' + String(yesterday.getMonth() + 1).padStart(2, '0') + '-' + String(yesterday.getDate()).padStart(2, '0');
+        let selectedDateStr = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
         document.getElementById('dateSelect').value = selectedDateStr;
         
         let currentSubpraca = null;
