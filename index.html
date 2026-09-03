@@ -961,24 +961,7 @@
         }
     }
 
-    function filtrarNoticias(chipBtn, categoria) {
-        var container = document.getElementById('newsGrid');
-        if (!container) return;
-        
-        var chips = document.querySelectorAll('.news-chip');
-        chips.forEach(function(c) { c.classList.remove('active'); });
-        if (chipBtn) chipBtn.classList.add('active');
 
-        var cols = container.querySelectorAll('.news-card-column');
-        cols.forEach(function(col) {
-            var cat = col.getAttribute('data-cat') || '';
-            if (categoria === 'TODAS' || cat.toLowerCase() === categoria.toLowerCase()) {
-                col.style.display = 'flex';
-            } else {
-                col.style.display = 'none';
-            }
-        });
-    }
 
     function abrirNewsModal(idx) {
         var item = dadosNewsGlobal[idx];
