@@ -262,26 +262,17 @@
         .section-title { font-size: clamp(30px, 4.2vw, 46px); font-weight: 800; margin-bottom: 14px; letter-spacing: -1.2px; line-height: 1.12; }
         .section-desc { font-size: 16px; color: var(--azul-gelo); line-height: 1.7; font-weight: 400; opacity: 0.85; }
 
-        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-md); align-items: stretch; }
-        #promoContent .grid-container { justify-content: center; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); align-items: stretch; }
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-md); align-items: stretch; justify-content: center; }
+        #promoContent .grid-container { justify-content: center; grid-template-columns: repeat(auto-fit, minmax(290px, 390px)); align-items: stretch; }
         #promoContent .flip-card { max-width: 390px; }
 
-        /* SEÇÃO INFORMAÇÕES - GRID 4x4 (4 COLUNAS) */
+        /* SEÇÃO INFORMAÇÕES - ALINHAMENTO CENTRALIZADO */
         #infoContent .grid-container, #info .grid-container {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(280px, 340px));
             gap: var(--space-md);
             align-items: stretch;
-        }
-        @media (max-width: 1100px) {
-            #infoContent .grid-container, #info .grid-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        @media (max-width: 600px) {
-            #infoContent .grid-container, #info .grid-container {
-                grid-template-columns: repeat(1, 1fr);
-            }
+            justify-content: center;
         }
 
         /* HERO REVOLUCIONADO */
