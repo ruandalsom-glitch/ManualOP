@@ -1397,7 +1397,7 @@
                     var likeBtnClass = isUserLiked ? 'btn-like liked' : 'btn-like';
                     var heartIcon = isUserLiked ? '❤️' : '🤍';
 
-                    var extraHiddenAttr = (idx >= 9) ? ' news-card-extra" style="display:none;"' : '"';
+                    var extraHiddenAttr = (idx >= 6) ? ' news-card-extra" style="display:none;"' : '"';
                     finalHTML += '<div class="news-card-column' + extraColClass + extraHiddenAttr + ' data-cat="' + catTxt + '">';
                     finalHTML += badgeHoje;
                     finalHTML += '  <div class="news-publisher-bar">';
@@ -1430,7 +1430,7 @@
                 
                 finalHTML += '  </div>';
 
-                if (newsData.length > 9) {
+                if (newsData.length > 6) {
                     finalHTML += '  <div id="newsToggleContainer" style="text-align:center;margin-top:28px;">';
                     finalHTML += '    <button id="btnToggleNews" onclick="toggleMaisNovidades()" class="praca-btn" style="padding:12px 32px;font-size:14px;border-color:var(--menta-viva);color:var(--menta-viva);background:rgba(44,234,188,0.08);">Mostrar Mais ▼</button>';
                     finalHTML += '  </div>';
