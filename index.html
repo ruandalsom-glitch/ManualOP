@@ -1058,16 +1058,29 @@
 
     async function carregarDadosCompletos() {
         try {
-            // Check user profile
+            // Check user profile and email permissions
             const { data: { session } } = await supabaseClient.auth.getSession();
             let isGestao = false;
+            let isMarketing = false;
+            let isCadastro = false;
+
             if (session && session.user && session.user.email) {
-                const email = session.user.email.toLowerCase();
-                isGestao = email.includes('gestao'); // Fallback if no table
+                const email = session.user.email.toLowerCase().trim();
+                if (email.includes('marketing') || email === 'marketing@masterdeliveryexpress.com.br') {
+                    isMarketing = true;
+                } else if (email.includes('cadastro') || email === 'cadastro@masterdeliveryexpress.com.br') {
+                    isCadastro = true;
+                } else if (email.includes('gestao')) {
+                    isGestao = true;
+                }
+
                 try {
                     const { data: perfilData } = await supabaseClient.from('perfis').select('*').eq('email', email).single();
                     if (perfilData && perfilData.perfil) {
-                        isGestao = (perfilData.perfil.toLowerCase() === 'gestao');
+                        const p = perfilData.perfil.toLowerCase().trim();
+                        if (p === 'marketing') { isMarketing = true; isGestao = false; }
+                        else if (p === 'cadastro') { isCadastro = true; isGestao = false; }
+                        else if (p === 'gestao') { isGestao = true; }
                     }
                 } catch(e) {
                     console.log('Tabela perfis não encontrada ou sem acesso. Usando verificação por email.');
@@ -1170,8 +1183,20 @@
                 });
             };
 
+            let dashSetorUrl = null;
+            let dashSetorTitulo = null;
+            if (isMarketing) {
+                dashSetorUrl = 'https://app.powerbi.com/view?r=eyJrIjoiOWI2NDIyOGItOWYxNS00MTQwLWFlMGEtNWE1MmRjNTQwMGQwIiwidCI6IjJlNDUwMmZiLWFmOTQtNDU1Yi05M2Y0LWIzNDU5MDMwY2UxNiJ9&pageName=d45effd303d725bb01d1';
+                dashSetorTitulo = 'Dashboard Marketing';
+            } else if (isCadastro) {
+                dashSetorUrl = 'https://app.powerbi.com/view?r=eyJrIjoiYTFhMDQwNjctMDc4ZC00OTEwLWJhMjUtM2EzNTNjNmZkMDNlIiwidCI6IjJlNDUwMmZiLWFmOTQtNDU1Yi05M2Y0LWIzNDU5MDMwY2UxNiJ9';
+                dashSetorTitulo = 'Dashboard Cadastro';
+            }
+
             const r = {
                 sucesso: true,
+                isMarketing: isMarketing,
+                isCadastro: isCadastro,
                 dados: {
                     Home_Config: mapKeys(hc.data),
                     Elite: mapKeys(el.data),
@@ -1185,6 +1210,8 @@
                 },
                 temAcessoDashboard: true, 
                 urlDashboard: 'https://app.powerbi.com/view?r=eyJrIjoiNTEzMDg1ZmQtZjVkMi00OGFjLWE1NzQtNTJlZWU2ODYyNGNhIiwidCI6IjJlNDUwMmZiLWFmOTQtNDU1Yi05M2Y0LWIzNDU5MDMwY2UxNiJ9', 
+                urlDashboardSetor: dashSetorUrl,
+                tituloDashboardSetor: dashSetorTitulo,
                 temAcessoDashboardOperacional: false,
                 urlDashboardOperacional: null
             };
@@ -1481,8 +1508,38 @@
             finalHTML += '<section id="mapas"><div class="section-header"><h2 class="section-title">Nossos <span class="text-neon">Mapas</span></h2><p class="section-desc">Passe o mouse no menu abaixo para selecionar sua praça e região</p></div><div style="text-align:center;margin-bottom:40px;position:relative;z-index:50;"><div class="mapa-master-dropdown" onmouseenter="this.classList.add(\'hover-lock\')" onmouseleave="this.classList.remove(\'hover-lock\')"><button class="mapa-master-btn">Mapas</button><div class="mapa-lv1-menu"></div></div></div><div id="mapasContent"><div class="lazy-loading-hint"><span class="lazy-spin"></span>Carregando mapas...</div></div></section>';
             finalHTML += '<section id="cadastro"><div class="section-header"><h2 class="section-title">Status de <span class="text-neon">Cadastro</span></h2><p class="section-desc">Confira abaixo quais praças e subpraças estão com cadastro aberto ou fechado no momento.</p></div><div class="grid-container" id="cadastroGrid"><div style="grid-column:1/-1;" class="lazy-loading-hint"><span class="lazy-spin"></span>Carregando status...</div></div></section>';
 
+            var isMarketingUser = respostaObj.isMarketing || false;
+            var isCadastroUser = respostaObj.isCadastro || false;
+
+            // Oculta o link do Garantido para marketing e cadastro
+            var menuSubmenu = document.getElementById('menuSubmenu');
+            if (menuSubmenu) {
+                if (isMarketingUser || isCadastroUser) {
+                    menuSubmenu.style.display = 'none';
+                    var dedLink = document.getElementById('dedicadoMenuLink');
+                    if (dedLink) {
+                        dedLink.innerHTML = 'Dedicado';
+                    }
+                } else {
+                    menuSubmenu.style.display = '';
+                }
+            }
+
             if(dados.temAcessoDashboard === true && dados.urlDashboard){
                 finalHTML += '<section id="dashboards"><div class="section-header"><h2 class="section-title">Resultados de <span class="text-neon">Gestão</span></h2><p class="section-desc">Acesso restrito ao painel de indicadores</p></div><div class="glass-panel" style="padding:0;border-radius:24px;overflow:hidden;"><iframe title="Dash Análise" width="100%" height="600px" src="'+dados.urlDashboard+'" frameborder="0" allowFullScreen="true" loading="eager" style="display:block;"></iframe></div></section>';
+            }
+
+            if (respostaObj.urlDashboardSetor) {
+                var titSetor = respostaObj.tituloDashboardSetor || 'Dashboard Setor';
+                finalHTML += '<section id="dashboard-setor">';
+                finalHTML += '<div class="section-header">';
+                finalHTML += '<h2 class="section-title">' + titSetor.split(' ')[0] + ' <span class="text-neon">' + (titSetor.split(' ')[1] || '') + '</span></h2>';
+                finalHTML += '<p class="section-desc">Painel exclusivo de acompanhamento e indicadores do setor</p>';
+                finalHTML += '</div>';
+                finalHTML += '<div class="glass-panel" style="padding:0;border-radius:24px;overflow:hidden;">';
+                finalHTML += '<iframe title="' + titSetor + '" width="100%" height="620px" src="' + respostaObj.urlDashboardSetor + '" frameborder="0" allowFullScreen="true" loading="eager" style="display:block;"></iframe>';
+                finalHTML += '</div>';
+                finalHTML += '</section>';
             }
 
             // ── DASHBOARD OPERACIONAL ──────────────────────────────────────
@@ -1538,6 +1595,21 @@
                         for(var i=0;i<lis.length;i++){ if(lis[i].innerText.indexOf('Procedimentos')!==-1){ procLi=lis[i]; break; } }
                         var nl = document.createElement('li'); nl.id='dash-menu-link';
                         nl.innerHTML='<a href="#dashboards" class="menu-gestao-link">Dashboards</a>';
+                        if(procLi) menu.insertBefore(nl,procLi); else menu.appendChild(nl);
+                    }
+                });
+            }
+
+            /* Link Dashboard do Setor (Marketing / Cadastro) */
+            if(respostaObj.urlDashboardSetor){
+                idle(function(){
+                    var menu = document.querySelector('.menu');
+                    if(menu && !document.getElementById('dash-setor-menu-link')){
+                        var lis = menu.querySelectorAll('li'); var procLi = null;
+                        for(var i=0;i<lis.length;i++){ if(lis[i].innerText.indexOf('Procedimentos')!==-1){ procLi=lis[i]; break; } }
+                        var nl = document.createElement('li'); nl.id='dash-setor-menu-link';
+                        var nomDash = (respostaObj.tituloDashboardSetor || 'Dashboard').replace('Dashboard ', 'Dash ');
+                        nl.innerHTML='<a href="#dashboard-setor" class="menu-gestao-link">'+nomDash+'</a>';
                         if(procLi) menu.insertBefore(nl,procLi); else menu.appendChild(nl);
                     }
                 });
