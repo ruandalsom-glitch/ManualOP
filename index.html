@@ -805,7 +805,6 @@
                 </li>
                 <li><a href="#mapas">Mapas</a></li>
                 <li><a href="#cadastro">Cadastro</a></li>
-                <li><a href="metricas.html" target="_blank" style="color:var(--menta-viva);font-weight:700;">Métricas</a></li>
                 <li><a href="#procedimentos">Procedimentos</a></li>
             </ul>
         </nav>
@@ -1525,20 +1524,20 @@
                 }
             }
 
-            if(dados.temAcessoDashboard === true && dados.urlDashboard){
-                finalHTML += '<section id="dashboards"><div class="section-header"><h2 class="section-title">Resultados de <span class="text-neon">Gestão</span></h2><p class="section-desc">Acesso restrito ao painel de indicadores</p></div><div class="glass-panel" style="padding:0;border-radius:24px;overflow:hidden;"><iframe title="Dash Análise" width="100%" height="600px" src="'+dados.urlDashboard+'" frameborder="0" allowFullScreen="true" loading="eager" style="display:block;"></iframe></div></section>';
-            }
+            if((dados.temAcessoDashboard === true && dados.urlDashboard) || respostaObj.urlDashboardSetor){
+                finalHTML += '<section id="dashboards">';
+                
+                if (dados.temAcessoDashboard === true && dados.urlDashboard) {
+                    finalHTML += '<div class="section-header"><h2 class="section-title">Resultados de <span class="text-neon">Gestão</span></h2><p class="section-desc">Acesso restrito ao painel de indicadores</p></div><div class="glass-panel" style="padding:0;border-radius:24px;overflow:hidden;margin-bottom:32px;"><iframe title="Dash Análise" width="100%" height="600px" src="'+dados.urlDashboard+'" frameborder="0" allowFullScreen="true" loading="eager" style="display:block;"></iframe></div>';
+                }
 
-            if (respostaObj.urlDashboardSetor) {
-                var titSetor = respostaObj.tituloDashboardSetor || 'Dashboard Setor';
-                finalHTML += '<section id="dashboard-setor">';
-                finalHTML += '<div class="section-header">';
-                finalHTML += '<h2 class="section-title">' + titSetor.split(' ')[0] + ' <span class="text-neon">' + (titSetor.split(' ')[1] || '') + '</span></h2>';
-                finalHTML += '<p class="section-desc">Painel exclusivo de acompanhamento e indicadores do setor</p>';
-                finalHTML += '</div>';
-                finalHTML += '<div class="glass-panel" style="padding:0;border-radius:24px;overflow:hidden;">';
-                finalHTML += '<iframe title="' + titSetor + '" width="100%" height="620px" src="' + respostaObj.urlDashboardSetor + '" frameborder="0" allowFullScreen="true" loading="eager" style="display:block;"></iframe>';
-                finalHTML += '</div>';
+                if (respostaObj.urlDashboardSetor) {
+                    var titSetor = respostaObj.tituloDashboardSetor || 'Dashboard Setor';
+                    var p1 = titSetor.split(' ')[0] || 'Dashboard';
+                    var p2 = titSetor.split(' ')[1] || 'Setor';
+                    finalHTML += '<div class="section-header" style="margin-top:24px;"><h2 class="section-title">' + p1 + ' <span class="text-neon">' + p2 + '</span></h2><p class="section-desc">Painel exclusivo de acompanhamento e indicadores do setor</p></div><div class="glass-panel" style="padding:0;border-radius:24px;overflow:hidden;"><iframe title="' + titSetor + '" width="100%" height="620px" src="' + respostaObj.urlDashboardSetor + '" frameborder="0" allowFullScreen="true" loading="eager" style="display:block;"></iframe></div>';
+                }
+
                 finalHTML += '</section>';
             }
 
@@ -1586,44 +1585,15 @@
             idle(function(){ if(pracasInfoDisponiveis.length>0) renderInfoPraca(pracasInfoDisponiveis[0]); else if(dadosInfo.length>0) renderInfoPraca('TODAS'); });
             idle(function(){ ativarFlip(); aplicarZoomNasImagens(); });
 
-            /* FIX 2: links de gestão usam classe, não style inline fixo */
-            if(dados.temAcessoDashboard === true){
+            /* Link único "Dashboards" no menu */
+            if(dados.temAcessoDashboard === true || respostaObj.urlDashboardSetor || dados.temAcessoDashboardOperacional === true){
                 idle(function(){
                     var menu = document.querySelector('.menu');
-                    if(menu && dados.urlDashboard && !document.getElementById('dash-menu-link')){
+                    if(menu && !document.getElementById('dash-menu-link')){
                         var lis = menu.querySelectorAll('li'); var procLi = null;
                         for(var i=0;i<lis.length;i++){ if(lis[i].innerText.indexOf('Procedimentos')!==-1){ procLi=lis[i]; break; } }
                         var nl = document.createElement('li'); nl.id='dash-menu-link';
                         nl.innerHTML='<a href="#dashboards" class="menu-gestao-link">Dashboards</a>';
-                        if(procLi) menu.insertBefore(nl,procLi); else menu.appendChild(nl);
-                    }
-                });
-            }
-
-            /* Link Dashboard do Setor (Marketing / Cadastro) */
-            if(respostaObj.urlDashboardSetor){
-                idle(function(){
-                    var menu = document.querySelector('.menu');
-                    if(menu && !document.getElementById('dash-setor-menu-link')){
-                        var lis = menu.querySelectorAll('li'); var procLi = null;
-                        for(var i=0;i<lis.length;i++){ if(lis[i].innerText.indexOf('Procedimentos')!==-1){ procLi=lis[i]; break; } }
-                        var nl = document.createElement('li'); nl.id='dash-setor-menu-link';
-                        var nomDash = (respostaObj.tituloDashboardSetor || 'Dashboard').replace('Dashboard ', 'Dash ');
-                        nl.innerHTML='<a href="#dashboard-setor" class="menu-gestao-link">'+nomDash+'</a>';
-                        if(procLi) menu.insertBefore(nl,procLi); else menu.appendChild(nl);
-                    }
-                });
-            }
-
-            /* Link "Dashboard" exclusivo para login Operacional */
-            if(dados.temAcessoDashboardOperacional === true){
-                idle(function(){
-                    var menu = document.querySelector('.menu');
-                    if(menu && !document.getElementById('dash-op-menu-link')){
-                        var lis = menu.querySelectorAll('li'); var procLi = null;
-                        for(var i=0;i<lis.length;i++){ if(lis[i].innerText.indexOf('Procedimentos')!==-1){ procLi=lis[i]; break; } }
-                        var nl = document.createElement('li'); nl.id='dash-op-menu-link';
-                        nl.innerHTML='<a href="#dashboard-operacional" class="menu-gestao-link">Dashboard</a>';
                         if(procLi) menu.insertBefore(nl,procLi); else menu.appendChild(nl);
                     }
                 });
