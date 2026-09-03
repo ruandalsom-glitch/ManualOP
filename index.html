@@ -1397,7 +1397,8 @@
                     var likeBtnClass = isUserLiked ? 'btn-like liked' : 'btn-like';
                     var heartIcon = isUserLiked ? '❤️' : '🤍';
 
-                    finalHTML += '<div class="news-card-column' + extraColClass + '" data-cat="' + catTxt + '">';
+                    var extraHiddenAttr = (idx >= 9) ? ' news-card-extra" style="display:none;"' : '"';
+                    finalHTML += '<div class="news-card-column' + extraColClass + extraHiddenAttr + ' data-cat="' + catTxt + '">';
                     finalHTML += badgeHoje;
                     finalHTML += '  <div class="news-publisher-bar">';
                     finalHTML += '    <div class="news-publisher-info">';
@@ -1428,6 +1429,12 @@
                 });
                 
                 finalHTML += '  </div>';
+
+                if (newsData.length > 9) {
+                    finalHTML += '  <div id="newsToggleContainer" style="text-align:center;margin-top:28px;">';
+                    finalHTML += '    <button id="btnToggleNews" onclick="toggleMaisNovidades()" class="praca-btn" style="padding:12px 32px;font-size:14px;border-color:var(--menta-viva);color:var(--menta-viva);background:rgba(44,234,188,0.08);">Mostrar Mais ▼</button>';
+                    finalHTML += '  </div>';
+                }
             } else {
                 finalHTML += '  </div>'; // fecha news-header-bar
                 finalHTML += '  <div class="glass-panel" style="padding: 40px 20px; text-align: center; border-radius: 20px; background: rgba(11, 19, 48, 0.6); border: 1px dashed rgba(44, 234, 188, 0.3); margin-top: 10px;">';
@@ -2060,6 +2067,59 @@
             });
         }
         container.innerHTML = html;
+    }
+
+    function toggleMaisNovidades() {
+        var btn = document.getElementById('btnToggleNews');
+        var extras = document.querySelectorAll('.news-card-extra');
+        if (!extras || extras.length === 0) return;
+        
+        var estaAberto = (extras[0].style.display !== 'none');
+        extras.forEach(function(el) {
+            el.style.display = estaAberto ? 'none' : 'flex';
+        });
+        
+        if (btn) {
+            btn.innerHTML = estaAberto ? 'Mostrar Mais ▼' : 'Mostrar Menos ▲';
+        }
+    }
+
+    function filtrarNoticias(btn, categoria) {
+        document.querySelectorAll('.news-chip').forEach(function(c) { c.classList.remove('active'); });
+        if (btn) btn.classList.add('active');
+        
+        var cards = document.querySelectorAll('#newsGrid .news-card-column');
+        var countVis = 0;
+        var toggleContainer = document.getElementById('newsToggleContainer');
+        var btnToggle = document.getElementById('btnToggleNews');
+        
+        cards.forEach(function(card) {
+            var catCard = card.getAttribute('data-cat') || '';
+            var atendeFiltro = (categoria === 'TODAS' || catCard.toLowerCase() === categoria.toLowerCase());
+            
+            if (atendeFiltro) {
+                countVis++;
+                if (categoria === 'TODAS') {
+                    // No modo TODAS, respeita os 9 iniciais se não estiver expandido
+                    var isExtra = card.classList.contains('news-card-extra');
+                    var estaExpandido = btnToggle && btnToggle.innerText.indexOf('Menos') !== -1;
+                    if (isExtra && !estaExpandido) {
+                        card.style.display = 'none';
+                    } else {
+                        card.style.display = 'flex';
+                    }
+                } else {
+                    // Quando escolhe uma categoria específica, mostra todas daquela categoria
+                    card.style.display = 'flex';
+                }
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        if (toggleContainer) {
+            toggleContainer.style.display = (categoria === 'TODAS') ? 'block' : 'none';
+        }
     }
 
     function selecionarInfoPraca(btn, praca) {
