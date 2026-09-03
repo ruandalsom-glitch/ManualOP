@@ -506,47 +506,17 @@
     async function carregarGarantido() {
         try {
             let allData = [];
-            const pageSize = 1000;
-            
-            // Busca o total de linhas primeiro para podermos fazer requisições simultâneas
-            const { count, error: countErr } = await supabaseClient
+            // Otimização de Egress: Busca apenas os registros mais recentes (máximo 3000 registros ~ últimos 30-45 dias)
+            // se o usuário quiser buscar históricos mais antigos, é possível consultar via API sob demanda.
+            const { data, error } = await supabaseClient
                 .from('garantido')
-                .select('*', { count: 'exact', head: true });
-                
-            if (countErr) {
-                console.warn('Erro ao obter count do garantido:', countErr);
-            }
-            
-            const total = (count && count > 0) ? count : 30000;
-            const ranges = [];
-            for (let start = 0; start < total; start += pageSize) {
-                ranges.push([start, start + pageSize - 1]);
-            }
-            
-            // Dispara requisições em lotes de 5 para evitar que o navegador aborte conexões por limite simultâneo
-            const chunkSize = 5;
-            for (let i = 0; i < ranges.length; i += chunkSize) {
-                const chunk = ranges.slice(i, i + chunkSize);
-                const promises = chunk.map(r =>
-                    supabaseClient
-                        .from('garantido')
-                        .select('*')
-                        .order('data', { ascending: false })
-                        .order('id', { ascending: false })
-                        .range(r[0], r[1])
-                );
-                
-                const results = await Promise.all(promises);
-                let emptyBatchFound = false;
-                for (const res of results) {
-                    if (res.error) throw res.error;
-                    if (res.data) {
-                        allData = allData.concat(res.data);
-                        if (res.data.length < pageSize) emptyBatchFound = true;
-                    }
-                }
-                if (emptyBatchFound) break;
-            }
+                .select('*')
+                .order('data', { ascending: false })
+                .order('id', { ascending: false })
+                .limit(3000);
+
+            if (error) throw error;
+            allData = data || [];
 
             const mapKeys = (arr) => {
                 if(!arr) return [];
