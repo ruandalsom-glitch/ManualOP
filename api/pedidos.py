@@ -29,9 +29,9 @@ CONTAS = [
         "ativo":       True
     },
     {
-        "email":       "ruan.dalsom@crmasterfilial1rj.com.br",
-        "senha":       "Ruankz100%",
-        "email_senha": ".#znNtMqwE8fSZw",
+        "email":       "fabiano.jesus@crmasterfilial1rj.com.br",
+        "senha":       "#Fab_7444J",
+        "email_senha": "Fabi5548#",
         "ativo":       True
     },
     {

@@ -22,8 +22,8 @@ CONTAS = [
         ]
     },
     {
-        "email": "ruan.dalsom@crmasterfilial1rj.com.br",
-        "senha": "Ruankz100%",
+        "email": "fabiano.jesus@crmasterfilial1rj.com.br",
+        "senha": "#Fab_7444J",
         "regioes": [
             {"nome": "Rio - Madureira",    "uuid": "2800ed66-03d2-4877-880a-8de7ad2051cd"},
             {"nome": "Rio - Barra",        "uuid": "30a4c365-0ff0-4db7-8691-82e8470b3820"},
