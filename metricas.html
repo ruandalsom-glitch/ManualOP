@@ -201,7 +201,7 @@
             flex: 1;
             padding: 12px 20px;
             display: grid;
-            grid-template-columns: 360px minmax(0, 1fr);
+            grid-template-columns: 420px minmax(0, 1fr);
             gap: 16px;
             opacity: 0;
             transition: opacity 0.5s ease;
@@ -540,9 +540,9 @@
         
         .hm-table {
             display: grid;
-            grid-template-columns: minmax(130px, 1.4fr) repeat(6, minmax(45px, 1fr));
+            grid-template-columns: minmax(110px, 1.2fr) repeat(6, minmax(36px, 1fr));
             gap: 2px;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             text-align: center;
         }
 
@@ -2201,7 +2201,7 @@
                     
                     const subId = "wth-" + subKey.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
                     html += `<tr>
-                                <td style="text-align:left; padding-left: 6px; color:var(--primary); cursor:pointer; text-decoration:underline; font-size:0.75rem; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width: 150px;" onclick="selectSubpraca('${sub}')" title="${sub}">${sub}</td>
+                                <td style="text-align:left; padding-left: 6px; color:var(--primary); cursor:pointer; text-decoration:underline; font-size:0.75rem; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width: 190px;" onclick="selectSubpraca('${sub}')" title="${sub}">${sub}</td>
                                 <td style="font-size:0.72rem; color:#fff; font-weight:600;">${modal}</td>
                                 <td id="${subId}" style="font-size: 0.72rem; color: #fff;">--</td>
                                 <td style="font-size:0.75rem; font-weight:700;">${esc.logados}/${esc.slots}</td>
