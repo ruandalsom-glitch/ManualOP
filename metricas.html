@@ -662,10 +662,10 @@
         
         .badge-modern {
             display: inline-block;
-            padding: 3px 6px;
+            padding: 2px 5px;
             border-radius: 4px;
             font-weight: 800;
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             color: #000;
             white-space: nowrap;
         }
@@ -2174,11 +2174,11 @@
                                     </th>
                                 </tr>
                                 <tr>
-                                    <th style="text-align:left; padding-left: 6px;">Sub-Praça</th>
-                                    <th>Modal</th>
-                                    <th>Clima</th>
-                                    <th>L/S</th>
-                                    <th>%</th>
+                                    <th style="text-align:left; padding-left: 6px; min-width: 120px;">Sub-Praça</th>
+                                    <th style="min-width: 55px;">Modal</th>
+                                    <th style="min-width: 45px;">Clima</th>
+                                    <th style="min-width: 45px;">L/S</th>
+                                    <th style="text-align:center; padding-right: 8px; min-width: 55px;">%</th>
                                 </tr>
                             </thead>
                             <tbody>`;
@@ -2190,6 +2190,7 @@
                     const esc = matrix[subKey];
                     const sub = esc.subpraca;
                     const modal = esc.modal;
+                    const displayModal = modal === 'MOTORCYCLE' ? 'Moto' : (modal === 'BICYCLE' ? 'Bike' : modal);
                     
                     let badgeClass = 'badge-modern';
                     const pctVal = parseFloat(esc.pct.replace('%', ''));
@@ -2201,11 +2202,11 @@
                     
                     const subId = "wth-" + subKey.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
                     html += `<tr>
-                                <td style="text-align:left; padding-left: 6px; color:var(--primary); cursor:pointer; text-decoration:underline; font-size:0.75rem; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width: 190px;" onclick="selectSubpraca('${sub}')" title="${sub}">${sub}</td>
-                                <td style="font-size:0.72rem; color:#fff; font-weight:600;">${modal}</td>
-                                <td id="${subId}" style="font-size: 0.72rem; color: #fff;">--</td>
-                                <td style="font-size:0.75rem; font-weight:700;">${esc.logados}/${esc.slots}</td>
-                                <td><span class="${badgeClass}">${esc.pct}</span></td>
+                                <td style="text-align:left; padding-left: 6px; color:var(--primary); cursor:pointer; text-decoration:underline; font-size:0.75rem; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width: 145px;" onclick="selectSubpraca('${sub}')" title="${sub}">${sub}</td>
+                                <td style="font-size:0.72rem; color:#fff; font-weight:600; white-space:nowrap; max-width: 75px; overflow:hidden; text-overflow:ellipsis;" title="${modal}">${displayModal}</td>
+                                <td id="${subId}" style="font-size: 0.72rem; color: #fff; white-space:nowrap;">--</td>
+                                <td style="font-size:0.75rem; font-weight:700; white-space:nowrap;">${esc.logados}/${esc.slots}</td>
+                                <td style="text-align:center; padding-right: 8px; white-space:nowrap;"><span class="${badgeClass}">${esc.pct}</span></td>
                              </tr>`;
                     
                     // Trigger async fetch
