@@ -795,6 +795,7 @@
                 </li>
                 <li><a href="#mapas">Mapas</a></li>
                 <li><a href="#cadastro">Cadastro</a></li>
+                <li><a href="metricas.html" target="_blank" style="color:var(--menta-viva);font-weight:700;">Métricas</a></li>
                 <li><a href="#procedimentos">Procedimentos</a></li>
             </ul>
         </nav>
@@ -1035,6 +1036,7 @@
             let isGestao = false;
             let isMarketing = false;
             let isCadastro = false;
+            let isOperacional = false;
 
             if (session && session.user && session.user.email) {
                 const email = session.user.email.toLowerCase().trim();
@@ -1042,6 +1044,8 @@
                     isMarketing = true;
                 } else if (email.includes('cadastro') || email === 'cadastro@masterdeliveryexpress.com.br') {
                     isCadastro = true;
+                } else if (email.includes('operac') || email.includes('operacional')) {
+                    isOperacional = true;
                 } else if (email.includes('gestao')) {
                     isGestao = true;
                 }
@@ -1052,6 +1056,7 @@
                         const p = perfilData.perfil.toLowerCase().trim();
                         if (p === 'marketing') { isMarketing = true; isGestao = false; }
                         else if (p === 'cadastro') { isCadastro = true; isGestao = false; }
+                        else if (p.includes('operac') || p.includes('operacional')) { isOperacional = true; isGestao = false; }
                         else if (p === 'gestao') { isGestao = true; }
                     }
                 } catch(e) {
@@ -1184,8 +1189,8 @@
                 urlDashboard: 'https://app.powerbi.com/view?r=eyJrIjoiNTEzMDg1ZmQtZjVkMi00OGFjLWE1NzQtNTJlZWU2ODYyNGNhIiwidCI6IjJlNDUwMmZiLWFmOTQtNDU1Yi05M2Y0LWIzNDU5MDMwY2UxNiJ9', 
                 urlDashboardSetor: dashSetorUrl,
                 tituloDashboardSetor: dashSetorTitulo,
-                temAcessoDashboardOperacional: false,
-                urlDashboardOperacional: null
+                temAcessoDashboardOperacional: (isOperacional || isGestao || (!isMarketing && !isCadastro)),
+                urlDashboardOperacional: 'https://app.powerbi.com/view?r=eyJrIjoiMTY4MzU3OTUtZjFjYS00YmYwLTk4NjgtN2RiNzE4YzMwNWY1IiwidCI6IjJlNDUwMmZiLWFmOTQtNDU1Yi05M2Y0LWIzNDU5MDMwY2UxNiJ9'
             };
             
             document.getElementById('main-header').style.display = 'flex';
