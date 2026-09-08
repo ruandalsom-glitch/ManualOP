@@ -1189,8 +1189,8 @@
                 urlDashboard: 'https://app.powerbi.com/view?r=eyJrIjoiNTEzMDg1ZmQtZjVkMi00OGFjLWE1NzQtNTJlZWU2ODYyNGNhIiwidCI6IjJlNDUwMmZiLWFmOTQtNDU1Yi05M2Y0LWIzNDU5MDMwY2UxNiJ9', 
                 urlDashboardSetor: dashSetorUrl,
                 tituloDashboardSetor: dashSetorTitulo,
-                temAcessoDashboardOperacional: (isOperacional || isGestao || (!isMarketing && !isCadastro)),
-                urlDashboardOperacional: 'https://app.powerbi.com/view?r=eyJrIjoiMTY4MzU3OTUtZjFjYS00YmYwLTk4NjgtN2RiNzE4YzMwNWY1IiwidCI6IjJlNDUwMmZiLWFmOTQtNDU1Yi05M2Y0LWIzNDU5MDMwY2UxNiJ9'
+                temAcessoDashboardOperacional: false,
+                urlDashboardOperacional: null
             };
             
             document.getElementById('main-header').style.display = 'flex';
@@ -1525,8 +1525,8 @@
                 finalHTML += '</section>';
             }
 
-            // ── DASHBOARD OPERACIONAL ──────────────────────────────────────
-            if(dados.temAcessoDashboardOperacional === true){
+            // ── DASHBOARD OPERACIONAL (DESATIVADO A PEDIDO) ────────────────
+            if(false && dados.temAcessoDashboardOperacional === true){
                 finalHTML += '<section id="dashboard-operacional">';
                 finalHTML += '<div class="section-header">';
                 finalHTML += '<h2 class="section-title">Dashboard <span class="text-neon">Operacional</span></h2>';
@@ -1570,7 +1570,7 @@
             idle(function(){ ativarFlip(); aplicarZoomNasImagens(); });
 
             /* Link único "Dashboards" no menu */
-            if(dados.temAcessoDashboard === true || respostaObj.urlDashboardSetor || dados.temAcessoDashboardOperacional === true){
+            if(dados.temAcessoDashboard === true || respostaObj.urlDashboardSetor){
                 idle(function(){
                     var menu = document.querySelector('.menu');
                     if(menu && !document.getElementById('dash-menu-link')){
