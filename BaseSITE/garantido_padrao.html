@@ -441,27 +441,39 @@
     /* ===== DATA UTILS ===== */
     function normalizarData(d) {
         if (!d) return '';
-        const rawDate = d;
-        let itemD = new Date(rawDate);
-        if (isNaN(itemD.getTime())) {
-            if (typeof rawDate === 'string' && rawDate.includes('/')) {
-                const parts = rawDate.split('/');
-                if (parts.length === 3) {
-                    const dNum = parseInt(parts[0], 10);
-                    const mNum = parseInt(parts[1], 10) - 1;
-                    const yNum = parseInt(parts[2], 10);
-                    itemD = new Date(yNum, mNum, dNum);
-                }
+        var rawStr = String(d).trim();
+        if (rawStr.includes('T')) {
+            rawStr = rawStr.split('T')[0];
+        }
+        if (/^\d{4}-\d{2}-\d{2}$/.test(rawStr)) {
+            return rawStr;
+        }
+        if (rawStr.includes('/')) {
+            var parts = rawStr.split('/');
+            if (parts.length === 3) {
+                var dNum = parseInt(parts[0], 10);
+                var mNum = parseInt(parts[1], 10);
+                var yNum = parseInt(parts[2], 10);
+                if (yNum < 100) yNum += 2000;
+                var dy = ('0' + dNum).slice(-2);
+                var mo = ('0' + mNum).slice(-2);
+                return yNum + '-' + mo + '-' + dy;
             }
         }
+        var itemD = new Date(rawStr);
         if (!isNaN(itemD.getTime())) {
-            return itemD.toISOString().substring(0,10);
+            var yr = itemD.getUTCFullYear();
+            var mo = ('0' + (itemD.getUTCMonth() + 1)).slice(-2);
+            var dy = ('0' + itemD.getUTCDate()).slice(-2);
+            return yr + '-' + mo + '-' + dy;
         }
-        var s = d.toString().trim();
-        var n = Number(s);
+        var n = Number(rawStr);
         if (!isNaN(n) && n > 40000) {
             var epoch = new Date(Date.UTC(1899,11,30) + n * 86400000);
-            return epoch.toISOString().substring(0,10);
+            var yr = epoch.getUTCFullYear();
+            var mo = ('0' + (epoch.getUTCMonth() + 1)).slice(-2);
+            var dy = ('0' + epoch.getUTCDate()).slice(-2);
+            return yr + '-' + mo + '-' + dy;
         }
         return '';
     }
@@ -598,7 +610,7 @@
         }
 
         _state.dados = dados.Garantido.map(function(g) {
-            return Object.assign({}, g, { _dataNorm: normalizarData(g.Data) });
+            return Object.assign({}, g, { _dataNorm: normalizarData(g.Data || g.data) });
         });
 
         construirInterface();

@@ -442,27 +442,29 @@
     function normalizarData(d) {
         if (!d) return '';
         var rawStr = String(d).trim();
+        if (rawStr.includes('T')) {
+            rawStr = rawStr.split('T')[0];
+        }
+        if (/^\d{4}-\d{2}-\d{2}$/.test(rawStr)) {
+            return rawStr;
+        }
         if (rawStr.includes('/')) {
             var parts = rawStr.split('/');
             if (parts.length === 3) {
                 var dNum = parseInt(parts[0], 10);
-                var mNum = parseInt(parts[1], 10) - 1;
+                var mNum = parseInt(parts[1], 10);
                 var yNum = parseInt(parts[2], 10);
                 if (yNum < 100) yNum += 2000;
-                var dt = new Date(yNum, mNum, dNum);
-                if (!isNaN(dt.getTime())) {
-                    var yr = dt.getFullYear();
-                    var mo = ('0' + (dt.getMonth() + 1)).slice(-2);
-                    var dy = ('0' + dt.getDate()).slice(-2);
-                    return yr + '-' + mo + '-' + dy;
-                }
+                var dy = ('0' + dNum).slice(-2);
+                var mo = ('0' + mNum).slice(-2);
+                return yNum + '-' + mo + '-' + dy;
             }
         }
         var itemD = new Date(rawStr);
         if (!isNaN(itemD.getTime())) {
-            var yr = itemD.getFullYear();
-            var mo = ('0' + (itemD.getMonth() + 1)).slice(-2);
-            var dy = ('0' + itemD.getDate()).slice(-2);
+            var yr = itemD.getUTCFullYear();
+            var mo = ('0' + (itemD.getUTCMonth() + 1)).slice(-2);
+            var dy = ('0' + itemD.getUTCDate()).slice(-2);
             return yr + '-' + mo + '-' + dy;
         }
         var n = Number(rawStr);
@@ -606,7 +608,7 @@
         }
 
         _state.dados = dados.Garantido.map(function(g) {
-            return Object.assign({}, g, { _dataNorm: normalizarData(g.Data) });
+            return Object.assign({}, g, { _dataNorm: normalizarData(g.Data || g.data) });
         });
 
         construirInterface();
