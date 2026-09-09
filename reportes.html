@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Reportes — Operação GO</title>
-    <link rel="icon" type="image/png" href="https://entreego.com.br/wp-content/uploads/2023/12/logo-vertical-1.png?v=2">
-    <link rel="shortcut icon" type="image/png" href="https://entreego.com.br/wp-content/uploads/2023/12/logo-vertical-1.png?v=2">
+    <title>Acompanhamento de Reportes — Operação GO</title>
+    <link rel="icon" type="image/png" href="https://i.imgur.com/ZEox7rf.png">
+    <link rel="shortcut icon" type="image/png" href="https://i.imgur.com/ZEox7rf.png">
     
     <!-- Google Fonts: Plus Jakarta Sans (Idêntica ao Garantido e Index) -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -50,7 +50,7 @@
             flex-direction: column;
         }
 
-        /* Ambient background glow identical to garantido.html */
+        /* Ambient background glow identical to garantido.html & index.html */
         body::before {
             content: '';
             position: fixed; inset: 0; z-index: 0;
@@ -95,8 +95,8 @@
         }
 
         .logo-box { display: flex; align-items: center; gap: 14px; text-decoration: none; }
-        .logo-img { height: 42px; width: auto; object-fit: contain; }
-        .logo-title-group h1 { font-size: 18px; font-weight: 800; color: var(--branco); letter-spacing: -0.3px; line-height: 1.2; }
+        .logo-img { height: 44px; width: auto; object-fit: contain; }
+        .logo-title-group h1 { font-size: 19px; font-weight: 800; color: var(--branco); letter-spacing: -0.3px; line-height: 1.2; }
         .logo-title-group p { font-size: 12px; color: var(--menta-viva); font-weight: 600; }
 
         .btn-sync {
@@ -312,7 +312,7 @@
             vertical-align: middle;
         }
 
-        /* Ícones e Badges ajustados para FontAwesome 6 Free */
+        /* Ícones e Badges */
         .type-icon {
             width: 36px;
             height: 36px;
@@ -496,12 +496,12 @@
 
     <div class="dot-grid"></div>
 
-    <!-- Header Navigation Aligned 100% with Site & Garantido -->
+    <!-- Header Navigation Aligned 100% with Site & Logo GO Sumarezinho -->
     <header>
         <a href="index.html" class="logo-box">
-            <img src="https://entreego.com.br/wp-content/uploads/2023/12/logo-vertical-1.png?v=2" class="logo-img" alt="Logo EntreGô">
+            <img src="https://i.imgur.com/ZEox7rf.png" class="logo-img" alt="Logo GO Sumarezinho">
             <div class="logo-title-group">
-                <h1>Reportes — Operação GO</h1>
+                <h1>Acompanhamento de Reportes</h1>
                 <p>Portal de Chamados EntreGô (SMENTGO)</p>
             </div>
         </a>
@@ -647,19 +647,14 @@
             const s = (summary || '').toLowerCase();
 
             if (t.includes('escala') || s.includes('escala')) {
-                // Ícone de Calendário 100% visível para Escalas
                 return '<div class="type-icon" title="Sugestão / Alteração de Escala"><i class="fa-solid fa-calendar-days"></i></div>';
             } else if (t.includes('promo') || s.includes('promo') || s.includes('contest')) {
-                // Ícone de Etiqueta/Tag de Promoção
                 return '<div class="type-icon" title="Contestação / Registro de Promoção"><i class="fa-solid fa-tags"></i></div>';
             } else if (t.includes('garantido') || s.includes('garantido')) {
-                // Ícone de Escudo de Garantido
                 return '<div class="type-icon" title="Contestação de Garantido FE"><i class="fa-solid fa-shield-halved"></i></div>';
             } else if (t.includes('bug') || t.includes('problema') || t.includes('cadastral') || s.includes('erro') || s.includes('modal') || s.includes('falha')) {
-                // Ícone de Bug/Problema Cadastral
                 return '<div class="type-icon" title="Problemas Cadastrais / Bug / Erro"><i class="fa-solid fa-bug"></i></div>';
             } else {
-                // Ícone de Dúvidas / Gerais
                 return '<div class="type-icon" title="Dúvidas Gerais"><i class="fa-solid fa-circle-question"></i></div>';
             }
         }
