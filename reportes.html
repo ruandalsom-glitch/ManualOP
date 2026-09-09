@@ -28,7 +28,6 @@
             --accent-cyan: #38BDF8;
             --accent-green: #34D399;
             --accent-amber: #FBBF24;
-            --accent-rose: #FB7185;
             --accent-purple: #C084FC;
 
             --badge-open-bg: rgba(251, 191, 36, 0.15);
@@ -127,10 +126,6 @@
 
         .btn-sync:active {
             transform: translateY(0);
-        }
-
-        .btn-sync i {
-            font-size: 14px;
         }
 
         /* Container Content */
@@ -310,28 +305,21 @@
             vertical-align: middle;
         }
 
-        .issue-key {
+        .issue-key-badge {
             font-family: monospace;
             font-weight: 700;
             color: var(--accent-cyan);
-            text-decoration: none;
             background: rgba(56, 189, 248, 0.08);
-            padding: 4px 8px;
+            padding: 4px 10px;
             border-radius: 6px;
             border: 1px solid rgba(56, 189, 248, 0.2);
             display: inline-block;
-            transition: all 0.2s ease;
-        }
-
-        .issue-key:hover {
-            background: rgba(56, 189, 248, 0.2);
-            color: #fff;
         }
 
         .issue-summary {
             font-weight: 500;
             color: var(--text-primary);
-            max-width: 450px;
+            max-width: 500px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -489,7 +477,7 @@
             </div>
         </div>
 
-        <!-- Data Table Container -->
+        <!-- Data Table Container (Puramente Indicativa e Textual) -->
         <div class="table-container">
             <table>
                 <thead>
@@ -498,7 +486,6 @@
                         <th>Resumo do Reporte</th>
                         <th>Status</th>
                         <th>Solicitante</th>
-                        <th>Ação</th>
                     </tr>
                 </thead>
                 <tbody id="reportsTableBody">
@@ -523,7 +510,7 @@
             if (!dados || dados.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="5">
+                        <td colspan="4">
                             <div class="empty-state">
                                 <i class="fa-solid fa-inbox"></i>
                                 <p>Nenhum reporte encontrado para os filtros selecionados.</p>
@@ -552,10 +539,7 @@
 
                 tr.innerHTML = `
                     <td>
-                        <a href="${item.url || '#'}" target="_blank" class="issue-key">
-                            <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 10px; margin-right: 4px;"></i>
-                            ${item.issue_key}
-                        </a>
+                        <span class="issue-key-badge">${item.issue_key}</span>
                     </td>
                     <td>
                         <div class="issue-summary" title="${item.summary}">${item.summary}</div>
@@ -571,11 +555,6 @@
                             <div class="user-avatar">${inicial}</div>
                             <span>${nome}</span>
                         </div>
-                    </td>
-                    <td>
-                        <a href="${item.url || '#'}" target="_blank" style="color: var(--accent-cyan); font-size: 13px; text-decoration: none; font-weight: 500;">
-                            Abrir no Jira <i class="fa-solid fa-chevron-right" style="font-size: 10px;"></i>
-                        </a>
                     </td>
                 `;
 
