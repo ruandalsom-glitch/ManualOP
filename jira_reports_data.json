@@ -1,2354 +1,2690 @@
 [
   {
     "issue_key": "SMENTGO-1740",
+    "type": "Sugestão de Escala",
     "summary": "Sugestão de Escala",
     "status": "Aberto",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.370975"
+    "updated_at": "2026-09-09T18:24:35.298262"
   },
   {
     "issue_key": "SMENTGO-1668",
+    "type": "Sugestão de Escala",
     "summary": "Sugestão de Escala",
     "status": "Em verificação",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.374962"
+    "updated_at": "2026-09-09T18:24:35.312538"
   },
   {
     "issue_key": "SMENTGO-1667",
+    "type": "Sugestão de Escala",
     "summary": "Sugestão de Escala",
     "status": "Em verificação",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.378246"
+    "updated_at": "2026-09-09T18:24:35.327002"
   },
   {
     "issue_key": "SMENTGO-1665",
+    "type": "Sugestão de Escala",
     "summary": "Sugestão de Escala",
     "status": "Em verificação",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.381140"
+    "updated_at": "2026-09-09T18:24:35.341495"
   },
   {
     "issue_key": "SMENTGO-1639",
+    "type": "Problemas Cadastrais",
     "summary": "Restrição de MODAL mesmo após alteração",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.384192"
+    "updated_at": "2026-09-09T18:24:35.355820"
   },
   {
     "issue_key": "SMENTGO-1736",
+    "type": "Dúvidas Gerais",
     "summary": "Promoções divergentes da área de atuação",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.392198"
+    "updated_at": "2026-09-09T18:24:35.372031"
   },
   {
     "issue_key": "SMENTGO-1670",
+    "type": "Dúvidas Gerais",
     "summary": "Erro no CLUBGAS",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.395368"
+    "updated_at": "2026-09-09T18:24:35.386401"
   },
   {
     "issue_key": "SMENTGO-1729",
+    "type": "Problemas Cadastrais",
     "summary": "Entregador em pausa desde o dia 5.",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.398315"
+    "updated_at": "2026-09-09T18:24:35.400869"
   },
   {
     "issue_key": "SMENTGO-1735",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.401319"
+    "updated_at": "2026-09-09T18:24:35.414671"
   },
   {
     "issue_key": "SMENTGO-1732",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.404272"
+    "updated_at": "2026-09-09T18:24:35.428707"
   },
   {
     "issue_key": "SMENTGO-1666",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.407546"
+    "updated_at": "2026-09-09T18:24:35.442877"
   },
   {
     "issue_key": "SMENTGO-1610",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.410679"
+    "updated_at": "2026-09-09T18:24:35.457444"
   },
   {
     "issue_key": "SMENTGO-1629",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.413699"
+    "updated_at": "2026-09-09T18:24:35.472211"
   },
   {
     "issue_key": "SMENTGO-1598",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.416955"
+    "updated_at": "2026-09-09T18:24:35.486627"
   },
   {
     "issue_key": "SMENTGO-1697",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.419865"
+    "updated_at": "2026-09-09T18:24:35.501457"
   },
   {
     "issue_key": "SMENTGO-1519",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.422730"
+    "updated_at": "2026-09-09T18:24:35.515788"
   },
   {
     "issue_key": "SMENTGO-1685",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.425955"
+    "updated_at": "2026-09-09T18:24:35.529651"
   },
   {
     "issue_key": "SMENTGO-1671",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.428957"
+    "updated_at": "2026-09-09T18:24:35.543894"
   },
   {
     "issue_key": "SMENTGO-1439",
+    "type": "Problemas Cadastrais",
     "summary": "+Entregas - Agendamento",
     "status": "Aguardando Franqueado",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.432066"
+    "updated_at": "2026-09-09T18:24:35.557756"
   },
   {
     "issue_key": "SMENTGO-1518",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.434905"
+    "updated_at": "2026-09-09T18:24:35.571988"
   },
   {
     "issue_key": "SMENTGO-1515",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.437677"
+    "updated_at": "2026-09-09T18:24:35.586222"
   },
   {
     "issue_key": "SMENTGO-1661",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.440867"
+    "updated_at": "2026-09-09T18:24:35.600200"
   },
   {
     "issue_key": "SMENTGO-1625",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.444096"
+    "updated_at": "2026-09-09T18:24:35.613792"
   },
   {
     "issue_key": "SMENTGO-1622",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.447109"
+    "updated_at": "2026-09-09T18:24:35.627506"
   },
   {
     "issue_key": "SMENTGO-1660",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.450087"
+    "updated_at": "2026-09-09T18:24:35.641400"
   },
   {
     "issue_key": "SMENTGO-1616",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.453097"
+    "updated_at": "2026-09-09T18:24:35.655201"
   },
   {
     "issue_key": "SMENTGO-1659",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.455967"
+    "updated_at": "2026-09-09T18:24:35.672140"
   },
   {
     "issue_key": "SMENTGO-1647",
+    "type": "Contestação de Garantido FE",
     "summary": "Contestação de Garantido FE",
     "status": "Aberto",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.459360"
+    "updated_at": "2026-09-09T18:24:35.685754"
   },
   {
     "issue_key": "SMENTGO-1493",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.462293"
+    "updated_at": "2026-09-09T18:24:35.699195"
   },
   {
     "issue_key": "SMENTGO-1492",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.465100"
+    "updated_at": "2026-09-09T18:24:35.712679"
   },
   {
     "issue_key": "SMENTGO-1491",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.467926"
+    "updated_at": "2026-09-09T18:24:35.726410"
   },
   {
     "issue_key": "SMENTGO-1468",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.470978"
+    "updated_at": "2026-09-09T18:24:35.740310"
   },
   {
     "issue_key": "SMENTGO-1614",
+    "type": "Problemas Cadastrais",
     "summary": "Erro ao tirar foto - Evento da BAG",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.474296"
+    "updated_at": "2026-09-09T18:24:35.754486"
   },
   {
     "issue_key": "SMENTGO-1626",
+    "type": "Problemas Cadastrais",
     "summary": "Região em outra área, impedindo o recebimento de promoções.",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.477396"
+    "updated_at": "2026-09-09T18:24:35.768090"
   },
   {
     "issue_key": "SMENTGO-1624",
+    "type": "Dúvidas Gerais",
     "summary": "Cliente não localizado afetando a saúde da conta",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.480362"
+    "updated_at": "2026-09-09T18:24:35.781751"
   },
   {
     "issue_key": "SMENTGO-1627",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.483486"
+    "updated_at": "2026-09-09T18:24:35.797009"
   },
   {
     "issue_key": "SMENTGO-1623",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.486344"
+    "updated_at": "2026-09-09T18:24:35.811082"
   },
   {
     "issue_key": "SMENTGO-1471",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.489134"
+    "updated_at": "2026-09-09T18:24:35.824896"
   },
   {
     "issue_key": "SMENTGO-1470",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Em verificação",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.492404"
+    "updated_at": "2026-09-09T18:24:35.839562"
   },
   {
     "issue_key": "SMENTGO-1469",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Em verificação",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.495875"
+    "updated_at": "2026-09-09T18:24:35.853862"
   },
   {
     "issue_key": "SMENTGO-1585",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.498850"
+    "updated_at": "2026-09-09T18:24:35.867655"
   },
   {
     "issue_key": "SMENTGO-1571",
+    "type": "Problemas Cadastrais",
     "summary": "Opção de conexão com maquininha não aparece",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.501703"
+    "updated_at": "2026-09-09T18:24:35.880778"
   },
   {
     "issue_key": "SMENTGO-1597",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.504610"
+    "updated_at": "2026-09-09T18:24:35.894284"
   },
   {
     "issue_key": "SMENTGO-1573",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.507869"
+    "updated_at": "2026-09-09T18:24:35.908039"
   },
   {
     "issue_key": "SMENTGO-1570",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.510924"
+    "updated_at": "2026-09-09T18:24:35.922671"
   },
   {
     "issue_key": "SMENTGO-1569",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.513752"
+    "updated_at": "2026-09-09T18:24:35.936478"
   },
   {
     "issue_key": "SMENTGO-1535",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.516569"
+    "updated_at": "2026-09-09T18:24:35.949586"
   },
   {
     "issue_key": "SMENTGO-1540",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.519319"
+    "updated_at": "2026-09-09T18:24:35.963172"
   },
   {
     "issue_key": "SMENTGO-1539",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.522080"
+    "updated_at": "2026-09-09T18:24:35.976910"
   },
   {
     "issue_key": "SMENTGO-1538",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.525407"
+    "updated_at": "2026-09-09T18:24:35.990641"
   },
   {
     "issue_key": "SMENTGO-1462",
+    "type": "Dúvidas Gerais",
     "summary": "Controle de Promo | EntreGô - Looker Studio",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.528310"
+    "updated_at": "2026-09-09T18:24:36.004843"
   },
   {
     "issue_key": "SMENTGO-1528",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.531022"
+    "updated_at": "2026-09-09T18:24:36.018352"
   },
   {
     "issue_key": "SMENTGO-1430",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.533815"
+    "updated_at": "2026-09-09T18:24:36.031843"
   },
   {
     "issue_key": "SMENTGO-1460",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.536724"
+    "updated_at": "2026-09-09T18:24:36.046130"
   },
   {
     "issue_key": "SMENTGO-1048",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.540030"
+    "updated_at": "2026-09-09T18:24:36.060873"
   },
   {
     "issue_key": "SMENTGO-1442",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.543480"
+    "updated_at": "2026-09-09T18:24:36.074955"
   },
   {
     "issue_key": "SMENTGO-1441",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.546507"
+    "updated_at": "2026-09-09T18:24:36.089088"
   },
   {
     "issue_key": "SMENTGO-1437",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.549560"
+    "updated_at": "2026-09-09T18:24:36.102861"
   },
   {
     "issue_key": "SMENTGO-1431",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.552501"
+    "updated_at": "2026-09-09T18:24:36.116525"
   },
   {
     "issue_key": "SMENTGO-1424",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.555566"
+    "updated_at": "2026-09-09T18:24:36.130427"
   },
   {
     "issue_key": "SMENTGO-1289",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.558962"
+    "updated_at": "2026-09-09T18:24:36.144736"
   },
   {
     "issue_key": "SMENTGO-1282",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.561888"
+    "updated_at": "2026-09-09T18:24:36.158346"
   },
   {
     "issue_key": "SMENTGO-1277",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.564969"
+    "updated_at": "2026-09-09T18:24:36.172710"
   },
   {
     "issue_key": "SMENTGO-1340",
+    "type": "Contestação de Garantido FE",
     "summary": "Contestação de Garantido FE",
     "status": "Em verificação",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.567725"
+    "updated_at": "2026-09-09T18:24:36.186600"
   },
   {
     "issue_key": "SMENTGO-1368",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.570609"
+    "updated_at": "2026-09-09T18:24:36.200394"
   },
   {
     "issue_key": "SMENTGO-1398",
+    "type": "Contestação de Garantido FE",
     "summary": "Contestação de Garantido FE",
     "status": "Em verificação",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.573728"
+    "updated_at": "2026-09-09T18:24:36.213807"
   },
   {
     "issue_key": "SMENTGO-1478",
+    "type": "Contestação de Garantido FE",
     "summary": "Contestação de Garantido FE",
     "status": "Em verificação",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.577071"
+    "updated_at": "2026-09-09T18:24:36.227405"
   },
   {
     "issue_key": "SMENTGO-1059",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.579960"
+    "updated_at": "2026-09-09T18:24:36.241128"
   },
   {
     "issue_key": "SMENTGO-1381",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:15:59.582752"
+    "updated_at": "2026-09-09T18:24:36.255350"
   },
   {
     "issue_key": "SMENTGO-1375",
+    "type": "Dúvidas Gerais",
     "summary": "Dedicado abrindo apenas ás 11h no agendamento",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.585593"
+    "updated_at": "2026-09-09T18:24:36.269645"
   },
   {
     "issue_key": "SMENTGO-1362",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.588360"
+    "updated_at": "2026-09-09T18:24:36.283265"
   },
   {
     "issue_key": "SMENTGO-1348",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.591739"
+    "updated_at": "2026-09-09T18:24:36.297308"
   },
   {
     "issue_key": "SMENTGO-1057",
+    "type": "Contestação de Garantido FE",
     "summary": "Contestação de Garantido FE",
     "status": "Em verificação",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.594742"
+    "updated_at": "2026-09-09T18:24:36.311506"
   },
   {
     "issue_key": "SMENTGO-1090",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.597569"
+    "updated_at": "2026-09-09T18:24:36.326174"
   },
   {
     "issue_key": "SMENTGO-1341",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.600502"
+    "updated_at": "2026-09-09T18:24:36.340857"
   },
   {
     "issue_key": "SMENTGO-1265",
+    "type": "Sugestão de Escala",
     "summary": "Sugestão de Escala",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.603408"
+    "updated_at": "2026-09-09T18:24:36.355226"
   },
   {
     "issue_key": "SMENTGO-1014",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.606368"
+    "updated_at": "2026-09-09T18:24:36.369039"
   },
   {
     "issue_key": "SMENTGO-1315",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.609806"
+    "updated_at": "2026-09-09T18:24:36.382449"
   },
   {
     "issue_key": "SMENTGO-1314",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:15:59.612892"
+    "updated_at": "2026-09-09T18:24:36.396477"
   },
   {
     "issue_key": "SMENTGO-1020",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.615902"
+    "updated_at": "2026-09-09T18:24:36.411209"
   },
   {
     "issue_key": "SMENTGO-1306",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.618898"
+    "updated_at": "2026-09-09T18:24:36.425184"
   },
   {
     "issue_key": "SMENTGO-1305",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.621697"
+    "updated_at": "2026-09-09T18:24:36.438887"
   },
   {
     "issue_key": "SMENTGO-878",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:15:59.624835"
+    "updated_at": "2026-09-09T18:24:36.452635"
   },
   {
     "issue_key": "SMENTGO-1264",
+    "type": "Problemas Cadastrais",
     "summary": "Opção de conexão com maquininha não aparece",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.627733"
+    "updated_at": "2026-09-09T18:24:36.466309"
   },
   {
     "issue_key": "SMENTGO-1063",
+    "type": "Sugestão de Escala",
     "summary": "Sugestão de Escala",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:15:59.630690"
+    "updated_at": "2026-09-09T18:24:36.480482"
   },
   {
     "issue_key": "SMENTGO-1127",
+    "type": "Sugestão de Escala",
     "summary": "Sugestão de Escala",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:15:59.633612"
+    "updated_at": "2026-09-09T18:24:36.495003"
   },
   {
     "issue_key": "SMENTGO-1258",
+    "type": "Dúvidas Gerais",
     "summary": "Error - Leads \"SITE\"",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:15:59.636354"
+    "updated_at": "2026-09-09T18:24:36.509038"
   },
   {
     "issue_key": "SMENTGO-1091",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.639178"
+    "updated_at": "2026-09-09T18:24:36.523134"
   },
   {
     "issue_key": "SMENTGO-1094",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.642562"
+    "updated_at": "2026-09-09T18:24:36.539204"
   },
   {
     "issue_key": "SMENTGO-1099",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:15:59.645491"
+    "updated_at": "2026-09-09T18:24:36.552979"
   },
   {
     "issue_key": "SMENTGO-1101",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:15:59.648301"
+    "updated_at": "2026-09-09T18:24:36.566601"
   },
   {
     "issue_key": "SMENTGO-1146",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.651082"
+    "updated_at": "2026-09-09T18:24:36.581479"
   },
   {
     "issue_key": "SMENTGO-1147",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.653976"
+    "updated_at": "2026-09-09T18:24:36.595645"
   },
   {
     "issue_key": "SMENTGO-1150",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.657140"
+    "updated_at": "2026-09-09T18:24:36.609267"
   },
   {
     "issue_key": "SMENTGO-1151",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.660472"
+    "updated_at": "2026-09-09T18:24:36.622722"
   },
   {
     "issue_key": "SMENTGO-1152",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.663758"
+    "updated_at": "2026-09-09T18:24:36.635871"
   },
   {
     "issue_key": "SMENTGO-1153",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.666660"
+    "updated_at": "2026-09-09T18:24:36.649200"
   },
   {
     "issue_key": "SMENTGO-1155",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.669693"
+    "updated_at": "2026-09-09T18:24:36.663525"
   },
   {
     "issue_key": "SMENTGO-1156",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.672552"
+    "updated_at": "2026-09-09T18:24:36.677247"
   },
   {
     "issue_key": "SMENTGO-1157",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.675956"
+    "updated_at": "2026-09-09T18:24:36.691076"
   },
   {
     "issue_key": "SMENTGO-1158",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.678872"
+    "updated_at": "2026-09-09T18:24:36.704397"
   },
   {
     "issue_key": "SMENTGO-1159",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.681873"
+    "updated_at": "2026-09-09T18:24:36.717714"
   },
   {
     "issue_key": "SMENTGO-1161",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.684805"
+    "updated_at": "2026-09-09T18:24:36.731533"
   },
   {
     "issue_key": "SMENTGO-1162",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.687542"
+    "updated_at": "2026-09-09T18:24:36.745713"
   },
   {
     "issue_key": "SMENTGO-1164",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.690580"
+    "updated_at": "2026-09-09T18:24:36.759076"
   },
   {
     "issue_key": "SMENTGO-1167",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.693830"
+    "updated_at": "2026-09-09T18:24:36.772528"
   },
   {
     "issue_key": "SMENTGO-1168",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.696873"
+    "updated_at": "2026-09-09T18:24:36.786185"
   },
   {
     "issue_key": "SMENTGO-1169",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.699668"
+    "updated_at": "2026-09-09T18:24:36.801093"
   },
   {
     "issue_key": "SMENTGO-1170",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.702415"
+    "updated_at": "2026-09-09T18:24:36.814675"
   },
   {
     "issue_key": "SMENTGO-1171",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.705385"
+    "updated_at": "2026-09-09T18:24:36.829422"
   },
   {
     "issue_key": "SMENTGO-1172",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.708716"
+    "updated_at": "2026-09-09T18:24:36.844210"
   },
   {
     "issue_key": "SMENTGO-1173",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.711644"
+    "updated_at": "2026-09-09T18:24:36.859029"
   },
   {
     "issue_key": "SMENTGO-1174",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.714566"
+    "updated_at": "2026-09-09T18:24:36.872435"
   },
   {
     "issue_key": "SMENTGO-1175",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.717358"
+    "updated_at": "2026-09-09T18:24:36.886010"
   },
   {
     "issue_key": "SMENTGO-1176",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.720101"
+    "updated_at": "2026-09-09T18:24:36.899666"
   },
   {
     "issue_key": "SMENTGO-1177",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.722902"
+    "updated_at": "2026-09-09T18:24:36.914294"
   },
   {
     "issue_key": "SMENTGO-1178",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.726341"
+    "updated_at": "2026-09-09T18:24:36.928918"
   },
   {
     "issue_key": "SMENTGO-1179",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.729213"
+    "updated_at": "2026-09-09T18:24:36.943406"
   },
   {
     "issue_key": "SMENTGO-1180",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.732016"
+    "updated_at": "2026-09-09T18:24:36.957117"
   },
   {
     "issue_key": "SMENTGO-1181",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.734825"
+    "updated_at": "2026-09-09T18:24:36.970697"
   },
   {
     "issue_key": "SMENTGO-1182",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.737614"
+    "updated_at": "2026-09-09T18:24:36.983922"
   },
   {
     "issue_key": "SMENTGO-1183",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.740650"
+    "updated_at": "2026-09-09T18:24:36.998589"
   },
   {
     "issue_key": "SMENTGO-1185",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.743834"
+    "updated_at": "2026-09-09T18:24:37.012391"
   },
   {
     "issue_key": "SMENTGO-1186",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.746609"
+    "updated_at": "2026-09-09T18:24:37.026199"
   },
   {
     "issue_key": "SMENTGO-1187",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.749503"
+    "updated_at": "2026-09-09T18:24:37.039666"
   },
   {
     "issue_key": "SMENTGO-1188",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.752400"
+    "updated_at": "2026-09-09T18:24:37.053244"
   },
   {
     "issue_key": "SMENTGO-1189",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.755251"
+    "updated_at": "2026-09-09T18:24:37.066211"
   },
   {
     "issue_key": "SMENTGO-1190",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.758712"
+    "updated_at": "2026-09-09T18:24:37.080688"
   },
   {
     "issue_key": "SMENTGO-1191",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.761828"
+    "updated_at": "2026-09-09T18:24:37.094053"
   },
   {
     "issue_key": "SMENTGO-1192",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.764964"
+    "updated_at": "2026-09-09T18:24:37.107311"
   },
   {
     "issue_key": "SMENTGO-1193",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.767771"
+    "updated_at": "2026-09-09T18:24:37.120778"
   },
   {
     "issue_key": "SMENTGO-1194",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.770543"
+    "updated_at": "2026-09-09T18:24:37.134271"
   },
   {
     "issue_key": "SMENTGO-1195",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.773371"
+    "updated_at": "2026-09-09T18:24:37.147572"
   },
   {
     "issue_key": "SMENTGO-1196",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.776879"
+    "updated_at": "2026-09-09T18:24:37.161691"
   },
   {
     "issue_key": "SMENTGO-1197",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.779733"
+    "updated_at": "2026-09-09T18:24:37.175440"
   },
   {
     "issue_key": "SMENTGO-1198",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.782529"
+    "updated_at": "2026-09-09T18:24:37.188823"
   },
   {
     "issue_key": "SMENTGO-1199",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.785262"
+    "updated_at": "2026-09-09T18:24:37.202000"
   },
   {
     "issue_key": "SMENTGO-1200",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.788768"
+    "updated_at": "2026-09-09T18:24:37.215229"
   },
   {
     "issue_key": "SMENTGO-1201",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.792911"
+    "updated_at": "2026-09-09T18:24:37.228920"
   },
   {
     "issue_key": "SMENTGO-1202",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.795872"
+    "updated_at": "2026-09-09T18:24:37.243128"
   },
   {
     "issue_key": "SMENTGO-1203",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.798761"
+    "updated_at": "2026-09-09T18:24:37.256824"
   },
   {
     "issue_key": "SMENTGO-1205",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.801589"
+    "updated_at": "2026-09-09T18:24:37.270086"
   },
   {
     "issue_key": "SMENTGO-1206",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.804819"
+    "updated_at": "2026-09-09T18:24:37.283419"
   },
   {
     "issue_key": "SMENTGO-1207",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.808069"
+    "updated_at": "2026-09-09T18:24:37.296765"
   },
   {
     "issue_key": "SMENTGO-1208",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.811269"
+    "updated_at": "2026-09-09T18:24:37.310184"
   },
   {
     "issue_key": "SMENTGO-1210",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.814257"
+    "updated_at": "2026-09-09T18:24:37.324152"
   },
   {
     "issue_key": "SMENTGO-1211",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.817416"
+    "updated_at": "2026-09-09T18:24:37.337367"
   },
   {
     "issue_key": "SMENTGO-1212",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.820498"
+    "updated_at": "2026-09-09T18:24:37.350503"
   },
   {
     "issue_key": "SMENTGO-1214",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.823462"
+    "updated_at": "2026-09-09T18:24:37.363799"
   },
   {
     "issue_key": "SMENTGO-1215",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.826757"
+    "updated_at": "2026-09-09T18:24:37.377582"
   },
   {
     "issue_key": "SMENTGO-1216",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.829901"
+    "updated_at": "2026-09-09T18:24:37.398460"
   },
   {
     "issue_key": "SMENTGO-1217",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.833106"
+    "updated_at": "2026-09-09T18:24:37.412846"
   },
   {
     "issue_key": "SMENTGO-1218",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.836188"
+    "updated_at": "2026-09-09T18:24:37.426498"
   },
   {
     "issue_key": "SMENTGO-1219",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.839029"
+    "updated_at": "2026-09-09T18:24:37.440251"
   },
   {
     "issue_key": "SMENTGO-1220",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.842471"
+    "updated_at": "2026-09-09T18:24:37.453856"
   },
   {
     "issue_key": "SMENTGO-1221",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.845707"
+    "updated_at": "2026-09-09T18:24:37.466966"
   },
   {
     "issue_key": "SMENTGO-1228",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.848540"
+    "updated_at": "2026-09-09T18:24:37.480819"
   },
   {
     "issue_key": "SMENTGO-1229",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.851657"
+    "updated_at": "2026-09-09T18:24:37.494706"
   },
   {
     "issue_key": "SMENTGO-1230",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.854710"
+    "updated_at": "2026-09-09T18:24:37.508314"
   },
   {
     "issue_key": "SMENTGO-1231",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.857877"
+    "updated_at": "2026-09-09T18:24:37.521753"
   },
   {
     "issue_key": "SMENTGO-1232",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.861075"
+    "updated_at": "2026-09-09T18:24:37.535094"
   },
   {
     "issue_key": "SMENTGO-1233",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.864062"
+    "updated_at": "2026-09-09T18:24:37.548670"
   },
   {
     "issue_key": "SMENTGO-1234",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.866918"
+    "updated_at": "2026-09-09T18:24:37.561954"
   },
   {
     "issue_key": "SMENTGO-1235",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.869734"
+    "updated_at": "2026-09-09T18:24:37.576320"
   },
   {
     "issue_key": "SMENTGO-1236",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Cancelado",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.872542"
+    "updated_at": "2026-09-09T18:24:37.589835"
   },
   {
     "issue_key": "SMENTGO-990",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.875937"
+    "updated_at": "2026-09-09T18:24:37.603274"
   },
   {
     "issue_key": "SMENTGO-1126",
+    "type": "Sugestão de Escala",
     "summary": "Sugestão de Escala",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:15:59.879048"
+    "updated_at": "2026-09-09T18:24:37.617028"
   },
   {
     "issue_key": "SMENTGO-1128",
+    "type": "Sugestão de Escala",
     "summary": "Sugestão de Escala",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:15:59.882437"
+    "updated_at": "2026-09-09T18:24:37.631037"
   },
   {
     "issue_key": "SMENTGO-1184",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:15:59.885739"
+    "updated_at": "2026-09-09T18:24:37.645690"
   },
   {
     "issue_key": "SMENTGO-983",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.888783"
+    "updated_at": "2026-09-09T18:24:37.659527"
   },
   {
     "issue_key": "SMENTGO-1072",
+    "type": "Reportar Bug na tela do entregador - Programa Elite",
     "summary": "Chip Elite sem carga",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.892365"
+    "updated_at": "2026-09-09T18:24:37.673087"
   },
   {
     "issue_key": "SMENTGO-1081",
+    "type": "Problemas Cadastrais",
     "summary": "Atualização de CNH pendente para entregador BIKE",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.895819"
+    "updated_at": "2026-09-09T18:24:37.686862"
   },
   {
     "issue_key": "SMENTGO-1075",
+    "type": "Problemas Cadastrais",
     "summary": "Aplicativo fechando sozinho",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.899152"
+    "updated_at": "2026-09-09T18:24:37.701336"
   },
   {
     "issue_key": "SMENTGO-1043",
+    "type": "Dúvidas Gerais",
     "summary": "Aba para receber máquina do app indisponivel",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.902469"
+    "updated_at": "2026-09-09T18:24:37.715026"
   },
   {
     "issue_key": "SMENTGO-1038",
+    "type": "Reportar Bug na tela do entregador - Programa Elite",
     "summary": "Chip Elite sem carga",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.905707"
+    "updated_at": "2026-09-09T18:24:37.728924"
   },
   {
     "issue_key": "SMENTGO-910",
+    "type": "Contestação de Garantido FE",
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.909708"
+    "updated_at": "2026-09-09T18:24:37.742133"
   },
   {
     "issue_key": "SMENTGO-909",
+    "type": "Contestação de Garantido FE",
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.913124"
+    "updated_at": "2026-09-09T18:24:37.755410"
   },
   {
     "issue_key": "SMENTGO-972",
+    "type": "Contestação de Garantido FE",
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.916676"
+    "updated_at": "2026-09-09T18:24:37.768292"
   },
   {
     "issue_key": "SMENTGO-1001",
+    "type": "Contestação de Garantido FE",
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.920079"
+    "updated_at": "2026-09-09T18:24:37.785128"
   },
   {
     "issue_key": "SMENTGO-1004",
+    "type": "Problemas Cadastrais",
     "summary": "Erro no agendamento",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.923293"
+    "updated_at": "2026-09-09T18:24:37.800130"
   },
   {
     "issue_key": "SMENTGO-847",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.927248"
+    "updated_at": "2026-09-09T18:24:37.814351"
   },
   {
     "issue_key": "SMENTGO-1010",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:15:59.931339"
+    "updated_at": "2026-09-09T18:24:37.827969"
   },
   {
     "issue_key": "SMENTGO-1009",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:15:59.935013"
+    "updated_at": "2026-09-09T18:24:37.842686"
   },
   {
     "issue_key": "SMENTGO-795",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.938531"
+    "updated_at": "2026-09-09T18:24:37.856088"
   },
   {
     "issue_key": "SMENTGO-754",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.942632"
+    "updated_at": "2026-09-09T18:24:37.869211"
   },
   {
     "issue_key": "SMENTGO-793",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.946898"
+    "updated_at": "2026-09-09T18:24:37.882924"
   },
   {
     "issue_key": "SMENTGO-766",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.950520"
+    "updated_at": "2026-09-09T18:24:37.897478"
   },
   {
     "issue_key": "SMENTGO-655",
+    "type": "Contestação de Garantido FE",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:15:59.954155"
+    "updated_at": "2026-09-09T18:24:37.911239"
   },
   {
     "issue_key": "SMENTGO-467",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.957999"
+    "updated_at": "2026-09-09T18:24:37.925010"
   },
   {
     "issue_key": "SMENTGO-931",
+    "type": "Dúvidas Gerais",
     "summary": "Frota Estratégica multiplas rotas",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.961914"
+    "updated_at": "2026-09-09T18:24:37.938300"
   },
   {
     "issue_key": "SMENTGO-915",
+    "type": "Suporte Jarvis",
     "summary": "Código do Jarvis não chega.",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.965627"
+    "updated_at": "2026-09-09T18:24:37.951422"
   },
   {
     "issue_key": "SMENTGO-962",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.969060"
+    "updated_at": "2026-09-09T18:24:37.965016"
   },
   {
     "issue_key": "SMENTGO-961",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.972627"
+    "updated_at": "2026-09-09T18:24:37.979658"
   },
   {
     "issue_key": "SMENTGO-763",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.976789"
+    "updated_at": "2026-09-09T18:24:37.993595"
   },
   {
     "issue_key": "SMENTGO-609",
+    "type": "Contestação de Garantido FE",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.980218"
+    "updated_at": "2026-09-09T18:24:38.007299"
   },
   {
     "issue_key": "SMENTGO-934",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.983910"
+    "updated_at": "2026-09-09T18:24:38.020347"
   },
   {
     "issue_key": "SMENTGO-944",
+    "type": "Dúvidas Gerais",
     "summary": "Aferição - Pesquisa de satisfação",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.987449"
+    "updated_at": "2026-09-09T18:24:38.033928"
   },
   {
     "issue_key": "SMENTGO-841",
+    "type": "Problemas Cadastrais",
     "summary": "Bloqueio após alterar o MODAL ( Já Regularizado )",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.991352"
+    "updated_at": "2026-09-09T18:24:38.047714"
   },
   {
     "issue_key": "SMENTGO-216",
+    "type": "Problemas Cadastrais",
     "summary": "Opção de conexão com maquininha não aparece",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:15:59.995175"
+    "updated_at": "2026-09-09T18:24:38.062441"
   },
   {
     "issue_key": "SMENTGO-905",
+    "type": "Sugestão de Escala",
     "summary": "Sugestão de Escala",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:15:59.998935"
+    "updated_at": "2026-09-09T18:24:38.076219"
   },
   {
     "issue_key": "SMENTGO-907",
+    "type": "Sugestão de Escala",
     "summary": "Sugestão de Escala",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.002505"
+    "updated_at": "2026-09-09T18:24:38.089868"
   },
   {
     "issue_key": "SMENTGO-902",
+    "type": "Sugestão de Escala",
     "summary": "Sugestão de Escala",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.006804"
+    "updated_at": "2026-09-09T18:24:38.103385"
   },
   {
     "issue_key": "SMENTGO-906",
+    "type": "Sugestão de Escala",
     "summary": "Sugestão de Escala",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.011828"
+    "updated_at": "2026-09-09T18:24:38.116936"
   },
   {
     "issue_key": "SMENTGO-869",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.015984"
+    "updated_at": "2026-09-09T18:24:38.130398"
   },
   {
     "issue_key": "SMENTGO-861",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.019544"
+    "updated_at": "2026-09-09T18:24:38.144461"
   },
   {
     "issue_key": "SMENTGO-755",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.023240"
+    "updated_at": "2026-09-09T18:24:38.158181"
   },
   {
     "issue_key": "SMENTGO-840",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.027041"
+    "updated_at": "2026-09-09T18:24:38.171716"
   },
   {
     "issue_key": "SMENTGO-870",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.031145"
+    "updated_at": "2026-09-09T18:24:38.184927"
   },
   {
     "issue_key": "SMENTGO-757",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.034817"
+    "updated_at": "2026-09-09T18:24:38.198232"
   },
   {
     "issue_key": "SMENTGO-751",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.038001"
+    "updated_at": "2026-09-09T18:24:38.211650"
   },
   {
     "issue_key": "SMENTGO-759",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.041399"
+    "updated_at": "2026-09-09T18:24:38.226287"
   },
   {
     "issue_key": "SMENTGO-752",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.045127"
+    "updated_at": "2026-09-09T18:24:38.240019"
   },
   {
     "issue_key": "SMENTGO-608",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.048215"
+    "updated_at": "2026-09-09T18:24:38.253451"
   },
   {
     "issue_key": "SMENTGO-606",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.051878"
+    "updated_at": "2026-09-09T18:24:38.266629"
   },
   {
     "issue_key": "SMENTGO-765",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.054903"
+    "updated_at": "2026-09-09T18:24:38.279836"
   },
   {
     "issue_key": "SMENTGO-783",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.058196"
+    "updated_at": "2026-09-09T18:24:38.293239"
   },
   {
     "issue_key": "SMENTGO-767",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.061527"
+    "updated_at": "2026-09-09T18:24:38.307045"
   },
   {
     "issue_key": "SMENTGO-764",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.064627"
+    "updated_at": "2026-09-09T18:24:38.320463"
   },
   {
     "issue_key": "SMENTGO-679",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:16:00.067911"
+    "updated_at": "2026-09-09T18:24:38.333715"
   },
   {
     "issue_key": "SMENTGO-835",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.070902"
+    "updated_at": "2026-09-09T18:24:38.346877"
   },
   {
     "issue_key": "SMENTGO-695",
+    "type": "Problemas Cadastrais",
     "summary": "Driver com região divergente do cadastro na franquia",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.073900"
+    "updated_at": "2026-09-09T18:24:38.360162"
   },
   {
     "issue_key": "SMENTGO-680",
+    "type": "Dúvidas Gerais",
     "summary": "Mudança de perímetro - Rio de Janeiro / São Paulo",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:16:00.077333"
+    "updated_at": "2026-09-09T18:24:38.373287"
   },
   {
     "issue_key": "SMENTGO-602",
+    "type": "Dúvidas Gerais",
     "summary": "Erro na fórmula - Planilha de Leads (Aba Site)",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.080261"
+    "updated_at": "2026-09-09T18:24:38.387057"
   },
   {
     "issue_key": "SMENTGO-756",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.083489"
+    "updated_at": "2026-09-09T18:24:38.400270"
   },
   {
     "issue_key": "SMENTGO-551",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:16:00.086562"
+    "updated_at": "2026-09-09T18:24:38.413612"
   },
   {
     "issue_key": "SMENTGO-611",
+    "type": "Dúvidas Gerais",
     "summary": "D&G sem atualizações.",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:16:00.089554"
+    "updated_at": "2026-09-09T18:24:38.426853"
   },
   {
     "issue_key": "SMENTGO-621",
+    "type": "Sugestão de Escala",
     "summary": "Sugestão de Escala",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.092879"
+    "updated_at": "2026-09-09T18:24:38.439960"
   },
   {
     "issue_key": "SMENTGO-622",
+    "type": "Sugestão de Escala",
     "summary": "Sugestão de Escala",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.095982"
+    "updated_at": "2026-09-09T18:24:38.452747"
   },
   {
     "issue_key": "SMENTGO-142",
+    "type": "Suporte Jarvis",
     "summary": "Filtro ORIGEM desativado",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.098969"
+    "updated_at": "2026-09-09T18:24:38.466561"
   },
   {
     "issue_key": "SMENTGO-408",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.101827"
+    "updated_at": "2026-09-09T18:24:38.479587"
   },
   {
     "issue_key": "SMENTGO-383",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.104873"
+    "updated_at": "2026-09-09T18:24:38.493276"
   },
   {
     "issue_key": "SMENTGO-382",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.108525"
+    "updated_at": "2026-09-09T18:24:38.506596"
   },
   {
     "issue_key": "SMENTGO-381",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.111879"
+    "updated_at": "2026-09-09T18:24:38.519508"
   },
   {
     "issue_key": "SMENTGO-205",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.114793"
+    "updated_at": "2026-09-09T18:24:38.533089"
   },
   {
     "issue_key": "SMENTGO-171",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.117727"
+    "updated_at": "2026-09-09T18:24:38.547015"
   },
   {
     "issue_key": "SMENTGO-170",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.120823"
+    "updated_at": "2026-09-09T18:24:38.560083"
   },
   {
     "issue_key": "SMENTGO-169",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.123797"
+    "updated_at": "2026-09-09T18:24:38.573240"
   },
   {
     "issue_key": "SMENTGO-168",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.127341"
+    "updated_at": "2026-09-09T18:24:38.586066"
   },
   {
     "issue_key": "SMENTGO-155",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.131057"
+    "updated_at": "2026-09-09T18:24:38.599292"
   },
   {
     "issue_key": "SMENTGO-153",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.134431"
+    "updated_at": "2026-09-09T18:24:38.612498"
   },
   {
     "issue_key": "SMENTGO-127",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.137479"
+    "updated_at": "2026-09-09T18:24:38.625705"
   },
   {
     "issue_key": "SMENTGO-122",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.140448"
+    "updated_at": "2026-09-09T18:24:38.638584"
   },
   {
     "issue_key": "SMENTGO-637",
+    "type": "Contestação de Garantido FE",
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.144096"
+    "updated_at": "2026-09-09T18:24:38.651559"
   },
   {
     "issue_key": "SMENTGO-618",
+    "type": "Contestação de Garantido FE",
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.147124"
+    "updated_at": "2026-09-09T18:24:38.664758"
   },
   {
     "issue_key": "SMENTGO-758",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.150178"
+    "updated_at": "2026-09-09T18:24:38.678006"
   },
   {
     "issue_key": "SMENTGO-691",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.153365"
+    "updated_at": "2026-09-09T18:24:38.692105"
   },
   {
     "issue_key": "SMENTGO-689",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.156981"
+    "updated_at": "2026-09-09T18:24:38.706079"
   },
   {
     "issue_key": "SMENTGO-687",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.160645"
+    "updated_at": "2026-09-09T18:24:38.718932"
   },
   {
     "issue_key": "SMENTGO-605",
+    "type": "Problemas Cadastrais",
     "summary": "Driver inativo por problemas relacionados a Facematch",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.163950"
+    "updated_at": "2026-09-09T18:24:38.732179"
   },
   {
     "issue_key": "SMENTGO-574",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.166985"
+    "updated_at": "2026-09-09T18:24:38.745072"
   },
   {
     "issue_key": "SMENTGO-553",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:16:00.170072"
+    "updated_at": "2026-09-09T18:24:38.758054"
   },
   {
     "issue_key": "SMENTGO-552",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:16:00.173040"
+    "updated_at": "2026-09-09T18:24:38.771475"
   },
   {
     "issue_key": "SMENTGO-478",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.180379"
+    "updated_at": "2026-09-09T18:24:38.786435"
   },
   {
     "issue_key": "SMENTGO-576",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.183944"
+    "updated_at": "2026-09-09T18:24:38.799721"
   },
   {
     "issue_key": "SMENTGO-642",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.187054"
+    "updated_at": "2026-09-09T18:24:38.812942"
   },
   {
     "issue_key": "SMENTGO-365",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.190603"
+    "updated_at": "2026-09-09T18:24:38.826989"
   },
   {
     "issue_key": "SMENTGO-532",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.194849"
+    "updated_at": "2026-09-09T18:24:38.840349"
   },
   {
     "issue_key": "SMENTGO-636",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.197996"
+    "updated_at": "2026-09-09T18:24:38.853796"
   },
   {
     "issue_key": "SMENTGO-627",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.201116"
+    "updated_at": "2026-09-09T18:24:38.867857"
   },
   {
     "issue_key": "SMENTGO-463",
+    "type": "Contestação de Garantido FE",
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.204223"
+    "updated_at": "2026-09-09T18:24:38.881057"
   },
   {
     "issue_key": "SMENTGO-522",
+    "type": "Contestação de Garantido FE",
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.207298"
+    "updated_at": "2026-09-09T18:24:38.894121"
   },
   {
     "issue_key": "SMENTGO-523",
+    "type": "Contestação de Garantido FE",
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.211097"
+    "updated_at": "2026-09-09T18:24:38.907820"
   },
   {
     "issue_key": "SMENTGO-379",
+    "type": "Contestação de Garantido FE",
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.214468"
+    "updated_at": "2026-09-09T18:24:38.921178"
   },
   {
     "issue_key": "SMENTGO-378",
+    "type": "Contestação de Garantido FE",
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.218036"
+    "updated_at": "2026-09-09T18:24:38.934904"
   },
   {
     "issue_key": "SMENTGO-485",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.221027"
+    "updated_at": "2026-09-09T18:24:38.948681"
   },
   {
     "issue_key": "SMENTGO-607",
+    "type": "Dúvidas Gerais",
     "summary": "Driver com problemas chip iFood",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.224307"
+    "updated_at": "2026-09-09T18:24:38.962044"
   },
   {
     "issue_key": "SMENTGO-132",
+    "type": "Problemas Cadastrais",
     "summary": "Cadastro em Fortaleza, sistema indica Rio-Barra",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.227834"
+    "updated_at": "2026-09-09T18:24:38.975503"
   },
   {
     "issue_key": "SMENTGO-120",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.231123"
+    "updated_at": "2026-09-09T18:24:38.988784"
   },
   {
     "issue_key": "SMENTGO-107",
+    "type": "Problemas Cadastrais",
     "summary": "Agendamento não disponível - Fortaleza",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:16:00.234393"
+    "updated_at": "2026-09-09T18:24:39.001976"
   },
   {
     "issue_key": "SMENTGO-83",
+    "type": "Fluxo desativado",
     "summary": "Reportar fechamento de restaurantes e baixa demanda",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.237283"
+    "updated_at": "2026-09-09T18:24:39.016257"
   },
   {
     "issue_key": "SMENTGO-470",
+    "type": "Sugestão de Escala",
     "summary": "Sugestão de Escala",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.240215"
+    "updated_at": "2026-09-09T18:24:39.029608"
   },
   {
     "issue_key": "SMENTGO-460",
+    "type": "Sugestão de Escala",
     "summary": "Sugestão de Escala",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.244116"
+    "updated_at": "2026-09-09T18:24:39.043202"
   },
   {
     "issue_key": "SMENTGO-458",
+    "type": "Sugestão de Escala",
     "summary": "Sugestão de Escala",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.247232"
+    "updated_at": "2026-09-09T18:24:39.056825"
   },
   {
     "issue_key": "SMENTGO-597",
+    "type": "Problemas Cadastrais",
     "summary": "Bloqueio por problema no veículo",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.250123"
+    "updated_at": "2026-09-09T18:24:39.069657"
   },
   {
     "issue_key": "SMENTGO-323",
+    "type": "Dúvidas Gerais",
     "summary": "Mesma rota tocaando inúmeras vezes após rejeites.",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.253172"
+    "updated_at": "2026-09-09T18:24:39.083109"
   },
   {
     "issue_key": "SMENTGO-291",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.256274"
+    "updated_at": "2026-09-09T18:24:39.096692"
   },
   {
     "issue_key": "SMENTGO-94",
+    "type": "Dúvidas Gerais",
     "summary": "Erro no pagamento por hora online – Rio de Janeiro (Livre)",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.259841"
+    "updated_at": "2026-09-09T18:24:39.109708"
   },
   {
     "issue_key": "SMENTGO-198",
+    "type": "Suporte Jarvis",
     "summary": "Código de acesso - EntreGô / Locaweb",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:16:00.262898"
+    "updated_at": "2026-09-09T18:24:39.122533"
   },
   {
     "issue_key": "SMENTGO-409",
+    "type": "Contestação de Garantido FE",
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.266030"
+    "updated_at": "2026-09-09T18:24:39.139924"
   },
   {
     "issue_key": "SMENTGO-384",
+    "type": "Contestação de Garantido FE",
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.269052"
+    "updated_at": "2026-09-09T18:24:39.154650"
   },
   {
     "issue_key": "SMENTGO-377",
+    "type": "Contestação de Garantido FE",
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.272001"
+    "updated_at": "2026-09-09T18:24:39.170193"
   },
   {
     "issue_key": "SMENTGO-376",
+    "type": "Contestação de Garantido FE",
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.275247"
+    "updated_at": "2026-09-09T18:24:39.185547"
   },
   {
     "issue_key": "SMENTGO-324",
+    "type": "Contestação de Garantido FE",
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.278666"
+    "updated_at": "2026-09-09T18:24:39.199633"
   },
   {
     "issue_key": "SMENTGO-294",
+    "type": "Contestação de Garantido FE",
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.282545"
+    "updated_at": "2026-09-09T18:24:39.213796"
   },
   {
     "issue_key": "SMENTGO-289",
+    "type": "Contestação de Garantido FE",
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.285472"
+    "updated_at": "2026-09-09T18:24:39.226830"
   },
   {
     "issue_key": "SMENTGO-288",
+    "type": "Contestação de Garantido FE",
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.288144"
+    "updated_at": "2026-09-09T18:24:39.240495"
   },
   {
     "issue_key": "SMENTGO-224",
+    "type": "Contestação de Garantido FE",
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.290788"
+    "updated_at": "2026-09-09T18:24:39.253308"
   },
   {
     "issue_key": "SMENTGO-117",
+    "type": "Contestação de Garantido FE",
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.294152"
+    "updated_at": "2026-09-09T18:24:39.266770"
   },
   {
     "issue_key": "SMENTGO-282",
+    "type": "Reportar Bug na tela do entregador - Programa Elite",
     "summary": "Mudança de região - Elite não ativo.",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.297177"
+    "updated_at": "2026-09-09T18:24:39.279776"
   },
   {
     "issue_key": "SMENTGO-266",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.300147"
+    "updated_at": "2026-09-09T18:24:39.292642"
   },
   {
     "issue_key": "SMENTGO-305",
+    "type": "Sugestão de Escala",
     "summary": "Sugestão de Escala",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.303032"
+    "updated_at": "2026-09-09T18:24:39.305361"
   },
   {
     "issue_key": "SMENTGO-413",
+    "type": "Dúvidas Gerais",
     "summary": "Bloqueio por atraso, porém performance pontual.",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.305743"
+    "updated_at": "2026-09-09T18:24:39.318605"
   },
   {
     "issue_key": "SMENTGO-424",
+    "type": "Problemas Cadastrais",
     "summary": "Driver sem rodar por problemas relacionados a Facematch",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.308783"
+    "updated_at": "2026-09-09T18:24:39.331959"
   },
   {
     "issue_key": "SMENTGO-235",
+    "type": "Contestação de Garantido FE",
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.311922"
+    "updated_at": "2026-09-09T18:24:39.345699"
   },
   {
     "issue_key": "SMENTGO-91",
+    "type": "Contestação de Garantido FE",
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.314879"
+    "updated_at": "2026-09-09T18:24:39.358854"
   },
   {
     "issue_key": "SMENTGO-300",
+    "type": "Dúvidas Gerais",
     "summary": "Reprocessamento com descrição nula",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.317665"
+    "updated_at": "2026-09-09T18:24:39.371716"
   },
   {
     "issue_key": "SMENTGO-208",
+    "type": "Problemas Cadastrais",
     "summary": "Bloqueio constante no aplicativo!",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.320392"
+    "updated_at": "2026-09-09T18:24:39.385081"
   },
   {
     "issue_key": "SMENTGO-207",
+    "type": "Problemas Cadastrais",
     "summary": "Problema no reconhecimento facial",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.323123"
+    "updated_at": "2026-09-09T18:24:39.398245"
   },
   {
     "issue_key": "SMENTGO-217",
+    "type": "Problemas Cadastrais",
     "summary": "Ifood-pedal inexistente e desativação de conta.",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.326371"
+    "updated_at": "2026-09-09T18:24:39.411732"
   },
   {
     "issue_key": "SMENTGO-276",
+    "type": "Sugestão de Escala",
     "summary": "Sugestão de Escala",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.329334"
+    "updated_at": "2026-09-09T18:24:39.425335"
   },
   {
     "issue_key": "SMENTGO-273",
+    "type": "Reportar Bug na tela do entregador - Programa Elite",
     "summary": "Chip Elite sem carga",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.332122"
+    "updated_at": "2026-09-09T18:24:39.438119"
   },
   {
     "issue_key": "SMENTGO-206",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.334842"
+    "updated_at": "2026-09-09T18:24:39.451353"
   },
   {
     "issue_key": "SMENTGO-212",
+    "type": "Reportar Bug na tela do entregador - Programa Elite",
     "summary": "Chip Elite sem carga",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.337507"
+    "updated_at": "2026-09-09T18:24:39.464313"
   },
   {
     "issue_key": "SMENTGO-129",
+    "type": "Problemas Cadastrais",
     "summary": "Bloqueio por excesso de cancelamento",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.340318"
+    "updated_at": "2026-09-09T18:24:39.477307"
   },
   {
     "issue_key": "SMENTGO-128",
+    "type": "Problemas Cadastrais",
     "summary": "Bloqueio por problema no veículo",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.343756"
+    "updated_at": "2026-09-09T18:24:39.493032"
   },
   {
     "issue_key": "SMENTGO-125",
+    "type": "Dúvidas Gerais",
     "summary": "Conta Bloqueada - Modal",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:16:00.346609"
+    "updated_at": "2026-09-09T18:24:39.508596"
   },
   {
     "issue_key": "SMENTGO-96",
+    "type": "Dúvidas Gerais",
     "summary": "Aplicativo divergente entre NUVEM e FRANQUIA",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.349481"
+    "updated_at": "2026-09-09T18:24:39.523168"
   },
   {
     "issue_key": "SMENTGO-191",
+    "type": "Problemas Cadastrais",
     "summary": "Quilometragem ilusória no APP",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.352340"
+    "updated_at": "2026-09-09T18:24:39.538258"
   },
   {
     "issue_key": "SMENTGO-92",
+    "type": "Dúvidas Gerais",
     "summary": "Bloqueio por excesso de cancelamento.",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:16:00.355036"
+    "updated_at": "2026-09-09T18:24:39.553069"
   },
   {
     "issue_key": "SMENTGO-143",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:16:00.357764"
+    "updated_at": "2026-09-09T18:24:39.567154"
   },
   {
     "issue_key": "SMENTGO-116",
+    "type": "Problemas Cadastrais",
     "summary": "Alteração de Modal",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.361522"
+    "updated_at": "2026-09-09T18:24:39.580493"
   },
   {
     "issue_key": "SMENTGO-115",
+    "type": "Dúvidas Gerais",
     "summary": "KML mapa de PORTUGAL (FOR)",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.364446"
+    "updated_at": "2026-09-09T18:24:39.594206"
   },
   {
     "issue_key": "SMENTGO-177",
+    "type": "Suporte Jarvis",
     "summary": "Páginas duplicadas e fantasmas",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.367112"
+    "updated_at": "2026-09-09T18:24:39.606817"
   },
   {
     "issue_key": "SMENTGO-121",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:16:00.369727"
+    "updated_at": "2026-09-09T18:24:39.620117"
   },
   {
     "issue_key": "SMENTGO-74",
+    "type": "Sugestão de Escala",
     "summary": "Sugestão de Escala",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.372361"
+    "updated_at": "2026-09-09T18:24:39.633406"
   },
   {
     "issue_key": "SMENTGO-172",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.375431"
+    "updated_at": "2026-09-09T18:24:39.647415"
   },
   {
     "issue_key": "SMENTGO-151",
+    "type": "Problemas Cadastrais",
     "summary": "Erro no Booking",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "updated_at": "2026-09-09T18:16:00.378694"
+    "updated_at": "2026-09-09T18:24:39.660902"
   },
   {
     "issue_key": "SMENTGO-77",
+    "type": "Reportar Bug na tela do entregador - Programa Elite",
     "summary": "Chip Elite - Sem carga",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:16:00.381566"
+    "updated_at": "2026-09-09T18:24:39.674364"
   },
   {
     "issue_key": "SMENTGO-84",
+    "type": "Problemas Cadastrais",
     "summary": "Problemas de Facematch",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.384466"
+    "updated_at": "2026-09-09T18:24:39.687368"
   },
   {
     "issue_key": "SMENTGO-119",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:16:00.387191"
+    "updated_at": "2026-09-09T18:24:39.701365"
   },
   {
     "issue_key": "SMENTGO-73",
+    "type": "Dúvidas Gerais - Programa Elite",
     "summary": "Novo cilco de selos - Elite",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.389971"
+    "updated_at": "2026-09-09T18:24:39.714509"
   },
   {
     "issue_key": "SMENTGO-62",
+    "type": "Reportar Bug na tela do entregador - Programa Elite",
     "summary": "Mudança de região - Elite não ativo.",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:16:00.393621"
+    "updated_at": "2026-09-09T18:24:39.727484"
   },
   {
     "issue_key": "SMENTGO-144",
+    "type": "Dúvidas Gerais",
     "summary": "Aferição - Pesquisa de satisfação",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.396536"
+    "updated_at": "2026-09-09T18:24:39.740296"
   },
   {
     "issue_key": "SMENTGO-114",
+    "type": "Dúvidas Gerais",
     "summary": "Aferição - Pesquisa de satisfação",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.399442"
+    "updated_at": "2026-09-09T18:24:39.754241"
   },
   {
     "issue_key": "SMENTGO-81",
+    "type": "Dúvidas Gerais",
     "summary": "Escala Livre Rio Zona Sul sem trava para moto",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.402843"
+    "updated_at": "2026-09-09T18:24:39.768006"
   },
   {
     "issue_key": "SMENTGO-75",
+    "type": "Problemas Cadastrais",
     "summary": "Bloqueio de 48hrs - Sem encerramento.",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:16:00.406028"
+    "updated_at": "2026-09-09T18:24:39.782041"
   },
   {
     "issue_key": "SMENTGO-80",
+    "type": "Dúvidas Gerais",
     "summary": "Escala de Praça/ Subpraça não reconhecida",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.409273"
+    "updated_at": "2026-09-09T18:24:39.796368"
   },
   {
     "issue_key": "SMENTGO-104",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.412229"
+    "updated_at": "2026-09-09T18:24:39.809678"
   },
   {
     "issue_key": "SMENTGO-66",
+    "type": "Problemas Cadastrais",
     "summary": "Bloqueio de 48hrs - Sem encerramento.",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:16:00.415261"
+    "updated_at": "2026-09-09T18:24:39.822228"
   },
   {
     "issue_key": "SMENTGO-79",
+    "type": "Dúvidas Gerais",
     "summary": "Problema de escala em função de erro no Jarvis",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.418195"
+    "updated_at": "2026-09-09T18:24:39.835961"
   },
   {
     "issue_key": "SMENTGO-103",
+    "type": "Registro de Promoções e Ações",
     "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.420925"
+    "updated_at": "2026-09-09T18:24:39.849683"
   },
   {
     "issue_key": "SMENTGO-93",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:16:00.423741"
+    "updated_at": "2026-09-09T18:24:39.862810"
   },
   {
     "issue_key": "SMENTGO-61",
+    "type": "Dúvidas Gerais",
     "summary": "Gestor de Escalas - Página não encontrada",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:16:00.427226"
+    "updated_at": "2026-09-09T18:24:39.876355"
   },
   {
     "issue_key": "SMENTGO-67",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "updated_at": "2026-09-09T18:16:00.430499"
+    "updated_at": "2026-09-09T18:24:39.889014"
   },
   {
     "issue_key": "SMENTGO-65",
+    "type": "Dúvidas Gerais",
     "summary": "Promoção Super para entregador Franquia",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.433852"
+    "updated_at": "2026-09-09T18:24:39.902247"
   },
   {
     "issue_key": "SMENTGO-87",
+    "type": "Dúvidas Gerais",
     "summary": "Meta de SH no dash Programa Excelência",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "updated_at": "2026-09-09T18:16:00.436924"
+    "updated_at": "2026-09-09T18:24:39.916546"
   }
 ]

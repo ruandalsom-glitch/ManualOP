@@ -22,7 +22,6 @@ async def sync_jira_reports():
     extracted_reports = []
 
     async with async_playwright() as p:
-        # Execução 100% invisível em segundo plano (Headless)
         browser = await p.chromium.launch(headless=True)
         context = await browser.new_context(
             user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
@@ -40,13 +39,11 @@ async def sync_jira_reports():
             await page.click("button:has-text('Next'), button:has-text('Avançar')")
             await page.wait_for_timeout(2500)
 
-            # Clique em Continue with password
             pass_btn = await page.query_selector("button:has-text('Continue with password'), button:has-text('Continuar com senha')")
             if pass_btn:
                 await pass_btn.click()
                 await page.wait_for_timeout(2500)
 
-            # Preenchimento de Senha
             pass_input = await page.query_selector("input[type='password'], #password")
             if pass_input:
                 await pass_input.fill(JIRA_PASS)
@@ -58,10 +55,9 @@ async def sync_jira_reports():
             await page.goto(all_requests_url)
             await page.wait_for_timeout(4000)
 
-            # Rolagem Dinâmica para carregar 100% dos chamados da lista
-            print("   -> Executando rolagem dinâmica para carregar 100% do histórico de chamados...")
+            print("   -> Executando rolagem dinâmica para carregar 100% do histórico...")
             previous_count = 0
-            max_scrolls = 30  # Garante buscar centenas de registros se houver
+            max_scrolls = 35
             
             for scroll_idx in range(max_scrolls):
                 await page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
@@ -72,24 +68,36 @@ async def sync_jira_reports():
                 print(f"      Scroll #{scroll_idx + 1}: {current_count} chamados carregados...")
 
                 if current_count == previous_count and current_count > 0:
-                    print("   -> Fim do histórico atingido. Todos os chamados foram carregados.")
+                    print("   -> Fim do histórico atingido.")
                     break
                 previous_count = current_count
 
-            # Extração limpa (sem links externos, puramente indicativos)
             final_rows = await page.query_selector_all("tbody tr")
-            print(f"\n[4/4] Processando dados limpos de {len(final_rows)} chamados...")
+            print(f"\n[4/4] Extraindo tipos, resumos, status e solicitantes de {len(final_rows)} chamados...")
 
             seen_keys = set()
             for r in final_rows:
                 text = await r.inner_text()
                 lines = [l.strip() for l in text.split('\n') if l.strip()]
 
+                # Tenta capturar a tag de tipo/ícone (ex: img ou svg no primeiro td)
+                first_td = await r.query_selector("td:first-child")
+                type_icon_alt = ""
+                if first_td:
+                    img = await first_td.query_selector("img")
+                    if img:
+                        type_icon_alt = await img.get_attribute("alt") or await img.get_attribute("title") or ""
+                    if not type_icon_alt:
+                        svg = await first_td.query_selector("svg")
+                        if svg:
+                            type_icon_alt = await svg.get_attribute("aria-label") or await svg.get_attribute("title") or ""
+
                 if len(lines) >= 3:
                     issue_key = ""
                     summary = ""
                     status = ""
                     reporter = ""
+                    issue_type = type_icon_alt
 
                     for idx, line in enumerate(lines):
                         if "SMENTGO-" in line:
@@ -105,28 +113,40 @@ async def sync_jira_reports():
                         status = lines[2]
                         reporter = lines[-1]
 
+                    # Deduz o tipo do chamado se não capturado pelo ícone
+                    if not issue_type:
+                        sum_lower = summary.lower()
+                        if "escala" in sum_lower:
+                            issue_type = "Escala"
+                        elif "promo" in sum_lower or "contest" in sum_lower:
+                            issue_type = "Promoção"
+                        elif "erro" in sum_lower or "bug" in sum_lower or "falha" in sum_lower or "modal" in sum_lower:
+                            issue_type = "Problema / Bug"
+                        else:
+                            issue_type = "Geral"
+
                     if issue_key and issue_key not in seen_keys:
                         seen_keys.add(issue_key)
                         extracted_reports.append({
                             "issue_key": issue_key,
+                            "type": issue_type,
                             "summary": summary,
                             "status": status,
                             "reporter": reporter,
                             "updated_at": datetime.datetime.now().isoformat()
                         })
 
-            print(f"✅ Extração concluída com sucesso! Total de {len(extracted_reports)} chamados únicos salvos.")
+            print(f"✅ Extração concluída! {len(extracted_reports)} chamados salvos com tipos e solicitantes.")
 
         except Exception as e:
             print(f"❌ Erro durante a automação: {e}")
 
         await browser.close()
 
-    # Salva no arquivo JSON estático para exibição ultra rápida na web
     if extracted_reports:
         with open(JSON_OUTPUT_PATH, "w", encoding="utf-8") as f:
             json.dump(extracted_reports, f, ensure_ascii=False, indent=2)
-        print(f"💾 Dados atualizados em: {JSON_OUTPUT_PATH}")
+        print(f"💾 Dados salvos em: {JSON_OUTPUT_PATH}")
 
     return extracted_reports
 

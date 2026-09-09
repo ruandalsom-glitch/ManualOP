@@ -15,27 +15,28 @@
 
     <style>
         :root {
-            --bg-main: #0B0E14;
-            --bg-card: rgba(22, 28, 36, 0.7);
-            --bg-card-hover: rgba(30, 38, 48, 0.85);
-            --border-card: rgba(255, 255, 255, 0.08);
-            --border-accent: rgba(56, 189, 248, 0.3);
+            --bg-body: #0b1120;
+            --bg-card: #131b2e;
+            --bg-card-hover: #1c283f;
+            --border-color: rgba(255, 255, 255, 0.08);
             
-            --text-primary: #F3F4F6;
-            --text-secondary: #9CA3AF;
-            --text-muted: #6B7280;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
 
-            --accent-cyan: #38BDF8;
-            --accent-green: #34D399;
-            --accent-amber: #FBBF24;
-            --accent-purple: #C084FC;
+            --cyan-primary: #00f2fe;
+            --blue-gradient: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            --blue-btn: #2563eb;
+            --blue-jira-icon: #2563eb;
 
-            --badge-open-bg: rgba(251, 191, 36, 0.15);
-            --badge-open-text: #FBBF24;
-            --badge-progress-bg: rgba(56, 189, 248, 0.15);
-            --badge-progress-text: #38BDF8;
-            --badge-done-bg: rgba(52, 211, 153, 0.15);
-            --badge-done-text: #34D399;
+            --status-amber-bg: rgba(245, 158, 11, 0.15);
+            --status-amber-text: #f59e0b;
+            
+            --status-blue-bg: rgba(56, 189, 248, 0.15);
+            --status-blue-text: #38bdf8;
+            
+            --status-green-bg: rgba(16, 185, 129, 0.15);
+            --status-green-text: #10b981;
         }
 
         * {
@@ -46,22 +47,17 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--bg-main);
-            color: var(--text-primary);
+            background-color: var(--bg-body);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.05) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(52, 211, 153, 0.04) 0%, transparent 40%);
-            background-attachment: fixed;
         }
 
-        /* Top Navigation Header */
+        /* Top Header aligned with site visual style */
         header {
-            background: rgba(11, 14, 20, 0.85);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-card);
+            background: #0f172a;
+            border-bottom: 1px solid var(--border-color);
             padding: 16px 32px;
             display: flex;
             align-items: center;
@@ -69,229 +65,225 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
         }
 
-        .header-title {
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-brand i {
+            font-size: 22px;
+            color: var(--cyan-primary);
+            background: rgba(0, 242, 254, 0.1);
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 242, 254, 0.2);
+        }
+
+        .header-brand h1 {
+            font-size: 19px;
+            font-weight: 700;
+            letter-spacing: -0.2px;
+            color: var(--text-main);
+        }
+
+        .header-brand p {
+            font-size: 12.5px;
+            color: var(--text-muted);
+        }
+
+        .header-actions {
             display: flex;
             align-items: center;
             gap: 14px;
         }
 
-        .header-title i {
-            font-size: 24px;
-            color: var(--accent-cyan);
-            background: rgba(56, 189, 248, 0.1);
-            padding: 10px;
-            border-radius: 10px;
-            border: 1px solid var(--border-accent);
-        }
-
-        .header-title h1 {
-            font-size: 20px;
-            font-weight: 700;
-            letter-spacing: -0.3px;
-        }
-
-        .header-title p {
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-
-        .header-controls {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
         .btn-sync {
-            background: linear-gradient(135deg, #0EA5E9, #2563EB);
-            color: #fff;
+            background: var(--blue-gradient);
+            color: #0b1120;
             border: none;
-            padding: 10px 18px;
+            padding: 9px 18px;
             border-radius: 8px;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 13.5px;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 8px;
             transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.25);
+            box-shadow: 0 4px 14px rgba(0, 242, 254, 0.25);
         }
 
         .btn-sync:hover {
             transform: translateY(-1px);
-            box-shadow: 0 6px 16px rgba(14, 165, 233, 0.35);
+            box-shadow: 0 6px 18px rgba(0, 242, 254, 0.35);
         }
 
-        .btn-sync:active {
-            transform: translateY(0);
-        }
-
-        /* Container Content */
+        /* Main Container */
         main {
-            max-width: 1400px;
+            max-width: 1440px;
             width: 100%;
             margin: 0 auto;
             padding: 28px 32px;
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 22px;
         }
 
-        /* Metric Summary Cards */
-        .metrics-grid {
+        /* Top Summary Cards Grid */
+        .summary-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
             gap: 16px;
         }
 
-        .metric-card {
+        .card-stat {
             background: var(--bg-card);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border-card);
+            border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 20px;
             display: flex;
             align-items: center;
-            gap: 18px;
+            gap: 16px;
             transition: transform 0.2s ease, border-color 0.2s ease;
         }
 
-        .metric-card:hover {
+        .card-stat:hover {
             transform: translateY(-2px);
             border-color: rgba(255, 255, 255, 0.15);
         }
 
-        .metric-icon {
-            width: 52px;
-            height: 52px;
-            border-radius: 12px;
+        .card-stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 22px;
+            font-size: 20px;
         }
 
-        .metric-icon.total { background: rgba(56, 189, 248, 0.12); color: var(--accent-cyan); }
-        .metric-icon.open { background: rgba(251, 191, 36, 0.12); color: var(--accent-amber); }
-        .metric-icon.progress { background: rgba(192, 132, 252, 0.12); color: var(--accent-purple); }
-        .metric-icon.done { background: rgba(52, 211, 153, 0.12); color: var(--accent-green); }
+        .card-stat-icon.total { background: rgba(0, 242, 254, 0.12); color: var(--cyan-primary); }
+        .card-stat-icon.open { background: rgba(245, 158, 11, 0.12); color: #f59e0b; }
+        .card-stat-icon.progress { background: rgba(56, 189, 248, 0.12); color: #38bdf8; }
+        .card-stat-icon.done { background: rgba(16, 185, 129, 0.12); color: #10b981; }
 
-        .metric-info h3 {
+        .card-stat-val h3 {
             font-size: 26px;
             font-weight: 700;
             line-height: 1.1;
         }
 
-        .metric-info p {
+        .card-stat-val p {
             font-size: 13px;
-            color: var(--text-secondary);
-            margin-top: 4px;
+            color: var(--text-muted);
+            margin-top: 3px;
         }
 
-        /* Filter Controls Toolbar */
-        .toolbar {
+        /* Jira Filter Toolbar Replication */
+        .jira-toolbar {
             background: var(--bg-card);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border-card);
+            border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 16px 20px;
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
-            gap: 16px;
+            gap: 14px;
         }
 
-        .search-box {
+        .search-field {
             position: relative;
             flex: 1;
-            min-width: 280px;
+            min-width: 260px;
         }
 
-        .search-box i {
+        .search-field i {
             position: absolute;
             left: 14px;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--text-muted);
+            color: var(--text-dim);
             font-size: 14px;
         }
 
-        .search-box input {
+        .search-field input {
             width: 100%;
-            background: rgba(11, 14, 20, 0.6);
-            border: 1px solid var(--border-card);
-            color: var(--text-primary);
-            padding: 10px 14px 10px 40px;
+            background: #0b1120;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 9.5px 14px 9.5px 38px;
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 13.5px;
             outline: none;
             transition: border-color 0.2s ease;
         }
 
-        .search-box input:focus {
-            border-color: var(--accent-cyan);
+        .search-field input:focus {
+            border-color: var(--cyan-primary);
         }
 
-        .filter-group {
+        .filters-row {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
         }
 
-        .filter-select {
-            background: rgba(11, 14, 20, 0.6);
-            border: 1px solid var(--border-card);
-            color: var(--text-primary);
-            padding: 10px 14px;
+        .filter-badge-select {
+            background: #0b1120;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 9.5px 14px;
             border-radius: 8px;
-            font-size: 13.5px;
+            font-size: 13px;
+            font-weight: 500;
             outline: none;
             cursor: pointer;
             transition: border-color 0.2s ease;
         }
 
-        .filter-select:focus {
-            border-color: var(--accent-cyan);
+        .filter-badge-select:focus {
+            border-color: var(--cyan-primary);
         }
 
-        /* Data Table Container */
-        .table-container {
+        /* Table Design aligned with site table aesthetics */
+        .table-card {
             background: var(--bg-card);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border-card);
+            border: 1px solid var(--border-color);
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             text-align: left;
-            font-size: 14px;
+            font-size: 13.5px;
         }
 
         thead {
-            background: rgba(11, 14, 20, 0.8);
-            border-bottom: 1px solid var(--border-card);
+            background: #0f172a;
+            border-bottom: 1px solid var(--border-color);
         }
 
         th {
-            padding: 16px 20px;
+            padding: 14px 18px;
             font-size: 12px;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: var(--text-secondary);
+            color: var(--text-muted);
         }
 
         tbody tr {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
             transition: background 0.15s ease;
         }
 
@@ -300,33 +292,48 @@
         }
 
         td {
-            padding: 16px 20px;
-            color: var(--text-primary);
+            padding: 14px 18px;
+            color: var(--text-main);
             vertical-align: middle;
         }
 
-        .issue-key-badge {
-            font-family: monospace;
-            font-weight: 700;
-            color: var(--accent-cyan);
-            background: rgba(56, 189, 248, 0.08);
-            padding: 4px 10px;
+        /* Icons Jira Style */
+        .type-icon {
+            width: 32px;
+            height: 32px;
             border-radius: 6px;
-            border: 1px solid rgba(56, 189, 248, 0.2);
-            display: inline-block;
+            background: rgba(37, 99, 235, 0.15);
+            color: #3b82f6;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            border: 1px solid rgba(59, 130, 246, 0.3);
         }
 
-        .issue-summary {
+        .issue-ref-badge {
+            font-family: monospace;
+            font-weight: 700;
+            color: var(--cyan-primary);
+            background: rgba(0, 242, 254, 0.08);
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: 1px solid rgba(0, 242, 254, 0.2);
+            display: inline-block;
+            font-size: 13px;
+        }
+
+        .issue-desc {
             font-weight: 500;
-            color: var(--text-primary);
-            max-width: 500px;
+            color: var(--text-main);
+            max-width: 520px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
         .badge-status {
-            padding: 5px 12px;
+            padding: 4px 10px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
@@ -335,49 +342,50 @@
             gap: 6px;
         }
 
-        .badge-status.aberto { background: var(--badge-open-bg); color: var(--badge-open-text); }
-        .badge-status.andamento { background: var(--badge-progress-bg); color: var(--badge-progress-text); }
-        .badge-status.concluido { background: var(--badge-done-bg); color: var(--badge-done-text); }
+        .badge-status.aberto { background: var(--status-amber-bg); color: var(--status-amber-text); }
+        .badge-status.andamento { background: var(--status-blue-bg); color: var(--status-blue-text); }
+        .badge-status.concluido { background: var(--status-green-bg); color: var(--status-green-text); }
 
-        .user-info {
+        .user-tag {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
-        .user-avatar {
-            width: 28px;
-            height: 28px;
+        .user-avatar-circle {
+            width: 26px;
+            height: 26px;
             border-radius: 50%;
-            background: rgba(56, 189, 248, 0.15);
+            background: rgba(0, 242, 254, 0.12);
+            color: var(--cyan-primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--accent-cyan);
+            font-size: 11px;
+            font-weight: 700;
+            border: 1px solid rgba(0, 242, 254, 0.2);
         }
 
-        .empty-state {
-            padding: 48px;
+        .empty-box {
+            padding: 42px;
             text-align: center;
-            color: var(--text-secondary);
+            color: var(--text-muted);
         }
 
-        .empty-state i {
-            font-size: 42px;
-            color: var(--text-muted);
-            margin-bottom: 12px;
+        .empty-box i {
+            font-size: 38px;
+            color: var(--text-dim);
+            margin-bottom: 10px;
         }
 
         /* Loading Spinner */
         .spinner {
             display: inline-block;
-            width: 14px;
-            height: 14px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            width: 13px;
+            height: 13px;
+            border: 2px solid rgba(11, 17, 32, 0.4);
             border-radius: 50%;
-            border-top-color: #fff;
+            border-top-color: #0b1120;
             animation: spin 0.8s linear infinite;
         }
 
@@ -386,27 +394,27 @@
         }
 
         footer {
-            padding: 20px;
+            padding: 18px;
             text-align: center;
             font-size: 12px;
-            color: var(--text-muted);
-            border-top: 1px solid var(--border-card);
-            background: rgba(11, 14, 20, 0.8);
+            color: var(--text-dim);
+            border-top: 1px solid var(--border-color);
+            background: #0f172a;
         }
     </style>
 </head>
 <body>
 
-    <!-- Header Navigation -->
+    <!-- Header Navigation Aligned with ManualOP -->
     <header>
-        <div class="header-title">
-            <i class="fa-solid fa-headset"></i>
+        <div class="header-brand">
+            <i class="fa-solid fa-list-check"></i>
             <div>
-                <h1>Acompanhamento de Reportes (Jira)</h1>
+                <h1>Acompanhamento de Reportes</h1>
                 <p>Portal de Chamados EntreGô (SMENTGO)</p>
             </div>
         </div>
-        <div class="header-controls">
+        <div class="header-actions">
             <button class="btn-sync" id="btnSync" onclick="carregarDadosReais()">
                 <i class="fa-solid fa-rotate"></i>
                 <span id="btnSyncText">Atualizar Dados</span>
@@ -414,76 +422,93 @@
         </div>
     </header>
 
-    <!-- Main Container -->
+    <!-- Main Content -->
     <main>
 
         <!-- Metric Summary Cards -->
-        <div class="metrics-grid">
-            <div class="metric-card">
-                <div class="metric-icon total">
-                    <i class="fa-solid fa-folder-open"></i>
+        <div class="summary-cards">
+            <div class="card-stat">
+                <div class="card-stat-icon total">
+                    <i class="fa-solid fa-inbox"></i>
                 </div>
-                <div class="metric-info">
-                    <h3 id="metricTotal">0</h3>
+                <div class="card-stat-val">
+                    <h3 id="statTotal">0</h3>
                     <p>Total de Reportes</p>
                 </div>
             </div>
 
-            <div class="metric-card">
-                <div class="metric-icon open">
+            <div class="card-stat">
+                <div class="card-stat-icon open">
                     <i class="fa-solid fa-clock"></i>
                 </div>
-                <div class="metric-info">
-                    <h3 id="metricOpen">0</h3>
+                <div class="card-stat-val">
+                    <h3 id="statOpen">0</h3>
                     <p>Em Aberto / Pendentes</p>
                 </div>
             </div>
 
-            <div class="metric-card">
-                <div class="metric-icon progress">
+            <div class="card-stat">
+                <div class="card-stat-icon progress">
                     <i class="fa-solid fa-spinner"></i>
                 </div>
-                <div class="metric-info">
-                    <h3 id="metricProgress">0</h3>
-                    <p>Em Atendimento / Verificação</p>
+                <div class="card-stat-val">
+                    <h3 id="statProgress">0</h3>
+                    <p>Em Verificação / Atendimento</p>
                 </div>
             </div>
 
-            <div class="metric-card">
-                <div class="metric-icon done">
+            <div class="card-stat">
+                <div class="card-stat-icon done">
                     <i class="fa-solid fa-circle-check"></i>
                 </div>
-                <div class="metric-info">
-                    <h3 id="metricDone">0</h3>
+                <div class="card-stat-val">
+                    <h3 id="statDone">0</h3>
                     <p>Concluídos / Resolvidos</p>
                 </div>
             </div>
         </div>
 
-        <!-- Toolbar Filters -->
-        <div class="toolbar">
-            <div class="search-box">
+        <!-- Jira Replicated Filter Toolbar -->
+        <div class="jira-toolbar">
+            <div class="search-field">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="searchInput" placeholder="Buscar por chave, resumo ou solicitante..." oninput="filtrarTabela()">
+                <input type="text" id="searchInput" placeholder="Buscar por código (ex: SMENTGO-1740), resumo ou solicitante..." oninput="filtrarTabela()">
             </div>
 
-            <div class="filter-group">
-                <select class="filter-select" id="statusFilter" onchange="filtrarTabela()">
-                    <option value="">Todos os Status</option>
-                    <option value="aberto">Em Aberto / Criado</option>
-                    <option value="andamento">Em Atendimento / Verificação</option>
+            <div class="filters-row">
+                <!-- Dropdown replica do Jira: Tipo de solicitação -->
+                <select class="filter-badge-select" id="typeFilter" onchange="filtrarTabela()">
+                    <option value="">Tipo de solicitação (Todos)</option>
+                    <option value="Escala">Escalas / Modificações</option>
+                    <option value="Promoção">Promoções / Ações</option>
+                    <option value="Problema">Bugs / Erros / Modais</option>
+                    <option value="Geral">Geral / Outros</option>
+                </select>
+
+                <!-- Dropdown replica do Jira: Status -->
+                <select class="filter-badge-select" id="statusFilter" onchange="filtrarTabela()">
+                    <option value="">Status (Todos)</option>
+                    <option value="aberto">Aberto / Pendente</option>
+                    <option value="andamento">Em verificação / atendimento</option>
                     <option value="concluido">Concluído / Resolvido</option>
+                </select>
+
+                <!-- Dropdown replica do Jira: Solicitantes (Tudo) -->
+                <select class="filter-badge-select" id="reporterFilter" onchange="filtrarTabela()">
+                    <option value="">Solicitante: Tudo</option>
+                    <!-- Preenchido dinamicamente via JS -->
                 </select>
             </div>
         </div>
 
-        <!-- Data Table Container (Puramente Indicativa e Textual) -->
-        <div class="table-container">
+        <!-- Table Display (Puramente Indicativa e Textual) -->
+        <div class="table-card">
             <table>
                 <thead>
                     <tr>
-                        <th>Chave (ID)</th>
-                        <th>Resumo do Reporte</th>
+                        <th style="width: 60px; text-align: center;">Tipo</th>
+                        <th>Referência</th>
+                        <th>Resumo</th>
                         <th>Status</th>
                         <th>Solicitante</th>
                     </tr>
@@ -497,11 +522,47 @@
     </main>
 
     <footer>
-        <p>ManualOP &copy; 2026 - Central de Acompanhamento de Reportes Jira (EntreGô)</p>
+        <p>ManualOP &copy; 2026 - Central de Acompanhamento de Reportes (EntreGô)</p>
     </footer>
 
     <script>
         let reportesData = [];
+
+        function getIconForType(tipo, summary) {
+            const t = (tipo || '').toLowerCase();
+            const s = (summary || '').toLowerCase();
+
+            if (t.includes('escala') || s.includes('escala')) {
+                return '<div class="type-icon" title="Sugestão / Alteração de Escala"><i class="fa-solid fa-calendar-pen"></i></div>';
+            } else if (t.includes('promo') || s.includes('promo') || s.includes('contest')) {
+                return '<div class="type-icon" title="Contestação / Registro de Promoção"><i class="fa-solid fa-tags"></i></div>';
+            } else if (t.includes('bug') || t.includes('problema') || s.includes('erro') || s.includes('modal') || s.includes('falha')) {
+                return '<div class="type-icon" title="Problema / Erro / Modal"><i class="fa-solid fa-bug"></i></div>';
+            } else {
+                return '<div class="type-icon" title="Solicitação Geral"><i class="fa-solid fa-circle-question"></i></div>';
+            }
+        }
+
+        function popularFiltroSolicitantes(dados) {
+            const selectReporter = document.getElementById('reporterFilter');
+            const solicitantes = new Set();
+
+            dados.forEach(d => {
+                if (d.reporter && d.reporter.trim()) {
+                    solicitantes.add(d.reporter.trim());
+                }
+            });
+
+            // Limpa opções antigas mantendo a padrão "Tudo"
+            selectReporter.innerHTML = '<option value="">Solicitante: Tudo</option>';
+            
+            Array.from(solicitantes).sort().forEach(nome => {
+                const opt = document.createElement('option');
+                opt.value = nome;
+                opt.innerText = nome;
+                selectReporter.appendChild(opt);
+            });
+        }
 
         function renderTabela(dados) {
             const tbody = document.getElementById('reportsTableBody');
@@ -510,8 +571,8 @@
             if (!dados || dados.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="4">
-                            <div class="empty-state">
+                        <td colspan="5">
+                            <div class="empty-box">
                                 <i class="fa-solid fa-inbox"></i>
                                 <p>Nenhum reporte encontrado para os filtros selecionados.</p>
                             </div>
@@ -533,16 +594,22 @@
                     statusClass = 'concluido';
                 }
 
+                // Ícone Jira do tipo
+                const iconHtml = getIconForType(item.type, item.summary);
+
                 // Avatar com iniciais
                 const nome = item.reporter || 'N/A';
                 const inicial = nome.charAt(0).toUpperCase();
 
                 tr.innerHTML = `
-                    <td>
-                        <span class="issue-key-badge">${item.issue_key}</span>
+                    <td style="text-align: center;">
+                        ${iconHtml}
                     </td>
                     <td>
-                        <div class="issue-summary" title="${item.summary}">${item.summary}</div>
+                        <span class="issue-ref-badge">${item.issue_key}</span>
+                    </td>
+                    <td>
+                        <div class="issue-desc" title="${item.summary}">${item.summary}</div>
                     </td>
                     <td>
                         <span class="badge-status ${statusClass}">
@@ -551,8 +618,8 @@
                         </span>
                     </td>
                     <td>
-                        <div class="user-info">
-                            <div class="user-avatar">${inicial}</div>
+                        <div class="user-tag">
+                            <div class="user-avatar-circle">${inicial}</div>
                             <span>${nome}</span>
                         </div>
                     </td>
@@ -581,21 +648,41 @@
                 }
             });
 
-            document.getElementById('metricTotal').innerText = total;
-            document.getElementById('metricOpen').innerText = open;
-            document.getElementById('metricProgress').innerText = progress;
-            document.getElementById('metricDone').innerText = done;
+            document.getElementById('statTotal').innerText = total;
+            document.getElementById('statOpen').innerText = open;
+            document.getElementById('statProgress').innerText = progress;
+            document.getElementById('statDone').innerText = done;
         }
 
         function filtrarTabela() {
             const query = document.getElementById('searchInput').value.toLowerCase();
+            const typeFilter = document.getElementById('typeFilter').value;
             const statusFilter = document.getElementById('statusFilter').value;
+            const reporterFilter = document.getElementById('reporterFilter').value;
 
             const filtrados = reportesData.filter(item => {
+                // Filtro por Texto
                 const matchQuery = (item.issue_key || '').toLowerCase().includes(query) ||
                                    (item.summary || '').toLowerCase().includes(query) ||
                                    (item.reporter || '').toLowerCase().includes(query);
 
+                // Filtro por Tipo de Solicitação
+                let matchType = true;
+                if (typeFilter) {
+                    const t = (item.type || '').toLowerCase();
+                    const s = (item.summary || '').toLowerCase();
+                    if (typeFilter === 'Escala') {
+                        matchType = t.includes('escala') || s.includes('escala');
+                    } else if (typeFilter === 'Promoção') {
+                        matchType = t.includes('promo') || s.includes('promo') || s.includes('contest');
+                    } else if (typeFilter === 'Problema') {
+                        matchType = t.includes('bug') || t.includes('problema') || s.includes('erro') || s.includes('modal') || s.includes('falha');
+                    } else if (typeFilter === 'Geral') {
+                        matchType = !s.includes('escala') && !s.includes('promo') && !s.includes('contest') && !s.includes('erro') && !s.includes('modal');
+                    }
+                }
+
+                // Filtro por Status
                 let matchStatus = true;
                 const st = (item.status || '').toLowerCase();
                 if (statusFilter === 'aberto') {
@@ -606,7 +693,13 @@
                     matchStatus = st.includes('conclu') || st.includes('resolv') || st.includes('fechad');
                 }
 
-                return matchQuery && matchStatus;
+                // Filtro por Solicitante ("Tudo")
+                let matchReporter = true;
+                if (reporterFilter) {
+                    matchReporter = (item.reporter || '').trim() === reporterFilter;
+                }
+
+                return matchQuery && matchType && matchStatus && matchReporter;
             });
 
             renderTabela(filtrados);
@@ -623,6 +716,7 @@
                 const response = await fetch('jira_reports_data.json?cache=' + Date.now());
                 if (response.ok) {
                     reportesData = await response.json();
+                    popularFiltroSolicitantes(reportesData);
                 }
             } catch (e) {
                 console.log("Erro ao carregar jira_reports_data.json:", e);
