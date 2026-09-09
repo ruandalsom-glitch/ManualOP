@@ -252,13 +252,15 @@
             border-color: var(--cyan-primary);
         }
 
-        /* Table Design aligned with site table aesthetics */
+        /* Table Design */
         .table-card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
         }
 
         table {
@@ -297,7 +299,6 @@
             vertical-align: middle;
         }
 
-        /* Icons Jira Style */
         .type-icon {
             width: 32px;
             height: 32px;
@@ -378,6 +379,76 @@
             margin-bottom: 10px;
         }
 
+        /* Pagination Footer Bar */
+        .pagination-bar {
+            background: #0f172a;
+            border-top: 1px solid var(--border-color);
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 14px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .pagination-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .page-size-selector {
+            background: #0b1120;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12.5px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .pagination-controls {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-page {
+            background: #0b1120;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            min-width: 32px;
+            height: 32px;
+            padding: 0 8px;
+            border-radius: 6px;
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+        }
+
+        .btn-page:hover:not(:disabled) {
+            background: var(--bg-card-hover);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-page.active {
+            background: var(--cyan-primary);
+            color: #0b1120;
+            border-color: var(--cyan-primary);
+        }
+
+        .btn-page:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
         /* Loading Spinner */
         .spinner {
             display: inline-block;
@@ -405,7 +476,7 @@
 </head>
 <body>
 
-    <!-- Header Navigation Aligned with ManualOP -->
+    <!-- Header Navigation -->
     <header>
         <div class="header-brand">
             <i class="fa-solid fa-list-check"></i>
@@ -472,12 +543,12 @@
         <div class="jira-toolbar">
             <div class="search-field">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="searchInput" placeholder="Buscar por código (ex: SMENTGO-1740), resumo ou solicitante..." oninput="filtrarTabela()">
+                <input type="text" id="searchInput" placeholder="Buscar por código (ex: SMENTGO-1740), resumo ou solicitante..." oninput="onFilterChange()">
             </div>
 
             <div class="filters-row">
                 <!-- Dropdown replica do Jira: Tipo de solicitação -->
-                <select class="filter-badge-select" id="typeFilter" onchange="filtrarTabela()">
+                <select class="filter-badge-select" id="typeFilter" onchange="onFilterChange()">
                     <option value="">Tipo de solicitação (Todos)</option>
                     <option value="Escala">Escalas / Modificações</option>
                     <option value="Promoção">Promoções / Ações</option>
@@ -486,7 +557,7 @@
                 </select>
 
                 <!-- Dropdown replica do Jira: Status -->
-                <select class="filter-badge-select" id="statusFilter" onchange="filtrarTabela()">
+                <select class="filter-badge-select" id="statusFilter" onchange="onFilterChange()">
                     <option value="">Status (Todos)</option>
                     <option value="aberto">Aberto / Pendente</option>
                     <option value="andamento">Em verificação / atendimento</option>
@@ -494,14 +565,13 @@
                 </select>
 
                 <!-- Dropdown replica do Jira: Solicitantes (Tudo) -->
-                <select class="filter-badge-select" id="reporterFilter" onchange="filtrarTabela()">
+                <select class="filter-badge-select" id="reporterFilter" onchange="onFilterChange()">
                     <option value="">Solicitante: Tudo</option>
-                    <!-- Preenchido dinamicamente via JS -->
                 </select>
             </div>
         </div>
 
-        <!-- Table Display (Puramente Indicativa e Textual) -->
+        <!-- Table Display with Frontend Pagination -->
         <div class="table-card">
             <table>
                 <thead>
@@ -517,6 +587,24 @@
                     <!-- Populated via Javascript -->
                 </tbody>
             </table>
+
+            <!-- Pagination Controls Bar -->
+            <div class="pagination-bar">
+                <div class="pagination-info">
+                    <span id="pageRangeText">Mostrando 0-0 de 0 reportes</span>
+                    <label style="margin-left: 10px;">Exibir: 
+                        <select class="page-size-selector" id="pageSizeSelect" onchange="onPageSizeChange()">
+                            <option value="15" selected>15 por página</option>
+                            <option value="30">30 por página</option>
+                            <option value="50">50 por página</option>
+                        </select>
+                    </label>
+                </div>
+
+                <div class="pagination-controls" id="paginationButtons">
+                    <!-- Buttons generated dynamically -->
+                </div>
+            </div>
         </div>
 
     </main>
@@ -527,6 +615,9 @@
 
     <script>
         let reportesData = [];
+        let filteredData = [];
+        let currentPage = 1;
+        let pageSize = 15;
 
         function getIconForType(tipo, summary) {
             const t = (tipo || '').toLowerCase();
@@ -553,7 +644,6 @@
                 }
             });
 
-            // Limpa opções antigas mantendo a padrão "Tudo"
             selectReporter.innerHTML = '<option value="">Solicitante: Tudo</option>';
             
             Array.from(solicitantes).sort().forEach(nome => {
@@ -564,11 +654,11 @@
             });
         }
 
-        function renderTabela(dados) {
+        function renderTabela() {
             const tbody = document.getElementById('reportsTableBody');
             tbody.innerHTML = '';
 
-            if (!dados || dados.length === 0) {
+            if (!filteredData || filteredData.length === 0) {
                 tbody.innerHTML = `
                     <tr>
                         <td colspan="5">
@@ -579,13 +669,25 @@
                         </td>
                     </tr>
                 `;
+                renderPaginaControles();
                 return;
             }
 
-            dados.forEach(item => {
+            // Calcula fatiamento da paginação
+            const totalItems = filteredData.length;
+            const totalPages = Math.ceil(totalItems / pageSize) || 1;
+            
+            if (currentPage > totalPages) currentPage = totalPages;
+            if (currentPage < 1) currentPage = 1;
+
+            const startIndex = (currentPage - 1) * pageSize;
+            const endIndex = Math.min(startIndex + pageSize, totalItems);
+
+            const pageItems = filteredData.slice(startIndex, endIndex);
+
+            pageItems.forEach(item => {
                 const tr = document.createElement('tr');
 
-                // Class do Badge de Status
                 let statusClass = 'aberto';
                 const st = (item.status || '').toLowerCase();
                 if (st.includes('atendimento') || st.includes('andamento') || st.includes('progresso') || st.includes('verificação') || st.includes('verificacao')) {
@@ -594,10 +696,7 @@
                     statusClass = 'concluido';
                 }
 
-                // Ícone Jira do tipo
                 const iconHtml = getIconForType(item.type, item.summary);
-
-                // Avatar com iniciais
                 const nome = item.reporter || 'N/A';
                 const inicial = nome.charAt(0).toUpperCase();
 
@@ -628,7 +727,49 @@
                 tbody.appendChild(tr);
             });
 
-            atualizarMetrics(dados);
+            // Atualiza texto de intervalo e controles de botões
+            document.getElementById('pageRangeText').innerText = `Mostrando ${totalItems > 0 ? startIndex + 1 : 0}-${endIndex} de ${totalItems} reportes`;
+            renderPaginaControles();
+        }
+
+        function renderPaginaControles() {
+            const container = document.getElementById('paginationButtons');
+            container.innerHTML = '';
+
+            const totalItems = filteredData.length;
+            const totalPages = Math.ceil(totalItems / pageSize) || 1;
+
+            // Botão Anterior
+            const btnPrev = document.createElement('button');
+            btnPrev.className = 'btn-page';
+            btnPrev.innerHTML = '<i class="fa-solid fa-chevron-left"></i>';
+            btnPrev.disabled = currentPage <= 1;
+            btnPrev.onclick = () => { if (currentPage > 1) { currentPage--; renderTabela(); } };
+            container.appendChild(btnPrev);
+
+            // Números de Páginas (Máximo 5 botões de número)
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, startPage + 4);
+
+            if (endPage - startPage < 4) {
+                startPage = Math.max(1, endPage - 4);
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                const btnNum = document.createElement('button');
+                btnNum.className = `btn-page ${i === currentPage ? 'active' : ''}`;
+                btnNum.innerText = i;
+                btnNum.onclick = () => { currentPage = i; renderTabela(); };
+                container.appendChild(btnNum);
+            }
+
+            // Botão Próximo
+            const btnNext = document.createElement('button');
+            btnNext.className = 'btn-page';
+            btnNext.innerHTML = '<i class="fa-solid fa-chevron-right"></i>';
+            btnNext.disabled = currentPage >= totalPages;
+            btnNext.onclick = () => { if (currentPage < totalPages) { currentPage++; renderTabela(); } };
+            container.appendChild(btnNext);
         }
 
         function atualizarMetrics(dados) {
@@ -654,19 +795,28 @@
             document.getElementById('statDone').innerText = done;
         }
 
-        function filtrarTabela() {
+        function onFilterChange() {
+            currentPage = 1; // Reseta para a 1ª página ao filtrar
+            filtrarDados();
+        }
+
+        function onPageSizeChange() {
+            pageSize = parseInt(document.getElementById('pageSizeSelect').value) || 15;
+            currentPage = 1;
+            renderTabela();
+        }
+
+        function filtrarDados() {
             const query = document.getElementById('searchInput').value.toLowerCase();
             const typeFilter = document.getElementById('typeFilter').value;
             const statusFilter = document.getElementById('statusFilter').value;
             const reporterFilter = document.getElementById('reporterFilter').value;
 
-            const filtrados = reportesData.filter(item => {
-                // Filtro por Texto
+            filteredData = reportesData.filter(item => {
                 const matchQuery = (item.issue_key || '').toLowerCase().includes(query) ||
                                    (item.summary || '').toLowerCase().includes(query) ||
                                    (item.reporter || '').toLowerCase().includes(query);
 
-                // Filtro por Tipo de Solicitação
                 let matchType = true;
                 if (typeFilter) {
                     const t = (item.type || '').toLowerCase();
@@ -682,7 +832,6 @@
                     }
                 }
 
-                // Filtro por Status
                 let matchStatus = true;
                 const st = (item.status || '').toLowerCase();
                 if (statusFilter === 'aberto') {
@@ -693,7 +842,6 @@
                     matchStatus = st.includes('conclu') || st.includes('resolv') || st.includes('fechad');
                 }
 
-                // Filtro por Solicitante ("Tudo")
                 let matchReporter = true;
                 if (reporterFilter) {
                     matchReporter = (item.reporter || '').trim() === reporterFilter;
@@ -702,7 +850,8 @@
                 return matchQuery && matchType && matchStatus && matchReporter;
             });
 
-            renderTabela(filtrados);
+            atualizarMetrics(reportesData);
+            renderTabela();
         }
 
         async function carregarDadosReais() {
@@ -722,12 +871,11 @@
                 console.log("Erro ao carregar jira_reports_data.json:", e);
             }
 
-            filtrarTabela();
+            onFilterChange();
             btn.disabled = false;
             txt.innerText = 'Atualizar Dados';
         }
 
-        // Renderização Inicial
         document.addEventListener('DOMContentLoaded', () => {
             carregarDadosReais();
         });
