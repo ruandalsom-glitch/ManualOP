@@ -342,20 +342,10 @@
         .issue-desc {
             font-weight: 600;
             color: var(--branco);
-            max-width: 340px;
+            max-width: 540px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-        }
-
-        .activity-preview {
-            max-width: 340px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            font-size: 13px;
-            color: var(--azul-gelo);
-            opacity: 0.9;
         }
 
         .badge-status {
@@ -376,9 +366,9 @@
             background: rgba(44,234,188,0.12);
             color: var(--menta-viva);
             border: 1px solid rgba(44,234,188,0.3);
-            padding: 6px 12px;
+            padding: 6px 14px;
             border-radius: 8px;
-            font-size: 12px;
+            font-size: 12.5px;
             font-weight: 700;
             cursor: pointer;
             display: inline-flex;
@@ -724,7 +714,7 @@
             </div>
         </div>
 
-        <!-- Table Display with Activity Column -->
+        <!-- Table Display without Activity Column -->
         <div class="table-card">
             <table>
                 <thead>
@@ -732,10 +722,9 @@
                         <th style="width: 60px; text-align: center;">Tipo</th>
                         <th>Referência</th>
                         <th>Resumo do Reporte</th>
-                        <th>Atividade / Resposta</th>
                         <th>Status</th>
                         <th>Solicitante</th>
-                        <th>Ação</th>
+                        <th style="text-align: center;">Ação</th>
                     </tr>
                 </thead>
                 <tbody id="reportsTableBody">
@@ -869,7 +858,7 @@
             if (!filteredData || filteredData.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="7">
+                        <td colspan="6">
                             <div class="empty-box">
                                 <i class="fa-solid fa-inbox"></i>
                                 <p>Nenhum reporte encontrado para os filtros selecionados.</p>
@@ -908,12 +897,6 @@
                 const nome = item.reporter || 'N/A';
                 const inicial = nome.charAt(0).toUpperCase();
 
-                // Prévia da Atividade/Resposta
-                let respPreview = item.response_text || 'Sem atividade registrada';
-                if (respPreview.length > 45) {
-                    respPreview = respPreview.substring(0, 45) + '...';
-                }
-
                 tr.innerHTML = `
                     <td style="text-align: center;" onclick="abrirModal(${globalIdx})">
                         ${iconHtml}
@@ -923,12 +906,6 @@
                     </td>
                     <td onclick="abrirModal(${globalIdx})">
                         <div class="issue-desc" title="${item.summary}">${item.summary}</div>
-                    </td>
-                    <td onclick="abrirModal(${globalIdx})">
-                        <div class="activity-preview" title="${item.response_text || ''}">
-                            ${item.response_text ? '<i class="fa-solid fa-comment-dots" style="color: var(--menta-viva); margin-right: 6px;"></i>' : ''}
-                            ${respPreview}
-                        </div>
                     </td>
                     <td onclick="abrirModal(${globalIdx})">
                         <span class="badge-status ${statusClass}">
@@ -942,7 +919,7 @@
                             <span>${nome}</span>
                         </div>
                     </td>
-                    <td>
+                    <td style="text-align: center;">
                         <button class="btn-view-resp" onclick="abrirModal(${globalIdx}); event.stopPropagation();">
                             <i class="fa-solid fa-eye"></i> Ver Resposta
                         </button>
@@ -980,7 +957,6 @@
             document.getElementById('responseModal').classList.remove('active');
         }
 
-        // Fechar modal ao clicar fora
         document.getElementById('responseModal')?.addEventListener('click', (e) => {
             if (e.target.id === 'responseModal') fecharModal();
         });
