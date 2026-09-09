@@ -12,9 +12,6 @@
     
     <!-- FontAwesome icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Supabase JS Client -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
         :root {
@@ -334,7 +331,7 @@
         .issue-summary {
             font-weight: 500;
             color: var(--text-primary);
-            max-width: 420px;
+            max-width: 450px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -364,7 +361,7 @@
             width: 28px;
             height: 28px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(56, 189, 248, 0.15);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -388,8 +385,8 @@
         /* Loading Spinner */
         .spinner {
             display: inline-block;
-            width: 16px;
-            height: 16px;
+            width: 14px;
+            height: 14px;
             border: 2px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
             border-top-color: #fff;
@@ -422,7 +419,7 @@
             </div>
         </div>
         <div class="header-controls">
-            <button class="btn-sync" id="btnSync" onclick="sincronizarChamados()">
+            <button class="btn-sync" id="btnSync" onclick="carregarDadosReais()">
                 <i class="fa-solid fa-rotate"></i>
                 <span id="btnSyncText">Atualizar Dados</span>
             </button>
@@ -460,7 +457,7 @@
                 </div>
                 <div class="metric-info">
                     <h3 id="metricProgress">0</h3>
-                    <p>Em Atendimento</p>
+                    <p>Em Atendimento / Verificação</p>
                 </div>
             </div>
 
@@ -486,14 +483,8 @@
                 <select class="filter-select" id="statusFilter" onchange="filtrarTabela()">
                     <option value="">Todos os Status</option>
                     <option value="aberto">Em Aberto / Criado</option>
-                    <option value="andamento">Em Atendimento</option>
+                    <option value="andamento">Em Atendimento / Verificação</option>
                     <option value="concluido">Concluído / Resolvido</option>
-                </select>
-
-                <select class="filter-select" id="periodFilter" onchange="filtrarTabela()">
-                    <option value="all">Todo o Período</option>
-                    <option value="7">Últimos 7 dias</option>
-                    <option value="30">Últimos 30 dias</option>
                 </select>
             </div>
         </div>
@@ -507,7 +498,6 @@
                         <th>Resumo do Reporte</th>
                         <th>Status</th>
                         <th>Solicitante</th>
-                        <th>Data de Criação</th>
                         <th>Ação</th>
                     </tr>
                 </thead>
@@ -524,39 +514,7 @@
     </footer>
 
     <script>
-        // Supabase Initialization
-        const SUPABASE_URL = "https://wpuyanodymsjzsqzbmfy.supabase.co";
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndwdXlhbm9keW1zanpzcXpibWZ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEyMzg2ODIsImV4cCI6MjA1NjzgNDY4Mn0.g-pY6d..._demo";
-        // Utiliza o cliente global ou dados mockados se a tabela ainda não estiver populada
-        const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
-
-        // Dados locais/demonstração inicial de chamados enquanto o scraper alimenta a base
-        let reportesData = [
-            {
-                issue_key: "SMENTGO-1598",
-                summary: "Falha na sincronização de rotas com a base de São Paulo",
-                status: "Em Atendimento",
-                reporter: "Ruan Dalsom",
-                created_at: "2026-09-09T14:30:00Z",
-                url: "https://ifood.atlassian.net/helpcenter/entrego/portal/4623/SMENTGO-1598"
-            },
-            {
-                issue_key: "SMENTGO-1597",
-                summary: "Solicitação de inclusão de novos modais nas escalas da tarde",
-                status: "Aberto",
-                reporter: "Fabiano Jesus",
-                created_at: "2026-09-09T10:15:00Z",
-                url: "https://ifood.atlassian.net/helpcenter/entrego/portal/4623/SMENTGO-1597"
-            },
-            {
-                issue_key: "SMENTGO-1580",
-                summary: "Ajuste no teto promocional do garantido diário",
-                status: "Concluído",
-                reporter: "Operacional RJ",
-                created_at: "2026-09-08T18:00:00Z",
-                url: "https://ifood.atlassian.net/helpcenter/entrego/portal/4623/SMENTGO-1580"
-            }
-        ];
+        let reportesData = [];
 
         function renderTabela(dados) {
             const tbody = document.getElementById('reportsTableBody');
@@ -565,7 +523,7 @@
             if (!dados || dados.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="6">
+                        <td colspan="5">
                             <div class="empty-state">
                                 <i class="fa-solid fa-inbox"></i>
                                 <p>Nenhum reporte encontrado para os filtros selecionados.</p>
@@ -582,7 +540,7 @@
                 // Class do Badge de Status
                 let statusClass = 'aberto';
                 const st = (item.status || '').toLowerCase();
-                if (st.includes('atendimento') || st.includes('andamento') || st.includes('progresso')) {
+                if (st.includes('atendimento') || st.includes('andamento') || st.includes('progresso') || st.includes('verificação') || st.includes('verificacao')) {
                     statusClass = 'andamento';
                 } else if (st.includes('conclu') || st.includes('resolv') || st.includes('fechad')) {
                     statusClass = 'concluido';
@@ -591,10 +549,6 @@
                 // Avatar com iniciais
                 const nome = item.reporter || 'N/A';
                 const inicial = nome.charAt(0).toUpperCase();
-
-                // Formatador de data
-                const dateObj = new Date(item.created_at);
-                const dataFormatada = isNaN(dateObj.getTime()) ? item.created_at : dateObj.toLocaleString('pt-BR');
 
                 tr.innerHTML = `
                     <td>
@@ -618,9 +572,6 @@
                             <span>${nome}</span>
                         </div>
                     </td>
-                    <td style="color: var(--text-secondary); font-size: 13px;">
-                        ${dataFormatada}
-                    </td>
                     <td>
                         <a href="${item.url || '#'}" target="_blank" style="color: var(--accent-cyan); font-size: 13px; text-decoration: none; font-weight: 500;">
                             Abrir no Jira <i class="fa-solid fa-chevron-right" style="font-size: 10px;"></i>
@@ -642,7 +593,7 @@
 
             dados.forEach(item => {
                 const st = (item.status || '').toLowerCase();
-                if (st.includes('atendimento') || st.includes('andamento') || st.includes('progresso')) {
+                if (st.includes('atendimento') || st.includes('andamento') || st.includes('progresso') || st.includes('verificação') || st.includes('verificacao')) {
                     progress++;
                 } else if (st.includes('conclu') || st.includes('resolv') || st.includes('fechad')) {
                     done++;
@@ -669,9 +620,9 @@
                 let matchStatus = true;
                 const st = (item.status || '').toLowerCase();
                 if (statusFilter === 'aberto') {
-                    matchStatus = !st.includes('atendimento') && !st.includes('andamento') && !st.includes('conclu') && !st.includes('resolv');
+                    matchStatus = !st.includes('atendimento') && !st.includes('andamento') && !st.includes('verificação') && !st.includes('verificacao') && !st.includes('conclu') && !st.includes('resolv');
                 } else if (statusFilter === 'andamento') {
-                    matchStatus = st.includes('atendimento') || st.includes('andamento') || st.includes('progresso');
+                    matchStatus = st.includes('atendimento') || st.includes('andamento') || st.includes('progresso') || st.includes('verificação') || st.includes('verificacao');
                 } else if (statusFilter === 'concluido') {
                     matchStatus = st.includes('conclu') || st.includes('resolv') || st.includes('fechad');
                 }
@@ -682,33 +633,30 @@
             renderTabela(filtrados);
         }
 
-        async function sincronizarChamados() {
+        async function carregarDadosReais() {
             const btn = document.getElementById('btnSync');
             const txt = document.getElementById('btnSyncText');
             
             btn.disabled = true;
-            txt.innerHTML = '<span class="spinner"></span> Sincronizando...';
+            txt.innerHTML = '<span class="spinner"></span> Carregando...';
 
             try {
-                // Tenta carregar do Supabase se configurado
-                if (supabase) {
-                    const { data, error } = await supabase.from('jira_reports').select('*').order('created_at', { ascending: false });
-                    if (!error && data && data.length > 0) {
-                        reportesData = data;
-                    }
+                const response = await fetch('jira_reports_data.json?cache=' + Date.now());
+                if (response.ok) {
+                    reportesData = await response.json();
                 }
             } catch (e) {
-                console.log("Modo de exibição demonstrativa.");
-            } setTimeout(() => {
-                filtrarTabela();
-                btn.disabled = false;
-                txt.innerText = 'Atualizar Dados';
-            }, 800);
+                console.log("Erro ao carregar jira_reports_data.json:", e);
+            }
+
+            filtrarTabela();
+            btn.disabled = false;
+            txt.innerText = 'Atualizar Dados';
         }
 
         // Renderização Inicial
         document.addEventListener('DOMContentLoaded', () => {
-            renderTabela(reportesData);
+            carregarDadosReais();
         });
     </script>
 </body>
