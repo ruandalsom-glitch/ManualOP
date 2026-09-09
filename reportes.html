@@ -7,7 +7,7 @@
     <link rel="icon" type="image/png" href="https://i.imgur.com/ZEox7rf.png">
     <link rel="shortcut icon" type="image/png" href="https://i.imgur.com/ZEox7rf.png">
     
-    <!-- Google Fonts: Plus Jakarta Sans (Idêntica ao Garantido e Index) -->
+    <!-- Google Fonts: Plus Jakarta Sans -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- FontAwesome icons -->
@@ -50,7 +50,6 @@
             flex-direction: column;
         }
 
-        /* Ambient background glow identical to garantido.html & index.html */
         body::before {
             content: '';
             position: fixed; inset: 0; z-index: 0;
@@ -300,6 +299,7 @@
         tbody tr {
             border-bottom: 1px solid rgba(255, 255, 255, 0.04);
             transition: background var(--transition-base);
+            cursor: pointer;
         }
 
         tbody tr:hover {
@@ -342,10 +342,20 @@
         .issue-desc {
             font-weight: 600;
             color: var(--branco);
-            max-width: 540px;
+            max-width: 340px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+        }
+
+        .activity-preview {
+            max-width: 340px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 13px;
+            color: var(--azul-gelo);
+            opacity: 0.9;
         }
 
         .badge-status {
@@ -361,6 +371,27 @@
         .badge-status.aberto { background: var(--status-amber-bg); color: var(--status-amber-text); }
         .badge-status.andamento { background: var(--status-blue-bg); color: var(--status-blue-text); }
         .badge-status.concluido { background: var(--status-green-bg); color: var(--status-green-text); }
+
+        .btn-view-resp {
+            background: rgba(44,234,188,0.12);
+            color: var(--menta-viva);
+            border: 1px solid rgba(44,234,188,0.3);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all var(--transition-base);
+        }
+
+        .btn-view-resp:hover {
+            background: rgba(44,234,188,0.25);
+            border-color: var(--menta-viva);
+            transform: translateY(-1px);
+        }
 
         .user-tag {
             display: flex;
@@ -466,11 +497,117 @@
             cursor: not-allowed;
         }
 
+        /* ===== MODAL DE RESPOSTA DO REPORTE ===== */
+        .modal-overlay {
+            position: fixed; inset: 0; z-index: 999;
+            background: rgba(4, 8, 28, 0.85); backdrop-filter: blur(16px);
+            display: flex; align-items: center; justify-content: center;
+            padding: 24px; opacity: 0; pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1; pointer-events: auto;
+        }
+
+        .modal-card {
+            background: rgba(13,20,65,0.95);
+            border: 1px solid rgba(44,234,188,0.25);
+            border-radius: var(--radius-lg);
+            width: 100%; max-width: 680px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 30px rgba(44,234,188,0.15);
+            display: flex; flex-direction: column; overflow: hidden;
+            transform: translateY(20px); transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 20px 26px;
+            background: rgba(8,14,46,0.9);
+            border-bottom: 1px solid rgba(44,234,188,0.12);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+
+        .modal-header h2 {
+            font-size: 18px; font-weight: 800; color: var(--branco);
+            display: flex; align-items: center; gap: 10px;
+        }
+
+        .modal-close {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--azul-gelo);
+            width: 32px; height: 32px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(234,29,44,0.2); color: #ea1d2c;
+            border-color: rgba(234,29,44,0.4);
+        }
+
+        .modal-body {
+            padding: 26px;
+            display: flex; flex-direction: column; gap: 20px;
+            max-height: 70vh; overflow-y: auto;
+        }
+
+        .modal-info-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px; background: rgba(8,14,46,0.6);
+            padding: 16px; border-radius: var(--radius-sm);
+            border: 1px solid rgba(44,234,188,0.1);
+        }
+
+        .modal-info-item label {
+            font-size: 11px; font-weight: 700; text-transform: uppercase;
+            color: var(--menta-viva); letter-spacing: 0.5px; display: block; margin-bottom: 4px;
+        }
+
+        .modal-info-item p {
+            font-size: 13.5px; font-weight: 600; color: var(--branco);
+        }
+
+        .modal-response-box {
+            background: rgba(44,103,234,0.12);
+            border: 1px solid rgba(44,234,188,0.25);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            display: flex; flex-direction: column; gap: 12px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+        }
+
+        .modal-response-author {
+            display: flex; align-items: center; justify-content: space-between;
+            border-bottom: 1px solid rgba(44,234,188,0.15);
+            padding-bottom: 10px;
+        }
+
+        .author-details {
+            display: flex; align-items: center; gap: 10px;
+        }
+
+        .author-details h4 {
+            font-size: 14px; font-weight: 700; color: var(--menta-viva);
+        }
+
+        .author-details span {
+            font-size: 12px; color: var(--azul-gelo); opacity: 0.7;
+        }
+
+        .modal-response-text {
+            font-size: 14.5px; line-height: 1.6; color: var(--branco);
+            font-weight: 500; white-space: pre-wrap; word-break: break-word;
+        }
+
         /* Loading Spinner */
         .spinner {
             display: inline-block;
-            width: 14px;
-            height: 14px;
+            width: 14px; height: 14px;
             border: 2px solid rgba(15,24,73,0.4);
             border-radius: 50%;
             border-top-color: var(--azul-escuro);
@@ -482,11 +619,8 @@
         }
 
         footer {
-            padding: 20px;
-            text-align: center;
-            font-size: 12.5px;
-            color: var(--azul-gelo);
-            opacity: 0.6;
+            padding: 20px; text-align: center; font-size: 12.5px;
+            color: var(--azul-gelo); opacity: 0.6;
             border-top: 1px solid rgba(44,234,188,0.08);
             background: rgba(8,14,46,0.9);
         }
@@ -496,7 +630,7 @@
 
     <div class="dot-grid"></div>
 
-    <!-- Header Navigation Aligned 100% with Site & Logo GO Sumarezinho -->
+    <!-- Header Navigation -->
     <header>
         <a href="index.html" class="logo-box">
             <img src="https://i.imgur.com/ZEox7rf.png" class="logo-img" alt="Logo GO Sumarezinho">
@@ -563,11 +697,10 @@
         <div class="jira-toolbar">
             <div class="search-field">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="searchInput" placeholder="Buscar por código (ex: SMENTGO-1740), resumo ou solicitante..." oninput="onFilterChange()">
+                <input type="text" id="searchInput" placeholder="Buscar por código (ex: SMENTGO-1740), resumo ou resposta..." oninput="onFilterChange()">
             </div>
 
             <div class="filters-row">
-                <!-- Dropdown replica do Jira: Tipo de solicitação -->
                 <select class="filter-badge-select" id="typeFilter" onchange="onFilterChange()">
                     <option value="">Tipo de solicitação (Todos)</option>
                     <option value="Sugestão de Escala">Sugestão de Escala</option>
@@ -578,7 +711,6 @@
                     <option value="Dúvidas Gerais">Dúvidas Gerais</option>
                 </select>
 
-                <!-- Dropdown replica do Jira: Status -->
                 <select class="filter-badge-select" id="statusFilter" onchange="onFilterChange()">
                     <option value="">Status (Todos)</option>
                     <option value="aberto">Aberto / Pendente</option>
@@ -586,23 +718,24 @@
                     <option value="concluido">Concluído / Resolvido</option>
                 </select>
 
-                <!-- Dropdown replica do Jira: Solicitantes (Tudo) -->
                 <select class="filter-badge-select" id="reporterFilter" onchange="onFilterChange()">
                     <option value="">Solicitante: Tudo</option>
                 </select>
             </div>
         </div>
 
-        <!-- Table Display with Frontend Pagination -->
+        <!-- Table Display with Activity Column -->
         <div class="table-card">
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 65px; text-align: center;">Tipo</th>
+                        <th style="width: 60px; text-align: center;">Tipo</th>
                         <th>Referência</th>
-                        <th>Resumo</th>
+                        <th>Resumo do Reporte</th>
+                        <th>Atividade / Resposta</th>
                         <th>Status</th>
                         <th>Solicitante</th>
+                        <th>Ação</th>
                     </tr>
                 </thead>
                 <tbody id="reportsTableBody">
@@ -631,6 +764,57 @@
 
     </main>
 
+    <!-- Modal de Resposta do Reporte -->
+    <div class="modal-overlay" id="responseModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-comments" style="color: var(--menta-viva);"></i> Detalhes & Resposta do Reporte</h2>
+                <div class="modal-close" onclick="fecharModal()"><i class="fa-solid fa-xmark"></i></div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-info-grid">
+                    <div class="modal-info-item">
+                        <label>Referência</label>
+                        <p id="modalRef">SMENTGO-000</p>
+                    </div>
+                    <div class="modal-info-item">
+                        <label>Tipo</label>
+                        <p id="modalType">Geral</p>
+                    </div>
+                    <div class="modal-info-item">
+                        <label>Status</label>
+                        <p id="modalStatus">Aberto</p>
+                    </div>
+                    <div class="modal-info-item">
+                        <label>Solicitante</label>
+                        <p id="modalReporter">N/A</p>
+                    </div>
+                </div>
+
+                <div style="background: rgba(8,14,46,0.6); padding: 16px; border-radius: var(--radius-sm); border: 1px solid rgba(44,234,188,0.1);">
+                    <label style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--menta-viva); letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Resumo do Chamado</label>
+                    <p id="modalSummary" style="font-size: 14px; font-weight: 600; color: var(--branco);"></p>
+                </div>
+
+                <div class="modal-response-box">
+                    <div class="modal-response-author">
+                        <div class="author-details">
+                            <div class="user-avatar-circle" id="modalAuthorAvatar">A</div>
+                            <div>
+                                <h4 id="modalAuthor">Atendente Jira</h4>
+                                <span id="modalDate">Data/Hora</span>
+                            </div>
+                        </div>
+                        <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; background: rgba(44,234,188,0.15); color: var(--menta-viva); padding: 4px 8px; border-radius: 6px;">Última Atividade</span>
+                    </div>
+                    <div class="modal-response-text" id="modalResponseText">
+                        Nenhuma resposta registrada até o momento.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer>
         <p>ManualOP &copy; 2026 — Central de Acompanhamento de Reportes EntreGô</p>
     </footer>
@@ -641,7 +825,6 @@
         let currentPage = 1;
         let pageSize = 15;
 
-        // Ícones FontAwesome 6 Free 100% Compatíveis & Visíveis
         function getIconForType(tipo, summary) {
             const t = (tipo || '').toLowerCase();
             const s = (summary || '').toLowerCase();
@@ -686,7 +869,7 @@
             if (!filteredData || filteredData.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="5">
+                        <td colspan="7">
                             <div class="empty-box">
                                 <i class="fa-solid fa-inbox"></i>
                                 <p>Nenhum reporte encontrado para os filtros selecionados.</p>
@@ -709,8 +892,9 @@
 
             const pageItems = filteredData.slice(startIndex, endIndex);
 
-            pageItems.forEach(item => {
+            pageItems.forEach((item, index) => {
                 const tr = document.createElement('tr');
+                const globalIdx = startIndex + index;
 
                 let statusClass = 'aberto';
                 const st = (item.status || '').toLowerCase();
@@ -724,27 +908,44 @@
                 const nome = item.reporter || 'N/A';
                 const inicial = nome.charAt(0).toUpperCase();
 
+                // Prévia da Atividade/Resposta
+                let respPreview = item.response_text || 'Sem atividade registrada';
+                if (respPreview.length > 45) {
+                    respPreview = respPreview.substring(0, 45) + '...';
+                }
+
                 tr.innerHTML = `
-                    <td style="text-align: center;">
+                    <td style="text-align: center;" onclick="abrirModal(${globalIdx})">
                         ${iconHtml}
                     </td>
-                    <td>
+                    <td onclick="abrirModal(${globalIdx})">
                         <span class="issue-ref-badge">${item.issue_key}</span>
                     </td>
-                    <td>
+                    <td onclick="abrirModal(${globalIdx})">
                         <div class="issue-desc" title="${item.summary}">${item.summary}</div>
                     </td>
-                    <td>
+                    <td onclick="abrirModal(${globalIdx})">
+                        <div class="activity-preview" title="${item.response_text || ''}">
+                            ${item.response_text ? '<i class="fa-solid fa-comment-dots" style="color: var(--menta-viva); margin-right: 6px;"></i>' : ''}
+                            ${respPreview}
+                        </div>
+                    </td>
+                    <td onclick="abrirModal(${globalIdx})">
                         <span class="badge-status ${statusClass}">
                             <i class="fa-solid fa-circle" style="font-size: 6px;"></i>
                             ${item.status}
                         </span>
                     </td>
-                    <td>
+                    <td onclick="abrirModal(${globalIdx})">
                         <div class="user-tag">
                             <div class="user-avatar-circle">${inicial}</div>
                             <span>${nome}</span>
                         </div>
+                    </td>
+                    <td>
+                        <button class="btn-view-resp" onclick="abrirModal(${globalIdx}); event.stopPropagation();">
+                            <i class="fa-solid fa-eye"></i> Ver Resposta
+                        </button>
                     </td>
                 `;
 
@@ -755,6 +956,35 @@
             renderPaginaControles();
         }
 
+        function abrirModal(index) {
+            const item = filteredData[index];
+            if (!item) return;
+
+            document.getElementById('modalRef').innerText = item.issue_key || 'N/A';
+            document.getElementById('modalType').innerText = item.type || 'Geral';
+            document.getElementById('modalStatus').innerText = item.status || 'Pendente';
+            document.getElementById('modalReporter').innerText = item.reporter || 'N/A';
+            document.getElementById('modalSummary').innerText = item.summary || 'Sem resumo disponível';
+
+            const authorName = item.response_author || 'Atendente / Sistema';
+            document.getElementById('modalAuthor').innerText = authorName;
+            document.getElementById('modalAuthorAvatar').innerText = authorName.charAt(0).toUpperCase();
+            document.getElementById('modalDate').innerText = item.response_date || 'Data não registrada';
+
+            document.getElementById('modalResponseText').innerText = item.response_text || 'Nenhuma atividade ou resposta manuscrita encontrada até o momento para este chamado.';
+
+            document.getElementById('responseModal').classList.add('active');
+        }
+
+        function fecharModal() {
+            document.getElementById('responseModal').classList.remove('active');
+        }
+
+        // Fechar modal ao clicar fora
+        document.getElementById('responseModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'responseModal') fecharModal();
+        });
+
         function renderPaginaControles() {
             const container = document.getElementById('paginationButtons');
             container.innerHTML = '';
@@ -762,7 +992,6 @@
             const totalItems = filteredData.length;
             const totalPages = Math.ceil(totalItems / pageSize) || 1;
 
-            // Botão Anterior
             const btnPrev = document.createElement('button');
             btnPrev.className = 'btn-page';
             btnPrev.innerHTML = '<i class="fa-solid fa-chevron-left"></i>';
@@ -770,7 +999,6 @@
             btnPrev.onclick = () => { if (currentPage > 1) { currentPage--; renderTabela(); } };
             container.appendChild(btnPrev);
 
-            // Números de Páginas
             let startPage = Math.max(1, currentPage - 2);
             let endPage = Math.min(totalPages, startPage + 4);
 
@@ -786,7 +1014,6 @@
                 container.appendChild(btnNum);
             }
 
-            // Botão Próximo
             const btnNext = document.createElement('button');
             btnNext.className = 'btn-page';
             btnNext.innerHTML = '<i class="fa-solid fa-chevron-right"></i>';
@@ -838,6 +1065,7 @@
             filteredData = reportesData.filter(item => {
                 const matchQuery = (item.issue_key || '').toLowerCase().includes(query) ||
                                    (item.summary || '').toLowerCase().includes(query) ||
+                                   (item.response_text || '').toLowerCase().includes(query) ||
                                    (item.reporter || '').toLowerCase().includes(query);
 
                 let matchType = true;
