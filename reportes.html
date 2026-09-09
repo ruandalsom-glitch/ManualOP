@@ -691,11 +691,10 @@
             </div>
 
             <div class="filters-row">
+                <!-- Dropdown exato com as 4 categorias solicitadas -->
                 <select class="filter-badge-select" id="typeFilter" onchange="onFilterChange()">
-                    <option value="">Tipo de solicitação (Todos)</option>
-                    <option value="Sugestão de Escala">Sugestão de Escala</option>
+                    <option value="">Tipo de solicitação (Todas as 4)</option>
                     <option value="Contestação de Promoção">Contestação de Promoção</option>
-                    <option value="Registro de Promoções e Ações">Registro de Promoções e Ações</option>
                     <option value="Problemas Cadastrais">Problemas Cadastrais / Bugs</option>
                     <option value="Contestação de Garantido FE">Contestação de Garantido FE</option>
                     <option value="Dúvidas Gerais">Dúvidas Gerais</option>
@@ -818,10 +817,8 @@
             const t = (tipo || '').toLowerCase();
             const s = (summary || '').toLowerCase();
 
-            if (t.includes('escala') || s.includes('escala')) {
-                return '<div class="type-icon" title="Sugestão / Alteração de Escala"><i class="fa-solid fa-calendar-days"></i></div>';
-            } else if (t.includes('promo') || s.includes('promo') || s.includes('contest')) {
-                return '<div class="type-icon" title="Contestação / Registro de Promoção"><i class="fa-solid fa-tags"></i></div>';
+            if (t.includes('promo') || s.includes('promo') || s.includes('contest')) {
+                return '<div class="type-icon" title="Contestação de Promoção"><i class="fa-solid fa-tags"></i></div>';
             } else if (t.includes('garantido') || s.includes('garantido')) {
                 return '<div class="type-icon" title="Contestação de Garantido FE"><i class="fa-solid fa-shield-halved"></i></div>';
             } else if (t.includes('bug') || t.includes('problema') || t.includes('cadastral') || s.includes('erro') || s.includes('modal') || s.includes('falha')) {

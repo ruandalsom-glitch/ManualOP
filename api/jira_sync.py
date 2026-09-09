@@ -14,6 +14,39 @@ JIRA_PASS = "Ruankz100%"
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 JSON_OUTPUT_PATH = os.path.join(BASE_DIR, "jira_reports_data.json")
 
+# Lista exata das 4 categorias permitidas
+ALLOWED_TYPES = [
+    "Contestação de Promoção",
+    "Problemas Cadastrais",
+    "Contestação de Garantido FE",
+    "Dúvidas Gerais"
+]
+
+def map_and_filter_type(type_raw, summary):
+    """Mapeia e valida se o chamado pertence a uma das 4 categorias permitidas"""
+    t = (type_raw or '').strip()
+    s = (summary or '').strip().lower()
+    t_lower = t.lower()
+
+    # Check 1: Contestação de Promoção
+    if "contestação de promoção" in t_lower or "contestacao de promocao" in t_lower or "contestação de promoção" in s or "contestacao de promocao" in s:
+        return "Contestação de Promoção"
+
+    # Check 2: Problemas Cadastrais / Bugs
+    if "problemas cadastrais" in t_lower or "bug" in t_lower or "cadastral" in t_lower or "modal" in s or "erro" in s or "falha" in s or "bug" in s:
+        return "Problemas Cadastrais"
+
+    # Check 3: Contestação de Garantido FE
+    if "garantido" in t_lower or "garantido" in s:
+        return "Contestação de Garantido FE"
+
+    # Check 4: Dúvidas Gerais
+    if "dúvidas gerais" in t_lower or "duvidas gerais" in t_lower or "dúvida" in s or "duvida" in s or "geral" in t_lower:
+        return "Dúvidas Gerais"
+
+    # Caso não se encaixe em nenhuma das 4 categorias solicitadas
+    return None
+
 async def fetch_issue_response(page, issue_key):
     """Navega até o detalhe do chamado e extrai a última resposta/atividade humana"""
     url = f"https://ifood.atlassian.net/helpcenter/entrego/portal/4623/{issue_key}"
@@ -21,8 +54,6 @@ async def fetch_issue_response(page, issue_key):
         await page.goto(url, wait_until="domcontentloaded", timeout=12000)
         await page.wait_for_timeout(1800)
 
-        # Procura elementos de atividade/comentários
-        # No Jira Helpcenter, os comentários ficam em divs dentro da seção Atividade
         content = await page.inner_text("body")
         lines = [l.strip() for l in content.split('\n') if l.strip()]
 
@@ -30,7 +61,6 @@ async def fetch_issue_response(page, issue_key):
         response_date = ""
         response_text = ""
 
-        # Localiza a seção Atividade
         if "Atividade" in lines:
             idx = lines.index("Atividade")
             sub_lines = lines[idx + 1:]
@@ -40,9 +70,7 @@ async def fetch_issue_response(page, issue_key):
                 date_str = sub_lines[i + 1]
                 text_candidate = sub_lines[i + 2]
 
-                # Ignora "Resposta automática"
                 if author != "Resposta automática" and "O status da sua" not in text_candidate and "Adicionar comentário" not in author:
-                    # Verifica se a data parece válida (ex: 01/set/26 16:15)
                     if re.search(r'\d{2}/\w{3}/\d{2}', date_str) or "às" in date_str or ":" in date_str:
                         response_author = author
                         response_date = date_str
@@ -59,7 +87,7 @@ async def fetch_issue_response(page, issue_key):
 
 async def sync_jira_reports():
     print("=" * 60)
-    print(f"🚀 [{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Sincronizando Chamados e Atividades do Jira...")
+    print(f"🚀 [{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Sincronizando Chamados Filtrados (Apenas 4 Categorias)...")
     print("=" * 60)
 
     extracted_reports = []
@@ -98,7 +126,7 @@ async def sync_jira_reports():
             await page.goto(all_requests_url)
             await page.wait_for_timeout(4000)
 
-            print("   -> Executando rolagem dinâmica para carregar 100% do histórico...")
+            print("   -> Executando rolagem dinâmica...")
             previous_count = 0
             max_scrolls = 35
             
@@ -114,7 +142,7 @@ async def sync_jira_reports():
                 previous_count = current_count
 
             final_rows = await page.query_selector_all("tbody tr")
-            print(f"\n[4/4] Extraindo dados de {len(final_rows)} chamados...")
+            print(f"\n[4/4] Filtrando e extraindo chamados pertencentes às 4 categorias solicitadas...")
 
             seen_keys = set()
             raw_issues = []
@@ -145,33 +173,27 @@ async def sync_jira_reports():
                             break
 
                     if issue_key and issue_key not in seen_keys:
-                        seen_keys.add(issue_key)
+                        # Aplica o filtro estrito das 4 categorias
+                        category = map_and_filter_type(type_icon_alt, summary)
                         
-                        if not type_icon_alt:
-                            sum_lower = summary.lower()
-                            if "escala" in sum_lower: type_icon_alt = "Sugestão de Escala"
-                            elif "promo" in sum_lower or "contest" in sum_lower: type_icon_alt = "Contestação de Promoção"
-                            elif "garantido" in sum_lower: type_icon_alt = "Contestação de Garantido FE"
-                            elif "erro" in sum_lower or "bug" in sum_lower or "modal" in sum_lower: type_icon_alt = "Problemas Cadastrais"
-                            else: type_icon_alt = "Dúvidas Gerais"
+                        if category:
+                            seen_keys.add(issue_key)
+                            raw_issues.append({
+                                "issue_key": issue_key,
+                                "type": category,
+                                "summary": summary,
+                                "status": status,
+                                "reporter": reporter
+                            })
 
-                        raw_issues.append({
-                            "issue_key": issue_key,
-                            "type": type_icon_alt,
-                            "summary": summary,
-                            "status": status,
-                            "reporter": reporter
-                        })
-
-            print(f"📋 Extraindo a atividade/resposta dos chamados mais recentes (Abertos e Concluídos)...")
-            # Coleta detalhe de resposta para os 40 chamados mais recentes para manter execução ultrarrápida
+            print(f"📋 Encontrados {len(raw_issues)} chamados pertencentes às 4 categorias. Extraindo respostas...")
             for idx, item in enumerate(raw_issues):
-                if idx < 50:  # Captura detalhes completos das atividades das 50 issues mais recentes
+                if idx < 50:
                     resp_info = await fetch_issue_response(page, item["issue_key"])
                     item["response_author"] = resp_info["response_author"]
                     item["response_date"] = resp_info["response_date"]
                     item["response_text"] = resp_info["response_text"]
-                    print(f"   [{idx+1}/50] {item['issue_key']} -> Resposta: '{resp_info['response_text'][:40]}...'" if resp_info['response_text'] else f"   [{idx+1}/50] {item['issue_key']} -> Sem comentário humano")
+                    print(f"   [{idx+1}/{len(raw_issues)}] {item['issue_key']} ({item['type']}) -> Resposta extraída")
                 else:
                     item["response_author"] = ""
                     item["response_date"] = ""
@@ -179,7 +201,7 @@ async def sync_jira_reports():
 
                 extracted_reports.append(item)
 
-            print(f"✅ Sincronização concluída! {len(extracted_reports)} chamados gravados.")
+            print(f"✅ Sincronização concluída! Total de {len(extracted_reports)} chamados filtrados salvos.")
 
         except Exception as e:
             print(f"❌ Erro durante a automação: {e}")

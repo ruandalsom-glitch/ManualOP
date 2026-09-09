@@ -1,45 +1,5 @@
 [
   {
-    "issue_key": "SMENTGO-1740",
-    "type": "Sugestão de Escala",
-    "summary": "Sugestão de Escala",
-    "status": "Aberto",
-    "reporter": "Estefany Delogo",
-    "response_author": "Estefany Delogo",
-    "response_date": "Hoje 14:26",
-    "response_text": "Abrir Pedido de Ajuste - MASTER.xlsx"
-  },
-  {
-    "issue_key": "SMENTGO-1668",
-    "type": "Sugestão de Escala",
-    "summary": "Sugestão de Escala",
-    "status": "Em verificação",
-    "reporter": "Estefany Delogo",
-    "response_author": "Estefany Delogo",
-    "response_date": "02/set/26 12:48",
-    "response_text": "Abrir Sugestão de Escala - MASTER.xlsx"
-  },
-  {
-    "issue_key": "SMENTGO-1667",
-    "type": "Sugestão de Escala",
-    "summary": "Sugestão de Escala",
-    "status": "Em verificação",
-    "reporter": "Estefany Delogo",
-    "response_author": "Estefany Delogo",
-    "response_date": "02/set/26 12:38",
-    "response_text": "Abrir Sugestão de Escala - MASTER.xlsx"
-  },
-  {
-    "issue_key": "SMENTGO-1665",
-    "type": "Sugestão de Escala",
-    "summary": "Sugestão de Escala",
-    "status": "Em verificação",
-    "reporter": "Estefany Delogo",
-    "response_author": "Estefany Delogo",
-    "response_date": "02/set/26 12:13",
-    "response_text": "Abrir Sugestão de Escala - MASTER.xlsx"
-  },
-  {
     "issue_key": "SMENTGO-1639",
     "type": "Problemas Cadastrais",
     "summary": "Restrição de MODAL mesmo após alteração",
@@ -61,7 +21,7 @@
   },
   {
     "issue_key": "SMENTGO-1670",
-    "type": "Dúvidas Gerais",
+    "type": "Problemas Cadastrais",
     "summary": "Erro no CLUBGAS",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
@@ -220,26 +180,6 @@
     "response_text": ""
   },
   {
-    "issue_key": "SMENTGO-1625",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "Gabrielle Crixina Teixeira Farias",
-    "response_date": "01/set/26 16:15",
-    "response_text": "Com ressalva para a correção das datas devido às manifestações no período, a mecânica está aprovada!"
-  },
-  {
-    "issue_key": "SMENTGO-1622",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "Gabrielle Crixina Teixeira Farias",
-    "response_date": "01/set/26 16:14",
-    "response_text": "Com ressalva para a correção das datas devido às manifestações no período, a mecânica está aprovada!"
-  },
-  {
     "issue_key": "SMENTGO-1660",
     "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
@@ -248,16 +188,6 @@
     "response_author": "",
     "response_date": "",
     "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1616",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "Gabrielle Crixina Teixeira Farias",
-    "response_date": "01/set/26 15:18",
-    "response_text": "Ação com ajustes alinhados via Slack. Mecânica aprovada ✅"
   },
   {
     "issue_key": "SMENTGO-1659",
@@ -310,16 +240,6 @@
     "response_text": "[MENSAGEM AUTOMÁTICA | TOQAN CLAW]"
   },
   {
-    "issue_key": "SMENTGO-1468",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Concluído",
-    "reporter": "Davis Marques - Master",
-    "response_author": "Davis Marques - Master",
-    "response_date": "15/ago/26 14:23",
-    "response_text": "Abrir WhatsApp Video 2026-08-15 at 13.10.34.mp4"
-  },
-  {
     "issue_key": "SMENTGO-1614",
     "type": "Problemas Cadastrais",
     "summary": "Erro ao tirar foto - Evento da BAG",
@@ -350,26 +270,6 @@
     "response_text": "Abrir 189d8d70-cbc9-4982-9aa5-5604800c35c3.jpg"
   },
   {
-    "issue_key": "SMENTGO-1627",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "Gabrielle Crixina Teixeira Farias",
-    "response_date": "28/ago/26 10:52",
-    "response_text": "Ação aprovada, Este!"
-  },
-  {
-    "issue_key": "SMENTGO-1623",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
     "issue_key": "SMENTGO-1471",
     "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
@@ -398,16 +298,6 @@
     "response_author": "Gabrielle Crixina Teixeira Farias",
     "response_date": "28/ago/26 09:34",
     "response_text": "[MENSAGEM AUTOMÁTICA | TOQAN CLAW]"
-  },
-  {
-    "issue_key": "SMENTGO-1585",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "Gabrielle Crixina Teixeira Farias",
-    "response_date": "27/ago/26 11:47",
-    "response_text": "Corrigir nome da EntreGô aqui. Após ajuste, pode seguir com os disparo da ação."
   },
   {
     "issue_key": "SMENTGO-1571",
@@ -460,16 +350,6 @@
     "response_text": ""
   },
   {
-    "issue_key": "SMENTGO-1535",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "Gabrielle Crixina Teixeira Farias",
-    "response_date": "24/ago/26 10:40",
-    "response_text": "olá! Ação aprovada ✅"
-  },
-  {
     "issue_key": "SMENTGO-1540",
     "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
@@ -520,24 +400,14 @@
     "response_text": ""
   },
   {
-    "issue_key": "SMENTGO-1430",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
     "issue_key": "SMENTGO-1460",
     "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
+    "response_author": "Gabrielle Crixina Teixeira Farias",
+    "response_date": "18/ago/26 17:24",
+    "response_text": "Boa tarde, pessoal!"
   },
   {
     "issue_key": "SMENTGO-1048",
@@ -545,9 +415,9 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
+    "response_author": "Davis Marques - Master",
+    "response_date": "12/ago/26 18:23",
+    "response_text": "Boa noite!!"
   },
   {
     "issue_key": "SMENTGO-1442",
@@ -555,9 +425,9 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
+    "response_author": "Gabrielle Crixina Teixeira Farias",
+    "response_date": "14/ago/26 08:59",
+    "response_text": "[MENSAGEM AUTOMÁTICA | TOQAN CLAW}"
   },
   {
     "issue_key": "SMENTGO-1441",
@@ -565,9 +435,9 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
+    "response_author": "Gabrielle Crixina Teixeira Farias",
+    "response_date": "14/ago/26 08:59",
+    "response_text": "[MENSAGEM AUTOMÁTICA | TOQAN CLAW}"
   },
   {
     "issue_key": "SMENTGO-1437",
@@ -575,9 +445,9 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
+    "response_author": "Ruan Dalsom - Master",
+    "response_date": "17/ago/26 09:59",
+    "response_text": "Bom dia, driver uuid listado no anexo, conforme solicitado."
   },
   {
     "issue_key": "SMENTGO-1431",
@@ -585,9 +455,9 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
+    "response_author": "Gabrielle Crixina Teixeira Farias",
+    "response_date": "17/ago/26 20:15",
+    "response_text": "Solicitado pagamento"
   },
   {
     "issue_key": "SMENTGO-1424",
@@ -595,9 +465,9 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
+    "response_author": "Gabrielle Crixina Teixeira Farias",
+    "response_date": "17/ago/26 20:11",
+    "response_text": "Solicitado pagamento."
   },
   {
     "issue_key": "SMENTGO-1289",
@@ -605,9 +475,9 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
+    "response_author": "Gabrielle Crixina Teixeira Farias",
+    "response_date": "06/ago/26 15:38",
+    "response_text": ".Solicitado pagamento."
   },
   {
     "issue_key": "SMENTGO-1282",
@@ -615,9 +485,9 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
+    "response_author": "Gabrielle Crixina Teixeira Farias",
+    "response_date": "06/ago/26 15:38",
+    "response_text": ".Solicitado pagamento."
   },
   {
     "issue_key": "SMENTGO-1277",
@@ -625,9 +495,9 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
+    "response_author": "Davis Marques - Master",
+    "response_date": "12/ago/26 18:25",
+    "response_text": "Boa noite!!"
   },
   {
     "issue_key": "SMENTGO-1340",
@@ -680,41 +550,11 @@
     "response_text": ""
   },
   {
-    "issue_key": "SMENTGO-1381",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
-    "status": "Concluído",
-    "reporter": "Ruan Dalsom - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
     "issue_key": "SMENTGO-1375",
     "type": "Dúvidas Gerais",
     "summary": "Dedicado abrindo apenas ás 11h no agendamento",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1362",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1348",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -740,26 +580,6 @@
     "response_text": ""
   },
   {
-    "issue_key": "SMENTGO-1341",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1265",
-    "type": "Sugestão de Escala",
-    "summary": "Sugestão de Escala",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
     "issue_key": "SMENTGO-1014",
     "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
@@ -770,51 +590,11 @@
     "response_text": ""
   },
   {
-    "issue_key": "SMENTGO-1315",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
-    "status": "Concluído",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1314",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
-    "status": "Concluído",
-    "reporter": "Ruan Dalsom - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
     "issue_key": "SMENTGO-1020",
     "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1306",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1305",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -840,811 +620,11 @@
     "response_text": ""
   },
   {
-    "issue_key": "SMENTGO-1063",
-    "type": "Sugestão de Escala",
-    "summary": "Sugestão de Escala",
-    "status": "Concluído",
-    "reporter": "Ruan Dalsom - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1127",
-    "type": "Sugestão de Escala",
-    "summary": "Sugestão de Escala",
-    "status": "Concluído",
-    "reporter": "Ruan Dalsom - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
     "issue_key": "SMENTGO-1258",
-    "type": "Dúvidas Gerais",
+    "type": "Problemas Cadastrais",
     "summary": "Error - Leads \"SITE\"",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1091",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1094",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1099",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Ruan Dalsom - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1101",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Ruan Dalsom - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1146",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1147",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1150",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1151",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1152",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1153",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1155",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1156",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1157",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1158",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1159",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1161",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1162",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1164",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1167",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1168",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1169",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1170",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1171",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1172",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1173",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1174",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1175",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1176",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1177",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1178",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1179",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1180",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1181",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1182",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1183",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1185",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1186",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1187",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1188",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1189",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1190",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1191",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1192",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1193",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1194",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1195",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1196",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1197",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1198",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1199",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1200",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1201",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1202",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1203",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1205",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1206",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1207",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1208",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1210",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1211",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1212",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1214",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1215",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1216",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1217",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1218",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1219",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1220",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1221",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1228",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1229",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1230",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1231",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1232",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1233",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1234",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1235",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1236",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Cancelado",
-    "reporter": "Davis Marques - Master",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1655,36 +635,6 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1126",
-    "type": "Sugestão de Escala",
-    "summary": "Sugestão de Escala",
-    "status": "Concluído",
-    "reporter": "Ruan Dalsom - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1128",
-    "type": "Sugestão de Escala",
-    "summary": "Sugestão de Escala",
-    "status": "Concluído",
-    "reporter": "Ruan Dalsom - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1184",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
-    "status": "Concluído",
-    "reporter": "Ruan Dalsom - Master",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1701,7 +651,7 @@
   },
   {
     "issue_key": "SMENTGO-1072",
-    "type": "Reportar Bug na tela do entregador - Programa Elite",
+    "type": "Problemas Cadastrais",
     "summary": "Chip Elite sem carga",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
@@ -1741,7 +691,7 @@
   },
   {
     "issue_key": "SMENTGO-1038",
-    "type": "Reportar Bug na tela do entregador - Programa Elite",
+    "type": "Problemas Cadastrais",
     "summary": "Chip Elite sem carga",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
@@ -1810,26 +760,6 @@
     "response_text": ""
   },
   {
-    "issue_key": "SMENTGO-1010",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
-    "status": "Concluído",
-    "reporter": "Ruan Dalsom - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1009",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
-    "status": "Concluído",
-    "reporter": "Ruan Dalsom - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
     "issue_key": "SMENTGO-795",
     "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
@@ -1871,7 +801,7 @@
   },
   {
     "issue_key": "SMENTGO-655",
-    "type": "Contestação de Garantido FE",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
@@ -1900,36 +830,6 @@
     "response_text": ""
   },
   {
-    "issue_key": "SMENTGO-915",
-    "type": "Suporte Jarvis",
-    "summary": "Código do Jarvis não chega.",
-    "status": "Concluído",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-962",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-961",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
     "issue_key": "SMENTGO-763",
     "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
@@ -1941,18 +841,8 @@
   },
   {
     "issue_key": "SMENTGO-609",
-    "type": "Contestação de Garantido FE",
+    "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-934",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
     "response_author": "",
@@ -1990,56 +880,6 @@
     "response_text": ""
   },
   {
-    "issue_key": "SMENTGO-905",
-    "type": "Sugestão de Escala",
-    "summary": "Sugestão de Escala",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-907",
-    "type": "Sugestão de Escala",
-    "summary": "Sugestão de Escala",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-902",
-    "type": "Sugestão de Escala",
-    "summary": "Sugestão de Escala",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-906",
-    "type": "Sugestão de Escala",
-    "summary": "Sugestão de Escala",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-869",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
     "issue_key": "SMENTGO-861",
     "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
@@ -2065,16 +905,6 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-870",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -2190,16 +1020,6 @@
     "response_text": ""
   },
   {
-    "issue_key": "SMENTGO-835",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
     "issue_key": "SMENTGO-695",
     "type": "Problemas Cadastrais",
     "summary": "Driver com região divergente do cadastro na franquia",
@@ -2221,7 +1041,7 @@
   },
   {
     "issue_key": "SMENTGO-602",
-    "type": "Dúvidas Gerais",
+    "type": "Problemas Cadastrais",
     "summary": "Erro na fórmula - Planilha de Leads (Aba Site)",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
@@ -2260,166 +1080,6 @@
     "response_text": ""
   },
   {
-    "issue_key": "SMENTGO-621",
-    "type": "Sugestão de Escala",
-    "summary": "Sugestão de Escala",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-622",
-    "type": "Sugestão de Escala",
-    "summary": "Sugestão de Escala",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-142",
-    "type": "Suporte Jarvis",
-    "summary": "Filtro ORIGEM desativado",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-408",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-383",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-382",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-381",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-205",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-171",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-170",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-169",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-168",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-155",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-153",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-127",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-122",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
     "issue_key": "SMENTGO-637",
     "type": "Contestação de Garantido FE",
     "summary": "Contestação de Garantido FE",
@@ -2445,36 +1105,6 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-691",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-689",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-687",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -2570,26 +1200,6 @@
     "response_text": ""
   },
   {
-    "issue_key": "SMENTGO-636",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-627",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
     "issue_key": "SMENTGO-463",
     "type": "Contestação de Garantido FE",
     "summary": "Contestação de Garantido FE",
@@ -2670,61 +1280,11 @@
     "response_text": ""
   },
   {
-    "issue_key": "SMENTGO-120",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
     "issue_key": "SMENTGO-107",
     "type": "Problemas Cadastrais",
     "summary": "Agendamento não disponível - Fortaleza",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-83",
-    "type": "Fluxo desativado",
-    "summary": "Reportar fechamento de restaurantes e baixa demanda",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-470",
-    "type": "Sugestão de Escala",
-    "summary": "Sugestão de Escala",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-460",
-    "type": "Sugestão de Escala",
-    "summary": "Sugestão de Escala",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-458",
-    "type": "Sugestão de Escala",
-    "summary": "Sugestão de Escala",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -2750,31 +1310,11 @@
     "response_text": ""
   },
   {
-    "issue_key": "SMENTGO-291",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
     "issue_key": "SMENTGO-94",
-    "type": "Dúvidas Gerais",
+    "type": "Problemas Cadastrais",
     "summary": "Erro no pagamento por hora online – Rio de Janeiro (Livre)",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-198",
-    "type": "Suporte Jarvis",
-    "summary": "Código de acesso - EntreGô / Locaweb",
-    "status": "Concluído",
-    "reporter": "Ruan Dalsom - Master",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -2881,7 +1421,7 @@
   },
   {
     "issue_key": "SMENTGO-282",
-    "type": "Reportar Bug na tela do entregador - Programa Elite",
+    "type": "Problemas Cadastrais",
     "summary": "Mudança de região - Elite não ativo.",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
@@ -2893,16 +1433,6 @@
     "issue_key": "SMENTGO-266",
     "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-305",
-    "type": "Sugestão de Escala",
-    "summary": "Sugestão de Escala",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
     "response_author": "",
@@ -2990,18 +1520,8 @@
     "response_text": ""
   },
   {
-    "issue_key": "SMENTGO-276",
-    "type": "Sugestão de Escala",
-    "summary": "Sugestão de Escala",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
     "issue_key": "SMENTGO-273",
-    "type": "Reportar Bug na tela do entregador - Programa Elite",
+    "type": "Problemas Cadastrais",
     "summary": "Chip Elite sem carga",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
@@ -3021,7 +1541,7 @@
   },
   {
     "issue_key": "SMENTGO-212",
-    "type": "Reportar Bug na tela do entregador - Programa Elite",
+    "type": "Problemas Cadastrais",
     "summary": "Chip Elite sem carga",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
@@ -3051,7 +1571,7 @@
   },
   {
     "issue_key": "SMENTGO-125",
-    "type": "Dúvidas Gerais",
+    "type": "Problemas Cadastrais",
     "summary": "Conta Bloqueada - Modal",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
@@ -3120,41 +1640,11 @@
     "response_text": ""
   },
   {
-    "issue_key": "SMENTGO-177",
-    "type": "Suporte Jarvis",
-    "summary": "Páginas duplicadas e fantasmas",
-    "status": "Concluído",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
     "issue_key": "SMENTGO-121",
     "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-74",
-    "type": "Sugestão de Escala",
-    "summary": "Sugestão de Escala",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-172",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -3171,7 +1661,7 @@
   },
   {
     "issue_key": "SMENTGO-77",
-    "type": "Reportar Bug na tela do entregador - Programa Elite",
+    "type": "Problemas Cadastrais",
     "summary": "Chip Elite - Sem carga",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
@@ -3201,7 +1691,7 @@
   },
   {
     "issue_key": "SMENTGO-73",
-    "type": "Dúvidas Gerais - Programa Elite",
+    "type": "Dúvidas Gerais",
     "summary": "Novo cilco de selos - Elite",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
@@ -3211,7 +1701,7 @@
   },
   {
     "issue_key": "SMENTGO-62",
-    "type": "Reportar Bug na tela do entregador - Programa Elite",
+    "type": "Problemas Cadastrais",
     "summary": "Mudança de região - Elite não ativo.",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
@@ -3270,16 +1760,6 @@
     "response_text": ""
   },
   {
-    "issue_key": "SMENTGO-104",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
     "issue_key": "SMENTGO-66",
     "type": "Problemas Cadastrais",
     "summary": "Bloqueio de 48hrs - Sem encerramento.",
@@ -3291,18 +1771,8 @@
   },
   {
     "issue_key": "SMENTGO-79",
-    "type": "Dúvidas Gerais",
+    "type": "Problemas Cadastrais",
     "summary": "Problema de escala em função de erro no Jarvis",
-    "status": "Concluído",
-    "reporter": "Estefany Delogo",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-103",
-    "type": "Registro de Promoções e Ações",
-    "summary": "Registro de Promoções e Ações",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
     "response_author": "",
