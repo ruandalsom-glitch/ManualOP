@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acompanhamento de Reportes - Jira | ManualOP</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        :root {
+            --bg-main: #0B0E14;
+            --bg-card: rgba(22, 28, 36, 0.7);
+            --bg-card-hover: rgba(30, 38, 48, 0.85);
+            --border-card: rgba(255, 255, 255, 0.08);
+            --border-accent: rgba(56, 189, 248, 0.3);
+            
+            --text-primary: #F3F4F6;
+            --text-secondary: #9CA3AF;
+            --text-muted: #6B7280;
+
+            --accent-cyan: #38BDF8;
+            --accent-green: #34D399;
+            --accent-amber: #FBBF24;
+            --accent-rose: #FB7185;
+            --accent-purple: #C084FC;
+
+            --badge-open-bg: rgba(251, 191, 36, 0.15);
+            --badge-open-text: #FBBF24;
+            --badge-progress-bg: rgba(56, 189, 248, 0.15);
+            --badge-progress-text: #38BDF8;
+            --badge-done-bg: rgba(52, 211, 153, 0.15);
+            --badge-done-text: #34D399;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(52, 211, 153, 0.04) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        /* Top Navigation Header */
+        header {
+            background: rgba(11, 14, 20, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-card);
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .header-title i {
+            font-size: 24px;
+            color: var(--accent-cyan);
+            background: rgba(56, 189, 248, 0.1);
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid var(--border-accent);
+        }
+
+        .header-title h1 {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        .header-title p {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn-sync {
+            background: linear-gradient(135deg, #0EA5E9, #2563EB);
+            color: #fff;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13.5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.25);
+        }
+
+        .btn-sync:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(14, 165, 233, 0.35);
+        }
+
+        .btn-sync:active {
+            transform: translateY(0);
+        }
+
+        .btn-sync i {
+            font-size: 14px;
+        }
+
+        /* Container Content */
+        main {
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 28px 32px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Metric Summary Cards */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+        }
+
+        .metric-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-card);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .metric-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .metric-icon.total { background: rgba(56, 189, 248, 0.12); color: var(--accent-cyan); }
+        .metric-icon.open { background: rgba(251, 191, 36, 0.12); color: var(--accent-amber); }
+        .metric-icon.progress { background: rgba(192, 132, 252, 0.12); color: var(--accent-purple); }
+        .metric-icon.done { background: rgba(52, 211, 153, 0.12); color: var(--accent-green); }
+
+        .metric-info h3 {
+            font-size: 26px;
+            font-weight: 700;
+            line-height: 1.1;
+        }
+
+        .metric-info p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* Filter Controls Toolbar */
+        .toolbar {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-card);
+            border-radius: 12px;
+            padding: 16px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .search-box input {
+            width: 100%;
+            background: rgba(11, 14, 20, 0.6);
+            border: 1px solid var(--border-card);
+            color: var(--text-primary);
+            padding: 10px 14px 10px 40px;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent-cyan);
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .filter-select {
+            background: rgba(11, 14, 20, 0.6);
+            border: 1px solid var(--border-card);
+            color: var(--text-primary);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13.5px;
+            outline: none;
+            cursor: pointer;
+            transition: border-color 0.2s ease;
+        }
+
+        .filter-select:focus {
+            border-color: var(--accent-cyan);
+        }
+
+        /* Data Table Container */
+        .table-container {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-card);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        thead {
+            background: rgba(11, 14, 20, 0.8);
+            border-bottom: 1px solid var(--border-card);
+        }
+
+        th {
+            padding: 16px 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+        }
+
+        tbody tr {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            transition: background 0.15s ease;
+        }
+
+        tbody tr:hover {
+            background: var(--bg-card-hover);
+        }
+
+        td {
+            padding: 16px 20px;
+            color: var(--text-primary);
+            vertical-align: middle;
+        }
+
+        .issue-key {
+            font-family: monospace;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            text-decoration: none;
+            background: rgba(56, 189, 248, 0.08);
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            display: inline-block;
+            transition: all 0.2s ease;
+        }
+
+        .issue-key:hover {
+            background: rgba(56, 189, 248, 0.2);
+            color: #fff;
+        }
+
+        .issue-summary {
+            font-weight: 500;
+            color: var(--text-primary);
+            max-width: 420px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .badge-status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-status.aberto { background: var(--badge-open-bg); color: var(--badge-open-text); }
+        .badge-status.andamento { background: var(--badge-progress-bg); color: var(--badge-progress-text); }
+        .badge-status.concluido { background: var(--badge-done-bg); color: var(--badge-done-text); }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--accent-cyan);
+        }
+
+        .empty-state {
+            padding: 48px;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 42px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        footer {
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-card);
+            background: rgba(11, 14, 20, 0.8);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="header-title">
+            <i class="fa-solid fa-headset"></i>
+            <div>
+                <h1>Acompanhamento de Reportes (Jira)</h1>
+                <p>Portal de Chamados EntreGô (SMENTGO)</p>
+            </div>
+        </div>
+        <div class="header-controls">
+            <button class="btn-sync" id="btnSync" onclick="sincronizarChamados()">
+                <i class="fa-solid fa-rotate"></i>
+                <span id="btnSyncText">Atualizar Dados</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main>
+
+        <!-- Metric Summary Cards -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-icon total">
+                    <i class="fa-solid fa-folder-open"></i>
+                </div>
+                <div class="metric-info">
+                    <h3 id="metricTotal">0</h3>
+                    <p>Total de Reportes</p>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-icon open">
+                    <i class="fa-solid fa-clock"></i>
+                </div>
+                <div class="metric-info">
+                    <h3 id="metricOpen">0</h3>
+                    <p>Em Aberto / Pendentes</p>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-icon progress">
+                    <i class="fa-solid fa-spinner"></i>
+                </div>
+                <div class="metric-info">
+                    <h3 id="metricProgress">0</h3>
+                    <p>Em Atendimento</p>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-icon done">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <div class="metric-info">
+                    <h3 id="metricDone">0</h3>
+                    <p>Concluídos / Resolvidos</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toolbar Filters -->
+        <div class="toolbar">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="Buscar por chave, resumo ou solicitante..." oninput="filtrarTabela()">
+            </div>
+
+            <div class="filter-group">
+                <select class="filter-select" id="statusFilter" onchange="filtrarTabela()">
+                    <option value="">Todos os Status</option>
+                    <option value="aberto">Em Aberto / Criado</option>
+                    <option value="andamento">Em Atendimento</option>
+                    <option value="concluido">Concluído / Resolvido</option>
+                </select>
+
+                <select class="filter-select" id="periodFilter" onchange="filtrarTabela()">
+                    <option value="all">Todo o Período</option>
+                    <option value="7">Últimos 7 dias</option>
+                    <option value="30">Últimos 30 dias</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Data Table Container -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Chave (ID)</th>
+                        <th>Resumo do Reporte</th>
+                        <th>Status</th>
+                        <th>Solicitante</th>
+                        <th>Data de Criação</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+                <tbody id="reportsTableBody">
+                    <!-- Populated via Javascript -->
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>ManualOP &copy; 2026 - Central de Acompanhamento de Reportes Jira (EntreGô)</p>
+    </footer>
+
+    <script>
+        // Supabase Initialization
+        const SUPABASE_URL = "https://wpuyanodymsjzsqzbmfy.supabase.co";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndwdXlhbm9keW1zanpzcXpibWZ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEyMzg2ODIsImV4cCI6MjA1NjzgNDY4Mn0.g-pY6d..._demo";
+        // Utiliza o cliente global ou dados mockados se a tabela ainda não estiver populada
+        const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+
+        // Dados locais/demonstração inicial de chamados enquanto o scraper alimenta a base
+        let reportesData = [
+            {
+                issue_key: "SMENTGO-1598",
+                summary: "Falha na sincronização de rotas com a base de São Paulo",
+                status: "Em Atendimento",
+                reporter: "Ruan Dalsom",
+                created_at: "2026-09-09T14:30:00Z",
+                url: "https://ifood.atlassian.net/helpcenter/entrego/portal/4623/SMENTGO-1598"
+            },
+            {
+                issue_key: "SMENTGO-1597",
+                summary: "Solicitação de inclusão de novos modais nas escalas da tarde",
+                status: "Aberto",
+                reporter: "Fabiano Jesus",
+                created_at: "2026-09-09T10:15:00Z",
+                url: "https://ifood.atlassian.net/helpcenter/entrego/portal/4623/SMENTGO-1597"
+            },
+            {
+                issue_key: "SMENTGO-1580",
+                summary: "Ajuste no teto promocional do garantido diário",
+                status: "Concluído",
+                reporter: "Operacional RJ",
+                created_at: "2026-09-08T18:00:00Z",
+                url: "https://ifood.atlassian.net/helpcenter/entrego/portal/4623/SMENTGO-1580"
+            }
+        ];
+
+        function renderTabela(dados) {
+            const tbody = document.getElementById('reportsTableBody');
+            tbody.innerHTML = '';
+
+            if (!dados || dados.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6">
+                            <div class="empty-state">
+                                <i class="fa-solid fa-inbox"></i>
+                                <p>Nenhum reporte encontrado para os filtros selecionados.</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            dados.forEach(item => {
+                const tr = document.createElement('tr');
+
+                // Class do Badge de Status
+                let statusClass = 'aberto';
+                const st = (item.status || '').toLowerCase();
+                if (st.includes('atendimento') || st.includes('andamento') || st.includes('progresso')) {
+                    statusClass = 'andamento';
+                } else if (st.includes('conclu') || st.includes('resolv') || st.includes('fechad')) {
+                    statusClass = 'concluido';
+                }
+
+                // Avatar com iniciais
+                const nome = item.reporter || 'N/A';
+                const inicial = nome.charAt(0).toUpperCase();
+
+                // Formatador de data
+                const dateObj = new Date(item.created_at);
+                const dataFormatada = isNaN(dateObj.getTime()) ? item.created_at : dateObj.toLocaleString('pt-BR');
+
+                tr.innerHTML = `
+                    <td>
+                        <a href="${item.url || '#'}" target="_blank" class="issue-key">
+                            <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 10px; margin-right: 4px;"></i>
+                            ${item.issue_key}
+                        </a>
+                    </td>
+                    <td>
+                        <div class="issue-summary" title="${item.summary}">${item.summary}</div>
+                    </td>
+                    <td>
+                        <span class="badge-status ${statusClass}">
+                            <i class="fa-solid fa-circle" style="font-size: 6px;"></i>
+                            ${item.status}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="user-info">
+                            <div class="user-avatar">${inicial}</div>
+                            <span>${nome}</span>
+                        </div>
+                    </td>
+                    <td style="color: var(--text-secondary); font-size: 13px;">
+                        ${dataFormatada}
+                    </td>
+                    <td>
+                        <a href="${item.url || '#'}" target="_blank" style="color: var(--accent-cyan); font-size: 13px; text-decoration: none; font-weight: 500;">
+                            Abrir no Jira <i class="fa-solid fa-chevron-right" style="font-size: 10px;"></i>
+                        </a>
+                    </td>
+                `;
+
+                tbody.appendChild(tr);
+            });
+
+            atualizarMetrics(dados);
+        }
+
+        function atualizarMetrics(dados) {
+            let total = dados.length;
+            let open = 0;
+            let progress = 0;
+            let done = 0;
+
+            dados.forEach(item => {
+                const st = (item.status || '').toLowerCase();
+                if (st.includes('atendimento') || st.includes('andamento') || st.includes('progresso')) {
+                    progress++;
+                } else if (st.includes('conclu') || st.includes('resolv') || st.includes('fechad')) {
+                    done++;
+                } else {
+                    open++;
+                }
+            });
+
+            document.getElementById('metricTotal').innerText = total;
+            document.getElementById('metricOpen').innerText = open;
+            document.getElementById('metricProgress').innerText = progress;
+            document.getElementById('metricDone').innerText = done;
+        }
+
+        function filtrarTabela() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+
+            const filtrados = reportesData.filter(item => {
+                const matchQuery = (item.issue_key || '').toLowerCase().includes(query) ||
+                                   (item.summary || '').toLowerCase().includes(query) ||
+                                   (item.reporter || '').toLowerCase().includes(query);
+
+                let matchStatus = true;
+                const st = (item.status || '').toLowerCase();
+                if (statusFilter === 'aberto') {
+                    matchStatus = !st.includes('atendimento') && !st.includes('andamento') && !st.includes('conclu') && !st.includes('resolv');
+                } else if (statusFilter === 'andamento') {
+                    matchStatus = st.includes('atendimento') || st.includes('andamento') || st.includes('progresso');
+                } else if (statusFilter === 'concluido') {
+                    matchStatus = st.includes('conclu') || st.includes('resolv') || st.includes('fechad');
+                }
+
+                return matchQuery && matchStatus;
+            });
+
+            renderTabela(filtrados);
+        }
+
+        async function sincronizarChamados() {
+            const btn = document.getElementById('btnSync');
+            const txt = document.getElementById('btnSyncText');
+            
+            btn.disabled = true;
+            txt.innerHTML = '<span class="spinner"></span> Sincronizando...';
+
+            try {
+                // Tenta carregar do Supabase se configurado
+                if (supabase) {
+                    const { data, error } = await supabase.from('jira_reports').select('*').order('created_at', { ascending: false });
+                    if (!error && data && data.length > 0) {
+                        reportesData = data;
+                    }
+                }
+            } catch (e) {
+                console.log("Modo de exibição demonstrativa.");
+            } setTimeout(() => {
+                filtrarTabela();
+                btn.disabled = false;
+                txt.innerText = 'Atualizar Dados';
+            }, 800);
+        }
+
+        // Renderização Inicial
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTabela(reportesData);
+        });
+    </script>
+</body>
+</html>
