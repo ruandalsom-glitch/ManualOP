@@ -2949,27 +2949,17 @@
             var mot = item.motivo || 'Geral';
             var tel = item.telefone || '';
             var respRaw = item.resposta_final || 'EM_ANALISE';
-            var msgResp = item.mensagem_resposta || '';
-            var dataStr = item.data_ultima_mensagem || '';
             
             var statusObj = formatarStatusReporte(respRaw);
             var protEscaped = prot.replace(/'/g, "\\'");
 
             var protBtn = `<button type="button" onclick="abrirReporteModal('${protEscaped}')" 
-                style="display:inline-flex; align-items:center; gap:6px; background:rgba(44,234,188,0.12); border:1px solid rgba(44,234,188,0.35); color:var(--menta-viva); border-radius:8px; padding:6px 12px; font-weight:800; font-family:monospace; font-size:12.5px; cursor:pointer; transition:all 0.2s ease;"
+                style="display:inline-flex; align-items:center; gap:6px; background:rgba(44,234,188,0.12); border:1px solid rgba(44,234,188,0.35); color:var(--menta-viva); border-radius:8px; padding:6px 14px; font-weight:800; font-family:monospace; font-size:12.5px; cursor:pointer; transition:all 0.2s ease;"
                 onmouseover="this.style.background='rgba(44,234,188,0.25)'; this.style.borderColor='var(--menta-viva)';"
                 onmouseout="this.style.background='rgba(44,234,188,0.12)'; this.style.borderColor='rgba(44,234,188,0.35)';"
                 title="Clique para ver mensagem de resposta e detalhes do protocolo">
                 ${displayProt} <i class="fas fa-external-link-alt" style="font-size:10px; opacity:0.8;"></i>
             </button>`;
-
-            var msgBox = msgResp ? `
-                <div onclick="abrirReporteModal('${protEscaped}')" style="cursor:pointer; font-size:12px; color:var(--azul-gelo); opacity:0.95; background:rgba(0,0,0,0.25); padding:8px 12px; border-radius:8px; border-left:3px solid ${statusObj.badgeColor}; margin-top:4px; display:flex; align-items:center; justify-content:space-between; gap:10px; transition:all 0.2s ease;" onmouseover="this.style.background='rgba(44,234,188,0.08)';" onmouseout="this.style.background='rgba(0,0,0,0.25)';">
-                    <div style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1;">
-                        <strong style="color:#fff;">Mensagem:</strong> ${msgResp}
-                    </div>
-                    <span style="font-size:11px; color:var(--menta-viva); font-weight:700; white-space:nowrap; flex-shrink:0;">Ver detalhes ➔</span>
-                </div>` : '';
 
             var subDetails = [];
             if (cpf) subDetails.push('CPF: ' + cpf);
@@ -2977,8 +2967,8 @@
             var infoSubText = subDetails.join(' • ');
 
             return `
-                <div class="driver-report-row" style="display:flex; flex-direction:column; gap:6px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); padding:14px 16px; border-radius:14px; margin-bottom:10px; transition:all 0.2s ease;" onmouseenter="this.style.background='rgba(255,255,255,0.06)';" onmouseleave="this.style.background='rgba(255,255,255,0.03)';">
-                    <div style="display:grid; grid-template-columns: minmax(120px, 1.1fr) minmax(200px, 2fr) minmax(130px, 1.1fr) minmax(140px, 1.3fr) minmax(140px, 1.3fr) minmax(120px, 1fr); gap:12px; align-items:center; width:100%;">
+                <div class="driver-report-row" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); padding:14px 18px; border-radius:14px; margin-bottom:10px; transition:all 0.2s ease;" onmouseenter="this.style.background='rgba(255,255,255,0.06)';" onmouseleave="this.style.background='rgba(255,255,255,0.03)';">
+                    <div style="display:grid; grid-template-columns: minmax(110px, 1fr) minmax(240px, 2.5fr) minmax(130px, 1.2fr) minmax(160px, 1.5fr) minmax(130px, 1.2fr); gap:16px; align-items:center; width:100%;">
                         <div>
                             ${protBtn}
                         </div>
@@ -2986,29 +2976,23 @@
                             <div style="font-weight:700; color:#fff; font-size:14.5px; letter-spacing:0.2px;">${nome}</div>
                             <div style="font-size:11px; color:var(--azul-gelo); opacity:0.8; font-family:monospace; margin-top:3px;">${infoSubText}</div>
                         </div>
-                        <div>
-                            <span style="font-size:11.5px; font-weight:700; color:var(--menta-viva); background:rgba(44,234,188,0.08); padding:5px 12px; border-radius:8px; border:1px solid rgba(44,234,188,0.22); display:inline-block;">
+                        <div style="text-align:center;">
+                            <span style="font-size:11.5px; font-weight:700; color:var(--menta-viva); background:rgba(44,234,188,0.08); padding:5px 14px; border-radius:10px; border:1px solid rgba(44,234,188,0.25); display:inline-block; min-width:90px; text-align:center;">
                                 ${emp}
                             </span>
                         </div>
                         <div>
-                            <span style="font-size:12px; color:var(--azul-gelo); opacity:0.9; font-weight:500;">
+                            <span style="font-size:12.5px; color:var(--azul-gelo); opacity:0.9; font-weight:500;">
                                 ${mot}
                             </span>
                         </div>
-                        <div>
-                            <span style="display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:800; padding:5px 12px; border-radius:10px; background:${statusObj.badgeBg}; border:1px solid ${statusObj.badgeBorder}; color:${statusObj.badgeColor}; letter-spacing:0.4px;">
+                        <div style="text-align:right;">
+                            <span style="display:inline-flex; align-items:center; justify-content:center; gap:6px; font-size:11px; font-weight:800; padding:5px 14px; border-radius:10px; background:${statusObj.badgeBg}; border:1px solid ${statusObj.badgeBorder}; color:${statusObj.badgeColor}; letter-spacing:0.4px;">
                                 <span style="width:6px; height:6px; border-radius:50%; background:${statusObj.badgeDot}; display:inline-block;"></span>
                                 ${statusObj.label}
                             </span>
                         </div>
-                        <div>
-                            <button type="button" onclick="abrirReporteModal('${protEscaped}')" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:var(--azul-gelo); padding:6px 12px; border-radius:8px; font-size:11.5px; font-weight:600; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.background='rgba(44,234,188,0.15)'; this.style.color='var(--menta-viva)'; this.style.borderColor='var(--menta-viva)';" onmouseout="this.style.background='rgba(255,255,255,0.06)'; this.style.color='var(--azul-gelo)'; this.style.borderColor='rgba(255,255,255,0.15)';">
-                                Ver mensagem ➔
-                            </button>
-                        </div>
                     </div>
-                    ${msgBox}
                 </div>`;
         }).join('');
 
