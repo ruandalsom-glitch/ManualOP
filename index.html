@@ -2896,7 +2896,35 @@
         }
         var str = String(raw).trim();
 
-        // Se formato DD/MM/YYYY HH:mm ou DD/MM/YYYY
+        // 1. Se formato YYYY-MM-DD ou YYYY-MM-DD HH:mm:ss ou YYYY-MM-DDTHH:mm:ss
+        if (/^\d{4}-\d{2}-\d{2}/.test(str)) {
+            var parts = str.split('T')[0].split(' ')[0].split('-');
+            var year = parseInt(parts[0], 10);
+            var month = parseInt(parts[1], 10) - 1;
+            var day = parseInt(parts[2], 10);
+            var hour = 0, min = 0;
+
+            if (str.includes('T')) {
+                var tStr = str.split('T')[1];
+                if (tStr.includes(':')) {
+                    var tParts = tStr.split(':');
+                    hour = parseInt(tParts[0], 10) || 0;
+                    min = parseInt(tParts[1], 10) || 0;
+                }
+            } else if (str.includes(' ')) {
+                var tStr2 = str.split(' ')[1];
+                if (tStr2.includes(':')) {
+                    var tParts2 = tStr2.split(':');
+                    hour = parseInt(tParts2[0], 10) || 0;
+                    min = parseInt(tParts2[1], 10) || 0;
+                }
+            }
+
+            var dt = new Date(year, month, day, hour, min);
+            return isNaN(dt.getTime()) ? 0 : dt.getTime();
+        }
+
+        // 2. Se formato DD/MM/YYYY HH:mm ou DD/MM/YYYY
         if (/^\d{1,2}\/\d{1,2}\/\d{4}/.test(str)) {
             var parts = str.split(' ');
             var dParts = parts[0].split('/');
@@ -2913,7 +2941,7 @@
             return isNaN(dt.getTime()) ? 0 : dt.getTime();
         }
 
-        // Tentar Date.parse nativo (para ISO strings tipo 2026-09-10T...)
+        // Tentar Date.parse nativo
         var parsed = Date.parse(str);
         if (!isNaN(parsed)) return parsed;
 
@@ -2925,23 +2953,31 @@
         if (!filtroData || filtroData === 'TODAS') return true;
 
         var ts = obterTimestampReporte(item);
-        if (!ts) return false;
+        if (!ts || ts < 100000000000) {
+            // Se for fallback numérico de protocolo ou data inválida, não corresponde a filtros de data específicos
+            return false;
+        }
 
         var itemDate = new Date(ts);
         var now = new Date();
 
-        // Meia-noite de hoje (00:00:00.000)
-        var startToday = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+        var yNow = now.getFullYear();
+        var mNow = now.getMonth();
+        var dNow = now.getDate();
+
+        var startToday = new Date(yNow, mNow, dNow).getTime();
         var endToday = startToday + (24 * 60 * 60 * 1000) - 1;
 
         if (filtroData === 'HOJE') {
-            return ts >= startToday && ts <= endToday;
+            return itemDate.getFullYear() === yNow && itemDate.getMonth() === mNow && itemDate.getDate() === dNow;
         }
 
         if (filtroData === 'ONTEM') {
-            var startYesterday = startToday - (24 * 60 * 60 * 1000);
-            var endYesterday = startToday - 1;
-            return ts >= startYesterday && ts <= endYesterday;
+            var yesterday = new Date(startToday - (12 * 60 * 60 * 1000));
+            var yYest = yesterday.getFullYear();
+            var mYest = yesterday.getMonth();
+            var dYest = yesterday.getDate();
+            return itemDate.getFullYear() === yYest && itemDate.getMonth() === mYest && itemDate.getDate() === dYest;
         }
 
         if (filtroData === '7_DIAS') {
@@ -2960,7 +2996,7 @@
         }
 
         if (filtroData === 'ESTE_MES') {
-            return itemDate.getFullYear() === now.getFullYear() && itemDate.getMonth() === now.getMonth();
+            return itemDate.getFullYear() === yNow && itemDate.getMonth() === mNow;
         }
 
         return true;
