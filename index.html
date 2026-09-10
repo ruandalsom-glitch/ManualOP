@@ -1181,15 +1181,14 @@
                 });
             }
 
-            const [hc, el, pr, de, ma, ca, pe, rep] = await Promise.all([
+            const [hc, el, pr, de, ma, ca, pe] = await Promise.all([
                 supabaseClient.from('home_config').select('*').order('ordem', { ascending: true }),
                 supabaseClient.from('elite').select('*').order('ordem', { ascending: true }),
                 supabaseClient.from('promocoes').select('*').order('ordem', { ascending: true }),
                 supabaseClient.from('dedicado').select('*'),
                 supabaseClient.from('mapas').select('*').order('ordem', { ascending: true }),
                 supabaseClient.from('cadastro').select('*'),
-                supabaseClient.from('procedimentos').select('*').order('ordem', { ascending: true }),
-                supabaseClient.from('reportes').select('id,protocolo,nome_driver,cpf,motivo,empresa,telefone,resposta_final,data_ultima_mensagem').order('data_ultima_mensagem', { ascending: false, nullsFirst: false }).limit(3000).then(r => r).catch(function(){ return { data: null }; })
+                supabaseClient.from('procedimentos').select('*').order('ordem', { ascending: true })
             ]);
 
             // Debug errors or empty data
@@ -1250,7 +1249,7 @@
                     Mapas: mapKeys(ma.data),
                     Cadastro: mapKeys(ca.data),
                     Procedimentos: mapKeys(pe.data),
-                    Reportes: (rep && rep.data && rep.data.length > 0) ? mapKeys(rep.data) : [],
+                    Reportes: [],
                     News: (newsFetch && newsFetch.data && newsFetch.data.length > 0) ? mapKeys(newsFetch.data) : null,
                     Info: (infoFetch && infoFetch.data) ? mapKeys(infoFetch.data) : []
                 },
@@ -1271,7 +1270,7 @@
                 if (document.getElementById('cadastroGrid')) {
                     clearInterval(checkDOM);
                     integrarAbaNaSite(r.dados);
-                    renderDriverReportes(r.dados.Reportes);
+                    initLazyLoadCadastro();
                 }
             }, 50);
             
@@ -1280,7 +1279,7 @@
                 clearInterval(checkDOM);
                 if (!document.getElementById('cadastroGrid')) {
                     integrarAbaNaSite(r.dados);
-                    renderDriverReportes(r.dados.Reportes);
+                    initLazyLoadCadastro();
                 }
             }, 2500);
             
@@ -2852,6 +2851,93 @@
                 badgeColor: 'var(--azul-gelo)',
                 badgeDot: 'var(--azul-gelo)'
             };
+    let reportesLoadingPromise = null;
+
+    function initLazyLoadCadastro() {
+        var sec = document.getElementById('cadastro');
+        if (!sec) return;
+
+        // Se houver cache de sessão válido, renderiza direto do cache
+        try {
+            var cached = sessionStorage.getItem('cache_reportes_drivers');
+            if (cached) {
+                var parsed = JSON.parse(cached);
+                if (Array.isArray(parsed) && parsed.length > 0) {
+                    renderDriverReportes(parsed);
+                    return;
+                }
+            }
+        } catch(e) {}
+
+        // Adiciona ouvinte nos links de navegação para a aba Cadastro
+        var navLinks = document.querySelectorAll('a[href="#cadastro"]');
+        navLinks.forEach(function(link) {
+            link.addEventListener('click', function() {
+                carregarReportesDriversLazy();
+            });
+        });
+
+        if ('IntersectionObserver' in window) {
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        carregarReportesDriversLazy();
+                        observer.disconnect();
+                    }
+                });
+            }, { rootMargin: '200px' });
+            observer.observe(sec);
+        } else {
+            carregarReportesDriversLazy();
+        }
+    }
+
+    async function carregarReportesDriversLazy() {
+        if (globalReportesDrivers && globalReportesDrivers.length > 0 && !globalReportesDrivers[0].isDemo) {
+            renderPaginaDriverReportes();
+            return;
+        }
+
+        try {
+            var cached = sessionStorage.getItem('cache_reportes_drivers');
+            if (cached) {
+                var parsed = JSON.parse(cached);
+                if (Array.isArray(parsed) && parsed.length > 0) {
+                    renderDriverReportes(parsed);
+                    return;
+                }
+            }
+        } catch(e) {}
+
+        var container = document.getElementById('driverReportesContainer');
+        if (container) {
+            container.innerHTML = `
+                <div style="text-align:center; padding:36px 16px; color:var(--azul-gelo);">
+                    <i class="fas fa-spinner fa-spin" style="font-size:24px; color:var(--menta-viva); margin-bottom:10px;"></i>
+                    <p style="margin:0; font-weight:700; font-size:13.5px; color:#fff;">Carregando acompanhamento de entregadores...</p>
+                    <p style="margin:4px 0 0 0; font-size:12px; opacity:0.75;">Buscando os dados de cadastro no servidor.</p>
+                </div>`;
+        }
+
+        if (!reportesLoadingPromise) {
+            reportesLoadingPromise = supabaseClient
+                .from('reportes')
+                .select('id,protocolo,nome_driver,cpf,motivo,empresa,telefone,resposta_final,data_ultima_mensagem')
+                .order('data_ultima_mensagem', { ascending: false, nullsFirst: false })
+                .limit(3000)
+                .then(function(res) {
+                    reportesLoadingPromise = null;
+                    if (!res.error && res.data) {
+                        renderDriverReportes(res.data);
+                    } else {
+                        renderDriverReportes([]);
+                    }
+                })
+                .catch(function(err) {
+                    reportesLoadingPromise = null;
+                    console.error('Erro no lazy loading de reportes:', err);
+                    renderDriverReportes([]);
+                });
         }
     }
 
