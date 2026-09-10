@@ -1178,9 +1178,9 @@
                     'link_mapa':'Link_Mapa','link mapa':'Link_Mapa', 'texto_verso':'Texto_Verso', 'mecânica':'Texto_Verso',
                     'link':'Link','intencao':'Intencao','intenção':'Intencao',
                     'texto_info':'Texto_Info','secao':'Secao','seção':'Secao',
-                    'driver_name':'Driver_Name', 'nome_driver':'Driver_Name', 'driver':'Driver_Name', 'motorista':'Driver_Name',
-                    'cpf':'CPF', 'telefone':'Telefone', 'observacao':'Observacao', 'observação':'Observacao',
-                    'solicitante':'Solicitante', 'tipo_solicitacao':'Tipo_Solicitacao'
+                    'protocolo':'protocolo', 'nome_driver':'nome_driver', 'motivo':'motivo', 'empresa':'empresa',
+                    'telefone':'telefone', 'resposta_final':'resposta_final', 'data_ultima_mensagem':'data_ultima_mensagem',
+                    'driver_name':'nome_driver', 'driver':'nome_driver', 'motorista':'nome_driver'
                 };
                 return arr.map(obj => {
                     let n = {};
@@ -2644,10 +2644,10 @@
     function renderDriverReportes(dados) {
         if (!dados || dados.length === 0) {
             globalReportesDrivers = [
-                { Driver_Name: 'Carlos Eduardo da Silva', CPF: '123.456.789-00', Praca: 'Campinas', Status: 'APROVADO', Data: '10/09/2026 14:20', Observacao: 'Cadastro aprovado e liberado para rodar.', Solicitante: 'Equipe Cadastro', isDemo: true },
-                { Driver_Name: 'Mariana Souza Oliveira', CPF: '234.567.890-11', Praca: 'Sumaré', Status: 'EM ANÁLISE', Data: '10/09/2026 11:45', Observacao: 'CNH e Comprovante em validação final.', Solicitante: 'Jira Bot', isDemo: true },
-                { Driver_Name: 'Roberto Alves Santos', CPF: '345.678.901-22', Praca: 'Hortolândia', Status: 'PENDENTE', Data: '09/09/2026 18:30', Observacao: 'Falta enviar foto da CNH aberta com EAR.', Solicitante: 'Suporte Operacional', isDemo: true },
-                { Driver_Name: 'Lucas Gabriel Pereira', CPF: '456.789.012-33', Praca: 'Americana', Status: 'REPROVADO', Data: '08/09/2026 09:15', Observacao: 'Divergência de titularidade na documentação.', Solicitante: 'Equipe Cadastro', isDemo: true }
+                { protocolo: '#REP-101', nome_driver: 'Carlos Eduardo da Silva', motivo: 'Problemas Cadastrais / Liberação', empresa: 'GO Sumarezinho', telefone: '(19) 99123-4567', resposta_final: 'APROVADO', data_ultima_mensagem: '10/09/2026 14:20', isDemo: true },
+                { protocolo: '#REP-102', nome_driver: 'Mariana Souza Oliveira', motivo: 'Contestação de Promoções', empresa: 'GO Campinas', telefone: '(19) 99234-5678', resposta_final: 'EM ANÁLISE', data_ultima_mensagem: '10/09/2026 11:45', isDemo: true },
+                { protocolo: '#REP-103', nome_driver: 'Roberto Alves Santos', motivo: 'Contestação de Garantido FE', empresa: 'GO Hortolândia', telefone: '(19) 99345-6789', resposta_final: 'PENDENTE', data_ultima_mensagem: '09/09/2026 18:30', isDemo: true },
+                { protocolo: '#REP-104', nome_driver: 'Lucas Gabriel Pereira', motivo: 'Dúvidas Gerais', empresa: 'GO Americana', telefone: '(19) 99456-7890', resposta_final: 'REPROVADO', data_ultima_mensagem: '08/09/2026 09:15', isDemo: true }
             ];
         } else {
             globalReportesDrivers = dados;
@@ -2671,13 +2671,19 @@
         var inputVal = (inputEl ? inputEl.value : '').toLowerCase().trim();
 
         var filtrados = globalReportesDrivers.filter(function(item) {
-            var name = (item.Driver_Name || item.Nome || item.driver_name || '').toString().toLowerCase();
-            var cpf = (item.CPF || item.cpf || '').toString().toLowerCase();
-            var praca = (item.Praca || item.praca || '').toString().toLowerCase();
-            var status = (item.Status || item.status || '').toString().toUpperCase().trim();
+            var name = (item.nome_driver || item.Nome_Driver || item.Driver_Name || item.Nome || '').toString().toLowerCase();
+            var prot = (item.protocolo || item.Protocolo || '').toString().toLowerCase();
+            var emp = (item.empresa || item.Empresa || item.Praca || '').toString().toLowerCase();
+            var mot = (item.motivo || item.Motivo || '').toString().toLowerCase();
+            var tel = (item.telefone || item.Telefone || '').toString().toLowerCase();
+            var resp = (item.resposta_final || item.Resposta_Final || item.Status || '').toString().toUpperCase().trim();
 
-            var matchText = !inputVal || name.includes(inputVal) || cpf.includes(inputVal) || praca.includes(inputVal);
-            var matchStatus = (currentDriverStatusFilter === 'TODOS') || (status === currentDriverStatusFilter);
+            var matchText = !inputVal || name.includes(inputVal) || prot.includes(inputVal) || emp.includes(inputVal) || mot.includes(inputVal) || tel.includes(inputVal);
+            
+            var matchStatus = true;
+            if (currentDriverStatusFilter !== 'TODOS') {
+                matchStatus = resp.includes(currentDriverStatusFilter);
+            }
 
             return matchText && matchStatus;
         });
@@ -2687,7 +2693,7 @@
                 <div style="text-align:center; padding:32px 16px; color:var(--azul-gelo); opacity:0.75;">
                     <span style="font-size:32px; display:block; margin-bottom:8px;">🔍</span>
                     <p style="margin:0; font-weight:600; font-size:14px;">Nenhum motorista encontrado com os filtros selecionados.</p>
-                    <p style="margin:4px 0 0 0; font-size:12px;">Tente digitar outro nome, CPF ou alterar o filtro de status acima.</p>
+                    <p style="margin:4px 0 0 0; font-size:12px;">Tente digitar outro nome, protocolo, motivo ou empresa.</p>
                 </div>`;
             return;
         }
@@ -2695,60 +2701,57 @@
         var isDemoMode = filtrados.some(function(i){ return i.isDemo; });
         var demoBanner = isDemoMode ? `
             <div style="margin-bottom:14px; padding:10px 16px; border-radius:12px; background:rgba(44,234,188,0.06); border:1px solid rgba(44,234,188,0.22); font-size:12px; color:var(--menta-viva); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
-                <span>ℹ️ <strong>Demonstração do Layout:</strong> Exibindo dados de teste enquanto a tabela <code>reportes</code> é alimentada no Supabase.</span>
-                <span style="font-size:11px; opacity:0.85;">Script SQL pronto em: <code>supabase_reportes_drivers.sql</code></span>
+                <span>ℹ️ <strong>Demonstração do Layout:</strong> Exibindo dados de teste enquanto a aba <code>Reportes</code> é sincronizada do Google Sheets para o Supabase.</span>
+                <span style="font-size:11px; opacity:0.85;">Script SQL atualizado em: <code>supabase_reportes_drivers.sql</code></span>
             </div>` : '';
 
         var rowsHTML = filtrados.map(function(item) {
-            var nome = item.Driver_Name || item.Nome || item.driver_name || 'Motorista Não Identificado';
-            var cpf = item.CPF || item.cpf || '-';
-            var praca = item.Praca || item.praca || 'Geral';
-            var st = (item.Status || item.status || 'EM ANÁLISE').toString().toUpperCase().trim();
-            var obs = item.Observacao || item.observacao || item.Detalhamento || 'Sem observações cadastradas.';
-            var dataStr = item.Data || item.updated_at || item.created_at || '-';
+            var nome = item.nome_driver || item.Nome_Driver || item.Driver_Name || item.Nome || 'Motorista Não Identificado';
+            var prot = item.protocolo || item.Protocolo || '-';
+            var emp = item.empresa || item.Empresa || item.Praca || 'Geral';
+            var mot = item.motivo || item.Motivo || 'Geral';
+            var tel = item.telefone || item.Telefone || '';
+            var resp = item.resposta_final || item.Resposta_Final || item.Status || 'EM ANÁLISE';
+            var dataStr = item.data_ultima_mensagem || item.Data_Ultima_Mensagem || item.updated_at || item.created_at || '-';
             
-            if (dataStr !== '-' && dataStr.includes('T')) {
-                try {
-                    let d = new Date(dataStr);
-                    dataStr = String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + d.getFullYear() + ' ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
-                } catch(e){}
-            }
-
+            var stUpper = String(resp).toUpperCase().trim();
             var badgeBg = 'rgba(255,193,7,0.14)';
             var badgeBorder = 'rgba(255,193,7,0.4)';
             var badgeColor = '#FFC107';
             var badgeIcon = '⏳';
-            var badgeText = st;
+            var badgeText = resp;
 
-            if (st === 'APROVADO' || st === 'APROVADA') {
+            if (stUpper.includes('APROVAD') || stUpper.includes('CONCLU')) {
                 badgeBg = 'rgba(44,234,188,0.15)';
                 badgeBorder = 'rgba(44,234,188,0.45)';
                 badgeColor = 'var(--menta-viva)';
                 badgeIcon = '✓';
-                badgeText = 'APROVADO';
-            } else if (st === 'PENDENTE' || st.includes('PEND') || st.includes('DOC')) {
+            } else if (stUpper.includes('PEND') || stUpper.includes('DOC') || stUpper.includes('AGUARD')) {
                 badgeBg = 'rgba(255,152,0,0.15)';
                 badgeBorder = 'rgba(255,152,0,0.45)';
                 badgeColor = '#FF9800';
                 badgeIcon = '⚠️';
-                badgeText = 'PENDENTE';
-            } else if (st === 'REPROVADO' || st === 'REPROVADA' || st === 'CANCELADO') {
+            } else if (stUpper.includes('REPROV') || stUpper.includes('CANCEL') || stUpper.includes('NEGAD')) {
                 badgeBg = 'rgba(255,75,75,0.15)';
                 badgeBorder = 'rgba(255,75,75,0.45)';
                 badgeColor = '#FF4B4B';
                 badgeIcon = '✕';
-                badgeText = 'REPROVADO';
             }
 
             return `
-                <div class="driver-report-row" style="display:grid; grid-template-columns: minmax(180px, 2fr) minmax(110px, 1fr) minmax(120px, 1fr) minmax(130px, 1.2fr) minmax(180px, 2.2fr); gap:12px; align-items:center; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); padding:12px 16px; border-radius:14px; margin-bottom:8px; transition:all 0.2s ease;" onmouseenter="this.style.background='rgba(255,255,255,0.06)';" onmouseleave="this.style.background='rgba(255,255,255,0.03)';">
+                <div class="driver-report-row" style="display:grid; grid-template-columns: minmax(180px, 2fr) minmax(110px, 1fr) minmax(140px, 1.2fr) minmax(140px, 1.3fr) minmax(160px, 1.8fr); gap:12px; align-items:center; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); padding:12px 16px; border-radius:14px; margin-bottom:8px; transition:all 0.2s ease;" onmouseenter="this.style.background='rgba(255,255,255,0.06)';" onmouseleave="this.style.background='rgba(255,255,255,0.03)';">
                     <div>
                         <div style="font-weight:700; color:#fff; font-size:14px; letter-spacing:0.2px;">${nome}</div>
-                        <div style="font-size:11px; color:var(--azul-gelo); opacity:0.75; font-family:monospace; margin-top:2px;">CPF: ${cpf}</div>
+                        <div style="font-size:11px; color:var(--azul-gelo); opacity:0.75; font-family:monospace; margin-top:2px;">Prot: ${prot} ${tel ? ' • 📱 ' + tel : ''}</div>
                     </div>
                     <div>
                         <span style="font-size:12px; font-weight:600; color:var(--azul-gelo); background:rgba(255,255,255,0.06); padding:4px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); display:inline-block;">
-                            📍 ${praca}
+                            🏢 ${emp}
+                        </span>
+                    </div>
+                    <div>
+                        <span style="font-size:12px; color:var(--azul-gelo); opacity:0.9;">
+                            📌 ${mot}
                         </span>
                     </div>
                     <div>
@@ -2758,9 +2761,6 @@
                     </div>
                     <div style="font-size:11.5px; color:var(--azul-gelo); opacity:0.85;">
                         📅 ${dataStr}
-                    </div>
-                    <div style="font-size:12px; color:var(--azul-gelo); opacity:0.9; background:rgba(0,0,0,0.2); padding:6px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.05);" title="${obs}">
-                        💬 ${obs}
                     </div>
                 </div>`;
         }).join('');
