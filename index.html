@@ -1590,6 +1590,23 @@
                             '>' +
                             '<i class="fas fa-search" style="position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--azul-gelo); opacity:0.5; font-size:13px;"></i>' +
                         '</div>' +
+                        '<div style="min-width:165px; position:relative;">' +
+                            '<select id="driverDateFilterSelect" onchange="filtrarReportesDrivers()" ' +
+                                'style="width:100%; padding:10px 30px 10px 36px; border-radius:12px; border:1px solid rgba(255,255,255,0.15); background:rgba(20,25,35,0.95); color:#fff; font-size:12.5px; font-family:inherit; outline:none; cursor:pointer; appearance:none; transition:all 0.2s;" ' +
+                                'onfocus="this.style.borderColor=\'var(--menta-viva)\';" ' +
+                                'onblur="this.style.borderColor=\'rgba(255,255,255,0.15)\';"' +
+                            '>' +
+                                '<option value="TODAS">Todas as Datas</option>' +
+                                '<option value="HOJE">Hoje</option>' +
+                                '<option value="ONTEM">Ontem</option>' +
+                                '<option value="7_DIAS">Últimos 7 dias</option>' +
+                                '<option value="15_DIAS">Últimos 15 dias</option>' +
+                                '<option value="30_DIAS">Últimos 30 dias</option>' +
+                                '<option value="ESTE_MES">Este Mês</option>' +
+                            '</select>' +
+                            '<i class="far fa-calendar-alt" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--menta-viva); opacity:0.85; font-size:13px; pointer-events:none;"></i>' +
+                            '<i class="fas fa-chevron-down" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); color:var(--azul-gelo); opacity:0.6; font-size:10px; pointer-events:none;"></i>' +
+                        '</div>' +
                         '<div style="display:flex; gap:6px; flex-wrap:wrap;" id="driverStatusPills">' +
                             '<button class="driver-filter-pill active" data-status="TODOS" onclick="setDriverStatusFilter(\'TODOS\', this)">Todos</button>' +
                             '<button class="driver-filter-pill" data-status="APROVADO_CONCLUIDO" onclick="setDriverStatusFilter(\'APROVADO_CONCLUIDO\', this)"><span class="status-dot-sm green"></span>Aprovado</button>' +
@@ -2871,9 +2888,90 @@
         }
     }
 
+    function obterTimestampReporte(item) {
+        var raw = item.data_ultima_mensagem || item.Data_Ultima_Mensagem || item.created_at || item.updated_at || '';
+        if (!raw) {
+            var protNum = parseInt(String(item.protocolo || '').replace(/\D/g, ''), 10);
+            return isNaN(protNum) ? 0 : protNum;
+        }
+        var str = String(raw).trim();
+
+        // Se formato DD/MM/YYYY HH:mm ou DD/MM/YYYY
+        if (/^\d{1,2}\/\d{1,2}\/\d{4}/.test(str)) {
+            var parts = str.split(' ');
+            var dParts = parts[0].split('/');
+            var day = parseInt(dParts[0], 10);
+            var month = parseInt(dParts[1], 10) - 1;
+            var year = parseInt(dParts[2], 10);
+            var hour = 0, min = 0;
+            if (parts[1] && parts[1].includes(':')) {
+                var tParts = parts[1].split(':');
+                hour = parseInt(tParts[0], 10) || 0;
+                min = parseInt(tParts[1], 10) || 0;
+            }
+            var dt = new Date(year, month, day, hour, min);
+            return isNaN(dt.getTime()) ? 0 : dt.getTime();
+        }
+
+        // Tentar Date.parse nativo (para ISO strings tipo 2026-09-10T...)
+        var parsed = Date.parse(str);
+        if (!isNaN(parsed)) return parsed;
+
+        var protNum = parseInt(String(item.protocolo || '').replace(/\D/g, ''), 10);
+        return isNaN(protNum) ? 0 : protNum;
+    }
+
+    function matchFiltroData(item, filtroData) {
+        if (!filtroData || filtroData === 'TODAS') return true;
+
+        var ts = obterTimestampReporte(item);
+        if (!ts) return false;
+
+        var itemDate = new Date(ts);
+        var now = new Date();
+
+        // Meia-noite de hoje (00:00:00.000)
+        var startToday = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+        var endToday = startToday + (24 * 60 * 60 * 1000) - 1;
+
+        if (filtroData === 'HOJE') {
+            return ts >= startToday && ts <= endToday;
+        }
+
+        if (filtroData === 'ONTEM') {
+            var startYesterday = startToday - (24 * 60 * 60 * 1000);
+            var endYesterday = startToday - 1;
+            return ts >= startYesterday && ts <= endYesterday;
+        }
+
+        if (filtroData === '7_DIAS') {
+            var start7Days = startToday - (7 * 24 * 60 * 60 * 1000);
+            return ts >= start7Days;
+        }
+
+        if (filtroData === '15_DIAS') {
+            var start15Days = startToday - (15 * 24 * 60 * 60 * 1000);
+            return ts >= start15Days;
+        }
+
+        if (filtroData === '30_DIAS') {
+            var start30Days = startToday - (30 * 24 * 60 * 60 * 1000);
+            return ts >= start30Days;
+        }
+
+        if (filtroData === 'ESTE_MES') {
+            return itemDate.getFullYear() === now.getFullYear() && itemDate.getMonth() === now.getMonth();
+        }
+
+        return true;
+    }
+
     function filtrarReportesDrivers() {
         var inputEl = document.getElementById('driverSearchInput');
         var inputVal = (inputEl ? inputEl.value : '').toLowerCase().trim();
+
+        var dateSelectEl = document.getElementById('driverDateFilterSelect');
+        var dateFilterVal = dateSelectEl ? dateSelectEl.value : 'TODAS';
 
         globalFiltradosDrivers = globalReportesDrivers.filter(function(item) {
             var name = (item.nome_driver || item.Nome_Driver || item.Driver_Name || item.Nome || '').toString().toLowerCase();
@@ -2902,7 +3000,14 @@
                 matchStatus = (statusObj.raw === currentDriverStatusFilter || respRaw.toUpperCase().trim().includes(currentDriverStatusFilter));
             }
 
-            return matchText && matchStatus;
+            var matchData = matchFiltroData(item, dateFilterVal);
+
+            return matchText && matchStatus && matchData;
+        });
+
+        // ORDENAÇÃO PADRÃO: Sempre do mais recente para o mais antigo (descendente)
+        globalFiltradosDrivers.sort(function(a, b) {
+            return obterTimestampReporte(b) - obterTimestampReporte(a);
         });
 
         driverReportPage = 1;
