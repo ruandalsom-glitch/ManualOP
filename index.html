@@ -766,6 +766,18 @@
         .news-modal-close { position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: #fff; width: 36px; height: 36px; border-radius: 50%; font-size: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; }
         .news-modal-close:hover { background: var(--vermelho-ifood); border-color: var(--vermelho-ifood); }
 
+        /* DRIVER FILTER PILLS & STATUS DOTS */
+        .driver-filter-pill { padding: 6px 14px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.05); color: var(--azul-gelo); font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s ease; font-family: inherit; }
+        .driver-filter-pill:hover { background: rgba(255, 255, 255, 0.12); color: #fff; border-color: rgba(255, 255, 255, 0.3); }
+        .driver-filter-pill.active { background: var(--menta-viva); color: #04081c; border-color: var(--menta-viva); box-shadow: 0 0 14px rgba(44, 234, 188, 0.35); }
+        .driver-filter-pill.active .status-dot-sm { background: #04081c !important; }
+        .status-dot-sm { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+        .status-dot-sm.green { background: var(--menta-viva); }
+        .status-dot-sm.yellow { background: #FFC107; }
+        .status-dot-sm.orange { background: #FF9800; }
+        .status-dot-sm.red { background: #FF4B4B; }
+        .status-dot-sm.purple { background: #C084FC; }
+
         /* IMAGE ZOOM MODAL STYLES */
         .img-modal { display: none; position: fixed; inset: 0; z-index: 10001; background: rgba(4, 8, 28, 0.94); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); align-items: center; justify-content: center; padding: 20px; }
         .img-modal.active { display: flex !important; }
@@ -855,6 +867,14 @@
         <div class="news-modal-box" onclick="event.stopPropagation()">
             <button class="news-modal-close" onclick="fecharNewsModal()">✕</button>
             <div id="newsModalBody"></div>
+        </div>
+    </div>
+
+    <!-- MODAL DETALHES DE REPORTE DO DRIVER (MENSAGEM DE RESPOSTA) -->
+    <div id="reporteModal" class="news-modal" onclick="fecharReporteModal(event)">
+        <div class="news-modal-box" onclick="event.stopPropagation()" style="max-width: 650px;">
+            <button class="news-modal-close" onclick="fecharReporteModal()">✕</button>
+            <div id="reporteModalBody"></div>
         </div>
     </div>
 
@@ -1572,10 +1592,12 @@
                         '</div>' +
                         '<div style="display:flex; gap:6px; flex-wrap:wrap;" id="driverStatusPills">' +
                             '<button class="driver-filter-pill active" data-status="TODOS" onclick="setDriverStatusFilter(\'TODOS\', this)">Todos</button>' +
-                            '<button class="driver-filter-pill" data-status="APROVADO" onclick="setDriverStatusFilter(\'APROVADO\', this)"><span class="status-dot-sm green"></span>Aprovado</button>' +
-                            '<button class="driver-filter-pill" data-status="EM ANÁLISE" onclick="setDriverStatusFilter(\'EM ANÁLISE\', this)"><span class="status-dot-sm yellow"></span>Em Análise</button>' +
-                            '<button class="driver-filter-pill" data-status="PENDENTE" onclick="setDriverStatusFilter(\'PENDENTE\', this)"><span class="status-dot-sm orange"></span>Pendente</button>' +
-                            '<button class="driver-filter-pill" data-status="REPROVADO" onclick="setDriverStatusFilter(\'REPROVADO\', this)"><span class="status-dot-sm red"></span>Reprovado</button>' +
+                            '<button class="driver-filter-pill" data-status="APROVADO_CONCLUIDO" onclick="setDriverStatusFilter(\'APROVADO_CONCLUIDO\', this)"><span class="status-dot-sm green"></span>Aprovado</button>' +
+                            '<button class="driver-filter-pill" data-status="EM_ANALISE" onclick="setDriverStatusFilter(\'EM_ANALISE\', this)"><span class="status-dot-sm yellow"></span>Em Análise</button>' +
+                            '<button class="driver-filter-pill" data-status="FALTA_DOCUMENTO" onclick="setDriverStatusFilter(\'FALTA_DOCUMENTO\', this)"><span class="status-dot-sm orange"></span>Falta Documentação</button>' +
+                            '<button class="driver-filter-pill" data-status="PENDENCIA" onclick="setDriverStatusFilter(\'PENDENCIA\', this)"><span class="status-dot-sm orange"></span>Pendente</button>' +
+                            '<button class="driver-filter-pill" data-status="REPROVADO_NAO_ATENDIDO" onclick="setDriverStatusFilter(\'REPROVADO_NAO_ATENDIDO\', this)"><span class="status-dot-sm red"></span>Não Aceito</button>' +
+                            '<button class="driver-filter-pill" data-status="OUTROS" onclick="setDriverStatusFilter(\'OUTROS\', this)"><span class="status-dot-sm purple"></span>Outros</button>' +
                         '</div>' +
                     '</div>' +
                     '<div id="driverReportesContainer" style="min-height:100px;">' +
@@ -2611,7 +2633,15 @@
 
     /* Keyboard */
     document.addEventListener('keydown',function(e){
-        if(e.key==='Escape'){ _zoomScale=1; document.getElementById('imgModal').classList.remove('active'); var nav=document.getElementById('mobileNav'); var btn=document.getElementById('hamburgerBtn'); if(nav) nav.classList.remove('open'); if(btn) btn.classList.remove('open'); }
+        if(e.key==='Escape'){ 
+            _zoomScale=1; 
+            var im = document.getElementById('imgModal'); if (im) im.classList.remove('active');
+            var nm = document.getElementById('newsModal'); if (nm) nm.style.display = 'none';
+            var rm = document.getElementById('reporteModal'); if (rm) rm.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            var nav=document.getElementById('mobileNav'); var btn=document.getElementById('hamburgerBtn'); 
+            if(nav) nav.classList.remove('open'); if(btn) btn.classList.remove('open'); 
+        }
         if(e.key==='/'&&document.activeElement.tagName!=='INPUT'&&document.activeElement.tagName!=='TEXTAREA'){ e.preventDefault(); var si=document.getElementById('driverSearchInput')||document.getElementById('searchInput'); if(si){ si.focus(); si.select(); } }
         if(e.key==='Enter'){ var lc=document.getElementById('login-container'); if(lc&&lc.style.display!=='none') fazerLogin(); }
     });
@@ -2660,13 +2690,83 @@
     let driverReportPage = 1;
     const DRIVER_REPORTS_PER_PAGE = 10;
 
+    function formatarStatusReporte(rawStatus) {
+        var st = (rawStatus || '').toString().trim().toUpperCase();
+
+        if (st === 'APROVADO_CONCLUIDO' || st === 'APROVADO' || st.includes('APROVAD') || st.includes('CONCLU')) {
+            return {
+                raw: 'APROVADO_CONCLUIDO',
+                label: 'Aprovado',
+                badgeBg: 'rgba(44,234,188,0.15)',
+                badgeBorder: 'rgba(44,234,188,0.45)',
+                badgeColor: 'var(--menta-viva)',
+                badgeDot: 'var(--menta-viva)'
+            };
+        } else if (st === 'EM_ANALISE' || st === 'EM ANÁLISE' || st === 'EM ANALISE' || st.includes('ANALIS')) {
+            return {
+                raw: 'EM_ANALISE',
+                label: 'Em Análise',
+                badgeBg: 'rgba(255,193,7,0.15)',
+                badgeBorder: 'rgba(255,193,7,0.45)',
+                badgeColor: '#FFC107',
+                badgeDot: '#FFC107'
+            };
+        } else if (st === 'FALTA_DOCUMENTO' || st === 'FALTA_DOCUMENTAÇÃO' || st.includes('FALTA') || st.includes('DOC')) {
+            return {
+                raw: 'FALTA_DOCUMENTO',
+                label: 'Falta documentação',
+                badgeBg: 'rgba(255,152,0,0.15)',
+                badgeBorder: 'rgba(255,152,0,0.45)',
+                badgeColor: '#FF9800',
+                badgeDot: '#FF9800'
+            };
+        } else if (st === 'PENDENCIA' || st === 'PENDENTE' || st.includes('PEND')) {
+            return {
+                raw: 'PENDENCIA',
+                label: 'Pendente',
+                badgeBg: 'rgba(249,115,22,0.15)',
+                badgeBorder: 'rgba(249,115,22,0.45)',
+                badgeColor: '#F97316',
+                badgeDot: '#F97316'
+            };
+        } else if (st === 'REPROVADO_NAO_ATENDIDO' || st === 'REPROVADO' || st.includes('REPROV') || st.includes('NAO ACEITO') || st.includes('NÃO ACEITO')) {
+            return {
+                raw: 'REPROVADO_NAO_ATENDIDO',
+                label: 'Não Aceito',
+                badgeBg: 'rgba(255,75,75,0.15)',
+                badgeBorder: 'rgba(255,75,75,0.45)',
+                badgeColor: '#FF4B4B',
+                badgeDot: '#FF4B4B'
+            };
+        } else if (st === 'OUTROS' || st.includes('OUTRO')) {
+            return {
+                raw: 'OUTROS',
+                label: 'Outros',
+                badgeBg: 'rgba(168,85,247,0.15)',
+                badgeBorder: 'rgba(168,85,247,0.45)',
+                badgeColor: '#C084FC',
+                badgeDot: '#C084FC'
+            };
+        } else {
+            return {
+                raw: 'OUTROS',
+                label: rawStatus || 'Outros',
+                badgeBg: 'rgba(180,228,255,0.15)',
+                badgeBorder: 'rgba(180,228,255,0.4)',
+                badgeColor: 'var(--azul-gelo)',
+                badgeDot: 'var(--azul-gelo)'
+            };
+        }
+    }
+
     function renderDriverReportes(dados) {
         if (!dados || dados.length === 0) {
             globalReportesDrivers = [
-                { protocolo: '#REP-101', nome_driver: 'Carlos Eduardo da Silva', cpf: '123.456.789-00', motivo: 'Problemas Cadastrais / Liberação', empresa: 'GO Sumarezinho', telefone: '(19) 99123-4567', resposta_final: 'APROVADO', mensagem_resposta: 'Cadastro liberado com sucesso. Driver ativo no aplicativo.', data_ultima_mensagem: '10/09/2026 14:20', isDemo: true },
-                { protocolo: '#REP-102', nome_driver: 'Mariana Souza Oliveira', cpf: '234.567.890-11', motivo: 'Contestação de Promoções', empresa: 'GO Campinas', telefone: '(19) 99234-5678', resposta_final: 'EM ANÁLISE', mensagem_resposta: 'Aguardando validação da equipe financeira.', data_ultima_mensagem: '10/09/2026 11:45', isDemo: true },
-                { protocolo: '#REP-103', nome_driver: 'Roberto Alves Santos', cpf: '345.678.901-22', motivo: 'Contestação de Garantido FE', empresa: 'GO Hortolândia', telefone: '(19) 99345-6789', resposta_final: 'PENDENTE', mensagem_resposta: 'Falta enviar foto legível da CNH aberta com EAR.', data_ultima_mensagem: '09/09/2026 18:30', isDemo: true },
-                { protocolo: '#REP-104', nome_driver: 'Lucas Gabriel Pereira', cpf: '456.789.012-33', motivo: 'Dúvidas Gerais', empresa: 'GO Americana', telefone: '(19) 99456-7890', resposta_final: 'REPROVADO', mensagem_resposta: 'Divergência de titularidade nos documentos informados.', data_ultima_mensagem: '08/09/2026 09:15', isDemo: true }
+                { protocolo: '#REP-101', nome_driver: 'Carlos Eduardo da Silva', cpf: '123.456.789-00', motivo: 'Problemas Cadastrais / Liberação', empresa: 'GO Sumarezinho', telefone: '(19) 99123-4567', resposta_final: 'Aprovado_concluido', mensagem_resposta: 'Cadastro liberado com sucesso. Driver ativo no aplicativo.', data_ultima_mensagem: '10/09/2026 14:20', isDemo: true },
+                { protocolo: '#REP-102', nome_driver: 'Mariana Souza Oliveira', cpf: '234.567.890-11', motivo: 'Contestação de Promoções', empresa: 'GO Campinas', telefone: '(19) 99234-5678', resposta_final: 'EM_ANALISE', mensagem_resposta: 'Aguardando validação da equipe financeira.', data_ultima_mensagem: '10/09/2026 11:45', isDemo: true },
+                { protocolo: '#REP-103', nome_driver: 'Roberto Alves Santos', cpf: '345.678.901-22', motivo: 'Contestação de Garantido FE', empresa: 'GO Hortolândia', telefone: '(19) 99345-6789', resposta_final: 'FALTA_DOCUMENTO', mensagem_resposta: 'Falta enviar foto legível da CNH aberta com EAR.', data_ultima_mensagem: '09/09/2026 18:30', isDemo: true },
+                { protocolo: '#REP-104', nome_driver: 'Lucas Gabriel Pereira', cpf: '456.789.012-33', motivo: 'Dúvidas Gerais', empresa: 'GO Americana', telefone: '(19) 99456-7890', resposta_final: 'REPROVADO_NAO_ATENDIDO', mensagem_resposta: 'Divergência de titularidade nos documentos informados.', data_ultima_mensagem: '08/09/2026 09:15', isDemo: true },
+                { protocolo: '#REP-105', nome_driver: 'Fernanda Lima Castro', cpf: '567.890.123-44', motivo: 'Problemas Cadastrais / Liberação', empresa: 'GO Sumarezinho', telefone: '(19) 99567-8901', resposta_final: 'PENDENCIA', mensagem_resposta: 'Pendente de validação de antecedentes criminais.', data_ultima_mensagem: '07/09/2026 16:10', isDemo: true }
             ];
         } else {
             globalReportesDrivers = dados;
@@ -2703,14 +2803,24 @@
             var emp = (item.empresa || item.Empresa || item.Praca || '').toString().toLowerCase();
             var mot = (item.motivo || item.Motivo || '').toString().toLowerCase();
             var tel = (item.telefone || item.Telefone || '').toString().toLowerCase();
-            var resp = (item.resposta_final || item.Resposta_Final || item.Status || '').toString().toUpperCase().trim();
+            var respRaw = (item.resposta_final || item.Resposta_Final || item.Status || '').toString();
             var msg = (item.mensagem_resposta || item.Mensagem_Resposta || '').toString().toLowerCase();
 
-            var matchText = !inputVal || name.includes(inputVal) || prot.includes(inputVal) || cpf.includes(inputVal) || emp.includes(inputVal) || mot.includes(inputVal) || tel.includes(inputVal) || msg.includes(inputVal);
+            var statusObj = formatarStatusReporte(respRaw);
+
+            var matchText = !inputVal || 
+                name.includes(inputVal) || 
+                prot.includes(inputVal) || 
+                cpf.includes(inputVal) || 
+                emp.includes(inputVal) || 
+                mot.includes(inputVal) || 
+                tel.includes(inputVal) || 
+                msg.includes(inputVal) ||
+                statusObj.label.toLowerCase().includes(inputVal);
             
             var matchStatus = true;
             if (currentDriverStatusFilter !== 'TODOS') {
-                matchStatus = resp.includes(currentDriverStatusFilter);
+                matchStatus = (statusObj.raw === currentDriverStatusFilter || respRaw.toUpperCase().trim().includes(currentDriverStatusFilter));
             }
 
             return matchText && matchStatus;
@@ -2756,47 +2866,41 @@
             var emp = item.empresa || item.Empresa || item.Praca || 'Geral';
             var mot = item.motivo || item.Motivo || 'Geral';
             var tel = item.telefone || item.Telefone || '';
-            var resp = item.resposta_final || item.Resposta_Final || item.Status || 'EM ANÁLISE';
+            var respRaw = item.resposta_final || item.Resposta_Final || item.Status || 'EM_ANALISE';
             var msgResp = item.mensagem_resposta || item.Mensagem_Resposta || '';
             var dataStr = item.data_ultima_mensagem || item.Data_Ultima_Mensagem || item.updated_at || item.created_at || '-';
             
-            var stUpper = String(resp).toUpperCase().trim();
-            var badgeBg = 'rgba(255,193,7,0.14)';
-            var badgeBorder = 'rgba(255,193,7,0.4)';
-            var badgeColor = '#FFC107';
-            var badgeDot = '#FFC107';
+            var statusObj = formatarStatusReporte(respRaw);
 
-            if (stUpper.includes('APROVAD') || stUpper.includes('CONCLU')) {
-                badgeBg = 'rgba(44,234,188,0.15)';
-                badgeBorder = 'rgba(44,234,188,0.45)';
-                badgeColor = 'var(--menta-viva)';
-                badgeDot = 'var(--menta-viva)';
-            } else if (stUpper.includes('PEND') || stUpper.includes('DOC') || stUpper.includes('AGUARD')) {
-                badgeBg = 'rgba(255,152,0,0.15)';
-                badgeBorder = 'rgba(255,152,0,0.45)';
-                badgeColor = '#FF9800';
-                badgeDot = '#FF9800';
-            } else if (stUpper.includes('REPROV') || stUpper.includes('CANCEL') || stUpper.includes('NEGAD')) {
-                badgeBg = 'rgba(255,75,75,0.15)';
-                badgeBorder = 'rgba(255,75,75,0.45)';
-                badgeColor = '#FF4B4B';
-                badgeDot = '#FF4B4B';
-            }
+            var protEscaped = prot.replace(/'/g, "\\'");
+
+            var protBtn = `<button type="button" onclick="abrirReporteModal('${protEscaped}')" 
+                style="display:inline-flex; align-items:center; gap:6px; background:rgba(44,234,188,0.12); border:1px solid rgba(44,234,188,0.35); color:var(--menta-viva); border-radius:8px; padding:4px 10px; font-weight:800; font-family:monospace; font-size:12px; cursor:pointer; transition:all 0.2s ease;"
+                onmouseover="this.style.background='rgba(44,234,188,0.25)'; this.style.borderColor='var(--menta-viva)';"
+                onmouseout="this.style.background='rgba(44,234,188,0.12)'; this.style.borderColor='rgba(44,234,188,0.35)';"
+                title="Clique para ver detalhes do protocolo e resposta completa">
+                ${prot} <i class="fas fa-external-link-alt" style="font-size:10px; opacity:0.8;"></i>
+            </button>`;
+
+            var msgBox = msgResp ? `
+                <div onclick="abrirReporteModal('${protEscaped}')" style="cursor:pointer; font-size:12px; color:var(--azul-gelo); opacity:0.9; background:rgba(0,0,0,0.2); padding:8px 12px; border-radius:8px; border-left:3px solid ${statusObj.badgeColor}; margin-top:4px; display:flex; align-items:center; justify-content:space-between; gap:10px; transition:all 0.2s ease;" onmouseover="this.style.background='rgba(44,234,188,0.08)';" onmouseout="this.style.background='rgba(0,0,0,0.2)';">
+                    <div style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1;">
+                        <strong style="color:#fff;">Resposta:</strong> ${msgResp}
+                    </div>
+                    <span style="font-size:11px; color:var(--menta-viva); font-weight:700; white-space:nowrap; flex-shrink:0;">Ver detalhes ➔</span>
+                </div>` : '';
 
             var subDetails = [];
-            if (prot && prot !== '-') subDetails.push('Prot: ' + prot);
             if (cpf) subDetails.push('CPF: ' + cpf);
             if (tel) subDetails.push('Tel: ' + tel);
             var infoSubText = subDetails.join(' • ');
 
-            var msgBox = msgResp ? `
-                <div style="grid-column: 1 / -1; font-size:12px; color:var(--azul-gelo); opacity:0.9; background:rgba(0,0,0,0.2); padding:8px 12px; border-radius:8px; border-left:3px solid ${badgeColor}; margin-top:4px;">
-                    <strong>Resposta:</strong> ${msgResp}
-                </div>` : '';
-
             return `
                 <div class="driver-report-row" style="display:flex; flex-direction:column; gap:6px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); padding:14px 16px; border-radius:14px; margin-bottom:10px; transition:all 0.2s ease;" onmouseenter="this.style.background='rgba(255,255,255,0.06)';" onmouseleave="this.style.background='rgba(255,255,255,0.03)';">
-                    <div style="display:grid; grid-template-columns: minmax(180px, 2.2fr) minmax(110px, 1fr) minmax(140px, 1.3fr) minmax(130px, 1.2fr) minmax(140px, 1.4fr); gap:12px; align-items:center; width:100%;">
+                    <div style="display:grid; grid-template-columns: minmax(130px, 1.1fr) minmax(170px, 2fr) minmax(110px, 1fr) minmax(130px, 1.2fr) minmax(140px, 1.4fr) minmax(130px, 1.2fr); gap:12px; align-items:center; width:100%;">
+                        <div>
+                            ${protBtn}
+                        </div>
                         <div>
                             <div style="font-weight:700; color:#fff; font-size:14px; letter-spacing:0.2px;">${nome}</div>
                             <div style="font-size:11px; color:var(--azul-gelo); opacity:0.75; font-family:monospace; margin-top:2px;">${infoSubText}</div>
@@ -2812,9 +2916,9 @@
                             </span>
                         </div>
                         <div>
-                            <span style="display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:800; padding:4px 12px; border-radius:10px; background:${badgeBg}; border:1px solid ${badgeBorder}; color:${badgeColor}; letter-spacing:0.4px;">
-                                <span style="width:6px; height:6px; border-radius:50%; background:${badgeDot}; display:inline-block;"></span>
-                                ${resp}
+                            <span style="display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:800; padding:4px 12px; border-radius:10px; background:${statusObj.badgeBg}; border:1px solid ${statusObj.badgeBorder}; color:${statusObj.badgeColor}; letter-spacing:0.4px;">
+                                <span style="width:6px; height:6px; border-radius:50%; background:${statusObj.badgeDot}; display:inline-block;"></span>
+                                ${statusObj.label}
                             </span>
                         </div>
                         <div style="font-size:11.5px; color:var(--azul-gelo); opacity:0.85;">
@@ -2852,6 +2956,96 @@
         }
 
         container.innerHTML = demoBanner + `<div style="display:flex; flex-direction:column; gap:2px;">${rowsHTML}</div>` + paginationControls;
+    }
+
+    function abrirReporteModal(protocoloOuIndex) {
+        var item = null;
+        if (typeof protocoloOuIndex === 'number') {
+            item = globalFiltradosDrivers[protocoloOuIndex];
+        } else {
+            item = globalReportesDrivers.find(function(r){ 
+                var p = (r.protocolo || r.Protocolo || '').toString().trim();
+                return p.toLowerCase() === String(protocoloOuIndex).toLowerCase().trim();
+            });
+        }
+        if (!item) return;
+
+        var modal = document.getElementById('reporteModal');
+        var body = document.getElementById('reporteModalBody');
+        if (!modal || !body) return;
+
+        var nome = item.nome_driver || item.Nome_Driver || item.Driver_Name || item.Nome || 'Motorista Não Identificado';
+        var prot = item.protocolo || item.Protocolo || '-';
+        var cpf = item.cpf || item.CPF || 'Não informado';
+        var emp = item.empresa || item.Empresa || item.Praca || 'Geral';
+        var mot = item.motivo || item.Motivo || 'Não informado';
+        var tel = item.telefone || item.Telefone || 'Não informado';
+        var respRaw = item.resposta_final || item.Resposta_Final || item.Status || 'EM_ANALISE';
+        var msgResp = item.mensagem_resposta || item.Mensagem_Resposta || '';
+        var dataStr = item.data_ultima_mensagem || item.Data_Ultima_Mensagem || item.updated_at || item.created_at || 'Data não disponível';
+
+        var statusObj = formatarStatusReporte(respRaw);
+
+        body.innerHTML = `
+            <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:18px; padding-bottom:14px; border-bottom:1px solid rgba(255,255,255,0.08);">
+                <div>
+                    <span style="font-size:11px; font-weight:800; color:var(--menta-viva); letter-spacing:1px; text-transform:uppercase;">Detalhamento do Protocolo</span>
+                    <h2 style="font-size:22px; font-weight:800; color:#fff; margin:4px 0 0 0; font-family:monospace; display:flex; align-items:center; gap:10px;">
+                        ${prot}
+                    </h2>
+                </div>
+                <span style="display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:800; padding:6px 14px; border-radius:12px; background:${statusObj.badgeBg}; border:1px solid ${statusObj.badgeBorder}; color:${statusObj.badgeColor}; letter-spacing:0.4px;">
+                    <span style="width:7px; height:7px; border-radius:50%; background:${statusObj.badgeDot}; display:inline-block;"></span>
+                    ${statusObj.label}
+                </span>
+            </div>
+
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:14px; margin-bottom:20px; background:rgba(255,255,255,0.03); padding:16px; border-radius:14px; border:1px solid rgba(255,255,255,0.06);">
+                <div>
+                    <div style="font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; color:var(--azul-gelo); opacity:0.6; margin-bottom:3px;">Nome do Motorista</div>
+                    <div style="font-size:14px; font-weight:700; color:#fff;">${nome}</div>
+                </div>
+                <div>
+                    <div style="font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; color:var(--azul-gelo); opacity:0.6; margin-bottom:3px;">CPF</div>
+                    <div style="font-size:13px; font-weight:600; color:var(--azul-gelo); font-family:monospace;">${cpf}</div>
+                </div>
+                <div>
+                    <div style="font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; color:var(--azul-gelo); opacity:0.6; margin-bottom:3px;">Telefone</div>
+                    <div style="font-size:13px; font-weight:600; color:var(--azul-gelo);">${tel}</div>
+                </div>
+                <div>
+                    <div style="font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; color:var(--azul-gelo); opacity:0.6; margin-bottom:3px;">Empresa / Praça</div>
+                    <div style="font-size:13px; font-weight:700; color:var(--menta-viva);">${emp}</div>
+                </div>
+                <div>
+                    <div style="font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; color:var(--azul-gelo); opacity:0.6; margin-bottom:3px;">Motivo do Reporte</div>
+                    <div style="font-size:13px; font-weight:600; color:var(--azul-gelo);">${mot}</div>
+                </div>
+                <div>
+                    <div style="font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; color:var(--azul-gelo); opacity:0.6; margin-bottom:3px;">Última Atualização</div>
+                    <div style="font-size:12.5px; font-weight:600; color:var(--azul-gelo); opacity:0.9;">${dataStr}</div>
+                </div>
+            </div>
+
+            <div style="margin-top:16px;">
+                <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; color:var(--menta-viva); margin-bottom:8px; display:flex; align-items:center; gap:6px;">
+                    <i class="fas fa-comment-alt"></i> Resposta Oficial da Operação (mensagem_resposta)
+                </div>
+                <div style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.08); border-left:4px solid ${statusObj.badgeColor}; border-radius:12px; padding:16px; font-size:13.5px; color:#fff; line-height:1.6; min-height:60px;">
+                    ${msgResp ? msgResp.replace(/\n|\r\n/g, '<br>') : '<em style="color:var(--azul-gelo); opacity:0.6;">Nenhuma mensagem complementar informada para este protocolo.</em>'}
+                </div>
+            </div>
+        `;
+
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function fecharReporteModal(evt) {
+        if (evt && evt.target !== document.getElementById('reporteModal') && !evt.target.classList.contains('news-modal-close')) return;
+        var modal = document.getElementById('reporteModal');
+        if (modal) modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
     }
 
     async function recarregarReportesDrivers(btn) {
