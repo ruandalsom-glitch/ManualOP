@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap&font-display=swap" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"></noscript>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --azul-escuro: #060a22; 
@@ -127,6 +127,9 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
         .driver-filter-pill:hover {
             border-color: rgba(44, 234, 188, 0.4);
@@ -139,6 +142,17 @@
             font-weight: 800;
             box-shadow: 0 0 10px rgba(44, 234, 188, 0.25);
         }
+        .status-dot-sm {
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+        }
+        .status-dot-sm.green { background: #2CEABC; box-shadow: 0 0 6px rgba(44, 234, 188, 0.6); }
+        .status-dot-sm.yellow { background: #FFC107; box-shadow: 0 0 6px rgba(255, 193, 7, 0.6); }
+        .status-dot-sm.orange { background: #FF9800; box-shadow: 0 0 6px rgba(255, 152, 0, 0.6); }
+        .status-dot-sm.red { background: #FF4B4B; box-shadow: 0 0 6px rgba(255, 75, 75, 0.6); }
+
         @media (max-width: 900px) {
             .driver-report-row {
                 grid-template-columns: 1fr !important;
@@ -1533,8 +1547,8 @@
                 '<div class="glass-panel" style="padding:24px; margin-bottom:32px; border-radius:24px; border:1.5px solid rgba(44,234,188,0.25); background:rgba(4,8,28,0.8); box-shadow:0 12px 36px rgba(0,0,0,0.4);">' +
                     '<div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:20px; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:16px;">' +
                         '<div>' +
-                            '<h3 style="margin:0; font-size:18px; color:var(--menta-viva); display:flex; align-items:center; gap:10px;">' +
-                                '<span style="font-size:22px;">🛡️</span> Acompanhamento de Aprovação do Driver' +
+                            '<h3 style="margin:0; font-size:18px; color:var(--menta-viva); display:flex; align-items:center; gap:8px;">' +
+                                '<i class="fas fa-user-check" style="font-size:18px;"></i> Acompanhamento de Aprovação do Driver' +
                             '</h3>' +
                             '<p style="margin:4px 0 0 0; font-size:13px; color:var(--azul-gelo); opacity:0.85;">' +
                                 'Verifique se o motorista já teve o cadastro aprovado, se está em análise ou com pendência de documentos.' +
@@ -1542,24 +1556,25 @@
                         '</div>' +
                         '<div style="display:flex; gap:10px; align-items:center;">' +
                             '<button onclick="recarregarReportesDrivers(this)" style="display:inline-flex; align-items:center; gap:6px; padding:8px 18px; border-radius:var(--radius-full); border:1px solid rgba(44,234,188,0.4); background:rgba(44,234,188,0.1); color:var(--menta-viva); font-size:12px; font-weight:700; cursor:pointer; transition:all 0.2s;">' +
-                                '↻ Sincronizar Status' +
+                                '<i class="fas fa-sync-alt" style="font-size:11px;"></i> Sincronizar Status' +
                             '</button>' +
                         '</div>' +
                     '</div>' +
                     '<div style="display:flex; flex-wrap:wrap; gap:12px; margin-bottom:20px; align-items:center;">' +
                         '<div style="flex:1; min-width:260px; position:relative;">' +
-                            '<input type="text" id="driverSearchInput" placeholder="🔍 Digite o Nome, CPF ou Praça do driver..." oninput="filtrarReportesDrivers()" ' +
+                            '<input type="text" id="driverSearchInput" placeholder="Digite o Nome, Protocolo, Empresa ou Motivo..." oninput="filtrarReportesDrivers()" ' +
                                 'style="width:100%; padding:10px 16px 10px 38px; border-radius:12px; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.05); color:#fff; font-size:13px; font-family:inherit; outline:none; transition:all 0.2s;" ' +
                                 'onfocus="this.style.borderColor=\'var(--menta-viva)\'; this.style.background=\'rgba(44,234,188,0.05)\';" ' +
                                 'onblur="this.style.borderColor=\'rgba(255,255,255,0.15)\'; this.style.background=\'rgba(255,255,255,0.05)\';"' +
                             '>' +
+                            '<i class="fas fa-search" style="position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--azul-gelo); opacity:0.5; font-size:13px;"></i>' +
                         '</div>' +
                         '<div style="display:flex; gap:6px; flex-wrap:wrap;" id="driverStatusPills">' +
                             '<button class="driver-filter-pill active" data-status="TODOS" onclick="setDriverStatusFilter(\'TODOS\', this)">Todos</button>' +
-                            '<button class="driver-filter-pill" data-status="APROVADO" onclick="setDriverStatusFilter(\'APROVADO\', this)">🟢 Aprovado</button>' +
-                            '<button class="driver-filter-pill" data-status="EM ANÁLISE" onclick="setDriverStatusFilter(\'EM ANÁLISE\', this)">🟡 Em Análise</button>' +
-                            '<button class="driver-filter-pill" data-status="PENDENTE" onclick="setDriverStatusFilter(\'PENDENTE\', this)">🟠 Pendente</button>' +
-                            '<button class="driver-filter-pill" data-status="REPROVADO" onclick="setDriverStatusFilter(\'REPROVADO\', this)">🔴 Reprovado</button>' +
+                            '<button class="driver-filter-pill" data-status="APROVADO" onclick="setDriverStatusFilter(\'APROVADO\', this)"><span class="status-dot-sm green"></span>Aprovado</button>' +
+                            '<button class="driver-filter-pill" data-status="EM ANÁLISE" onclick="setDriverStatusFilter(\'EM ANÁLISE\', this)"><span class="status-dot-sm yellow"></span>Em Análise</button>' +
+                            '<button class="driver-filter-pill" data-status="PENDENTE" onclick="setDriverStatusFilter(\'PENDENTE\', this)"><span class="status-dot-sm orange"></span>Pendente</button>' +
+                            '<button class="driver-filter-pill" data-status="REPROVADO" onclick="setDriverStatusFilter(\'REPROVADO\', this)"><span class="status-dot-sm red"></span>Reprovado</button>' +
                         '</div>' +
                     '</div>' +
                     '<div id="driverReportesContainer" style="min-height:100px;">' +
@@ -1568,7 +1583,7 @@
                 '</div>' +
                 '<div style="margin-top:32px;">' +
                     '<h3 style="font-size:16px; color:var(--menta-viva); margin-bottom:14px; display:flex; align-items:center; gap:8px;">' +
-                        '<span>📍</span> Status de Abertura de Cadastro por Praça' +
+                        '<i class="fas fa-map-marker-alt" style="font-size:15px;"></i> Status de Abertura de Cadastro por Praça' +
                     '</h3>' +
                     '<div class="grid-container" id="cadastroGrid">' +
                         '<div style="grid-column:1/-1;" class="lazy-loading-hint"><span class="lazy-spin"></span>Carregando status...</div>' +
@@ -2057,7 +2072,7 @@
             let formatada = String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0') + ' às ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
             updateHtml = `<div style="text-align:center; margin-bottom: 24px; grid-column: 1/-1;">
                             <span style="font-size:12px; color:var(--menta-viva); padding: 6px 14px; border:1px solid rgba(44,234,188,0.25); border-radius: 20px; background: rgba(44,234,188,0.06); display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 0 10px rgba(44,234,188,0.1);">
-                                <span style="font-size:14px;">⏱️</span> Última atualização: <strong>${formatada}</strong>
+                                <i class="far fa-clock" style="font-size:13px;"></i> Última atualização: <strong>${formatada}</strong>
                             </span>
                           </div>`;
         }
@@ -2639,7 +2654,10 @@
 
     /* ── ACOMPANHAMENTO DE APROVAÇÃO DO DRIVER (REPORTES) ───────────── */
     let globalReportesDrivers = [];
+    let globalFiltradosDrivers = [];
     let currentDriverStatusFilter = 'TODOS';
+    let driverReportPage = 1;
+    const DRIVER_REPORTS_PER_PAGE = 10;
 
     function renderDriverReportes(dados) {
         if (!dados || dados.length === 0) {
@@ -2657,20 +2675,27 @@
 
     function setDriverStatusFilter(status, btnElement) {
         currentDriverStatusFilter = status;
+        driverReportPage = 1;
         var btns = document.querySelectorAll('.driver-filter-pill');
         btns.forEach(function(b){ b.classList.remove('active'); });
         if (btnElement) btnElement.classList.add('active');
         filtrarReportesDrivers();
     }
 
-    function filtrarReportesDrivers() {
-        var container = document.getElementById('driverReportesContainer');
-        if (!container) return;
+    function MudarPaginaDriverReport(delta) {
+        var totalPages = Math.ceil(globalFiltradosDrivers.length / DRIVER_REPORTS_PER_PAGE) || 1;
+        var novaPag = driverReportPage + delta;
+        if (novaPag >= 1 && novaPag <= totalPages) {
+            driverReportPage = novaPag;
+            renderPaginaDriverReportes();
+        }
+    }
 
+    function filtrarReportesDrivers() {
         var inputEl = document.getElementById('driverSearchInput');
         var inputVal = (inputEl ? inputEl.value : '').toLowerCase().trim();
 
-        var filtrados = globalReportesDrivers.filter(function(item) {
+        globalFiltradosDrivers = globalReportesDrivers.filter(function(item) {
             var name = (item.nome_driver || item.Nome_Driver || item.Driver_Name || item.Nome || '').toString().toLowerCase();
             var prot = (item.protocolo || item.Protocolo || '').toString().toLowerCase();
             var emp = (item.empresa || item.Empresa || item.Praca || '').toString().toLowerCase();
@@ -2688,24 +2713,40 @@
             return matchText && matchStatus;
         });
 
-        if (filtrados.length === 0) {
+        driverReportPage = 1;
+        renderPaginaDriverReportes();
+    }
+
+    function renderPaginaDriverReportes() {
+        var container = document.getElementById('driverReportesContainer');
+        if (!container) return;
+
+        if (globalFiltradosDrivers.length === 0) {
             container.innerHTML = `
-                <div style="text-align:center; padding:32px 16px; color:var(--azul-gelo); opacity:0.75;">
-                    <span style="font-size:32px; display:block; margin-bottom:8px;">🔍</span>
-                    <p style="margin:0; font-weight:600; font-size:14px;">Nenhum motorista encontrado com os filtros selecionados.</p>
-                    <p style="margin:4px 0 0 0; font-size:12px;">Tente digitar outro nome, protocolo, motivo ou empresa.</p>
+                <div style="text-align:center; padding:36px 16px; color:var(--azul-gelo); opacity:0.75;">
+                    <p style="margin:0; font-weight:700; font-size:14px;">Nenhum registro encontrado para os filtros aplicados.</p>
+                    <p style="margin:6px 0 0 0; font-size:12px; opacity:0.8;">Verifique o termo buscado ou altere o filtro de status.</p>
                 </div>`;
             return;
         }
 
-        var isDemoMode = filtrados.some(function(i){ return i.isDemo; });
+        var totalItems = globalFiltradosDrivers.length;
+        var totalPages = Math.ceil(totalItems / DRIVER_REPORTS_PER_PAGE) || 1;
+
+        if (driverReportPage > totalPages) driverReportPage = totalPages;
+        if (driverReportPage < 1) driverReportPage = 1;
+
+        var startIdx = (driverReportPage - 1) * DRIVER_REPORTS_PER_PAGE;
+        var endIdx = startIdx + DRIVER_REPORTS_PER_PAGE;
+        var pagedItems = globalFiltradosDrivers.slice(startIdx, endIdx);
+
+        var isDemoMode = globalFiltradosDrivers.some(function(i){ return i.isDemo; });
         var demoBanner = isDemoMode ? `
             <div style="margin-bottom:14px; padding:10px 16px; border-radius:12px; background:rgba(44,234,188,0.06); border:1px solid rgba(44,234,188,0.22); font-size:12px; color:var(--menta-viva); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
-                <span>ℹ️ <strong>Demonstração do Layout:</strong> Exibindo dados de teste enquanto a aba <code>Reportes</code> é sincronizada do Google Sheets para o Supabase.</span>
-                <span style="font-size:11px; opacity:0.85;">Script SQL atualizado em: <code>supabase_reportes_drivers.sql</code></span>
+                <span><strong>Modo de Demonstração:</strong> Exibindo dados de teste enquanto a aba <code>Reportes</code> é sincronizada do Google Sheets para o Supabase.</span>
             </div>` : '';
 
-        var rowsHTML = filtrados.map(function(item) {
+        var rowsHTML = pagedItems.map(function(item) {
             var nome = item.nome_driver || item.Nome_Driver || item.Driver_Name || item.Nome || 'Motorista Não Identificado';
             var prot = item.protocolo || item.Protocolo || '-';
             var emp = item.empresa || item.Empresa || item.Praca || 'Geral';
@@ -2718,60 +2759,88 @@
             var badgeBg = 'rgba(255,193,7,0.14)';
             var badgeBorder = 'rgba(255,193,7,0.4)';
             var badgeColor = '#FFC107';
-            var badgeIcon = '⏳';
-            var badgeText = resp;
+            var badgeDot = '#FFC107';
 
             if (stUpper.includes('APROVAD') || stUpper.includes('CONCLU')) {
                 badgeBg = 'rgba(44,234,188,0.15)';
                 badgeBorder = 'rgba(44,234,188,0.45)';
                 badgeColor = 'var(--menta-viva)';
-                badgeIcon = '✓';
+                badgeDot = 'var(--menta-viva)';
             } else if (stUpper.includes('PEND') || stUpper.includes('DOC') || stUpper.includes('AGUARD')) {
                 badgeBg = 'rgba(255,152,0,0.15)';
                 badgeBorder = 'rgba(255,152,0,0.45)';
                 badgeColor = '#FF9800';
-                badgeIcon = '⚠️';
+                badgeDot = '#FF9800';
             } else if (stUpper.includes('REPROV') || stUpper.includes('CANCEL') || stUpper.includes('NEGAD')) {
                 badgeBg = 'rgba(255,75,75,0.15)';
                 badgeBorder = 'rgba(255,75,75,0.45)';
                 badgeColor = '#FF4B4B';
-                badgeIcon = '✕';
+                badgeDot = '#FF4B4B';
             }
 
+            var infoSubText = 'Prot: ' + prot + (tel ? ' • Tel: ' + tel : '');
+
             return `
-                <div class="driver-report-row" style="display:grid; grid-template-columns: minmax(180px, 2fr) minmax(110px, 1fr) minmax(140px, 1.2fr) minmax(140px, 1.3fr) minmax(160px, 1.8fr); gap:12px; align-items:center; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); padding:12px 16px; border-radius:14px; margin-bottom:8px; transition:all 0.2s ease;" onmouseenter="this.style.background='rgba(255,255,255,0.06)';" onmouseleave="this.style.background='rgba(255,255,255,0.03)';">
+                <div class="driver-report-row" style="display:grid; grid-template-columns: minmax(180px, 2.2fr) minmax(110px, 1fr) minmax(140px, 1.3fr) minmax(130px, 1.2fr) minmax(140px, 1.4fr); gap:12px; align-items:center; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); padding:12px 16px; border-radius:12px; margin-bottom:8px; transition:all 0.2s ease;" onmouseenter="this.style.background='rgba(255,255,255,0.06)';" onmouseleave="this.style.background='rgba(255,255,255,0.03)';">
                     <div>
-                        <div style="font-weight:700; color:#fff; font-size:14px; letter-spacing:0.2px;">${nome}</div>
-                        <div style="font-size:11px; color:var(--azul-gelo); opacity:0.75; font-family:monospace; margin-top:2px;">Prot: ${prot} ${tel ? ' • 📱 ' + tel : ''}</div>
+                        <div style="font-weight:700; color:#fff; font-size:13.5px; letter-spacing:0.2px;">${nome}</div>
+                        <div style="font-size:11px; color:var(--azul-gelo); opacity:0.75; font-family:monospace; margin-top:2px;">${infoSubText}</div>
                     </div>
                     <div>
-                        <span style="font-size:12px; font-weight:600; color:var(--azul-gelo); background:rgba(255,255,255,0.06); padding:4px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); display:inline-block;">
-                            🏢 ${emp}
+                        <span style="font-size:11.5px; font-weight:600; color:var(--azul-gelo); background:rgba(255,255,255,0.06); padding:4px 10px; border-radius:6px; border:1px solid rgba(255,255,255,0.1); display:inline-block;">
+                            ${emp}
                         </span>
                     </div>
                     <div>
                         <span style="font-size:12px; color:var(--azul-gelo); opacity:0.9;">
-                            📌 ${mot}
+                            ${mot}
                         </span>
                     </div>
                     <div>
-                        <span style="display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:800; padding:4px 12px; border-radius:12px; background:${badgeBg}; border:1px solid ${badgeBorder}; color:${badgeColor}; letter-spacing:0.5px; box-shadow: 0 2px 8px ${badgeBg};">
-                            <span>${badgeIcon}</span> ${badgeText}
+                        <span style="display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:800; padding:4px 12px; border-radius:10px; background:${badgeBg}; border:1px solid ${badgeBorder}; color:${badgeColor}; letter-spacing:0.4px;">
+                            <span style="width:6px; height:6px; border-radius:50%; background:${badgeDot}; display:inline-block;"></span>
+                            ${resp}
                         </span>
                     </div>
                     <div style="font-size:11.5px; color:var(--azul-gelo); opacity:0.85;">
-                        📅 ${dataStr}
+                        ${dataStr}
                     </div>
                 </div>`;
         }).join('');
 
-        container.innerHTML = demoBanner + `<div style="display:flex; flex-direction:column; gap:4px;">${rowsHTML}</div>`;
+        var paginationControls = '';
+        if (totalPages > 1) {
+            var prevDisabled = driverReportPage === 1 ? 'disabled style="opacity:0.4; cursor:not-allowed;"' : '';
+            var nextDisabled = driverReportPage === totalPages ? 'disabled style="opacity:0.4; cursor:not-allowed;"' : '';
+
+            paginationControls = `
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-top:16px; padding-top:14px; border-top:1px solid rgba(255,255,255,0.08);">
+                    <div style="font-size:12px; color:var(--azul-gelo); opacity:0.8;">
+                        Exibindo <strong>${startIdx + 1}–${Math.min(endIdx, totalItems)}</strong> de <strong>${totalItems}</strong> registros (Página ${driverReportPage} de ${totalPages})
+                    </div>
+                    <div style="display:flex; gap:8px;">
+                        <button onclick="MudarPaginaDriverReport(-1)" ${prevDisabled} style="padding:6px 14px; border-radius:8px; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.05); color:#fff; font-size:12px; font-weight:600; cursor:pointer; transition:all 0.2s;">
+                            &laquo; Anterior
+                        </button>
+                        <button onclick="MudarPaginaDriverReport(1)" ${nextDisabled} style="padding:6px 14px; border-radius:8px; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.05); color:#fff; font-size:12px; font-weight:600; cursor:pointer; transition:all 0.2s;">
+                            Próxima &raquo;
+                        </button>
+                    </div>
+                </div>`;
+        } else {
+            paginationControls = `
+                <div style="text-align:right; font-size:11.5px; color:var(--azul-gelo); opacity:0.6; margin-top:12px;">
+                    Total de ${totalItems} registro(s) encontrado(s)
+                </div>`;
+        }
+
+        container.innerHTML = demoBanner + `<div style="display:flex; flex-direction:column; gap:2px;">${rowsHTML}</div>` + paginationControls;
     }
 
     async function recarregarReportesDrivers(btn) {
         if (btn) {
             btn.disabled = true;
-            btn.innerHTML = '⏳ Carregando...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Carregando...';
         }
         try {
             const { data, error } = await supabaseClient.from('reportes').select('*').order('created_at', { ascending: false });
@@ -2787,7 +2856,7 @@
         } finally {
             if (btn) {
                 btn.disabled = false;
-                btn.innerHTML = '↻ Sincronizar Status';
+                btn.innerHTML = '<i class="fas fa-sync-alt"></i> Sincronizar Status';
             }
         }
     }
