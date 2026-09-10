@@ -932,7 +932,7 @@
             tag_color: '',
             categoria: 'Avisos',
             titulo: 'Métricas de Frota em Tempo Real atualizadas',
-            subtitulo: 'Painel de mapa de calor e monitoramento de login de motoristas com refresh automático.',
+            subtitulo: 'Painel de mapa de calor e monitoramento de login de entregadores com refresh automático.',
             conteudo: 'A aba de Métricas do portal passou por uma otimização de performance. O acompanhamento da taxa de logados por slots agora é atualizado continuamente a cada 10 minutos com mapas interativos e snapshot em tempo real.',
             imagem_url: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80',
             data: 'Ontem às 18:40',
@@ -1562,17 +1562,17 @@
             finalHTML += '<section id="mapas"><div class="section-header"><h2 class="section-title">Nossos <span class="text-neon">Mapas</span></h2><p class="section-desc">Passe o mouse no menu abaixo para selecionar sua praça e região</p></div><div style="text-align:center;margin-bottom:40px;position:relative;z-index:50;"><div class="mapa-master-dropdown" onmouseenter="this.classList.add(\'hover-lock\')" onmouseleave="this.classList.remove(\'hover-lock\')"><button class="mapa-master-btn">Mapas</button><div class="mapa-lv1-menu"></div></div></div><div id="mapasContent"><div class="lazy-loading-hint"><span class="lazy-spin"></span>Carregando mapas...</div></div></section>';
             finalHTML += '<section id="cadastro">' +
                 '<div class="section-header">' +
-                    '<h2 class="section-title">Status de <span class="text-neon">Cadastro & Drivers</span></h2>' +
-                    '<p class="section-desc">Acompanhe a aprovação de motoristas e consulte o status de abertura de praças em tempo real.</p>' +
+                    '<h2 class="section-title">Status de <span class="text-neon">Cadastro & Entregadores</span></h2>' +
+                    '<p class="section-desc">Acompanhe a aprovação de entregadores e consulte o status de abertura de praças em tempo real.</p>' +
                 '</div>' +
                 '<div class="glass-panel" style="padding:24px; margin-bottom:32px; border-radius:24px; border:1.5px solid rgba(44,234,188,0.25); background:rgba(4,8,28,0.8); box-shadow:0 12px 36px rgba(0,0,0,0.4);">' +
                     '<div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:20px; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:16px;">' +
                         '<div>' +
                             '<h3 style="margin:0; font-size:18px; color:var(--menta-viva); display:flex; align-items:center; gap:8px;">' +
-                                '<i class="fas fa-user-check" style="font-size:18px;"></i> Acompanhamento de Aprovação do Driver' +
+                                '<i class="fas fa-user-check" style="font-size:18px;"></i> Acompanhamento de Aprovação do Entregador' +
                             '</h3>' +
                             '<p style="margin:4px 0 0 0; font-size:13px; color:var(--azul-gelo); opacity:0.85;">' +
-                                'Verifique se o motorista já teve o cadastro aprovado, se está em análise ou com pendência de documentos.' +
+                                'Verifique se o entregador já teve o cadastro aprovado, se está em análise ou com pendência de documentos.' +
                             '</p>' +
                         '</div>' +
                         '<div style="display:flex; gap:10px; align-items:center;">' +
@@ -3080,7 +3080,7 @@
             </div>` : '';
 
         var rowsHTML = pagedItems.map(function(item) {
-            var nome = item.nome_driver || 'Motorista Não Identificado';
+            var nome = item.nome_driver || 'Entregador Não Identificado';
             var prot = item.protocolo || '-';
             var displayProt = prot;
             if (displayProt && !displayProt.startsWith('#') && displayProt !== '-') displayProt = '#' + displayProt;
@@ -3216,7 +3216,7 @@
         var body = document.getElementById('reporteModalBody');
         if (!modal || !body) return;
 
-        var nome = item.nome_driver || 'Motorista Não Identificado';
+        var nome = item.nome_driver || 'Entregador Não Identificado';
         var prot = item.protocolo || '-';
         if (prot && !prot.startsWith('#') && prot !== '-') prot = '#' + prot;
         var cpf = item.cpf || 'Não informado';
@@ -3245,7 +3245,7 @@
 
             <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:14px; margin-bottom:20px; background:rgba(255,255,255,0.03); padding:16px; border-radius:14px; border:1px solid rgba(255,255,255,0.06);">
                 <div>
-                    <div style="font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; color:var(--azul-gelo); opacity:0.6; margin-bottom:3px;">Nome do Motorista</div>
+                    <div style="font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; color:var(--azul-gelo); opacity:0.6; margin-bottom:3px;">Nome do Entregador</div>
                     <div style="font-size:14px; font-weight:700; color:#fff;">${nome}</div>
                 </div>
                 <div>
