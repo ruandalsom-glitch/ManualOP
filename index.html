@@ -3059,7 +3059,10 @@
             var dataDisplay = '-';
             if (dataRaw) {
                 var dStr = String(dataRaw).trim();
-                if (dStr.includes('T')) {
+                if (/^\d{4}-\d{2}-\d{2}/.test(dStr)) {
+                    var parts = dStr.split('T')[0].split(' ')[0].split('-');
+                    dataDisplay = parts[2] + '/' + parts[1] + '/' + parts[0];
+                } else if (dStr.includes('T')) {
                     try {
                         var dateObj = new Date(dStr);
                         if (!isNaN(dateObj.getTime())) {
@@ -3068,7 +3071,7 @@
                             var year = dateObj.getFullYear();
                             var hours = String(dateObj.getHours()).padStart(2, '0');
                             var mins = String(dateObj.getMinutes()).padStart(2, '0');
-                            dataDisplay = day + '/' + month + '/' + year + ' ' + hours + ':' + mins;
+                            dataDisplay = day + '/' + month + '/' + year + (hours !== '00' ? ' ' + hours + ':' + mins : '');
                         } else {
                             dataDisplay = dStr;
                         }
