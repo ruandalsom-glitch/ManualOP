@@ -116,6 +116,35 @@
                 -webkit-backdrop-filter: blur(24px);
             }
         }
+        /* DRIVER APPROVAL / REPORTES STYLES */
+        .driver-filter-pill {
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--azul-gelo);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .driver-filter-pill:hover {
+            border-color: rgba(44, 234, 188, 0.4);
+            color: var(--menta-viva);
+        }
+        .driver-filter-pill.active {
+            background: rgba(44, 234, 188, 0.2);
+            border-color: var(--menta-viva);
+            color: var(--menta-viva);
+            font-weight: 800;
+            box-shadow: 0 0 10px rgba(44, 234, 188, 0.25);
+        }
+        @media (max-width: 900px) {
+            .driver-report-row {
+                grid-template-columns: 1fr !important;
+                gap: 8px !important;
+            }
+        }
         .glass-panel::after {
             content: '';
             position: absolute;
@@ -1117,14 +1146,15 @@
                 });
             }
 
-            const [hc, el, pr, de, ma, ca, pe] = await Promise.all([
+            const [hc, el, pr, de, ma, ca, pe, rep] = await Promise.all([
                 supabaseClient.from('home_config').select('*').order('ordem', { ascending: true }),
                 supabaseClient.from('elite').select('*').order('ordem', { ascending: true }),
                 supabaseClient.from('promocoes').select('*').order('ordem', { ascending: true }),
                 supabaseClient.from('dedicado').select('*'),
                 supabaseClient.from('mapas').select('*').order('ordem', { ascending: true }),
                 supabaseClient.from('cadastro').select('*'),
-                supabaseClient.from('procedimentos').select('*').order('ordem', { ascending: true })
+                supabaseClient.from('procedimentos').select('*').order('ordem', { ascending: true }),
+                supabaseClient.from('reportes').select('*').order('created_at', { ascending: false }).then(r => r).catch(function(){ return { data: null }; })
             ]);
 
             // Debug errors or empty data
@@ -1147,7 +1177,10 @@
                     'nome':'Nome','uuid':'UUID','data':'Data','status':'Status','regiao':'Regiao','região':'Regiao',
                     'link_mapa':'Link_Mapa','link mapa':'Link_Mapa', 'texto_verso':'Texto_Verso', 'mecânica':'Texto_Verso',
                     'link':'Link','intencao':'Intencao','intenção':'Intencao',
-                    'texto_info':'Texto_Info','secao':'Secao','seção':'Secao'
+                    'texto_info':'Texto_Info','secao':'Secao','seção':'Secao',
+                    'driver_name':'Driver_Name', 'nome_driver':'Driver_Name', 'driver':'Driver_Name', 'motorista':'Driver_Name',
+                    'cpf':'CPF', 'telefone':'Telefone', 'observacao':'Observacao', 'observação':'Observacao',
+                    'solicitante':'Solicitante', 'tipo_solicitacao':'Tipo_Solicitacao'
                 };
                 return arr.map(obj => {
                     let n = {};
@@ -1182,6 +1215,7 @@
                     Mapas: mapKeys(ma.data),
                     Cadastro: mapKeys(ca.data),
                     Procedimentos: mapKeys(pe.data),
+                    Reportes: (rep && rep.data && rep.data.length > 0) ? mapKeys(rep.data) : [],
                     News: (newsFetch && newsFetch.data && newsFetch.data.length > 0) ? mapKeys(newsFetch.data) : null,
                     Info: (infoFetch && infoFetch.data) ? mapKeys(infoFetch.data) : []
                 },
@@ -1202,6 +1236,7 @@
                 if (document.getElementById('cadastroGrid')) {
                     clearInterval(checkDOM);
                     integrarAbaNaSite(r.dados);
+                    renderDriverReportes(r.dados.Reportes);
                 }
             }, 50);
             
@@ -1210,6 +1245,7 @@
                 clearInterval(checkDOM);
                 if (!document.getElementById('cadastroGrid')) {
                     integrarAbaNaSite(r.dados);
+                    renderDriverReportes(r.dados.Reportes);
                 }
             }, 2500);
             
@@ -1489,7 +1525,56 @@
                 finalHTML += '<section id="info"><div class="section-header"><h2 class="section-title">Informações <span class="text-neon">Operacionais</span></h2><p class="section-desc">Central de avisos, orientações e informações da frota</p></div>' + selInfoHTML + '<div id="infoContent"><div class="grid-container"></div></div></section>';
             }
             finalHTML += '<section id="mapas"><div class="section-header"><h2 class="section-title">Nossos <span class="text-neon">Mapas</span></h2><p class="section-desc">Passe o mouse no menu abaixo para selecionar sua praça e região</p></div><div style="text-align:center;margin-bottom:40px;position:relative;z-index:50;"><div class="mapa-master-dropdown" onmouseenter="this.classList.add(\'hover-lock\')" onmouseleave="this.classList.remove(\'hover-lock\')"><button class="mapa-master-btn">Mapas</button><div class="mapa-lv1-menu"></div></div></div><div id="mapasContent"><div class="lazy-loading-hint"><span class="lazy-spin"></span>Carregando mapas...</div></div></section>';
-            finalHTML += '<section id="cadastro"><div class="section-header"><h2 class="section-title">Status de <span class="text-neon">Cadastro</span></h2><p class="section-desc">Confira abaixo quais praças e subpraças estão com cadastro aberto ou fechado no momento.</p></div><div class="grid-container" id="cadastroGrid"><div style="grid-column:1/-1;" class="lazy-loading-hint"><span class="lazy-spin"></span>Carregando status...</div></div></section>';
+            finalHTML += '<section id="cadastro">' +
+                '<div class="section-header">' +
+                    '<h2 class="section-title">Status de <span class="text-neon">Cadastro & Drivers</span></h2>' +
+                    '<p class="section-desc">Acompanhe a aprovação de motoristas e consulte o status de abertura de praças em tempo real.</p>' +
+                '</div>' +
+                '<div class="glass-panel" style="padding:24px; margin-bottom:32px; border-radius:24px; border:1.5px solid rgba(44,234,188,0.25); background:rgba(4,8,28,0.8); box-shadow:0 12px 36px rgba(0,0,0,0.4);">' +
+                    '<div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:20px; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:16px;">' +
+                        '<div>' +
+                            '<h3 style="margin:0; font-size:18px; color:var(--menta-viva); display:flex; align-items:center; gap:10px;">' +
+                                '<span style="font-size:22px;">🛡️</span> Acompanhamento de Aprovação do Driver' +
+                            '</h3>' +
+                            '<p style="margin:4px 0 0 0; font-size:13px; color:var(--azul-gelo); opacity:0.85;">' +
+                                'Verifique se o motorista já teve o cadastro aprovado, se está em análise ou com pendência de documentos.' +
+                            '</p>' +
+                        '</div>' +
+                        '<div style="display:flex; gap:10px; align-items:center;">' +
+                            '<button onclick="recarregarReportesDrivers(this)" style="display:inline-flex; align-items:center; gap:6px; padding:8px 18px; border-radius:var(--radius-full); border:1px solid rgba(44,234,188,0.4); background:rgba(44,234,188,0.1); color:var(--menta-viva); font-size:12px; font-weight:700; cursor:pointer; transition:all 0.2s;">' +
+                                '↻ Sincronizar Status' +
+                            '</button>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div style="display:flex; flex-wrap:wrap; gap:12px; margin-bottom:20px; align-items:center;">' +
+                        '<div style="flex:1; min-width:260px; position:relative;">' +
+                            '<input type="text" id="driverSearchInput" placeholder="🔍 Digite o Nome, CPF ou Praça do driver..." oninput="filtrarReportesDrivers()" ' +
+                                'style="width:100%; padding:10px 16px 10px 38px; border-radius:12px; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.05); color:#fff; font-size:13px; font-family:inherit; outline:none; transition:all 0.2s;" ' +
+                                'onfocus="this.style.borderColor=\'var(--menta-viva)\'; this.style.background=\'rgba(44,234,188,0.05)\';" ' +
+                                'onblur="this.style.borderColor=\'rgba(255,255,255,0.15)\'; this.style.background=\'rgba(255,255,255,0.05)\';"' +
+                            '>' +
+                        '</div>' +
+                        '<div style="display:flex; gap:6px; flex-wrap:wrap;" id="driverStatusPills">' +
+                            '<button class="driver-filter-pill active" data-status="TODOS" onclick="setDriverStatusFilter(\'TODOS\', this)">Todos</button>' +
+                            '<button class="driver-filter-pill" data-status="APROVADO" onclick="setDriverStatusFilter(\'APROVADO\', this)">🟢 Aprovado</button>' +
+                            '<button class="driver-filter-pill" data-status="EM ANÁLISE" onclick="setDriverStatusFilter(\'EM ANÁLISE\', this)">🟡 Em Análise</button>' +
+                            '<button class="driver-filter-pill" data-status="PENDENTE" onclick="setDriverStatusFilter(\'PENDENTE\', this)">🟠 Pendente</button>' +
+                            '<button class="driver-filter-pill" data-status="REPROVADO" onclick="setDriverStatusFilter(\'REPROVADO\', this)">🔴 Reprovado</button>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div id="driverReportesContainer" style="min-height:100px;">' +
+                        '<div class="lazy-loading-hint"><span class="lazy-spin"></span>Carregando acompanhamento de drivers...</div>' +
+                    '</div>' +
+                '</div>' +
+                '<div style="margin-top:32px;">' +
+                    '<h3 style="font-size:16px; color:var(--menta-viva); margin-bottom:14px; display:flex; align-items:center; gap:8px;">' +
+                        '<span>📍</span> Status de Abertura de Cadastro por Praça' +
+                    '</h3>' +
+                    '<div class="grid-container" id="cadastroGrid">' +
+                        '<div style="grid-column:1/-1;" class="lazy-loading-hint"><span class="lazy-spin"></span>Carregando status...</div>' +
+                    '</div>' +
+                '</div>' +
+            '</section>';
 
             var isMarketingUser = respostaObj.isMarketing || false;
             var isCadastroUser = respostaObj.isCadastro || false;
@@ -2551,6 +2636,161 @@
         var _bF=renderFullSite;
         renderFullSite=function(r){ _bF(r); setTimeout(buildMap,400); };
     })();
+
+    /* ── ACOMPANHAMENTO DE APROVAÇÃO DO DRIVER (REPORTES) ───────────── */
+    let globalReportesDrivers = [];
+    let currentDriverStatusFilter = 'TODOS';
+
+    function renderDriverReportes(dados) {
+        if (!dados || dados.length === 0) {
+            globalReportesDrivers = [
+                { Driver_Name: 'Carlos Eduardo da Silva', CPF: '123.456.789-00', Praca: 'Campinas', Status: 'APROVADO', Data: '10/09/2026 14:20', Observacao: 'Cadastro aprovado e liberado para rodar.', Solicitante: 'Equipe Cadastro', isDemo: true },
+                { Driver_Name: 'Mariana Souza Oliveira', CPF: '234.567.890-11', Praca: 'Sumaré', Status: 'EM ANÁLISE', Data: '10/09/2026 11:45', Observacao: 'CNH e Comprovante em validação final.', Solicitante: 'Jira Bot', isDemo: true },
+                { Driver_Name: 'Roberto Alves Santos', CPF: '345.678.901-22', Praca: 'Hortolândia', Status: 'PENDENTE', Data: '09/09/2026 18:30', Observacao: 'Falta enviar foto da CNH aberta com EAR.', Solicitante: 'Suporte Operacional', isDemo: true },
+                { Driver_Name: 'Lucas Gabriel Pereira', CPF: '456.789.012-33', Praca: 'Americana', Status: 'REPROVADO', Data: '08/09/2026 09:15', Observacao: 'Divergência de titularidade na documentação.', Solicitante: 'Equipe Cadastro', isDemo: true }
+            ];
+        } else {
+            globalReportesDrivers = dados;
+        }
+        filtrarReportesDrivers();
+    }
+
+    function setDriverStatusFilter(status, btnElement) {
+        currentDriverStatusFilter = status;
+        var btns = document.querySelectorAll('.driver-filter-pill');
+        btns.forEach(function(b){ b.classList.remove('active'); });
+        if (btnElement) btnElement.classList.add('active');
+        filtrarReportesDrivers();
+    }
+
+    function filtrarReportesDrivers() {
+        var container = document.getElementById('driverReportesContainer');
+        if (!container) return;
+
+        var inputEl = document.getElementById('driverSearchInput');
+        var inputVal = (inputEl ? inputEl.value : '').toLowerCase().trim();
+
+        var filtrados = globalReportesDrivers.filter(function(item) {
+            var name = (item.Driver_Name || item.Nome || item.driver_name || '').toString().toLowerCase();
+            var cpf = (item.CPF || item.cpf || '').toString().toLowerCase();
+            var praca = (item.Praca || item.praca || '').toString().toLowerCase();
+            var status = (item.Status || item.status || '').toString().toUpperCase().trim();
+
+            var matchText = !inputVal || name.includes(inputVal) || cpf.includes(inputVal) || praca.includes(inputVal);
+            var matchStatus = (currentDriverStatusFilter === 'TODOS') || (status === currentDriverStatusFilter);
+
+            return matchText && matchStatus;
+        });
+
+        if (filtrados.length === 0) {
+            container.innerHTML = `
+                <div style="text-align:center; padding:32px 16px; color:var(--azul-gelo); opacity:0.75;">
+                    <span style="font-size:32px; display:block; margin-bottom:8px;">🔍</span>
+                    <p style="margin:0; font-weight:600; font-size:14px;">Nenhum motorista encontrado com os filtros selecionados.</p>
+                    <p style="margin:4px 0 0 0; font-size:12px;">Tente digitar outro nome, CPF ou alterar o filtro de status acima.</p>
+                </div>`;
+            return;
+        }
+
+        var isDemoMode = filtrados.some(function(i){ return i.isDemo; });
+        var demoBanner = isDemoMode ? `
+            <div style="margin-bottom:14px; padding:10px 16px; border-radius:12px; background:rgba(44,234,188,0.06); border:1px solid rgba(44,234,188,0.22); font-size:12px; color:var(--menta-viva); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+                <span>ℹ️ <strong>Demonstração do Layout:</strong> Exibindo dados de teste enquanto a tabela <code>reportes</code> é alimentada no Supabase.</span>
+                <span style="font-size:11px; opacity:0.85;">Script SQL pronto em: <code>supabase_reportes_drivers.sql</code></span>
+            </div>` : '';
+
+        var rowsHTML = filtrados.map(function(item) {
+            var nome = item.Driver_Name || item.Nome || item.driver_name || 'Motorista Não Identificado';
+            var cpf = item.CPF || item.cpf || '-';
+            var praca = item.Praca || item.praca || 'Geral';
+            var st = (item.Status || item.status || 'EM ANÁLISE').toString().toUpperCase().trim();
+            var obs = item.Observacao || item.observacao || item.Detalhamento || 'Sem observações cadastradas.';
+            var dataStr = item.Data || item.updated_at || item.created_at || '-';
+            
+            if (dataStr !== '-' && dataStr.includes('T')) {
+                try {
+                    let d = new Date(dataStr);
+                    dataStr = String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + d.getFullYear() + ' ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+                } catch(e){}
+            }
+
+            var badgeBg = 'rgba(255,193,7,0.14)';
+            var badgeBorder = 'rgba(255,193,7,0.4)';
+            var badgeColor = '#FFC107';
+            var badgeIcon = '⏳';
+            var badgeText = st;
+
+            if (st === 'APROVADO' || st === 'APROVADA') {
+                badgeBg = 'rgba(44,234,188,0.15)';
+                badgeBorder = 'rgba(44,234,188,0.45)';
+                badgeColor = 'var(--menta-viva)';
+                badgeIcon = '✓';
+                badgeText = 'APROVADO';
+            } else if (st === 'PENDENTE' || st.includes('PEND') || st.includes('DOC')) {
+                badgeBg = 'rgba(255,152,0,0.15)';
+                badgeBorder = 'rgba(255,152,0,0.45)';
+                badgeColor = '#FF9800';
+                badgeIcon = '⚠️';
+                badgeText = 'PENDENTE';
+            } else if (st === 'REPROVADO' || st === 'REPROVADA' || st === 'CANCELADO') {
+                badgeBg = 'rgba(255,75,75,0.15)';
+                badgeBorder = 'rgba(255,75,75,0.45)';
+                badgeColor = '#FF4B4B';
+                badgeIcon = '✕';
+                badgeText = 'REPROVADO';
+            }
+
+            return `
+                <div class="driver-report-row" style="display:grid; grid-template-columns: minmax(180px, 2fr) minmax(110px, 1fr) minmax(120px, 1fr) minmax(130px, 1.2fr) minmax(180px, 2.2fr); gap:12px; align-items:center; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); padding:12px 16px; border-radius:14px; margin-bottom:8px; transition:all 0.2s ease;" onmouseenter="this.style.background='rgba(255,255,255,0.06)';" onmouseleave="this.style.background='rgba(255,255,255,0.03)';">
+                    <div>
+                        <div style="font-weight:700; color:#fff; font-size:14px; letter-spacing:0.2px;">${nome}</div>
+                        <div style="font-size:11px; color:var(--azul-gelo); opacity:0.75; font-family:monospace; margin-top:2px;">CPF: ${cpf}</div>
+                    </div>
+                    <div>
+                        <span style="font-size:12px; font-weight:600; color:var(--azul-gelo); background:rgba(255,255,255,0.06); padding:4px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); display:inline-block;">
+                            📍 ${praca}
+                        </span>
+                    </div>
+                    <div>
+                        <span style="display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:800; padding:4px 12px; border-radius:12px; background:${badgeBg}; border:1px solid ${badgeBorder}; color:${badgeColor}; letter-spacing:0.5px; box-shadow: 0 2px 8px ${badgeBg};">
+                            <span>${badgeIcon}</span> ${badgeText}
+                        </span>
+                    </div>
+                    <div style="font-size:11.5px; color:var(--azul-gelo); opacity:0.85;">
+                        📅 ${dataStr}
+                    </div>
+                    <div style="font-size:12px; color:var(--azul-gelo); opacity:0.9; background:rgba(0,0,0,0.2); padding:6px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.05);" title="${obs}">
+                        💬 ${obs}
+                    </div>
+                </div>`;
+        }).join('');
+
+        container.innerHTML = demoBanner + `<div style="display:flex; flex-direction:column; gap:4px;">${rowsHTML}</div>`;
+    }
+
+    async function recarregarReportesDrivers(btn) {
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = '⏳ Carregando...';
+        }
+        try {
+            const { data, error } = await supabaseClient.from('reportes').select('*').order('created_at', { ascending: false });
+            if (error) {
+                console.error('Erro ao buscar reportes no Supabase:', error);
+                renderDriverReportes([]);
+            } else {
+                renderDriverReportes(data || []);
+            }
+        } catch(err) {
+            console.error(err);
+            renderDriverReportes([]);
+        } finally {
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = '↻ Sincronizar Status';
+            }
+        }
+    }
     </script>
 </body>
 </html>
