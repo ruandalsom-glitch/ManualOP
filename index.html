@@ -1189,7 +1189,7 @@
                 supabaseClient.from('mapas').select('*').order('ordem', { ascending: true }),
                 supabaseClient.from('cadastro').select('*'),
                 supabaseClient.from('procedimentos').select('*').order('ordem', { ascending: true }),
-                supabaseClient.from('reportes').select('*').order('data_ultima_mensagem', { ascending: false, nullsFirst: false }).limit(3000).then(r => r).catch(function(){ return { data: null }; })
+                supabaseClient.from('reportes').select('id,protocolo,nome_driver,cpf,motivo,empresa,telefone,resposta_final,data_ultima_mensagem').order('data_ultima_mensagem', { ascending: false, nullsFirst: false }).limit(3000).then(r => r).catch(function(){ return { data: null }; })
             ]);
 
             // Debug errors or empty data
@@ -2856,16 +2856,36 @@
     }
 
     function renderDriverReportes(dados) {
-        var rawList = (!dados || dados.length === 0) ? [
+        var listToUse = dados;
+        if (!listToUse || listToUse.length === 0) {
+            try {
+                var cached = sessionStorage.getItem('cache_reportes_drivers');
+                if (cached) {
+                    var parsed = JSON.parse(cached);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        listToUse = parsed;
+                    }
+                }
+            } catch(e) {}
+        }
+
+        var rawList = (!listToUse || listToUse.length === 0) ? [
             { protocolo: '4402125', nome_driver: 'Erick dos Santos Ribeiro', cpf: '213.515.737-64', motivo: 'Entrada Franquia', empresa: 'Recreio', telefone: '(21) 92197-9821', resposta_final: 'FALTA_DOCUMENTO', mensagem_resposta: 'Aguardando foto legível da CNH com EAR.', data_ultima_mensagem: '10/09/2026 14:20', isDemo: true },
             { protocolo: '4664691', nome_driver: 'Matheus Manoel dos Santos', cpf: '208.204.337-13', motivo: 'Entrada Franquia', empresa: 'Recreio', telefone: '(21) 92199-3878', resposta_final: 'Aprovado_concluido', mensagem_resposta: 'Driver liberado e ativo no aplicativo.', data_ultima_mensagem: '10/09/2026 11:45', isDemo: true },
             { protocolo: '4695386', nome_driver: 'Jonas Francisco', cpf: '468.799.698-10', motivo: 'Entrada Franquia', empresa: 'Sumarezinho', telefone: '(11) 98791-0372', resposta_final: 'PENDENCIA', mensagem_resposta: 'Pendente verificação de dados bancários.', data_ultima_mensagem: '09/09/2026 18:30', isDemo: true },
             { protocolo: '4914667', nome_driver: 'Marcos Vinicius Da Silva Dos Santos', cpf: '205.069.247-18', motivo: 'Entrada Franquia', empresa: 'Recreio', telefone: '(21) 92198-3972', resposta_final: 'Aprovado_concluido', mensagem_resposta: 'Cadastro totalmente aprovado.', data_ultima_mensagem: '08/09/2026 09:15', isDemo: true }
-        ] : dados;
+        ] : listToUse;
 
         globalReportesDrivers = rawList.map(function(item) {
             return normalizarDriverReporte(item);
         });
+
+        try {
+            if (rawList && rawList.length > 0 && !rawList[0].isDemo) {
+                sessionStorage.setItem('cache_reportes_drivers', JSON.stringify(rawList));
+                sessionStorage.setItem('cache_reportes_drivers_time', Date.now().toString());
+            }
+        } catch(e) {}
 
         filtrarReportesDrivers();
     }
@@ -3199,7 +3219,7 @@
         container.innerHTML = demoBanner + `<div style="display:flex; flex-direction:column; gap:2px;">${rowsHTML}</div>` + paginationControls;
     }
 
-    function abrirReporteModal(protocoloOuIndex) {
+    async function abrirReporteModal(protocoloOuIndex) {
         var item = null;
         if (typeof protocoloOuIndex === 'number') {
             item = globalFiltradosDrivers[protocoloOuIndex];
@@ -3215,6 +3235,36 @@
         var modal = document.getElementById('reporteModal');
         var body = document.getElementById('reporteModalBody');
         if (!modal || !body) return;
+
+        // Se a mensagem de resposta ainda não foi carregada no objeto local, busca no Supabase on-demand
+        if (item.mensagem_resposta === undefined || item.mensagem_resposta === null || item._needsFetchMsg) {
+            var cleanProt = String(item.protocolo || '').replace(/^#/, '').trim();
+            body.innerHTML = `
+                <div style="text-align:center; padding:36px 20px; color:var(--azul-gelo);">
+                    <i class="fas fa-spinner fa-spin" style="font-size:26px; color:var(--menta-viva); margin-bottom:12px;"></i>
+                    <p style="margin:0; font-size:14px; font-weight:700; color:#fff;">Carregando resposta do protocolo #${cleanProt}...</p>
+                    <p style="margin:4px 0 0 0; font-size:12px; opacity:0.7;">Buscando detalhes complementares no servidor.</p>
+                </div>`;
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('reportes')
+                    .select('mensagem_resposta')
+                    .eq('protocolo', cleanProt)
+                    .maybeSingle();
+
+                if (!error && data && data.mensagem_resposta !== undefined) {
+                    item.mensagem_resposta = data.mensagem_resposta;
+                } else if (!item.mensagem_resposta) {
+                    item.mensagem_resposta = '';
+                }
+                item._needsFetchMsg = false;
+            } catch(e) {
+                console.error('Erro ao buscar resposta do protocolo:', e);
+            }
+        }
 
         var nome = item.nome_driver || 'Entregador Não Identificado';
         var prot = item.protocolo || '-';
@@ -3297,7 +3347,7 @@
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Carregando...';
         }
         try {
-            const { data, error } = await supabaseClient.from('reportes').select('*').order('data_ultima_mensagem', { ascending: false, nullsFirst: false }).limit(3000);
+            const { data, error } = await supabaseClient.from('reportes').select('id,protocolo,nome_driver,cpf,motivo,empresa,telefone,resposta_final,data_ultima_mensagem').order('data_ultima_mensagem', { ascending: false, nullsFirst: false }).limit(3000);
             if (error) {
                 console.error('Erro ao buscar reportes no Supabase:', error);
                 renderDriverReportes([]);
