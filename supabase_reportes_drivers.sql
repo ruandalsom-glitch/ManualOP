@@ -35,10 +35,10 @@ DROP POLICY IF EXISTS "Permitir insercao e delecao de reportes" ON public.report
 CREATE POLICY "Permitir insercao e delecao de reportes" ON public.reportes 
     FOR ALL USING (true);
 
--- 4. Dados de exemplo com a nova coluna mensagem_resposta e cpf
+-- 4. Dados de exemplo com as 9 colunas e os status oficiais
 INSERT INTO public.reportes (protocolo, nome_driver, cpf, motivo, empresa, telefone, resposta_final, mensagem_resposta, data_ultima_mensagem) 
 VALUES
-('#REP-101', 'Carlos Eduardo da Silva', '123.456.789-00', 'Problemas Cadastrais / Liberação', 'GO Sumarezinho', '(19) 99123-4567', 'APROVADO', 'Cadastro liberado com sucesso. Driver ativo no aplicativo.', '10/09/2026 14:20'),
-('#REP-102', 'Mariana Souza Oliveira', '234.567.890-11', 'Contestação de Promoções', 'GO Campinas', '(19) 99234-5678', 'EM ANÁLISE', 'Aguardando validação da equipe financeira.', '10/09/2026 11:45'),
-('#REP-103', 'Roberto Alves Santos', '345.678.901-22', 'Contestação de Garantido FE', 'GO Hortolândia', '(19) 99345-6789', 'PENDENTE', 'Falta enviar fotoLegível da CNH aberta com EAR.', '09/09/2026 18:30'),
-('#REP-104', 'Lucas Gabriel Pereira', '456.789.012-33', 'Dúvidas Gerais', 'GO Americana', '(19) 99456-7890', 'REPROVADO', 'Divergência de titularidade nos documentos informados.', '08/09/2026 09:15');
+('4402125', 'Erick dos Santos Ribeiro', '213.515.737-64', 'Entrada Franquia', 'Recreio', '(21) 92197-9821', 'FALTA_DOCUMENTO', 'Aguardando foto legível da CNH com EAR.', '10/09/2026 14:20'),
+('4664691', 'Matheus Manoel dos Santos', '208.204.337-13', 'Entrada Franquia', 'Recreio', '(21) 92199-3878', 'Aprovado_concluido', 'Driver liberado e ativo no aplicativo.', '10/09/2026 11:45'),
+('4695386', 'Jonas Francisco', '468.799.698-10', 'Entrada Franquia', 'Sumarezinho', '(11) 98791-0372', 'PENDENCIA', 'Pendente verificação de dados bancários.', '09/09/2026 18:30'),
+('4914667', 'Marcos Vinicius Da Silva Dos Santos', '205.069.247-18', 'Entrada Franquia', 'Recreio', '(21) 92198-3972', 'Aprovado_concluido', 'Cadastro totalmente aprovado.', '08/09/2026 09:15');
