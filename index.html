@@ -732,6 +732,60 @@
         @keyframes toastIn { from { opacity: 0; transform: translateY(16px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
         @keyframes toastOut { to { opacity: 0; transform: translateY(10px) scale(0.95); } }
 
+        /* PAGINAÇÃO ULTRA-MODERNA */
+        .btn-page {
+            background: #0d1441;
+            border: 1px solid rgba(44, 234, 188, 0.18);
+            color: #ffffff;
+            min-width: 34px;
+            height: 34px;
+            padding: 0 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s ease;
+        }
+
+        .btn-page:hover:not(:disabled) {
+            background: rgba(44, 234, 188, 0.2);
+            border-color: #2CEABC;
+            transform: translateY(-1px);
+        }
+
+        .btn-page.active {
+            background: linear-gradient(135deg, #2CEABC, #00c49a);
+            color: #060a22;
+            border-color: #2CEABC;
+            box-shadow: 0 0 12px rgba(44, 234, 188, 0.4);
+            font-weight: 800;
+        }
+
+        .btn-page:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .page-size-selector {
+            background: #0d1441;
+            border: 1px solid rgba(44, 234, 188, 0.2);
+            color: #ffffff;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 12.5px;
+            font-family: inherit;
+            outline: none;
+            cursor: pointer;
+            transition: border-color 0.2s ease;
+        }
+
+        .page-size-selector:focus {
+            border-color: var(--menta-viva);
+        }
+
         /* MODAL E CARD DE LOGIN ULTRA-MODERNO */
         #login-container { position: fixed; inset: 0; background: transparent; display: flex; justify-content: center; align-items: center; z-index: 10000; }
         #login-container::before {
@@ -2204,6 +2258,17 @@
                             '<i class="far fa-calendar-alt" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--menta-viva); opacity:0.85; font-size:13px; pointer-events:none;"></i>' +
                             '<i class="fas fa-chevron-down" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); color:var(--azul-gelo); opacity:0.6; font-size:10px; pointer-events:none;"></i>' +
                         '</div>' +
+                        '<div style="min-width:185px; position:relative;">' +
+                            '<select id="driverCompanyFilterSelect" onchange="filtrarReportesDrivers()" ' +
+                                'style="width:100%; padding:10px 30px 10px 36px; border-radius:12px; border:1px solid rgba(255,255,255,0.15); background:rgba(20,25,35,0.95); color:#fff; font-size:12.5px; font-family:inherit; outline:none; cursor:pointer; appearance:none; transition:all 0.2s;" ' +
+                                'onfocus="this.style.borderColor=\'var(--menta-viva)\';" ' +
+                                'onblur="this.style.borderColor=\'rgba(255,255,255,0.15)\';"' +
+                            '>' +
+                                '<option value="TODAS">Todas as Empresas / Regiões</option>' +
+                            '</select>' +
+                            '<i class="fas fa-building" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--menta-viva); opacity:0.85; font-size:12px; pointer-events:none;"></i>' +
+                            '<i class="fas fa-chevron-down" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); color:var(--azul-gelo); opacity:0.6; font-size:10px; pointer-events:none;"></i>' +
+                        '</div>' +
                         '<div style="display:flex; gap:6px; flex-wrap:wrap;" id="driverStatusPills">' +
                             '<button class="driver-filter-pill active" data-status="TODOS" onclick="setDriverStatusFilter(\'TODOS\', this)">Todos</button>' +
                             '<button class="driver-filter-pill" data-status="APROVADO_CONCLUIDO" onclick="setDriverStatusFilter(\'APROVADO_CONCLUIDO\', this)"><span class="status-dot-sm green"></span>Aprovado</button>' +
@@ -3572,6 +3637,75 @@
         }
     }
 
+    function atualizarDropdownEmpresasDrivers() {
+        var selectEl = document.getElementById('driverCompanyFilterSelect');
+        if (!selectEl) return;
+
+        var selectedVal = selectEl.value || 'TODAS';
+        var empresasSet = new Set();
+
+        globalReportesDrivers.forEach(function(item) {
+            var emp = (item.empresa || item.Empresa || item.Praca || '').toString().trim();
+            if (emp && emp !== '-' && emp.toLowerCase() !== 'geral') {
+                empresasSet.add(emp);
+            }
+        });
+
+        var empresasArr = Array.from(empresasSet).sort(function(a, b) {
+            return a.localeCompare(b, 'pt-BR', { sensitivity: 'base' });
+        });
+
+        var html = '<option value="TODAS">Todas as Empresas / Regiões</option>';
+        empresasArr.forEach(function(emp) {
+            var isSel = (emp.toLowerCase() === selectedVal.toLowerCase()) ? ' selected' : '';
+            html += '<option value="' + emp.replace(/"/g, '&quot;') + '"' + isSel + '>' + emp + '</option>';
+        });
+
+        selectEl.innerHTML = html;
+    }
+
+    function copiarProtocoloDriver(cleanProt, btnEl) {
+        if (!cleanProt || cleanProt === '-') return;
+        var textToCopy = String(cleanProt).replace(/^#/, '').trim();
+        
+        function feedbackSucesso() {
+            if (btnEl) {
+                var origHTML = btnEl.innerHTML;
+                btnEl.innerHTML = '<i class="fas fa-check" style="color:var(--menta-viva); font-size:11px;"></i>';
+                btnEl.style.borderColor = 'var(--menta-viva)';
+                btnEl.style.background = 'rgba(44,234,188,0.25)';
+                setTimeout(function() {
+                    btnEl.innerHTML = origHTML;
+                    btnEl.style.borderColor = 'rgba(255,255,255,0.15)';
+                    btnEl.style.background = 'rgba(255,255,255,0.06)';
+                }, 1500);
+            }
+            if (typeof mostrarToast === 'function') {
+                mostrarToast('Protocolo ' + textToCopy + ' copiado!', 'success', 2500);
+            }
+        }
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(textToCopy).then(feedbackSucesso).catch(function() {
+                fallbackCopy();
+            });
+        } else {
+            fallbackCopy();
+        }
+
+        function fallbackCopy() {
+            try {
+                var input = document.createElement('textarea');
+                input.value = textToCopy;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+                feedbackSucesso();
+            } catch(e) {}
+        }
+    }
+
     function renderDriverReportes(dados) {
         var listToUse = dados;
         if (!listToUse || listToUse.length === 0) {
@@ -3604,6 +3738,7 @@
             }
         } catch(e) {}
 
+        atualizarDropdownEmpresasDrivers();
         filtrarReportesDrivers();
     }
 
@@ -3739,12 +3874,59 @@
         return true;
     }
 
+    function irParaPaginaDriver(pag) {
+        var totalPages = Math.ceil(globalFiltradosDrivers.length / DRIVER_REPORTS_PER_PAGE) || 1;
+        if (pag >= 1 && pag <= totalPages) {
+            driverReportPage = pag;
+            renderPaginaDriverReportes();
+        }
+    }
+
+    function alterarTamanhoPaginaDriver(val) {
+        var newSize = parseInt(val, 10);
+        if (!isNaN(newSize) && newSize > 0) {
+            DRIVER_REPORTS_PER_PAGE = newSize;
+            driverReportPage = 1;
+            renderPaginaDriverReportes();
+        }
+    }
+
+    function gerarBotoesPaginacaoDriver(currentPage, totalPages) {
+        if (totalPages <= 1) return '';
+        var buttonsHTML = '';
+        
+        var prevDisabled = (currentPage === 1) ? ' disabled' : '';
+        buttonsHTML += `<button class="btn-page"${prevDisabled} onclick="irParaPaginaDriver(${currentPage - 1})" title="Página Anterior"><i class="fas fa-chevron-left"></i></button>`;
+        
+        var maxVisible = 5;
+        var startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+        var endPage = startPage + maxVisible - 1;
+        
+        if (endPage > totalPages) {
+            endPage = totalPages;
+            startPage = Math.max(1, endPage - maxVisible + 1);
+        }
+        
+        for (var i = startPage; i <= endPage; i++) {
+            var activeClass = (i === currentPage) ? ' active' : '';
+            buttonsHTML += `<button class="btn-page${activeClass}" onclick="irParaPaginaDriver(${i})">${i}</button>`;
+        }
+        
+        var nextDisabled = (currentPage === totalPages) ? ' disabled' : '';
+        buttonsHTML += `<button class="btn-page"${nextDisabled} onclick="irParaPaginaDriver(${currentPage + 1})" title="Próxima Página"><i class="fas fa-chevron-right"></i></button>`;
+        
+        return buttonsHTML;
+    }
+
     function filtrarReportesDrivers() {
         var inputEl = document.getElementById('driverSearchInput');
         var inputVal = (inputEl ? inputEl.value : '').toLowerCase().trim();
 
         var dateSelectEl = document.getElementById('driverDateFilterSelect');
         var dateFilterVal = dateSelectEl ? dateSelectEl.value : 'TODAS';
+
+        var companySelectEl = document.getElementById('driverCompanyFilterSelect');
+        var companyFilterVal = companySelectEl ? companySelectEl.value : 'TODAS';
 
         globalFiltradosDrivers = globalReportesDrivers.filter(function(item) {
             var name = (item.nome_driver || item.Nome_Driver || item.Driver_Name || item.Nome || '').toString().toLowerCase();
@@ -3775,7 +3957,12 @@
 
             var matchData = matchFiltroData(item, dateFilterVal);
 
-            return matchText && matchStatus && matchData;
+            var matchCompany = true;
+            if (companyFilterVal !== 'TODAS') {
+                matchCompany = (emp === companyFilterVal.toLowerCase());
+            }
+
+            return matchText && matchStatus && matchData && matchCompany;
         });
 
         // ORDENAÇÃO PADRÃO: Sempre do mais recente para o mais antigo (descendente)
@@ -3795,7 +3982,7 @@
             container.innerHTML = `
                 <div style="text-align:center; padding:36px 16px; color:var(--azul-gelo); opacity:0.75;">
                     <p style="margin:0; font-weight:700; font-size:14px;">Nenhum registro encontrado para os filtros aplicados.</p>
-                    <p style="margin:6px 0 0 0; font-size:12px; opacity:0.8;">Verifique o termo buscado ou altere o filtro de status.</p>
+                    <p style="margin:6px 0 0 0; font-size:12px; opacity:0.8;">Verifique o termo buscado ou altere o filtro de status/empresa.</p>
                 </div>`;
             return;
         }
@@ -3819,8 +4006,8 @@
         var rowsHTML = pagedItems.map(function(item) {
             var nome = item.nome_driver || 'Entregador Não Identificado';
             var prot = item.protocolo || '-';
-            var displayProt = prot;
-            if (displayProt && !displayProt.startsWith('#') && displayProt !== '-') displayProt = '#' + displayProt;
+            var cleanProt = String(prot).replace(/^#/, '').trim();
+            if (!cleanProt) cleanProt = '-';
 
             var cpf = item.cpf || '';
             var emp = item.empresa || 'Geral';
@@ -3857,15 +4044,26 @@
             }
             
             var statusObj = formatarStatusReporte(respRaw);
-            var protEscaped = prot.replace(/'/g, "\\'");
+            var protEscaped = cleanProt.replace(/'/g, "\\'");
 
-            var protBtn = `<button type="button" onclick="abrirReporteModal('${protEscaped}')" 
-                style="display:inline-flex; align-items:center; gap:6px; background:rgba(44,234,188,0.12); border:1px solid rgba(44,234,188,0.35); color:var(--menta-viva); border-radius:8px; padding:6px 14px; font-weight:800; font-family:monospace; font-size:12.5px; cursor:pointer; transition:all 0.2s ease;"
-                onmouseover="this.style.background='rgba(44,234,188,0.25)'; this.style.borderColor='var(--menta-viva)';"
-                onmouseout="this.style.background='rgba(44,234,188,0.12)'; this.style.borderColor='rgba(44,234,188,0.35)';"
-                title="Clique para ver mensagem de resposta e detalhes do protocolo">
-                ${displayProt} <i class="fas fa-external-link-alt" style="font-size:10px; opacity:0.8;"></i>
-            </button>`;
+            var protBtn = `
+                <div style="display:inline-flex; align-items:center; gap:6px;">
+                    <button type="button" onclick="abrirReporteModal('${protEscaped}')" 
+                        style="display:inline-flex; align-items:center; gap:6px; background:rgba(44,234,188,0.12); border:1px solid rgba(44,234,188,0.35); color:var(--menta-viva); border-radius:8px; padding:6px 12px; font-weight:800; font-family:monospace; font-size:12.5px; cursor:pointer; transition:all 0.2s ease;"
+                        onmouseover="this.style.background='rgba(44,234,188,0.25)'; this.style.borderColor='var(--menta-viva)';"
+                        onmouseout="this.style.background='rgba(44,234,188,0.12)'; this.style.borderColor='rgba(44,234,188,0.35)';"
+                        title="Clique para ver detalhes do protocolo ${cleanProt}">
+                        ${cleanProt} <i class="fas fa-external-link-alt" style="font-size:10px; opacity:0.75;"></i>
+                    </button>
+                    ${cleanProt !== '-' ? `
+                    <button type="button" onclick="copiarProtocoloDriver('${protEscaped}', this)"
+                        style="display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:var(--azul-gelo); border-radius:8px; cursor:pointer; transition:all 0.2s ease;"
+                        onmouseover="this.style.background='rgba(44,234,188,0.2)'; this.style.color='var(--menta-viva)';"
+                        onmouseout="this.style.background='rgba(255,255,255,0.06)'; this.style.color='var(--azul-gelo)';"
+                        title="Copiar ID do protocolo ${cleanProt}">
+                        <i class="far fa-copy" style="font-size:11px;"></i>
+                    </button>` : ''}
+                </div>`;
 
             var subDetails = [];
             if (cpf) subDetails.push('CPF: ' + cpf);
@@ -3874,7 +4072,7 @@
 
             return `
                 <div class="driver-report-row" style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); padding:14px 18px; border-radius:14px; margin-bottom:10px; transition:all 0.2s ease;" onmouseenter="this.style.background='rgba(255,255,255,0.06)';" onmouseleave="this.style.background='rgba(255,255,255,0.03)';">
-                    <div style="display:grid; grid-template-columns: minmax(110px, 1fr) minmax(220px, 2.2fr) minmax(110px, 1fr) minmax(150px, 1.4fr) minmax(125px, 1.1fr) minmax(130px, 1.1fr); gap:14px; align-items:center; width:100%;">
+                    <div style="display:grid; grid-template-columns: minmax(135px, 1.2fr) minmax(220px, 2.2fr) minmax(110px, 1fr) minmax(150px, 1.4fr) minmax(125px, 1.1fr) minmax(130px, 1.1fr); gap:14px; align-items:center; width:100%;">
                         <div>
                             ${protBtn}
                         </div>
@@ -3907,33 +4105,26 @@
                 </div>`;
         }).join('');
 
-        var paginationControls = '';
-        if (totalPages > 1) {
-            var prevDisabled = driverReportPage === 1 ? 'disabled style="opacity:0.4; cursor:not-allowed;"' : '';
-            var nextDisabled = driverReportPage === totalPages ? 'disabled style="opacity:0.4; cursor:not-allowed;"' : '';
+        var paginationBarHTML = `
+            <div style="background:rgba(8,14,46,0.9); border:1px solid rgba(44,234,188,0.18); border-radius:14px; padding:14px 20px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; font-size:13.5px; color:var(--azul-gelo); margin-top:16px; box-shadow:0 4px 20px rgba(0,0,0,0.3);">
+                <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
+                    <span>Mostrando <strong>${startIdx + 1}–${Math.min(endIdx, totalItems)}</strong> de <strong>${totalItems}</strong> registros</span>
+                    <label style="display:inline-flex; align-items:center; gap:6px; font-size:13px; color:var(--azul-gelo);">
+                        Exibir:
+                        <select class="page-size-selector" id="driverPageSizeSelect" onchange="alterarTamanhoPaginaDriver(this.value)">
+                            <option value="15"${DRIVER_REPORTS_PER_PAGE === 15 ? ' selected' : ''}>15 por página</option>
+                            <option value="30"${DRIVER_REPORTS_PER_PAGE === 30 ? ' selected' : ''}>30 por página</option>
+                            <option value="50"${DRIVER_REPORTS_PER_PAGE === 50 ? ' selected' : ''}>50 por página</option>
+                            <option value="100"${DRIVER_REPORTS_PER_PAGE === 100 ? ' selected' : ''}>100 por página</option>
+                        </select>
+                    </label>
+                </div>
+                <div style="display:flex; align-items:center; gap:6px;">
+                    ${gerarBotoesPaginacaoDriver(driverReportPage, totalPages)}
+                </div>
+            </div>`;
 
-            paginationControls = `
-                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-top:16px; padding-top:14px; border-top:1px solid rgba(255,255,255,0.08);">
-                    <div style="font-size:12px; color:var(--azul-gelo); opacity:0.8;">
-                        Exibindo <strong>${startIdx + 1}–${Math.min(endIdx, totalItems)}</strong> de <strong>${totalItems}</strong> registros (Página ${driverReportPage} de ${totalPages})
-                    </div>
-                    <div style="display:flex; gap:8px;">
-                        <button onclick="MudarPaginaDriverReport(-1)" ${prevDisabled} style="padding:6px 14px; border-radius:8px; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.05); color:#fff; font-size:12px; font-weight:600; cursor:pointer; transition:all 0.2s;">
-                            &laquo; Anterior
-                        </button>
-                        <button onclick="MudarPaginaDriverReport(1)" ${nextDisabled} style="padding:6px 14px; border-radius:8px; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.05); color:#fff; font-size:12px; font-weight:600; cursor:pointer; transition:all 0.2s;">
-                            Próxima &raquo;
-                        </button>
-                    </div>
-                </div>`;
-        } else {
-            paginationControls = `
-                <div style="text-align:right; font-size:11.5px; color:var(--azul-gelo); opacity:0.6; margin-top:12px;">
-                    Total de ${totalItems} registro(s) encontrado(s)
-                </div>`;
-        }
-
-        container.innerHTML = demoBanner + `<div style="display:flex; flex-direction:column; gap:2px;">${rowsHTML}</div>` + paginationControls;
+        container.innerHTML = demoBanner + `<div style="display:flex; flex-direction:column; gap:2px;">${rowsHTML}</div>` + paginationBarHTML;
     }
 
     async function abrirReporteModal(protocoloOuIndex) {
