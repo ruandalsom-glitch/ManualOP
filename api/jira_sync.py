@@ -8,13 +8,21 @@ import re
 
 # Tenta importar sincronização com o Google Sheets
 try:
-    from api.sync_reportes_sheets import sincronizar_jira_com_sheets, parse_date_to_datetime
+    from api.sync_reportes_sheets import sincronizar_jira_com_sheets
 except ImportError:
     try:
-        from sync_reportes_sheets import sincronizar_jira_com_sheets, parse_date_to_datetime
+        from sync_reportes_sheets import sincronizar_jira_com_sheets
     except ImportError:
         sincronizar_jira_com_sheets = None
-        parse_date_to_datetime = None
+
+# Tenta importar sincronização com o Supabase
+try:
+    from api.sync_reportes_supabase import sincronizar_jira_com_supabase
+except ImportError:
+    try:
+        from sync_reportes_supabase import sincronizar_jira_com_supabase
+    except ImportError:
+        sincronizar_jira_com_supabase = None
 
 sys.stdout.reconfigure(encoding='utf-8')
 
@@ -298,6 +306,12 @@ async def sync_jira_reports():
                 sincronizar_jira_com_sheets()
             except Exception as e:
                 print(f"⚠️ Erro ao atualizar o Google Sheets: {e}")
+
+        if sincronizar_jira_com_supabase:
+            try:
+                sincronizar_jira_com_supabase()
+            except Exception as e:
+                print(f"⚠️ Erro ao atualizar o Supabase: {e}")
 
     return extracted_reports
 
