@@ -104,6 +104,12 @@ def sincronizar_jira_com_supabase():
 
     print(f"Carregados {len(jira_data)} chamados do Jira.")
 
+    headers = {
+        "apikey": SUPABASE_KEY,
+        "Authorization": f"Bearer {SUPABASE_KEY}",
+        "Content-Type": "application/json"
+    }
+
     payload = []
     for item in jira_data:
         ticket = item.get("issue_key", "").strip()
@@ -113,13 +119,13 @@ def sincronizar_jira_com_supabase():
         categoria = item.get("type", "Geral")
         descricao = item.get("summary", "")
         status = item.get("status", "Aberto")
-        atendente = item.get("reporter", "Não Identificado")
+        atendente_jira = item.get("reporter", "Não Identificado")
         data_reporte = item.get("created_date", "") or item.get("response_date", "") or datetime.datetime.now().strftime("%d/%m/%Y")
         
         dados_resp = ""
         raw_resp = item.get("response_text", "")
         if raw_resp and not raw_resp.lower().startswith("abrir ") and not raw_resp.lower().endswith(".jpg"):
-            dados_resp = f"{item.get('response_author', 'Atendente')}: {raw_resp}"
+            dados_resp = f"{item.get('response_author', 'Atendente Jira')}: {raw_resp}"
 
         plataforma = "EntreGô / Jira"
         sla = "2 dias"
@@ -135,7 +141,7 @@ def sincronizar_jira_com_supabase():
             "prazo": prazo,
             "status": status,
             "dados": dados_resp,
-            "atendente": atendente,
+            "atendente": atendente_jira, # Solicitante fallback
             "obs": ""
         })
 
@@ -143,41 +149,9 @@ def sincronizar_jira_com_supabase():
         print("Nenhum chamado válido para enviar.")
         return
 
-    # Tenta ON CONFLICT=ticket primeiro
-    url_upsert = f"{SUPABASE_URL.rstrip('/')}/rest/v1/reportes_colaboradores?on_conflict=ticket"
-    headers = {
-        "apikey": SUPABASE_KEY,
-        "Authorization": f"Bearer {SUPABASE_KEY}",
-        "Content-Type": "application/json",
-        "Prefer": "resolution=merge-duplicates"
-    }
-
+    # Busca registros existentes no Supabase para preservar atendente_solicitante e data_reporte vindos da planilha
     try:
-        body_bytes = json.dumps(payload[:50], ensure_ascii=False).encode('utf-8')
-        req = urllib.request.Request(url_upsert, data=body_bytes, headers=headers, method="POST")
-        with urllib.request.urlopen(req) as resp:
-            print(f"  [Upsert Direto] {len(payload)} registros processados (Status: {resp.status})")
-            
-            # Se funcionou para os primeiros 50, envia o resto em lotes
-            for i in range(50, len(payload), 100):
-                lote = payload[i:i+100]
-                b_bytes = json.dumps(lote, ensure_ascii=False).encode('utf-8')
-                req_l = urllib.request.Request(url_upsert, data=b_bytes, headers=headers, method="POST")
-                with urllib.request.urlopen(req_l) as r_l:
-                    print(f"  [Lote {i//100 + 1}] {len(lote)} registros atualizados (Status: {r_l.status})")
-            
-            print("✅ Sincronização direta Jira -> Supabase finalizada com sucesso!")
-            return
-    except urllib.error.HTTPError as e:
-        err_body = e.read().decode('utf-8', errors='ignore')
-        if "42P10" in err_body or "unique constraint" in err_body.lower():
-            print("ℹ️ Chave UNIQUE em 'ticket' ainda não criada. Utilizando modo de busca e atualização por linha...")
-        else:
-            print(f"⚠️ Erro no Upsert inicial ({e.code}): {err_body}")
-
-    # Fallback resiliente: Busca registros existentes e faz PATCH para existentes e POST para novos
-    try:
-        url_get = f"{SUPABASE_URL.rstrip('/')}/rest/v1/reportes_colaboradores?select=id,ticket"
+        url_get = f"{SUPABASE_URL.rstrip('/')}/rest/v1/reportes_colaboradores?select=id,ticket,atendente,data"
         req_get = urllib.request.Request(url_get, headers={"apikey": SUPABASE_KEY, "Authorization": f"Bearer {SUPABASE_KEY}"})
         
         existentes_map = {}
@@ -186,7 +160,11 @@ def sincronizar_jira_com_supabase():
             for r in raw_res:
                 t = (r.get("ticket") or "").strip()
                 if t:
-                    existentes_map[t] = r.get("id")
+                    existentes_map[t] = {
+                        "id": r.get("id"),
+                        "atendente": (r.get("atendente") or "").strip(),
+                        "data": (r.get("data") or "").strip()
+                    }
 
         novos = []
         atualizados_cnt = 0
@@ -194,10 +172,27 @@ def sincronizar_jira_com_supabase():
         for item in payload:
             t_key = item["ticket"]
             if t_key in existentes_map:
-                # Atualizar via PATCH por id/ticket
-                row_id = existentes_map[t_key]
+                row_info = existentes_map[t_key]
+                row_id = row_info["id"]
+
+                # Preserva Atendente Solicitante da planilha e Data do Reporte da planilha
+                update_fields = {
+                    "status": item["status"],
+                    "dados": item["dados"],
+                    "prazo": item["prazo"],
+                    "categoria": item["categoria"],
+                    "descricao": item["descricao"],
+                    "plataforma": item["plataforma"],
+                    "sla": item["sla"]
+                }
+                # Atualiza apenas se na tabela do Supabase estiver vazio/null
+                if not row_info["atendente"]:
+                    update_fields["atendente"] = item["atendente"]
+                if not row_info["data"]:
+                    update_fields["data"] = item["data"]
+
                 url_patch = f"{SUPABASE_URL.rstrip('/')}/rest/v1/reportes_colaboradores?id=eq.{row_id}"
-                body_patch = json.dumps(item, ensure_ascii=False).encode('utf-8')
+                body_patch = json.dumps(update_fields, ensure_ascii=False).encode('utf-8')
                 req_patch = urllib.request.Request(url_patch, data=body_patch, headers=headers, method="PATCH")
                 try:
                     with urllib.request.urlopen(req_patch) as r_p:
@@ -212,9 +207,9 @@ def sincronizar_jira_com_supabase():
             body_post = json.dumps(novos, ensure_ascii=False).encode('utf-8')
             req_post = urllib.request.Request(url_post, data=body_post, headers=headers, method="POST")
             with urllib.request.urlopen(req_post) as r_post:
-                print(f"  [Fallback] {len(novos)} novos registros inseridos no Supabase.")
+                print(f"  [Inserção] {len(novos)} novos chamados salvos no Supabase.")
 
-        print(f"✅ Sincronização Fallback finalizada com sucesso! ({atualizados_cnt} atualizados, {len(novos)} inseridos)")
+        print(f"✅ Sincronização Jira -> Supabase concluída com sucesso! ({atualizados_cnt} atualizados, {len(novos)} inseridos)")
 
     except Exception as e:
         print(f"❌ Erro na sincronização com Supabase: {e}")

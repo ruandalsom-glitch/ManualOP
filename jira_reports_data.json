@@ -1,13 +1,69 @@
 [
   {
+    "issue_key": "SMENTGO-1729",
+    "type": "Problemas Cadastrais",
+    "summary": "Entregador em pausa desde o dia 5.",
+    "status": "Aberto",
+    "reporter": "Davis Marques - Master",
+    "created_date": "Terça-feira 12:20",
+    "response_author": "Ruan Dalsom - Master",
+    "response_date": "Hoje 17:08",
+    "response_text": "Hoje 17:08"
+  },
+  {
+    "issue_key": "SMENTGO-1769",
+    "type": "Contestação de Promoção",
+    "summary": "Contestação de Promoção",
+    "status": "Aberto",
+    "reporter": "Davis Marques - Master",
+    "created_date": "10/09/2026 14:46",
+    "response_author": "Aberto",
+    "response_date": "",
+    "response_text": "Contestação de Promoção"
+  },
+  {
+    "issue_key": "SMENTGO-1767",
+    "type": "Contestação de Promoção",
+    "summary": "Contestação de Promoção",
+    "status": "Aberto",
+    "reporter": "Davis Marques - Master",
+    "created_date": "10/09/2026 14:34",
+    "response_author": "Aberto",
+    "response_date": "",
+    "response_text": "Contestação de Promoção"
+  },
+  {
+    "issue_key": "SMENTGO-1759",
+    "type": "Dúvidas Gerais",
+    "summary": "Controle de Promo | EntreGô - Looker Studio",
+    "status": "Aberto",
+    "reporter": "Estefany Delogo",
+    "created_date": "10/09/2026 10:53",
+    "response_author": "Estefany Delogo",
+    "response_date": "Ontem 10:53",
+    "response_text": "Ontem 10:53"
+  },
+  {
+    "issue_key": "SMENTGO-1751",
+    "type": "Problemas Cadastrais",
+    "summary": "Driver com critérios atingidos não virou ELITE",
+    "status": "Aberto",
+    "reporter": "Estefany Delogo",
+    "created_date": "10/09/2026 10:07",
+    "response_author": "Aberto",
+    "response_date": "",
+    "response_text": "Reportar Bug na tela do entregador - Programa Elite"
+  },
+  {
     "issue_key": "SMENTGO-1639",
     "type": "Problemas Cadastrais",
     "summary": "Restrição de MODAL mesmo após alteração",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
+    "created_date": "29/08/2026 12:47",
     "response_author": "Ruan Dalsom - Master",
     "response_date": "Segunda-feira 16:37",
-    "response_text": "Boa tarde, algum retorno? psc @charle.vaz@entregospsumarezinho.com.br"
+    "response_text": "Segunda-feira 16:37"
   },
   {
     "issue_key": "SMENTGO-1736",
@@ -15,9 +71,10 @@
     "summary": "Promoções divergentes da área de atuação",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
+    "created_date": "Quarta-feira 09:46",
     "response_author": "Davis Marques - Master",
-    "response_date": "Hoje 09:46",
-    "response_text": "Abrir 39cc6a0e-4f70-4b2f-b41b-ec9b775014d2.jpg"
+    "response_date": "Quarta-feira 09:46",
+    "response_text": "Quarta-feira 09:46"
   },
   {
     "issue_key": "SMENTGO-1670",
@@ -25,19 +82,10 @@
     "summary": "Erro no CLUBGAS",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
+    "created_date": "02/09/2026 17:23",
     "response_author": "Davis Marques - Master",
     "response_date": "02/set/26 17:23",
-    "response_text": "Abrir 55835b06-d39e-47f0-8f68-b795857dbcf7.jpg"
-  },
-  {
-    "issue_key": "SMENTGO-1729",
-    "type": "Problemas Cadastrais",
-    "summary": "Entregador em pausa desde o dia 5.",
-    "status": "Aberto",
-    "reporter": "Davis Marques - Master",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
+    "response_text": "02/set/26 17:23"
   },
   {
     "issue_key": "SMENTGO-1735",
@@ -45,9 +93,10 @@
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
+    "created_date": "Terça-feira 18:58",
+    "response_author": "Aberto",
     "response_date": "",
-    "response_text": ""
+    "response_text": "Contestação de Promoção"
   },
   {
     "issue_key": "SMENTGO-1732",
@@ -55,9 +104,10 @@
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
+    "created_date": "Terça-feira 15:45",
+    "response_author": "Aberto",
     "response_date": "",
-    "response_text": ""
+    "response_text": "Contestação de Promoção"
   },
   {
     "issue_key": "SMENTGO-1666",
@@ -65,9 +115,10 @@
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
+    "created_date": "02/09/2026 12:33",
     "response_author": "Davis Marques - Master",
     "response_date": "02/set/26 17:29",
-    "response_text": "Segue outro driver com o mesmo critério de promoção"
+    "response_text": "02/set/26 17:29"
   },
   {
     "issue_key": "SMENTGO-1610",
@@ -75,9 +126,10 @@
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
+    "created_date": "27/08/2026 12:00",
     "response_author": "Gabrielle Crixina Teixeira Farias",
     "response_date": "Domingo 09:21",
-    "response_text": "[MENSAGEM AUTOMÁTICA | TOQAN CLAW]"
+    "response_text": "Domingo 09:21"
   },
   {
     "issue_key": "SMENTGO-1629",
@@ -85,9 +137,10 @@
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
+    "created_date": "28/08/2026 12:47",
     "response_author": "Gabrielle Crixina Teixeira Farias",
     "response_date": "Domingo 09:21",
-    "response_text": "[MENSAGEM AUTOMÁTICA | TOQAN CLAW]"
+    "response_text": "Domingo 09:21"
   },
   {
     "issue_key": "SMENTGO-1598",
@@ -95,9 +148,10 @@
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
+    "created_date": "26/08/2026 11:55",
     "response_author": "Gabrielle Crixina Teixeira Farias",
     "response_date": "Domingo 09:21",
-    "response_text": "[MENSAGEM AUTOMÁTICA | TOQAN CLAW]"
+    "response_text": "Domingo 09:21"
   },
   {
     "issue_key": "SMENTGO-1697",
@@ -105,9 +159,10 @@
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
+    "created_date": "Sábado 17:29",
+    "response_author": "Aberto",
     "response_date": "",
-    "response_text": ""
+    "response_text": "Contestação de Promoção"
   },
   {
     "issue_key": "SMENTGO-1519",
@@ -115,9 +170,10 @@
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
+    "created_date": "19/08/2026 16:00",
     "response_author": "Gabrielle Crixina Teixeira Farias",
     "response_date": "02/set/26 09:35",
-    "response_text": "[MENSAGEM AUTOMÁTICA | TOQAN CLAW]"
+    "response_text": "02/set/26 09:35"
   },
   {
     "issue_key": "SMENTGO-1685",
@@ -125,9 +181,10 @@
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
+    "created_date": "04/09/2026 12:15",
+    "response_author": "Aberto",
     "response_date": "",
-    "response_text": ""
+    "response_text": "Contestação de Promoção"
   },
   {
     "issue_key": "SMENTGO-1671",
@@ -135,9 +192,10 @@
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
+    "created_date": "02/09/2026 17:47",
+    "response_author": "Aberto",
     "response_date": "",
-    "response_text": ""
+    "response_text": "Contestação de Promoção"
   },
   {
     "issue_key": "SMENTGO-1439",
@@ -145,9 +203,10 @@
     "summary": "+Entregas - Agendamento",
     "status": "Aguardando Franqueado",
     "reporter": "Estefany Delogo",
-    "response_author": "Fausto Jose Oliveira Evangelista",
-    "response_date": "20/ago/26 15:56",
-    "response_text": "Oi, @Estefany Delogo"
+    "created_date": "13/08/2026 09:48",
+    "response_author": "20/ago/26 15:53",
+    "response_date": "",
+    "response_text": "Fausto Jose Oliveira Evangelista"
   },
   {
     "issue_key": "SMENTGO-1518",
@@ -155,9 +214,10 @@
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
+    "created_date": "19/08/2026 15:57",
     "response_author": "Gabrielle Crixina Teixeira Farias",
     "response_date": "02/set/26 09:35",
-    "response_text": "[MENSAGEM AUTOMÁTICA | TOQAN CLAW]"
+    "response_text": "02/set/26 09:35"
   },
   {
     "issue_key": "SMENTGO-1515",
@@ -165,9 +225,10 @@
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
+    "created_date": "19/08/2026 14:48",
     "response_author": "Gabrielle Crixina Teixeira Farias",
     "response_date": "02/set/26 09:33",
-    "response_text": "[MENSAGEM AUTOMÁTICA | TOQAN CLAW]"
+    "response_text": "02/set/26 09:33"
   },
   {
     "issue_key": "SMENTGO-1661",
@@ -175,9 +236,10 @@
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
+    "created_date": "01/09/2026 17:10",
+    "response_author": "Aberto",
     "response_date": "",
-    "response_text": ""
+    "response_text": "Contestação de Promoção"
   },
   {
     "issue_key": "SMENTGO-1660",
@@ -185,9 +247,10 @@
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
+    "created_date": "01/09/2026 15:31",
+    "response_author": "Aberto",
     "response_date": "",
-    "response_text": ""
+    "response_text": "Contestação de Promoção"
   },
   {
     "issue_key": "SMENTGO-1659",
@@ -195,9 +258,10 @@
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
+    "created_date": "01/09/2026 14:54",
+    "response_author": "Aberto",
     "response_date": "",
-    "response_text": ""
+    "response_text": "Contestação de Promoção"
   },
   {
     "issue_key": "SMENTGO-1647",
@@ -205,9 +269,10 @@
     "summary": "Contestação de Garantido FE",
     "status": "Aberto",
     "reporter": "Estefany Delogo",
+    "created_date": "31/08/2026 10:23",
     "response_author": "Estefany Delogo",
     "response_date": "31/ago/26 10:23",
-    "response_text": "Abrir Master - Constestação de garantido - RJ.xlsx"
+    "response_text": "31/ago/26 10:23"
   },
   {
     "issue_key": "SMENTGO-1493",
@@ -215,9 +280,10 @@
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
+    "created_date": "18/08/2026 10:21",
     "response_author": "Gabrielle Crixina Teixeira Farias",
     "response_date": "31/ago/26 09:18",
-    "response_text": "[MENSAGEM AUTOMÁTICA | TOQAN CLAW]"
+    "response_text": "31/ago/26 09:18"
   },
   {
     "issue_key": "SMENTGO-1492",
@@ -225,9 +291,10 @@
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
+    "created_date": "18/08/2026 10:16",
     "response_author": "Gabrielle Crixina Teixeira Farias",
     "response_date": "31/ago/26 09:17",
-    "response_text": "[MENSAGEM AUTOMÁTICA | TOQAN CLAW]"
+    "response_text": "31/ago/26 09:17"
   },
   {
     "issue_key": "SMENTGO-1491",
@@ -235,9 +302,10 @@
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
+    "created_date": "18/08/2026 10:14",
     "response_author": "Gabrielle Crixina Teixeira Farias",
     "response_date": "31/ago/26 09:17",
-    "response_text": "[MENSAGEM AUTOMÁTICA | TOQAN CLAW]"
+    "response_text": "31/ago/26 09:17"
   },
   {
     "issue_key": "SMENTGO-1614",
@@ -245,9 +313,10 @@
     "summary": "Erro ao tirar foto - Evento da BAG",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
+    "created_date": "27/08/2026 16:04",
+    "response_author": "Aberto",
     "response_date": "",
-    "response_text": ""
+    "response_text": "Problemas Cadastrais"
   },
   {
     "issue_key": "SMENTGO-1626",
@@ -255,9 +324,10 @@
     "summary": "Região em outra área, impedindo o recebimento de promoções.",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
+    "created_date": "28/08/2026 09:46",
+    "response_author": "Aberto",
     "response_date": "",
-    "response_text": ""
+    "response_text": "Problemas Cadastrais"
   },
   {
     "issue_key": "SMENTGO-1624",
@@ -265,9 +335,10 @@
     "summary": "Cliente não localizado afetando a saúde da conta",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
+    "created_date": "28/08/2026 09:44",
     "response_author": "Davis Marques - Master",
     "response_date": "28/ago/26 09:44",
-    "response_text": "Abrir 189d8d70-cbc9-4982-9aa5-5604800c35c3.jpg"
+    "response_text": "28/ago/26 09:44"
   },
   {
     "issue_key": "SMENTGO-1471",
@@ -275,9 +346,10 @@
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
+    "created_date": "15/08/2026 16:25",
     "response_author": "Gabrielle Crixina Teixeira Farias",
     "response_date": "28/ago/26 09:34",
-    "response_text": "[MENSAGEM AUTOMÁTICA | TOQAN CLAW]"
+    "response_text": "28/ago/26 09:34"
   },
   {
     "issue_key": "SMENTGO-1470",
@@ -285,9 +357,10 @@
     "summary": "Contestação de Promoção",
     "status": "Em verificação",
     "reporter": "Davis Marques - Master",
-    "response_author": "Gabrielle Crixina Teixeira Farias",
-    "response_date": "28/ago/26 09:34",
-    "response_text": "[MENSAGEM AUTOMÁTICA | TOQAN CLAW]"
+    "created_date": "15/08/2026 16:22",
+    "response_author": "28/ago/26 09:26",
+    "response_date": "",
+    "response_text": "Gabrielle Crixina Teixeira Farias"
   },
   {
     "issue_key": "SMENTGO-1469",
@@ -295,9 +368,10 @@
     "summary": "Contestação de Promoção",
     "status": "Em verificação",
     "reporter": "Davis Marques - Master",
-    "response_author": "Gabrielle Crixina Teixeira Farias",
-    "response_date": "28/ago/26 09:34",
-    "response_text": "[MENSAGEM AUTOMÁTICA | TOQAN CLAW]"
+    "created_date": "15/08/2026 15:58",
+    "response_author": "28/ago/26 09:26",
+    "response_date": "",
+    "response_text": "Gabrielle Crixina Teixeira Farias"
   },
   {
     "issue_key": "SMENTGO-1571",
@@ -305,9 +379,10 @@
     "summary": "Opção de conexão com maquininha não aparece",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
+    "created_date": "25/08/2026 09:29",
+    "response_author": "Aberto",
     "response_date": "",
-    "response_text": ""
+    "response_text": "Problemas Cadastrais"
   },
   {
     "issue_key": "SMENTGO-1597",
@@ -315,9 +390,10 @@
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
+    "created_date": "26/08/2026 11:54",
+    "response_author": "Aberto",
     "response_date": "",
-    "response_text": ""
+    "response_text": "Contestação de Promoção"
   },
   {
     "issue_key": "SMENTGO-1573",
@@ -325,9 +401,10 @@
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
+    "created_date": "25/08/2026 10:18",
+    "response_author": "Aberto",
     "response_date": "",
-    "response_text": ""
+    "response_text": "Contestação de Promoção"
   },
   {
     "issue_key": "SMENTGO-1570",
@@ -335,9 +412,10 @@
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
+    "created_date": "25/08/2026 09:23",
+    "response_author": "Aberto",
     "response_date": "",
-    "response_text": ""
+    "response_text": "Contestação de Promoção"
   },
   {
     "issue_key": "SMENTGO-1569",
@@ -345,9 +423,10 @@
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
+    "created_date": "25/08/2026 09:18",
+    "response_author": "Aberto",
     "response_date": "",
-    "response_text": ""
+    "response_text": "Contestação de Promoção"
   },
   {
     "issue_key": "SMENTGO-1540",
@@ -355,9 +434,10 @@
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
+    "created_date": "21/08/2026 15:22",
+    "response_author": "Aberto",
     "response_date": "",
-    "response_text": ""
+    "response_text": "Contestação de Promoção"
   },
   {
     "issue_key": "SMENTGO-1539",
@@ -365,9 +445,10 @@
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
+    "created_date": "21/08/2026 15:08",
+    "response_author": "Aberto",
     "response_date": "",
-    "response_text": ""
+    "response_text": "Contestação de Promoção"
   },
   {
     "issue_key": "SMENTGO-1538",
@@ -375,9 +456,10 @@
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
+    "created_date": "21/08/2026 15:06",
+    "response_author": "Aberto",
     "response_date": "",
-    "response_text": ""
+    "response_text": "Contestação de Promoção"
   },
   {
     "issue_key": "SMENTGO-1462",
@@ -385,9 +467,10 @@
     "summary": "Controle de Promo | EntreGô - Looker Studio",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "response_author": "",
+    "created_date": "14/08/2026 12:45",
+    "response_author": "Mostrar 3 mais",
     "response_date": "",
-    "response_text": ""
+    "response_text": "20/ago/26 15:57"
   },
   {
     "issue_key": "SMENTGO-1528",
@@ -395,9 +478,10 @@
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "response_author": "",
+    "created_date": "20/08/2026 12:29",
+    "response_author": "Aberto",
     "response_date": "",
-    "response_text": ""
+    "response_text": "Contestação de Promoção"
   },
   {
     "issue_key": "SMENTGO-1460",
@@ -405,9 +489,10 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "14/08/2026 11:11",
     "response_author": "Gabrielle Crixina Teixeira Farias",
     "response_date": "18/ago/26 17:24",
-    "response_text": "Boa tarde, pessoal!"
+    "response_text": "18/ago/26 17:24"
   },
   {
     "issue_key": "SMENTGO-1048",
@@ -415,9 +500,10 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "response_author": "Davis Marques - Master",
-    "response_date": "12/ago/26 18:23",
-    "response_text": "Boa noite!!"
+    "created_date": "11/07/2026 11:31",
+    "response_author": "Mostrar 3 mais",
+    "response_date": "",
+    "response_text": "12/ago/26 16:54"
   },
   {
     "issue_key": "SMENTGO-1442",
@@ -425,9 +511,10 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "13/08/2026 12:04",
     "response_author": "Gabrielle Crixina Teixeira Farias",
     "response_date": "14/ago/26 08:59",
-    "response_text": "[MENSAGEM AUTOMÁTICA | TOQAN CLAW}"
+    "response_text": "14/ago/26 08:59"
   },
   {
     "issue_key": "SMENTGO-1441",
@@ -435,9 +522,10 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "13/08/2026 11:18",
     "response_author": "Gabrielle Crixina Teixeira Farias",
     "response_date": "14/ago/26 08:59",
-    "response_text": "[MENSAGEM AUTOMÁTICA | TOQAN CLAW}"
+    "response_text": "14/ago/26 08:59"
   },
   {
     "issue_key": "SMENTGO-1437",
@@ -445,9 +533,10 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "response_author": "Ruan Dalsom - Master",
-    "response_date": "17/ago/26 09:59",
-    "response_text": "Bom dia, driver uuid listado no anexo, conforme solicitado."
+    "created_date": "12/08/2026 17:24",
+    "response_author": "Mostrar 5 mais",
+    "response_date": "",
+    "response_text": "14/ago/26 09:05"
   },
   {
     "issue_key": "SMENTGO-1431",
@@ -455,9 +544,10 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "response_author": "Gabrielle Crixina Teixeira Farias",
-    "response_date": "17/ago/26 20:15",
-    "response_text": "Solicitado pagamento"
+    "created_date": "12/08/2026 10:54",
+    "response_author": "Mostrar 3 mais",
+    "response_date": "",
+    "response_text": "12/ago/26 17:00"
   },
   {
     "issue_key": "SMENTGO-1424",
@@ -465,9 +555,10 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "response_author": "Gabrielle Crixina Teixeira Farias",
-    "response_date": "17/ago/26 20:11",
-    "response_text": "Solicitado pagamento."
+    "created_date": "",
+    "response_author": "",
+    "response_date": "",
+    "response_text": ""
   },
   {
     "issue_key": "SMENTGO-1289",
@@ -475,9 +566,10 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "response_author": "Gabrielle Crixina Teixeira Farias",
-    "response_date": "06/ago/26 15:38",
-    "response_text": ".Solicitado pagamento."
+    "created_date": "",
+    "response_author": "",
+    "response_date": "",
+    "response_text": ""
   },
   {
     "issue_key": "SMENTGO-1282",
@@ -485,9 +577,10 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "response_author": "Gabrielle Crixina Teixeira Farias",
-    "response_date": "06/ago/26 15:38",
-    "response_text": ".Solicitado pagamento."
+    "created_date": "",
+    "response_author": "",
+    "response_date": "",
+    "response_text": ""
   },
   {
     "issue_key": "SMENTGO-1277",
@@ -495,9 +588,10 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "response_author": "Davis Marques - Master",
-    "response_date": "12/ago/26 18:25",
-    "response_text": "Boa noite!!"
+    "created_date": "",
+    "response_author": "",
+    "response_date": "",
+    "response_text": ""
   },
   {
     "issue_key": "SMENTGO-1340",
@@ -505,6 +599,7 @@
     "summary": "Contestação de Garantido FE",
     "status": "Em verificação",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -515,6 +610,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -525,6 +621,7 @@
     "summary": "Contestação de Garantido FE",
     "status": "Em verificação",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -535,6 +632,7 @@
     "summary": "Contestação de Garantido FE",
     "status": "Em verificação",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -545,6 +643,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -555,6 +654,7 @@
     "summary": "Dedicado abrindo apenas ás 11h no agendamento",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -565,6 +665,7 @@
     "summary": "Contestação de Garantido FE",
     "status": "Em verificação",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -575,6 +676,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -585,6 +687,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -595,6 +698,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -605,6 +709,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -615,6 +720,7 @@
     "summary": "Opção de conexão com maquininha não aparece",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -625,6 +731,7 @@
     "summary": "Error - Leads \"SITE\"",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -635,6 +742,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -645,6 +753,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -655,6 +764,7 @@
     "summary": "Chip Elite sem carga",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -665,6 +775,7 @@
     "summary": "Atualização de CNH pendente para entregador BIKE",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -675,6 +786,7 @@
     "summary": "Aplicativo fechando sozinho",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -685,6 +797,7 @@
     "summary": "Aba para receber máquina do app indisponivel",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -695,6 +808,7 @@
     "summary": "Chip Elite sem carga",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -705,6 +819,7 @@
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -715,6 +830,7 @@
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -725,6 +841,7 @@
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -735,6 +852,7 @@
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -745,6 +863,7 @@
     "summary": "Erro no agendamento",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -755,6 +874,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -765,6 +885,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -775,6 +896,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -785,6 +907,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -795,6 +918,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -805,6 +929,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -815,6 +940,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -825,6 +951,7 @@
     "summary": "Frota Estratégica multiplas rotas",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -835,6 +962,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -845,6 +973,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -855,6 +984,7 @@
     "summary": "Aferição - Pesquisa de satisfação",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -865,6 +995,7 @@
     "summary": "Bloqueio após alterar o MODAL ( Já Regularizado )",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -875,6 +1006,7 @@
     "summary": "Opção de conexão com maquininha não aparece",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -885,6 +1017,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -895,6 +1028,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -905,6 +1039,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -915,6 +1050,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -925,6 +1061,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -935,6 +1072,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -945,6 +1083,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -955,6 +1094,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -965,6 +1105,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -975,6 +1116,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -985,6 +1127,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -995,6 +1138,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1005,6 +1149,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1015,6 +1160,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1025,6 +1171,7 @@
     "summary": "Driver com região divergente do cadastro na franquia",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1035,6 +1182,7 @@
     "summary": "Mudança de perímetro - Rio de Janeiro / São Paulo",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1045,6 +1193,7 @@
     "summary": "Erro na fórmula - Planilha de Leads (Aba Site)",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1055,6 +1204,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1065,6 +1215,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1075,6 +1226,7 @@
     "summary": "D&G sem atualizações.",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1085,6 +1237,7 @@
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1095,6 +1248,7 @@
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1105,6 +1259,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1115,6 +1270,7 @@
     "summary": "Driver inativo por problemas relacionados a Facematch",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1125,6 +1281,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1135,6 +1292,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1145,6 +1303,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1155,6 +1314,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1165,6 +1325,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1175,6 +1336,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1185,6 +1347,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1195,6 +1358,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1205,6 +1369,7 @@
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1215,6 +1380,7 @@
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1225,6 +1391,7 @@
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1235,6 +1402,7 @@
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1245,6 +1413,7 @@
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1255,6 +1424,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1265,6 +1435,7 @@
     "summary": "Driver com problemas chip iFood",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1275,6 +1446,7 @@
     "summary": "Cadastro em Fortaleza, sistema indica Rio-Barra",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1285,6 +1457,7 @@
     "summary": "Agendamento não disponível - Fortaleza",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1295,6 +1468,7 @@
     "summary": "Bloqueio por problema no veículo",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1305,6 +1479,7 @@
     "summary": "Mesma rota tocaando inúmeras vezes após rejeites.",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1315,6 +1490,7 @@
     "summary": "Erro no pagamento por hora online – Rio de Janeiro (Livre)",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1325,6 +1501,7 @@
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1335,6 +1512,7 @@
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1345,6 +1523,7 @@
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1355,6 +1534,7 @@
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1365,6 +1545,7 @@
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1375,6 +1556,7 @@
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1385,6 +1567,7 @@
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1395,6 +1578,7 @@
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1405,6 +1589,7 @@
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1415,6 +1600,7 @@
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1425,6 +1611,7 @@
     "summary": "Mudança de região - Elite não ativo.",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1435,6 +1622,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1445,6 +1633,7 @@
     "summary": "Bloqueio por atraso, porém performance pontual.",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1455,6 +1644,7 @@
     "summary": "Driver sem rodar por problemas relacionados a Facematch",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1465,6 +1655,7 @@
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1475,6 +1666,7 @@
     "summary": "Contestação de Garantido FE",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1485,6 +1677,7 @@
     "summary": "Reprocessamento com descrição nula",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1495,6 +1688,7 @@
     "summary": "Bloqueio constante no aplicativo!",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1505,6 +1699,7 @@
     "summary": "Problema no reconhecimento facial",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1515,6 +1710,7 @@
     "summary": "Ifood-pedal inexistente e desativação de conta.",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1525,6 +1721,7 @@
     "summary": "Chip Elite sem carga",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1535,6 +1732,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1545,6 +1743,7 @@
     "summary": "Chip Elite sem carga",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1555,6 +1754,7 @@
     "summary": "Bloqueio por excesso de cancelamento",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1565,6 +1765,7 @@
     "summary": "Bloqueio por problema no veículo",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1575,6 +1776,7 @@
     "summary": "Conta Bloqueada - Modal",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1585,6 +1787,7 @@
     "summary": "Aplicativo divergente entre NUVEM e FRANQUIA",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1595,6 +1798,7 @@
     "summary": "Quilometragem ilusória no APP",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1605,6 +1809,7 @@
     "summary": "Bloqueio por excesso de cancelamento.",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1615,6 +1820,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1625,6 +1831,7 @@
     "summary": "Alteração de Modal",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1635,6 +1842,7 @@
     "summary": "KML mapa de PORTUGAL (FOR)",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1645,6 +1853,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1655,6 +1864,7 @@
     "summary": "Erro no Booking",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1665,6 +1875,7 @@
     "summary": "Chip Elite - Sem carga",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1675,6 +1886,7 @@
     "summary": "Problemas de Facematch",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1685,6 +1897,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1695,6 +1908,7 @@
     "summary": "Novo cilco de selos - Elite",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1705,6 +1919,7 @@
     "summary": "Mudança de região - Elite não ativo.",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1715,6 +1930,7 @@
     "summary": "Aferição - Pesquisa de satisfação",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1725,6 +1941,7 @@
     "summary": "Aferição - Pesquisa de satisfação",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1735,6 +1952,7 @@
     "summary": "Escala Livre Rio Zona Sul sem trava para moto",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1745,6 +1963,7 @@
     "summary": "Bloqueio de 48hrs - Sem encerramento.",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1755,6 +1974,7 @@
     "summary": "Escala de Praça/ Subpraça não reconhecida",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1765,6 +1985,7 @@
     "summary": "Bloqueio de 48hrs - Sem encerramento.",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1775,6 +1996,7 @@
     "summary": "Problema de escala em função de erro no Jarvis",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1785,6 +2007,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1795,6 +2018,7 @@
     "summary": "Gestor de Escalas - Página não encontrada",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1805,6 +2029,7 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Ruan Dalsom - Master",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1815,6 +2040,7 @@
     "summary": "Promoção Super para entregador Franquia",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""
@@ -1825,6 +2051,7 @@
     "summary": "Meta de SH no dash Programa Excelência",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
+    "created_date": "",
     "response_author": "",
     "response_date": "",
     "response_text": ""

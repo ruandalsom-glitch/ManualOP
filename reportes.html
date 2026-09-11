@@ -702,7 +702,7 @@
         <div class="jira-toolbar">
             <div class="search-field">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="searchInput" placeholder="Buscar por código (ex: SMENTGO-1740), atendente, resumo ou resposta..." oninput="onFilterChange()">
+                <input type="text" id="searchInput" placeholder="Buscar por código (ex: SMENTGO-1740), solicitante, resumo ou resposta..." oninput="onFilterChange()">
             </div>
 
             <div class="filters-row">
@@ -727,7 +727,7 @@
                 </select>
 
                 <select class="filter-badge-select" id="reporterFilter" onchange="onFilterChange()">
-                    <option value="">Atendente / Colaborador: Todos</option>
+                    <option value="">Solicitante (Planilha): Todos</option>
                 </select>
             </div>
         </div>
@@ -737,12 +737,13 @@
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 60px; text-align: center;">Tipo</th>
-                        <th>Referência</th>
+                        <th style="width: 50px; text-align: center;">Tipo</th>
+                        <th style="white-space: nowrap;">Referência</th>
+                        <th style="white-space: nowrap;">Data Reporte</th>
                         <th>Resumo do Reporte</th>
                         <th>Status</th>
                         <th>Prazo / SLA</th>
-                        <th>Atendente / Colaborador</th>
+                        <th style="white-space: nowrap;">Solicitante (Planilha)</th>
                     </tr>
                 </thead>
                 <tbody id="reportsTableBody">
@@ -793,11 +794,11 @@
                         <p id="modalStatus">Aberto</p>
                     </div>
                     <div class="modal-info-item">
-                        <label>Atendente Responsável</label>
+                        <label>Solicitante (Planilha)</label>
                         <p id="modalReporter">N/A</p>
                     </div>
                     <div class="modal-info-item">
-                        <label>Data de Abertura</label>
+                        <label>Data de Reporte (Planilha)</label>
                         <p id="modalCreatedDate">N/A</p>
                     </div>
                     <div class="modal-info-item">
@@ -816,11 +817,11 @@
                         <div class="author-details">
                             <div class="user-avatar-circle" id="modalAuthorAvatar">A</div>
                             <div>
-                                <h4 id="modalAuthor">Atendente / Suporte</h4>
+                                <h4 id="modalAuthor">Atendente do Suporte (Jira)</h4>
                                 <span id="modalDate">Data/Hora</span>
                             </div>
                         </div>
-                        <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; background: rgba(44,234,188,0.15); color: var(--menta-viva); padding: 4px 8px; border-radius: 6px;">Última Atividade</span>
+                        <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; background: rgba(44,234,188,0.15); color: var(--menta-viva); padding: 4px 8px; border-radius: 6px;">Suporte Jira</span>
                     </div>
                     <div class="modal-response-text" id="modalResponseText">
                         Nenhuma resposta registrada até o momento.
@@ -866,7 +867,7 @@
                 }
             });
 
-            selectReporter.innerHTML = '<option value="">Atendente / Colaborador: Todos</option>';
+            selectReporter.innerHTML = '<option value="">Solicitante (Planilha): Todos</option>';
             
             Array.from(solicitantes).sort().forEach(nome => {
                 const opt = document.createElement('option');
@@ -883,7 +884,7 @@
             if (!filteredData || filteredData.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="6">
+                        <td colspan="7">
                             <div class="empty-box">
                                 <i class="fa-solid fa-inbox"></i>
                                 <p>Nenhum reporte encontrado para os filtros selecionados.</p>
@@ -943,6 +944,9 @@
                     <td onclick="abrirModal(${globalIdx})">
                         <span class="issue-ref-badge">${item.issue_key || item.ticket}</span>
                     </td>
+                    <td onclick="abrirModal(${globalIdx})" style="white-space: nowrap; font-size: 13px; font-weight: 600; color: var(--azul-gelo);">
+                        <i class="fa-regular fa-calendar-days" style="margin-right: 6px; color: rgba(180,228,255,0.6);"></i>${item.data || item.created_date || 'N/A'}
+                    </td>
                     <td onclick="abrirModal(${globalIdx})">
                         <div class="issue-desc" title="${item.summary || item.descricao}">${item.summary || item.descricao}</div>
                     </td>
@@ -956,7 +960,7 @@
                         ${prazoBadge}
                     </td>
                     <td onclick="abrirModal(${globalIdx})">
-                        <div class="user-tag">
+                        <div class="user-tag" title="Solicitante (Planilha)">
                             <div class="user-avatar-circle">${inicial}</div>
                             <span>${nome}</span>
                         </div>
@@ -982,7 +986,7 @@
             document.getElementById('modalCreatedDate').innerText = item.created_date || item.data || 'Não informada';
             document.getElementById('modalPrazo').innerText = item.prazo || 'No prazo';
 
-            const authorName = item.response_author || 'Atendente / Suporte';
+            const authorName = item.response_author || 'Atendente do Suporte (Jira)';
             document.getElementById('modalAuthor').innerText = authorName;
             document.getElementById('modalAuthorAvatar').innerText = authorName.charAt(0).toUpperCase();
             document.getElementById('modalDate').innerText = item.response_date || item.data || 'Data não registrada';
@@ -1090,12 +1094,14 @@
                 const sum = item.summary || item.descricao || '';
                 const resp = item.response_text || item.dados || '';
                 const rep = item.reporter || item.atendente || '';
+                const respAuth = item.response_author || '';
                 const plat = item.plataforma || '';
 
                 const matchQuery = ref.toLowerCase().includes(query) ||
                                    sum.toLowerCase().includes(query) ||
                                    resp.toLowerCase().includes(query) ||
-                                   rep.toLowerCase().includes(query);
+                                   rep.toLowerCase().includes(query) ||
+                                   respAuth.toLowerCase().includes(query);
 
                 let matchPlatform = true;
                 if (platformFilter === 'jira') {
@@ -1168,7 +1174,19 @@
                     if (!error && data && data.length > 0) {
                         reportesData = data.map(item => {
                             let respTxt = item.dados || '';
-                            if (respTxt.toLowerCase().startsWith('abrir ') || /^[0-9a-f-]{30,}\.(jpg|png|jpeg)$/i.test(respTxt.trim()) || respTxt.trim().endsWith('.jpg')) {
+                            let respAuthor = 'Atendente do Suporte (Jira)';
+
+                            if (respTxt && respTxt.includes(':')) {
+                                const firstColonIdx = respTxt.indexOf(':');
+                                const candAuthor = respTxt.substring(0, firstColonIdx).trim();
+                                const candMsg = respTxt.substring(firstColonIdx + 1).trim();
+                                if (candAuthor.length < 50 && !candAuthor.includes('\n')) {
+                                    respAuthor = candAuthor;
+                                    respTxt = candMsg;
+                                }
+                            }
+
+                            if (!respTxt || respTxt.toLowerCase().startsWith('abrir ') || /^[0-9a-f-]{30,}\.(jpg|png|jpeg)$/i.test(respTxt.trim()) || respTxt.trim().endsWith('.jpg')) {
                                 respTxt = 'Nenhuma observação ou resposta manuscrita encontrada até o momento para este chamado.';
                             }
 
@@ -1184,7 +1202,7 @@
                                 atendente: item.atendente || 'Não Identificado',
                                 created_date: item.data || '',
                                 data: item.data || '',
-                                response_author: item.dados && item.dados.includes(':') ? item.dados.split(':')[0] : 'Atendente / Suporte',
+                                response_author: respAuthor,
                                 response_text: respTxt,
                                 dados: respTxt,
                                 response_date: item.data || '',
