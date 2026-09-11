@@ -331,7 +331,7 @@
         .logo-img { height: 72px; width: auto; max-height: 72px; object-fit: contain; filter: drop-shadow(0 0 10px rgba(44,234,188,0.25)); }
         .logo-texto { font-weight: 800; font-size: 17px; letter-spacing: -0.4px; color: var(--branco); white-space: nowrap; }
         
-        nav { position: relative; max-width: 100%; z-index: 101; }
+        nav { position: absolute; left: 50%; transform: translateX(-50%); max-width: 100%; z-index: 101; }
         .menu { list-style: none; display: flex; gap: 2px; align-items: center; position: relative; width: max-content; }
         .menu-indicator {
             position: absolute; top: 0; left: 0; height: 100%;
@@ -783,7 +783,7 @@
         .login-remember { display: flex; align-items: center; gap: 10px; color: var(--azul-gelo); font-size: 13px; cursor: pointer; align-self: flex-start; opacity: 0.75; margin-bottom: 6px; width: 100%; font-weight: 500; }
         .login-remember input[type="checkbox"] { accent-color: var(--menta-viva); width: 15px; height: 15px; cursor: pointer; }
 
-        @media (max-width: 1024px) { header { flex-wrap: wrap; padding: 14px 4%; gap: 12px; } .search-box { order: 3; max-width: 100%; flex: 1 1 100%; } nav { order: 2; } }
+        @media (max-width: 1024px) { header { flex-wrap: wrap; padding: 14px 4%; gap: 12px; } .search-box { order: 3; max-width: 100%; flex: 1 1 100%; } nav { order: 2; position: relative; left: auto; transform: none; margin: 0 auto; } }
         @media (max-width: 768px) {
             header { flex-direction: row; flex-wrap: wrap; align-items: center; } header nav { display: none; } .hamburger { display: flex; } .search-box { order: 3; flex: 1 1 100%; max-width: 100%; } .mobile-nav { display: flex; } .menu { flex-wrap: wrap; gap: 4px; justify-content: center; } .menu a { font-size: 13px; padding: 7px 12px; } .logo-texto { font-size: 16px; } .hero h1 { font-size: clamp(42px, 12vw, 72px); } section { padding: var(--space-lg) 4%; } .grid-container { grid-template-columns: 1fr; } .flip-card { min-height: 480px; }
         }
@@ -1026,7 +1026,7 @@
     <header id="main-header" style="display:none;">
         <div class="logo-box">
             <img class="logo-img" src="https://i.imgur.com/ZEox7rf.png" alt="Logo" loading="eager">
-            <span class="logo-texto">EntreGÔ Sumarezinho</span>
+            <span class="logo-texto">Manual de Operações</span>
         </div>
         <nav>
             <ul class="menu" id="mainMenu">
@@ -1582,7 +1582,7 @@
 
             if (dados.Home_Config) {
                 var hero = dados.Home_Config.find(function(i){ return i.Tipo==='Hero'; });
-                if(hero) finalHTML += '<section id="home" class="hero"><div class="hero-content"><h1>'+hero.Titulo+' <span class="text-neon">GÔ</span></h1><p class="hero-subtitle">'+hero.Subtitulo+'</p><div class="hero-badge">Manual da Operação</div></div></section>';
+                if(hero) finalHTML += '<section id="home" class="hero"><div class="hero-content"><h1>'+hero.Titulo+' <span class="text-neon">GÔ</span></h1><p class="hero-subtitle">'+hero.Subtitulo+'</p><div class="hero-badge">'+(hero.Badge || hero.Tag || 'Manual de Operações')+'</div></div></section>';
                 var cardsH = dados.Home_Config.filter(function(i){ return i.Tipo!=='Hero'; }).map(function(item){
                     return '<div class="glass-panel card-standard" style="align-items:center;text-align:center;"><div class="icon-glow">'+((item.Titulo||'').includes('Promo')?'🔥':'💬')+'</div><h3>'+item.Titulo+'</h3><p>'+item.Texto+'</p></div>';
                 }).join('');
