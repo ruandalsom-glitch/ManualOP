@@ -369,10 +369,13 @@
             gap: 6px;
         }
 
-        .badge-status.aberto { background: var(--status-amber-bg); color: var(--status-amber-text); }
-        .badge-status.andamento { background: var(--status-blue-bg); color: var(--status-blue-text); }
-        .badge-status.concluido { background: var(--status-green-bg); color: var(--status-green-text); }
-        .badge-status.atrasado { background: var(--status-red-bg); color: var(--status-red-text); }
+        .badge-status.aberto { background: var(--status-amber-bg); color: var(--status-amber-text); border: 1px solid rgba(245, 158, 11, 0.3); }
+        .badge-status.andamento { background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+        .badge-status.concluido { background: var(--status-green-bg); color: var(--status-green-text); border: 1px solid rgba(16, 185, 129, 0.3); }
+        .badge-status.atrasado { background: var(--status-red-bg); color: var(--status-red-text); border: 1px solid rgba(239, 68, 68, 0.35); box-shadow: 0 0 12px rgba(239, 68, 68, 0.15); }
+        .badge-status.finalizado { background: var(--status-blue-bg); color: var(--status-blue-text); border: 1px solid rgba(44, 234, 188, 0.3); }
+        .badge-status.no-prazo { background: var(--status-green-bg); color: var(--status-green-text); border: 1px solid rgba(16, 185, 129, 0.3); }
+        .badge-status.alerta { background: var(--status-amber-bg); color: var(--status-amber-text); border: 1px solid rgba(245, 158, 11, 0.3); }
 
         .btn-view-resp {
             background: rgba(44,234,188,0.12);
@@ -660,7 +663,7 @@
                 </div>
                 <div class="card-stat-val">
                     <h3 id="statTotal">0</h3>
-                    <p>Total de Reportes</p>
+                    <p>Total de Reportes (Jira)</p>
                 </div>
             </div>
 
@@ -703,6 +706,11 @@
             </div>
 
             <div class="filters-row">
+                <select class="filter-badge-select" id="platformFilter" onchange="onFilterChange()">
+                    <option value="jira" selected>Plataforma: Jira</option>
+                    <option value="">Plataforma: Todas</option>
+                </select>
+
                 <select class="filter-badge-select" id="typeFilter" onchange="onFilterChange()">
                     <option value="">Tipo de solicitação (Todas)</option>
                     <option value="Contestação de Promoção">Contestação de Promoção</option>
@@ -712,9 +720,9 @@
                 </select>
 
                 <select class="filter-badge-select" id="statusFilter" onchange="onFilterChange()">
-                    <option value="">Status (Todos)</option>
+                    <option value="">Status / SLA (Todos)</option>
                     <option value="aberto">Aberto / Pendente</option>
-                    <option value="atrasado">Em Atraso</option>
+                    <option value="atrasado">Em Atraso (Fora do SLA)</option>
                     <option value="concluido">Concluído / Resolvido</option>
                 </select>
 
@@ -853,7 +861,7 @@
 
             dados.forEach(d => {
                 const r = d.reporter || d.atendente;
-                if (r && r.trim()) {
+                if (r && r.trim() && r.trim() !== 'Não Identificado') {
                     solicitantes.add(r.trim());
                 }
             });
@@ -910,15 +918,18 @@
                     statusClass = 'concluido';
                 }
 
-                // Classe e renderização de Prazo (SLA)
-                let prazoBadge = '<span class="badge-status concluido"><i class="fa-solid fa-check"></i> No prazo</span>';
+                // Classe e renderização condizente de Prazo (SLA)
+                let prazoBadge = '<span class="badge-status no-prazo"><i class="fa-solid fa-circle-check"></i> No prazo</span>';
                 const prz = (item.prazo || '').toLowerCase();
+
                 if (prz.includes('atraso')) {
                     prazoBadge = `<span class="badge-status atrasado"><i class="fa-solid fa-triangle-exclamation"></i> ${item.prazo}</span>`;
-                } else if (prz.includes('finaliz')) {
-                    prazoBadge = '<span class="badge-status andamento"><i class="fa-solid fa-circle-check"></i> Finalizado</span>';
+                } else if (prz.includes('finaliz') || st.includes('conclu') || st.includes('resolv')) {
+                    prazoBadge = '<span class="badge-status finalizado"><i class="fa-solid fa-check-double"></i> Finalizado</span>';
+                } else if (prz.includes('falta') || prz.includes('hoje')) {
+                    prazoBadge = `<span class="badge-status alerta"><i class="fa-solid fa-hourglass-half"></i> ${item.prazo}</span>`;
                 } else if (prz) {
-                    prazoBadge = `<span class="badge-status concluido"><i class="fa-solid fa-clock"></i> ${item.prazo}</span>`;
+                    prazoBadge = `<span class="badge-status no-prazo"><i class="fa-solid fa-circle-check"></i> ${item.prazo}</span>`;
                 }
 
                 const iconHtml = getIconForType(item.type || item.categoria, item.summary || item.descricao);
@@ -976,7 +987,12 @@
             document.getElementById('modalAuthorAvatar').innerText = authorName.charAt(0).toUpperCase();
             document.getElementById('modalDate').innerText = item.response_date || item.data || 'Data não registrada';
 
-            document.getElementById('modalResponseText').innerText = item.response_text || item.dados || 'Nenhuma atividade ou resposta manuscrita encontrada até o momento para este chamado.';
+            let responseMsg = item.response_text || item.dados || '';
+            if (!responseMsg || responseMsg.startsWith('Abrir ') || responseMsg.includes('.jpg') || responseMsg.includes('.png')) {
+                responseMsg = 'Nenhuma observação ou resposta manuscrita encontrada até o momento para este chamado.';
+            }
+
+            document.getElementById('modalResponseText').innerText = responseMsg;
 
             document.getElementById('responseModal').classList.add('active');
         }
@@ -1064,6 +1080,7 @@
 
         function filtrarDados() {
             const query = document.getElementById('searchInput').value.toLowerCase();
+            const platformFilter = document.getElementById('platformFilter').value;
             const typeFilter = document.getElementById('typeFilter').value;
             const statusFilter = document.getElementById('statusFilter').value;
             const reporterFilter = document.getElementById('reporterFilter').value;
@@ -1073,11 +1090,19 @@
                 const sum = item.summary || item.descricao || '';
                 const resp = item.response_text || item.dados || '';
                 const rep = item.reporter || item.atendente || '';
+                const plat = item.plataforma || '';
 
                 const matchQuery = ref.toLowerCase().includes(query) ||
                                    sum.toLowerCase().includes(query) ||
                                    resp.toLowerCase().includes(query) ||
                                    rep.toLowerCase().includes(query);
+
+                let matchPlatform = true;
+                if (platformFilter === 'jira') {
+                    matchPlatform = plat.toLowerCase().includes('jira') || ref.toUpperCase().includes('SMENTGO');
+                } else if (platformFilter) {
+                    matchPlatform = plat.toLowerCase().includes(platformFilter.toLowerCase());
+                }
 
                 let matchType = true;
                 if (typeFilter) {
@@ -1103,10 +1128,10 @@
                     matchReporter = rep.trim() === reporterFilter;
                 }
 
-                return matchQuery && matchType && matchStatus && matchReporter;
+                return matchQuery && matchPlatform && matchType && matchStatus && matchReporter;
             });
 
-            atualizarMetrics(reportesData);
+            atualizarMetrics(filteredData);
             renderTabela();
         }
 
@@ -1141,26 +1166,33 @@
                         .select('*');
 
                     if (!error && data && data.length > 0) {
-                        reportesData = data.map(item => ({
-                            issue_key: item.ticket || 'N/A',
-                            ticket: item.ticket || 'N/A',
-                            type: item.categoria || 'Geral',
-                            categoria: item.categoria || 'Geral',
-                            summary: item.descricao || 'Sem descrição',
-                            descricao: item.descricao || 'Sem descrição',
-                            status: item.status || 'Aberto',
-                            reporter: item.atendente || 'Não Identificado',
-                            atendente: item.atendente || 'Não Identificado',
-                            created_date: item.data || '',
-                            data: item.data || '',
-                            response_author: item.dados ? (item.dados.split(':')[0] || 'Atendente') : '',
-                            response_text: item.dados || 'Sem observações registradas',
-                            dados: item.dados || 'Sem observações registradas',
-                            response_date: item.data || '',
-                            prazo: item.prazo || 'No prazo',
-                            sla: item.sla || '2 dias',
-                            plataforma: item.plataforma || 'EntreGô / Jira'
-                        }));
+                        reportesData = data.map(item => {
+                            let respTxt = item.dados || '';
+                            if (respTxt.toLowerCase().startsWith('abrir ') || /^[0-9a-f-]{30,}\.(jpg|png|jpeg)$/i.test(respTxt.trim()) || respTxt.trim().endsWith('.jpg')) {
+                                respTxt = 'Nenhuma observação ou resposta manuscrita encontrada até o momento para este chamado.';
+                            }
+
+                            return {
+                                issue_key: item.ticket || 'N/A',
+                                ticket: item.ticket || 'N/A',
+                                type: item.categoria || 'Geral',
+                                categoria: item.categoria || 'Geral',
+                                summary: item.descricao || 'Sem descrição',
+                                descricao: item.descricao || 'Sem descrição',
+                                status: item.status || 'Aberto',
+                                reporter: item.atendente || 'Não Identificado',
+                                atendente: item.atendente || 'Não Identificado',
+                                created_date: item.data || '',
+                                data: item.data || '',
+                                response_author: item.dados && item.dados.includes(':') ? item.dados.split(':')[0] : 'Atendente / Suporte',
+                                response_text: respTxt,
+                                dados: respTxt,
+                                response_date: item.data || '',
+                                prazo: item.prazo || 'No prazo',
+                                sla: item.sla || '2 dias',
+                                plataforma: item.plataforma || 'EntreGô / Jira'
+                            };
+                        });
 
                         // Salvar no sessionStorage para economizar chamadas no Supabase
                         sessionStorage.setItem('cache_reportes_colaboradores', JSON.stringify(reportesData));

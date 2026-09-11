@@ -118,6 +118,22 @@ def map_and_filter_type(type_raw, summary):
 
     return None
 
+def is_valid_comment_text(text):
+    if not text:
+        return False
+    t = text.strip().lower()
+    if t.startswith("abrir "):
+        return False
+    if re.search(r'\.(jpg|png|jpeg|gif|webp|pdf|mp4|zip|rar)$', t):
+        return False
+    if re.search(r'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}', t):
+        return False
+    if t in ["adicionar comentário", "status", "atividade", "resposta automática", "notificações desativadas", "tipo de solicitação", "compartilhada com", "criador"]:
+        return False
+    if "o status da sua" in t or "criou essa solicitação" in t or "voltar para central" in t:
+        return False
+    return True
+
 async def fetch_issue_response(page, issue_key):
     """Navega até o detalhe do chamado e extrai data de criação, solicitante e última resposta/atividade humana"""
     url = f"https://ifood.atlassian.net/helpcenter/entrego/portal/4623/{issue_key}"
@@ -148,17 +164,24 @@ async def fetch_issue_response(page, issue_key):
             idx = lines.index("Atividade")
             sub_lines = lines[idx + 1:]
             
-            for i in range(len(sub_lines) - 2):
+            for i in range(len(sub_lines) - 1):
                 author = sub_lines[i]
-                date_str = sub_lines[i + 1]
-                text_candidate = sub_lines[i + 2]
+                if author == "Resposta automática" or "Adicionar comentário" in author or author in ["Status", "Notificações desativadas"]:
+                    continue
 
-                if author != "Resposta automática" and "O status da sua" not in text_candidate and "Adicionar comentário" not in author:
-                    if re.search(r'\d{2}/\w{3}/\d{2}', date_str) or "às" in date_str or ":" in date_str or "Ontem" in date_str or "Hoje" in date_str:
+                date_candidate = sub_lines[i + 1] if i + 1 < len(sub_lines) else ""
+                
+                # Procura o primeiro comentário de texto válido
+                for j in range(i + 1, min(i + 5, len(sub_lines))):
+                    cand = sub_lines[j]
+                    if is_valid_comment_text(cand):
                         response_author = author
-                        response_date = date_str
-                        response_text = text_candidate
+                        response_date = date_candidate if ("às" in date_candidate or ":" in date_candidate or "Ontem" in date_candidate or "Hoje" in date_candidate or re.search(r'\d{2}/\w{3}/\d{2}', date_candidate)) else ""
+                        response_text = cand
                         break
+
+                if response_text:
+                    break
 
         return {
             "created_date": created_date,
