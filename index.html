@@ -50,8 +50,9 @@
         *:focus-visible { outline: 2.5px solid var(--menta-viva) !important; outline-offset: 3px !important; }
         html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
         body {
-            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-            background: #04081c;
+            font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(180deg, #091238 0%, #0F1849 32%, #080d2c 70%, #05081e 100%);
+            background-attachment: fixed;
             color: var(--branco);
             min-height: 100vh;
             overflow-x: hidden;
@@ -64,10 +65,9 @@
             inset: 0;
             z-index: 0;
             background: 
-                radial-gradient(ellipse 90% 65% at 20% -10%, rgba(44, 103, 234, 0.35) 0%, transparent 65%),
-                radial-gradient(ellipse 70% 60% at 85% 110%, rgba(44, 234, 188, 0.15) 0%, transparent 60%),
-                radial-gradient(circle 600px at 50% 50%, rgba(13, 22, 60, 0.8) 0%, transparent 100%),
-                #04081c;
+                radial-gradient(ellipse 100% 50% at 50% -5%, rgba(44, 234, 188, 0.25) 0%, rgba(44, 103, 234, 0.16) 45%, transparent 75%),
+                radial-gradient(circle 700px at 85% 90%, rgba(44, 234, 188, 0.08) 0%, transparent 65%),
+                linear-gradient(180deg, rgba(15, 24, 73, 0.3) 0%, rgba(5, 8, 30, 0.85) 100%);
             pointer-events: none;
         }
         body::after {
@@ -348,6 +348,89 @@
             transition: color var(--transition-fast), background var(--transition-fast);
             padding: 7px 11px; border-radius: var(--radius-full); white-space: nowrap; letter-spacing: 0.1px;
             display: block; position: relative; z-index: 1;
+        }
+
+        /* RICH CATEGORIZED DROPDOWN MENU STYLES */
+        .menu-item-dropdown {
+            position: relative;
+        }
+        .dropdown-trigger {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+        .dropdown-trigger span.arrow-icon {
+            font-size: 9px;
+            opacity: 0.75;
+            transition: transform 0.25s ease, color 0.25s ease;
+        }
+        .menu-item-dropdown:hover .dropdown-trigger span.arrow-icon {
+            transform: rotate(180deg);
+            color: var(--menta-viva);
+        }
+        .menu-item-dropdown:hover .dropdown-trigger {
+            color: var(--menta-viva);
+        }
+        .dropdown-menu-rich {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(14px);
+            width: 320px;
+            background: rgba(8, 14, 44, 0.96);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border: 1.5px solid rgba(44, 234, 188, 0.28);
+            border-radius: 20px;
+            padding: 10px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), 0 0 24px rgba(44, 234, 188, 0.15);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.28s cubic-bezier(0.4, 0, 0.2, 1), transform 0.28s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.28s ease;
+            z-index: 1000;
+        }
+        .menu-item-dropdown:hover .dropdown-menu-rich,
+        .menu-item-dropdown:focus-within .dropdown-menu-rich {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateX(-50%) translateY(6px);
+        }
+        .dropdown-item-rich {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            text-decoration: none !important;
+            transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+            border: 1px solid transparent;
+            white-space: normal !important;
+        }
+        .dropdown-item-rich:hover {
+            background: rgba(44, 234, 188, 0.12) !important;
+            border-color: rgba(44, 234, 188, 0.3) !important;
+            transform: translateX(4px);
+        }
+        .dropdown-item-title {
+            color: #ffffff;
+            font-size: 13.5px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .dropdown-item-rich:hover .dropdown-item-title {
+            color: var(--menta-viva) !important;
+        }
+        .dropdown-item-desc {
+            color: var(--azul-gelo);
+            font-size: 11.5px;
+            font-weight: 400;
+            opacity: 0.78;
+            line-height: 1.35;
         }
         @media (max-width: 1400px) {
             .menu a { font-size: 12.5px; padding: 6px 9px; }
@@ -943,26 +1026,74 @@
     <header id="main-header" style="display:none;">
         <div class="logo-box">
             <img class="logo-img" src="https://i.imgur.com/ZEox7rf.png" alt="Logo" loading="eager">
-            <span class="logo-texto">Manual Operacional</span>
+            <span class="logo-texto">EntreGÔ Sumarezinho</span>
         </div>
         <nav>
             <ul class="menu" id="mainMenu">
                 <div class="menu-indicator" id="menuIndicator"></div>
                 <li><a href="#news" class="menu-novidades-link">Novidades!</a></li>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#info" style="color:var(--menta-viva);font-weight:800;">Informações</a></li>
-                <li><a href="#elite">Elite</a></li>
-                <li><a href="#promocoes">Promoções</a></li>
-                <li class="menu-has-sub" style="position:relative;">
-                    <a href="#dedicado" class="menu-link-with-arrow" id="dedicadoMenuLink">Dedicado <span style="font-size:10px;opacity:0.7;">▼</span></a>
-                    <div class="menu-submenu" id="menuSubmenu">
-                        <a href="garantido.html" style="color:var(--menta-viva);font-weight:700;">↗ Garantido (página dedicada)</a>
+                <li><a href="#home">Início</a></li>
+                
+                <!-- DROPDOWN OPERAÇÃO -->
+                <li class="menu-item-dropdown">
+                    <a href="javascript:void(0)" class="dropdown-trigger">Operação <span class="arrow-icon">▼</span></a>
+                    <div class="dropdown-menu-rich">
+                        <a href="#info" class="dropdown-item-rich">
+                            <span class="dropdown-item-title">Informações</span>
+                            <span class="dropdown-item-desc">Comunicados, orientações e informações gerais</span>
+                        </a>
+                        <a href="#procedimentos" class="dropdown-item-rich">
+                            <span class="dropdown-item-title">Procedimentos</span>
+                            <span class="dropdown-item-desc">Como executar as atividades da operação</span>
+                        </a>
+                        <a href="#promocoes" class="dropdown-item-rich">
+                            <span class="dropdown-item-title">Promoções</span>
+                            <span class="dropdown-item-desc">Promoções e ações vigentes</span>
+                        </a>
+                        <a href="#cadastro" class="dropdown-item-rich">
+                            <span class="dropdown-item-title">Cadastro</span>
+                            <span class="dropdown-item-desc">Cadastro e status dos entregadores</span>
+                        </a>
                     </div>
                 </li>
-                <li><a href="#mapas">Mapas</a></li>
-                <li><a href="#cadastro">Cadastro</a></li>
-                <li><a href="metricas.html" target="_blank" style="color:var(--menta-viva);font-weight:700;">Métricas</a></li>
-                <li><a href="#procedimentos">Procedimentos</a></li>
+
+                <!-- DROPDOWN FROTA -->
+                <li class="menu-item-dropdown">
+                    <a href="javascript:void(0)" class="dropdown-trigger">Frota <span class="arrow-icon">▼</span></a>
+                    <div class="dropdown-menu-rich">
+                        <a href="#elite" class="dropdown-item-rich">
+                            <span class="dropdown-item-title">Elite</span>
+                            <span class="dropdown-item-desc">Programa Elite e seus critérios</span>
+                        </a>
+                        <a href="#dedicado" class="dropdown-item-rich">
+                            <span class="dropdown-item-title">Dedicado</span>
+                            <span class="dropdown-item-desc">Frota Estratégica / Dedicados</span>
+                        </a>
+                        <a href="garantido.html" class="dropdown-item-rich" id="menuGarantidoLink">
+                            <span class="dropdown-item-title">Garantido <i class="fas fa-external-link-alt" style="font-size:10px;"></i></span>
+                            <span class="dropdown-item-desc">Regras e acompanhamento do Garantido</span>
+                        </a>
+                        <a href="#mapas" class="dropdown-item-rich">
+                            <span class="dropdown-item-title">Mapas</span>
+                            <span class="dropdown-item-desc">Mapas por praça e região</span>
+                        </a>
+                    </div>
+                </li>
+
+                <!-- DROPDOWN GESTÃO -->
+                <li class="menu-item-dropdown">
+                    <a href="javascript:void(0)" class="dropdown-trigger">Gestão <span class="arrow-icon">▼</span></a>
+                    <div class="dropdown-menu-rich">
+                        <a href="metricas.html" target="_blank" class="dropdown-item-rich">
+                            <span class="dropdown-item-title">Métricas <i class="fas fa-external-link-alt" style="font-size:10px;"></i></span>
+                            <span class="dropdown-item-desc">Indicadores e acompanhamento da operação</span>
+                        </a>
+                        <a href="#dashboards" class="dropdown-item-rich" id="dashMenuDropdownLink">
+                            <span class="dropdown-item-title">Dashboards</span>
+                            <span class="dropdown-item-desc">Painéis de gestão</span>
+                        </a>
+                    </div>
+                </li>
             </ul>
         </nav>
         <button class="hamburger" id="hamburgerBtn" aria-label="Menu" onclick="toggleMobileNav()">
@@ -1749,16 +1880,12 @@
             var isCadastroUser = respostaObj.isCadastro || false;
 
             // Oculta o link do Garantido para marketing e cadastro
-            var menuSubmenu = document.getElementById('menuSubmenu');
-            if (menuSubmenu) {
+            var menuGarantidoLink = document.getElementById('menuGarantidoLink');
+            if (menuGarantidoLink) {
                 if (isMarketingUser || isCadastroUser) {
-                    menuSubmenu.style.display = 'none';
-                    var dedLink = document.getElementById('dedicadoMenuLink');
-                    if (dedLink) {
-                        dedLink.innerHTML = 'Dedicado';
-                    }
+                    menuGarantidoLink.style.display = 'none';
                 } else {
-                    menuSubmenu.style.display = '';
+                    menuGarantidoLink.style.display = '';
                 }
             }
 
@@ -1823,19 +1950,14 @@
             idle(function(){ if(pracasInfoDisponiveis.length>0) renderInfoPraca(pracasInfoDisponiveis[0]); else if(dadosInfo.length>0) renderInfoPraca('TODAS'); });
             idle(function(){ ativarFlip(); aplicarZoomNasImagens(); initScrollReveal(); });
 
-            /* Link único "Dashboards" no menu */
-            if(dados.temAcessoDashboard === true || respostaObj.urlDashboardSetor){
-                idle(function(){
-                    var menu = document.querySelector('.menu');
-                    if(menu && !document.getElementById('dash-menu-link')){
-                        var lis = menu.querySelectorAll('li'); var procLi = null;
-                        for(var i=0;i<lis.length;i++){ if(lis[i].innerText.indexOf('Procedimentos')!==-1){ procLi=lis[i]; break; } }
-                        var nl = document.createElement('li'); nl.id='dash-menu-link';
-                        nl.innerHTML='<a href="#dashboards" class="menu-gestao-link">Dashboards</a>';
-                        if(procLi) menu.insertBefore(nl,procLi); else menu.appendChild(nl);
-                    }
-                });
-            }
+            /* Link "Dashboards" no dropdown Gestão */
+            var temDash = (dados.temAcessoDashboard === true || respostaObj.urlDashboardSetor);
+            idle(function(){
+                var dashLink = document.getElementById('dashMenuDropdownLink');
+                if(dashLink){
+                    dashLink.style.display = temDash ? 'block' : 'none';
+                }
+            });
 
         } catch(e) {
             console.error('Erro na renderização:',e);
