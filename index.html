@@ -5,14 +5,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Manual da Operação - GO</title>
+    <link rel="preload" as="image" href="logo.png" type="image/png" fetchpriority="high">
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="shortcut icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://i.imgur.com" crossorigin>
+    <link rel="dns-prefetch" href="https://i.imgur.com">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap&font-display=swap" media="print" onload="this.media='all'">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        img { content-visibility: auto; }
         :root {
             --azul-escuro: #060a22; 
             --azul-card: rgba(13, 22, 60, 0.72);
@@ -1045,7 +1049,7 @@
     <div id="login-container">
         <div class="login-box" id="loginBox">
             <div id="login-success-icon">✅</div>
-            <img src="logo.png" alt="Logo EntreGô" id="loginLogo" loading="eager" fetchpriority="high" style="width:110px; height:auto; margin: 0 auto 16px; display: block; border-radius: 18px; filter: drop-shadow(0 0 24px rgba(44, 234, 188, 0.45));">
+            <img src="logo.png" alt="Logo EntreGô" id="loginLogo" loading="eager" fetchpriority="high" decoding="async" style="width:110px; height:auto; margin: 0 auto 16px; display: block; border-radius: 18px; filter: drop-shadow(0 0 24px rgba(44, 234, 188, 0.45));">
             <h2>Bem-vindo de volta</h2>
             <p class="login-subtitle">Acesso restrito à equipe operacional</p>
             <div class="login-field">
@@ -1068,14 +1072,14 @@
     </div>
 
     <div id="loader" style="display:none;">
-        <img src="logo.png" alt="Logo" class="loader-logo" loading="eager" style="border-radius: 16px;">
+        <img src="logo.png" alt="Logo" class="loader-logo" loading="eager" decoding="async" style="border-radius: 16px;">
         <p class="loader-label">Sincronizando</p>
         <div class="loader-bar-wrap"><div class="loader-bar-fill"></div></div>
     </div>
 
     <header id="main-header" style="display:none;">
         <div class="logo-box" onclick="window.scrollTo({top:0, behavior:'smooth'});" style="cursor:pointer;">
-            <img class="logo-img" src="logo.png" alt="Logo" loading="eager">
+            <img class="logo-img" src="logo.png" alt="Logo" loading="eager" decoding="async">
             <span class="logo-texto">Manual de Operações</span>
         </div>
         <nav>
@@ -1585,6 +1589,28 @@
 
 
 
+    function preloadImageCache(url) {
+        if (!url || typeof url !== 'string') return;
+        var cleanUrl = url.trim();
+        if (!cleanUrl || cleanUrl.startsWith('data:')) return;
+        try {
+            var img = new Image();
+            img.decoding = 'async';
+            img.src = cleanUrl;
+        } catch(e){}
+    }
+
+    function preloadBatchImages(items, keys) {
+        if (!Array.isArray(items)) return;
+        var targetKeys = keys || ['Imagem_URL', 'imagem_url', 'Imagem', 'imagem', 'Logo', 'logo', 'publisher_logo'];
+        items.forEach(function(item) {
+            if (!item) return;
+            targetKeys.forEach(function(k) {
+                if (item[k]) preloadImageCache(item[k]);
+            });
+        });
+    }
+
     function abrirNewsModal(idx) {
         var item = dadosNewsGlobal[idx];
         if (!item) return;
@@ -1596,7 +1622,7 @@
         var linkUrl = item.link || item.Link || item.link_url || '';
         var linkBtn = linkUrl ? '<div style="margin-top:20px;text-align:right;"><a href="' + linkUrl + '" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:12px;background:var(--menta-viva);color:#000;font-weight:700;text-decoration:none;font-size:13px;transition:transform 0.2s ease;">🔗 Abrir Link Externo</a></div>' : '';
 
-        var imgHTML = imgUrl ? '<div style="width:100%;text-align:center;margin:16px 0;background:rgba(0,0,0,0.3);border-radius:16px;overflow:hidden;border:1px solid rgba(44, 234, 188, 0.2);"><img src="' + imgUrl + '" onclick="abrirZoom(\'' + imgUrl + '\')" style="max-width:100%;height:auto;max-height:420px;object-fit:contain;border-radius:16px;display:inline-block;cursor:pointer;vertical-align:middle;" alt="News Img" title="Clique para ampliar" onerror="this.parentNode.style.display=\'none\'"></div>' : '';
+        var imgHTML = imgUrl ? '<div style="width:100%;text-align:center;margin:16px 0;background:rgba(0,0,0,0.3);border-radius:16px;overflow:hidden;border:1px solid rgba(44, 234, 188, 0.2);"><img src="' + imgUrl + '" onclick="abrirZoom(\'' + imgUrl + '\')" decoding="async" loading="lazy" style="max-width:100%;height:auto;max-height:420px;object-fit:contain;border-radius:16px;display:inline-block;cursor:pointer;vertical-align:middle;" alt="News Img" title="Clique para ampliar" onerror="this.parentNode.style.display=\'none\'"></div>' : '';
         var pubName = item.publisher || item.Autor || 'MANUAL OP';
         var catTxt = item.categoria || item.Categoria || 'Novidade';
         var rawDate = (item.data !== undefined && item.data !== null && String(item.data).trim() !== '') ? item.data : ((item.Data !== undefined && item.Data !== null && String(item.Data).trim() !== '') ? item.Data : (item.data_postagem || item.Data_Postagem || item.created_at));
@@ -1944,6 +1970,7 @@
             });
 
             dadosNewsGlobal = newsData;
+            preloadBatchImages(newsData);
             
             finalHTML += '<section id="news">';
             finalHTML += '  <div class="news-header-bar">';
@@ -1962,17 +1989,16 @@
                     }
                 });
 
-                finalHTML += '    <div class="news-filters">';
-                categoriasUnicas.forEach(function(catName, i) {
-                    var isAct = (i === 0) ? ' active' : '';
-                    var catEscaped = catName.replace(/'/g, "\\'");
-                    var label = (catName === 'TODAS') ? 'Todas' : catName;
-                    finalHTML += '      <button class="news-chip' + isAct + '" onclick="filtrarNoticias(this, \'' + catEscaped + '\')">' + label + '</button>';
+                var categoryChipsHTML = '<div class="news-category-bar">';
+                categoriasUnicas.forEach(function(cat, idx) {
+                    categoryChipsHTML += '<button class="news-chip' + (idx === 0 ? ' active' : '') + '" onclick="filtrarNoticias(this,\'' + cat.replace(/'/g, "\\'") + '\')">' + cat + '</button>';
                 });
-                finalHTML += '    </div>';
-                finalHTML += '  </div>';
+                categoryChipsHTML += '</div>';
+
+                finalHTML += categoryChipsHTML;
+                finalHTML += '  </div>'; // fecha news-header-bar
                 
-                finalHTML += '  <div class="news-grid" id="newsGrid">';
+                finalHTML += '  <div class="news-grid-row" id="newsGrid">';
                 
                 // Data de hoje formatada (DD/MM) para conferência de destaque
                 var hojeObj = new Date();
@@ -2022,7 +2048,7 @@
                     finalHTML += badgeHoje;
                     finalHTML += '  <div class="news-publisher-bar">';
                     finalHTML += '    <div class="news-publisher-info">';
-                    finalHTML += '      <img src="' + pubLogo + '" class="news-publisher-logo" alt="Logo" onerror="this.src=\'https://i.imgur.com/ZEox7rf.png\'">';
+                    finalHTML += '      <img src="' + pubLogo + '" class="news-publisher-logo" alt="Logo" decoding="async" loading="lazy" onerror="this.src=\'https://i.imgur.com/ZEox7rf.png\'">';
                     finalHTML += '      <span class="news-publisher-name">' + pubName + '</span>';
                     finalHTML += '    </div>';
                     finalHTML += '  </div>';
@@ -2041,7 +2067,7 @@
                     finalHTML += '      </div>';
                     finalHTML += '    </div>';
                     if(imgUrl) {
-                        finalHTML += '    <img src="' + imgUrl + '" class="news-item-thumb" alt="Thumb" loading="lazy" onerror="this.style.display=\'none\'">';
+                        finalHTML += '    <img src="' + imgUrl + '" class="news-item-thumb" alt="Thumb" loading="lazy" decoding="async" onerror="this.style.display=\'none\'">';
                     }
                     finalHTML += '  </div>';
                     finalHTML += '</div>';
@@ -2081,7 +2107,7 @@
                             finalHTML += '<div class="glass-panel card-standard acelerador-card" style="grid-column:1/-1;"><div class="acelerador-badge">DESTAQUE</div><div style="display:flex;gap:16px;align-items:center;"><div class="icon-glow">⚡</div><div><h3>'+c.Titulo+'</h3><p class="text-muted">'+c.Texto+'</p></div></div><div class="equation-box"><b>📦 1 Pedido Dedicado</b> <span class="text-neon">➔</span> <span class="eq-result">= 2 Pedidos</span></div></div>';
                         } else if(c.Tipo==='Card_Destaque'){
                             var txtF = (c.Texto||'').replace(/\n|\r\n/g,'<br>');
-                            var imgDE = c.Imagem_URL?'<img src="'+c.Imagem_URL+'" onclick="abrirZoom(this)" loading="lazy" style="width:150px;height:auto;max-height:150px;object-fit:contain;border-radius:14px;flex-shrink:0;cursor:zoom-in;transition:transform 0.2s;" onmouseover="this.style.transform=\'scale(1.06)\'" onmouseout="this.style.transform=\'scale(1)\'">':'';
+                            var imgDE = c.Imagem_URL?'<img src="'+c.Imagem_URL+'" onclick="abrirZoom(this)" loading="lazy" decoding="async" style="width:150px;height:auto;max-height:150px;object-fit:contain;border-radius:14px;flex-shrink:0;cursor:zoom-in;transition:transform 0.2s;" onmouseover="this.style.transform=\'scale(1.06)\'" onmouseout="this.style.transform=\'scale(1)\'">':'';
                             finalHTML += '<div class="glass-panel card-standard acelerador-card" style="grid-column:1/-1;"><div class="acelerador-badge">NOVIDADE</div><div style="display:flex;gap:20px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;"><div style="display:flex;gap:14px;align-items:flex-start;flex:1;min-width:0;"><div class="icon-glow" style="flex-shrink:0;">✨</div><div style="flex:1;min-width:0;"><h3 style="margin-top:0;">'+c.Titulo+'</h3><p class="text-muted" style="word-break:break-word;overflow-wrap:anywhere;line-height:1.7;">'+txtF+'</p></div></div>'+imgDE+'</div></div>';
                         } else if(c.Tipo==='Card_Info'){
                             finalHTML += '<div class="glass-panel card-standard" style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;"><div class="icon-glow" style="margin:0 auto;">💡</div><h3>'+c.Titulo+'</h3><p class="text-muted">'+(c.Texto||'')+'</p></div>';
@@ -2775,7 +2801,7 @@
                     var hrT=String(u.Horario_Valores||'');
                     var hrL=hrT.split(/\n|\r\n|<br>| \| /i).filter(function(l){ return l.trim()!==''; });
                     var hrH=''; hrL.forEach(function(l){ hrH+='<span style="display:block;margin-bottom:4px;">'+l.trim()+'</span>'; });
-                    html += '<div class="dedicado-card-wrapper'+dc+'"><div class="glass-panel dedicado-card">'+(dt?'<div class="badge-destaque-interno">'+u.Destaque+'</div>':'')+bm+'<div class="dedicado-img-box"><img src="'+(u.Imagem_URL||'')+'" loading="lazy" style="max-width:100%;max-height:100%;object-fit:contain;" alt="'+(u.Restaurante||'')+'"></div><div class="dedicado-info"><h3>'+(u.Restaurante||'')+' | '+(u.Unidade||'')+'</h3><div class="info-horario">'+hrH+'</div><p class="info-endereco">'+(u.Endereco_CEP||'')+'</p></div></div></div>';
+                    html += '<div class="dedicado-card-wrapper'+dc+'"><div class="glass-panel dedicado-card">'+(dt?'<div class="badge-destaque-interno">'+u.Destaque+'</div>':'')+bm+'<div class="dedicado-img-box"><img src="'+(u.Imagem_URL||'')+'" loading="lazy" decoding="async" style="max-width:100%;max-height:100%;object-fit:contain;" alt="'+(u.Restaurante||'')+'"></div><div class="dedicado-info"><h3>'+(u.Restaurante||'')+' | '+(u.Unidade||'')+'</h3><div class="info-horario">'+hrH+'</div><p class="info-endereco">'+(u.Endereco_CEP||'')+'</p></div></div></div>';
                 });
                 html += '</div></div></div>';
             });
@@ -2868,7 +2894,7 @@
             if (txtVerso) {
                 infoCardsHTML += '<div class="flip-card"><div class="flip-inner">';
                 infoCardsHTML += '  <div class="flip-front glass-panel card-standard">';
-                if (img) infoCardsHTML += '    <div class="img-container"><img src="' + img + '" loading="lazy" class="responsive-img" onclick="abrirZoom(this)" alt="' + tit + '"></div>';
+                if (img) infoCardsHTML += '    <div class="img-container"><img src="' + img + '" loading="lazy" decoding="async" class="responsive-img" onclick="abrirZoom(this)" alt="' + tit + '"></div>';
                 if (tit) infoCardsHTML += '    <h3 style="margin-top:12px;">' + tit + '</h3>';
                 if (sub) infoCardsHTML += '    <p style="color:var(--menta-viva);font-size:13px;font-weight:700;margin-bottom:8px;">' + sub + '</p>';
                 if (txt) infoCardsHTML += '    <p class="promo-text">' + txt + '</p>';
@@ -2883,7 +2909,7 @@
                 infoCardsHTML += '</div></div>';
             } else {
                 infoCardsHTML += '<div class="glass-panel card-standard" style="display:flex;flex-direction:column;gap:10px;">';
-                if (img) infoCardsHTML += '  <div class="img-container"><img src="' + img + '" loading="lazy" class="responsive-img" onclick="abrirZoom(this)" alt="' + tit + '"></div>';
+                if (img) infoCardsHTML += '  <div class="img-container"><img src="' + img + '" loading="lazy" decoding="async" class="responsive-img" onclick="abrirZoom(this)" alt="' + tit + '"></div>';
                 if (tit) infoCardsHTML += '  <h3 style="margin-top:8px;">' + tit + '</h3>';
                 if (sub) infoCardsHTML += '  <p style="color:var(--menta-viva);font-size:13px;font-weight:700;">' + sub + '</p>';
                 if (txt) infoCardsHTML += '  <p class="promo-text">' + txt + '</p>';
@@ -2917,7 +2943,7 @@
             if(cards.length>0){
                 html += '<div class="grid-container">';
                 cards.forEach(function(p){
-                    html += '<div class="flip-card"><div class="flip-inner"><div class="flip-front glass-panel card-standard"><div class="img-container">'+(p.Imagem_URL?'<img src="'+p.Imagem_URL+'" loading="lazy" class="responsive-img" onerror="this.onerror=null;this.outerHTML=\'<div class=\\\'icon-glow\\\'>🎁</div>\';" alt="'+p.Titulo+'">':'<div class="icon-glow">🎁</div>')+'</div><h3>'+p.Titulo+'</h3><p class="promo-text">'+p.Texto+'</p><p class="flip-hint">Clique para ver detalhes ↩</p></div>';
+                    html += '<div class="flip-card"><div class="flip-inner"><div class="flip-front glass-panel card-standard"><div class="img-container">'+(p.Imagem_URL?'<img src="'+p.Imagem_URL+'" loading="lazy" decoding="async" class="responsive-img" onerror="this.onerror=null;this.outerHTML=\'<div class=\\\'icon-glow\\\'>🎁</div>\';" alt="'+p.Titulo+'">':'<div class="icon-glow">🎁</div>')+'</div><h3>'+p.Titulo+'</h3><p class="promo-text">'+p.Texto+'</p><p class="flip-hint">Clique para ver detalhes ↩</p></div>';
                     html += '<div class="flip-back glass-panel card-standard"><h3>Informações</h3><p class="promo-text">'+(p.Texto_Verso||'Sem informações adicionais.')+'</p><p class="flip-hint">Clique para voltar ↩</p></div></div></div>';
                 });
                 html += '</div>';

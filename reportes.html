@@ -4,9 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Acompanhamento de Reportes — Operação GO</title>
+    <link rel="preload" as="image" href="logo.png" type="image/png" fetchpriority="high">
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="shortcut icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
+    <link rel="preconnect" href="https://i.imgur.com" crossorigin>
+    <link rel="dns-prefetch" href="https://i.imgur.com">
     
     <!-- Google Fonts: Plus Jakarta Sans -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -15,6 +18,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
+        img { content-visibility: auto; }
         :root {
             --azul-escuro: #0F1849;
             --azul-principal: #2C67EA;
@@ -624,7 +628,7 @@
     <!-- Header Navigation -->
     <header>
         <a href="index.html" class="logo-box">
-            <img src="https://i.imgur.com/ZEox7rf.png" class="logo-img" alt="Logo GO Sumarezinho">
+            <img src="logo.png" class="logo-img" alt="Logo GO Sumarezinho" decoding="async" loading="eager" style="border-radius: 8px;">
             <div class="logo-title-group">
                 <h1>Acompanhamento de Reportes</h1>
                 <p>Portal de Chamados EntreGô (SMENTGO)</p>
