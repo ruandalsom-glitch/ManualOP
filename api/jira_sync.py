@@ -6,6 +6,16 @@ import json
 import datetime
 import re
 
+# Tenta importar sincronização com o Google Sheets
+try:
+    from api.sync_reportes_sheets import sincronizar_jira_com_sheets, parse_date_to_datetime
+except ImportError:
+    try:
+        from sync_reportes_sheets import sincronizar_jira_com_sheets, parse_date_to_datetime
+    except ImportError:
+        sincronizar_jira_com_sheets = None
+        parse_date_to_datetime = None
+
 sys.stdout.reconfigure(encoding='utf-8')
 
 JIRA_USER = "ruan.dalson@entregospsumarezinho.com.br"
@@ -22,33 +32,86 @@ ALLOWED_TYPES = [
     "Dúvidas Gerais"
 ]
 
+MESES_MAP = {
+    'jan': 1, 'janeiro': 1,
+    'fev': 2, 'fevereiro': 2,
+    'mar': 3, 'março': 3, 'marco': 3,
+    'abr': 4, 'abril': 4,
+    'mai': 5, 'maio': 5,
+    'jun': 6, 'junho': 6,
+    'jul': 7, 'julho': 7,
+    'ago': 8, 'agosto': 8,
+    'set': 9, 'setembro': 9,
+    'out': 10, 'outubro': 10,
+    'nov': 11, 'novembro': 11,
+    'dez': 12, 'dezembro': 12
+}
+
+def parse_created_date(text):
+    """Normaliza e formata datas de criação extraídas do Jira"""
+    if not text:
+        return ""
+
+    m = re.search(r'criou essa solicitação em\s+(.+)$', text, re.IGNORECASE)
+    val = m.group(1).strip() if m else text.strip()
+
+    now = datetime.datetime.now()
+    val_lower = val.lower()
+
+    if "hoje" in val_lower:
+        time_part = re.search(r'(\d{1,2}:\d{2})', val_lower)
+        h, m = time_part.group(1).split(':') if time_part else (0, 0)
+        dt = now.replace(hour=int(h), minute=int(m))
+        return dt.strftime("%d/%m/%Y %H:%M")
+    elif "ontem" in val_lower:
+        time_part = re.search(r'(\d{1,2}:\d{2})', val_lower)
+        h, m = time_part.group(1).split(':') if time_part else (0, 0)
+        dt = (now - datetime.timedelta(days=1)).replace(hour=int(h), minute=int(m))
+        return dt.strftime("%d/%m/%Y %H:%M")
+
+    m1 = re.search(r'(\d{1,2})/([a-zA-ZçÇ]+)/(\d{2,4})(?:\s+(\d{1,2}:\d{2}))?', val)
+    if m1:
+        dia = int(m1.group(1))
+        mes_str = m1.group(2).lower()
+        ano = int(m1.group(3))
+        if ano < 100: ano += 2000
+        mes = MESES_MAP.get(mes_str, 1)
+        time_str = m1.group(4) or "00:00"
+        return f"{dia:02d}/{mes:02d}/{ano} {time_str}"
+
+    m2 = re.search(r'(\d{1,2})/(\d{1,2})/(\d{2,4})(?:\s+(\d{1,2}:\d{2}))?', val)
+    if m2:
+        dia = int(m2.group(1))
+        mes = int(m2.group(2))
+        ano = int(m2.group(3))
+        if ano < 100: ano += 2000
+        time_str = m2.group(4) or "00:00"
+        return f"{dia:02d}/{mes:02d}/{ano} {time_str}"
+
+    return val
+
 def map_and_filter_type(type_raw, summary):
     """Mapeia e valida se o chamado pertence a uma das 4 categorias permitidas"""
     t = (type_raw or '').strip()
     s = (summary or '').strip().lower()
     t_lower = t.lower()
 
-    # Check 1: Contestação de Promoção
     if "contestação de promoção" in t_lower or "contestacao de promocao" in t_lower or "contestação de promoção" in s or "contestacao de promocao" in s:
         return "Contestação de Promoção"
 
-    # Check 2: Problemas Cadastrais / Bugs
     if "problemas cadastrais" in t_lower or "bug" in t_lower or "cadastral" in t_lower or "modal" in s or "erro" in s or "falha" in s or "bug" in s:
         return "Problemas Cadastrais"
 
-    # Check 3: Contestação de Garantido FE
     if "garantido" in t_lower or "garantido" in s:
         return "Contestação de Garantido FE"
 
-    # Check 4: Dúvidas Gerais
     if "dúvidas gerais" in t_lower or "duvidas gerais" in t_lower or "dúvida" in s or "duvida" in s or "geral" in t_lower:
         return "Dúvidas Gerais"
 
-    # Caso não se encaixe em nenhuma das 4 categorias solicitadas
     return None
 
 async def fetch_issue_response(page, issue_key):
-    """Navega até o detalhe do chamado e extrai a última resposta/atividade humana"""
+    """Navega até o detalhe do chamado e extrai data de criação, solicitante e última resposta/atividade humana"""
     url = f"https://ifood.atlassian.net/helpcenter/entrego/portal/4623/{issue_key}"
     try:
         await page.goto(url, wait_until="domcontentloaded", timeout=12000)
@@ -60,6 +123,18 @@ async def fetch_issue_response(page, issue_key):
         response_author = ""
         response_date = ""
         response_text = ""
+        created_date = ""
+        reporter_found = ""
+
+        for line in lines:
+            if "criou essa solicitação em" in line:
+                parts = line.split("criou essa solicitação em")
+                reporter_found = parts[0].strip()
+                created_date = parse_created_date(parts[1].strip())
+                break
+            elif "Solicitado em" in line:
+                created_date = parse_created_date(line)
+                break
 
         if "Atividade" in lines:
             idx = lines.index("Atividade")
@@ -71,19 +146,21 @@ async def fetch_issue_response(page, issue_key):
                 text_candidate = sub_lines[i + 2]
 
                 if author != "Resposta automática" and "O status da sua" not in text_candidate and "Adicionar comentário" not in author:
-                    if re.search(r'\d{2}/\w{3}/\d{2}', date_str) or "às" in date_str or ":" in date_str:
+                    if re.search(r'\d{2}/\w{3}/\d{2}', date_str) or "às" in date_str or ":" in date_str or "Ontem" in date_str or "Hoje" in date_str:
                         response_author = author
                         response_date = date_str
                         response_text = text_candidate
                         break
 
         return {
+            "created_date": created_date,
+            "reporter": reporter_found,
             "response_author": response_author,
             "response_date": response_date,
             "response_text": response_text
         }
     except Exception as e:
-        return {"response_author": "", "response_date": "", "response_text": ""}
+        return {"created_date": "", "reporter": "", "response_author": "", "response_date": "", "response_text": ""}
 
 async def sync_jira_reports():
     print("=" * 60)
@@ -173,7 +250,6 @@ async def sync_jira_reports():
                             break
 
                     if issue_key and issue_key not in seen_keys:
-                        # Aplica o filtro estrito das 4 categorias
                         category = map_and_filter_type(type_icon_alt, summary)
                         
                         if category:
@@ -186,15 +262,19 @@ async def sync_jira_reports():
                                 "reporter": reporter
                             })
 
-            print(f"📋 Encontrados {len(raw_issues)} chamados pertencentes às 4 categorias. Extraindo respostas...")
+            print(f"📋 Encontrados {len(raw_issues)} chamados pertencentes às 4 categorias. Extraindo respostas e detalhes...")
             for idx, item in enumerate(raw_issues):
                 if idx < 50:
                     resp_info = await fetch_issue_response(page, item["issue_key"])
+                    item["created_date"] = resp_info["created_date"] or item.get("created_date", "")
+                    if resp_info["reporter"]:
+                        item["reporter"] = resp_info["reporter"]
                     item["response_author"] = resp_info["response_author"]
                     item["response_date"] = resp_info["response_date"]
                     item["response_text"] = resp_info["response_text"]
-                    print(f"   [{idx+1}/{len(raw_issues)}] {item['issue_key']} ({item['type']}) -> Resposta extraída")
+                    print(f"   [{idx+1}/{len(raw_issues)}] {item['issue_key']} ({item['type']}) -> Data: {item.get('created_date', 'N/A')} | Solicitante: {item['reporter']}")
                 else:
+                    item["created_date"] = ""
                     item["response_author"] = ""
                     item["response_date"] = ""
                     item["response_text"] = ""
@@ -212,6 +292,12 @@ async def sync_jira_reports():
         with open(JSON_OUTPUT_PATH, "w", encoding="utf-8") as f:
             json.dump(extracted_reports, f, ensure_ascii=False, indent=2)
         print(f"💾 Dados atualizados em: {JSON_OUTPUT_PATH}")
+
+        if sincronizar_jira_com_sheets:
+            try:
+                sincronizar_jira_com_sheets()
+            except Exception as e:
+                print(f"⚠️ Erro ao atualizar o Google Sheets: {e}")
 
     return extracted_reports
 
