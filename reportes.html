@@ -286,29 +286,36 @@
             flex-direction: column;
         }
 
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
             text-align: left;
-            font-size: 14px;
+            font-size: 13.5px;
         }
 
         thead {
-            background: rgba(8,14,46,0.9);
-            border-bottom: 1px solid rgba(44,234,188,0.12);
+            background: rgba(8,14,46,0.92);
+            border-bottom: 1px solid rgba(44,234,188,0.15);
         }
 
         th {
-            padding: 16px 20px;
-            font-size: 12px;
+            padding: 12px 14px;
+            font-size: 11.5px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
+            letter-spacing: 0.6px;
             color: var(--menta-viva);
+            white-space: nowrap;
         }
 
         tbody tr {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            border-bottom: 1px solid rgba(44, 234, 188, 0.08);
             transition: background var(--transition-base);
             cursor: pointer;
         }
@@ -318,22 +325,23 @@
         }
 
         td {
-            padding: 16px 20px;
+            padding: 10px 14px;
             color: var(--branco);
             vertical-align: middle;
+            white-space: nowrap;
         }
 
         /* Ícones e Badges */
         .type-icon {
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             border-radius: 8px;
             background: rgba(44,103,234,0.2);
             color: var(--menta-viva);
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
+            font-size: 15px;
             border: 1px solid rgba(44,234,188,0.3);
             box-shadow: 0 0 10px rgba(44,234,188,0.15);
         }
@@ -343,30 +351,33 @@
             font-weight: 800;
             color: var(--menta-viva);
             background: rgba(44,234,188,0.1);
-            padding: 4px 10px;
+            padding: 3px 8px;
             border-radius: 6px;
             border: 1px solid rgba(44,234,188,0.25);
             display: inline-block;
-            font-size: 13.5px;
+            font-size: 12.5px;
+            white-space: nowrap;
         }
 
         .issue-desc {
             font-weight: 600;
             color: var(--branco);
-            max-width: 480px;
+            max-width: 260px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            font-size: 13px;
         }
 
         .badge-status {
-            padding: 5px 12px;
+            padding: 4px 10px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 11.5px;
             font-weight: 700;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
+            white-space: nowrap;
         }
 
         .badge-status.aberto { background: var(--status-amber-bg); color: var(--status-amber-text); border: 1px solid rgba(245, 158, 11, 0.3); }
@@ -399,23 +410,42 @@
         }
 
         .user-tag {
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            white-space: nowrap;
+            max-width: 175px;
+        }
+
+        .user-name-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 135px;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--branco);
         }
 
         .user-avatar-circle {
-            width: 28px;
-            height: 28px;
+            width: 26px;
+            height: 26px;
+            flex-shrink: 0;
             border-radius: 50%;
             background: rgba(44,234,188,0.15);
             color: var(--menta-viva);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
+            font-size: 11.5px;
             font-weight: 800;
             border: 1px solid rgba(44,234,188,0.3);
+        }
+
+        .jira-avatar {
+            background: rgba(44,103,234,0.25);
+            color: var(--azul-gelo);
+            border-color: rgba(44,103,234,0.4);
         }
 
         .empty-box {
@@ -734,22 +764,25 @@
 
         <!-- Table Display -->
         <div class="table-card">
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width: 50px; text-align: center;">Tipo</th>
-                        <th style="white-space: nowrap;">Referência</th>
-                        <th style="white-space: nowrap;">Data Reporte</th>
-                        <th>Resumo do Reporte</th>
-                        <th>Status</th>
-                        <th>Prazo / SLA</th>
-                        <th style="white-space: nowrap;">Solicitante (Planilha)</th>
-                    </tr>
-                </thead>
-                <tbody id="reportsTableBody">
-                    <!-- Populated via Javascript -->
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 44px; text-align: center;">Tipo</th>
+                            <th style="white-space: nowrap;">Referência</th>
+                            <th style="white-space: nowrap;">Data Reporte</th>
+                            <th style="white-space: nowrap;">Resumo do Reporte</th>
+                            <th style="white-space: nowrap;">Status</th>
+                            <th style="white-space: nowrap;">Prazo / SLA</th>
+                            <th style="white-space: nowrap;">Solicitante (Planilha)</th>
+                            <th style="white-space: nowrap;">Atendente Suporte (Jira)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reportsTableBody">
+                        <!-- Populated via Javascript -->
+                    </tbody>
+                </table>
+            </div>
 
             <!-- Pagination Controls Bar -->
             <div class="pagination-bar">
@@ -796,6 +829,10 @@
                     <div class="modal-info-item">
                         <label>Solicitante (Planilha)</label>
                         <p id="modalReporter">N/A</p>
+                    </div>
+                    <div class="modal-info-item">
+                        <label>Atendente Suporte (Jira)</label>
+                        <p id="modalSuporte">N/A</p>
                     </div>
                     <div class="modal-info-item">
                         <label>Data de Reporte (Planilha)</label>
@@ -884,7 +921,7 @@
             if (!filteredData || filteredData.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="7">
+                        <td colspan="8">
                             <div class="empty-box">
                                 <i class="fa-solid fa-inbox"></i>
                                 <p>Nenhum reporte encontrado para os filtros selecionados.</p>
@@ -934,35 +971,47 @@
                 }
 
                 const iconHtml = getIconForType(item.type || item.categoria, item.summary || item.descricao);
-                const nome = item.reporter || item.atendente || 'Não Identificado';
-                const inicial = nome.charAt(0).toUpperCase();
+                
+                // Solicitante (Planilha)
+                const nomeSolicitante = item.reporter || item.atendente || 'Não Identificado';
+                const inicialSolicitante = nomeSolicitante.charAt(0).toUpperCase();
+
+                // Atendente Suporte (Jira)
+                const nomeSuporte = item.response_author || 'Suporte Jira';
+                const inicialSuporte = nomeSuporte.charAt(0).toUpperCase();
 
                 tr.innerHTML = `
-                    <td style="text-align: center;" onclick="abrirModal(${globalIdx})">
+                    <td style="text-align: center; white-space: nowrap;" onclick="abrirModal(${globalIdx})">
                         ${iconHtml}
                     </td>
-                    <td onclick="abrirModal(${globalIdx})">
+                    <td onclick="abrirModal(${globalIdx})" style="white-space: nowrap;">
                         <span class="issue-ref-badge">${item.issue_key || item.ticket}</span>
                     </td>
-                    <td onclick="abrirModal(${globalIdx})" style="white-space: nowrap; font-size: 13px; font-weight: 600; color: var(--azul-gelo);">
-                        <i class="fa-regular fa-calendar-days" style="margin-right: 6px; color: rgba(180,228,255,0.6);"></i>${item.data || item.created_date || 'N/A'}
+                    <td onclick="abrirModal(${globalIdx})" style="white-space: nowrap; font-size: 12.5px; font-weight: 600; color: var(--azul-gelo);">
+                        <i class="fa-regular fa-calendar-days" style="margin-right: 5px; color: rgba(180,228,255,0.6);"></i>${item.data || item.created_date || 'N/A'}
                     </td>
                     <td onclick="abrirModal(${globalIdx})">
                         <div class="issue-desc" title="${item.summary || item.descricao}">${item.summary || item.descricao}</div>
                     </td>
-                    <td onclick="abrirModal(${globalIdx})">
+                    <td onclick="abrirModal(${globalIdx})" style="white-space: nowrap;">
                         <span class="badge-status ${statusClass}">
-                            <i class="fa-solid fa-circle" style="font-size: 6px;"></i>
+                            <i class="fa-solid fa-circle" style="font-size: 5px;"></i>
                             ${item.status}
                         </span>
                     </td>
-                    <td onclick="abrirModal(${globalIdx})">
+                    <td onclick="abrirModal(${globalIdx})" style="white-space: nowrap;">
                         ${prazoBadge}
                     </td>
-                    <td onclick="abrirModal(${globalIdx})">
-                        <div class="user-tag" title="Solicitante (Planilha)">
-                            <div class="user-avatar-circle">${inicial}</div>
-                            <span>${nome}</span>
+                    <td onclick="abrirModal(${globalIdx})" style="white-space: nowrap;">
+                        <div class="user-tag" title="Solicitante (Planilha): ${nomeSolicitante}">
+                            <div class="user-avatar-circle">${inicialSolicitante}</div>
+                            <span class="user-name-text">${nomeSolicitante}</span>
+                        </div>
+                    </td>
+                    <td onclick="abrirModal(${globalIdx})" style="white-space: nowrap;">
+                        <div class="user-tag" title="Atendente Suporte (Jira): ${nomeSuporte}">
+                            <div class="user-avatar-circle jira-avatar">${inicialSuporte}</div>
+                            <span class="user-name-text">${nomeSuporte}</span>
                         </div>
                     </td>
                 `;
@@ -982,6 +1031,7 @@
             document.getElementById('modalType').innerText = item.type || item.categoria || 'Geral';
             document.getElementById('modalStatus').innerText = item.status || 'Pendente';
             document.getElementById('modalReporter').innerText = item.reporter || item.atendente || 'Não Identificado';
+            document.getElementById('modalSuporte').innerText = item.response_author || 'Suporte Jira';
             document.getElementById('modalSummary').innerText = item.summary || item.descricao || 'Sem resumo disponível';
             document.getElementById('modalCreatedDate').innerText = item.created_date || item.data || 'Não informada';
             document.getElementById('modalPrazo').innerText = item.prazo || 'No prazo';
