@@ -735,7 +735,6 @@
                         <th>Status</th>
                         <th>Prazo / SLA</th>
                         <th>Atendente / Colaborador</th>
-                        <th style="text-align: center;">Ação</th>
                     </tr>
                 </thead>
                 <tbody id="reportsTableBody">
@@ -876,7 +875,7 @@
             if (!filteredData || filteredData.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="7">
+                        <td colspan="6">
                             <div class="empty-box">
                                 <i class="fa-solid fa-inbox"></i>
                                 <p>Nenhum reporte encontrado para os filtros selecionados.</p>
@@ -950,11 +949,6 @@
                             <div class="user-avatar-circle">${inicial}</div>
                             <span>${nome}</span>
                         </div>
-                    </td>
-                    <td style="text-align: center;">
-                        <button class="btn-view-resp" onclick="abrirModal(${globalIdx}); event.stopPropagation();">
-                            <i class="fa-solid fa-eye"></i> Ver Resposta
-                        </button>
                     </td>
                 `;
 
