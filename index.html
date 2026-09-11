@@ -53,7 +53,8 @@
         }
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         *:focus-visible { outline: 2.5px solid var(--menta-viva) !important; outline-offset: 3px !important; }
-        html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+        html { scroll-behavior: smooth; scroll-padding-top: 86px; -webkit-font-smoothing: antialiased; }
+        section, [id] { scroll-margin-top: 86px; }
         body {
             font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
             background: linear-gradient(180deg, #091238 0%, #0F1849 32%, #080d2c 70%, #05081e 100%);
@@ -3302,9 +3303,98 @@
     function abrirTermosModal(){ var m=document.getElementById('termosModal'); if(m) m.style.display='flex'; }
     function fecharTermosModal(e){ if(e&&e.target&&e.target!==e.currentTarget&&!e.target.classList.contains('news-modal-close')&&!e.target.classList.contains('btn-termos-entendido')) return; var m=document.getElementById('termosModal'); if(m) m.style.display='none'; }
 
-    /* HAMBURGER */
+    /* ROLAGEM INTELIGENTE DE SEÇÕES COM COMPENSAÇÃO DE HEADER STICKY */
+    function smoothScrollToSection(targetId) {
+        if (!targetId || targetId === 'home') {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+        }
+
+        var targetEl = document.getElementById(targetId);
+        if (!targetEl) return;
+
+        var header = document.getElementById('main-header');
+        
+        // Se estivermos no topo da página, força o header a adotar a classe .scrolled imediatamente
+        if (header && window.scrollY < 20) {
+            header.classList.add('scrolled');
+        }
+
+        // Se a seção de cadastro for acionada, garante que os dados dos drivers sejam carregados
+        if (targetId === 'cadastro' && typeof carregarReportesDriversLazy === 'function') {
+            carregarReportesDriversLazy();
+        }
+
+        // Duplo requestAnimationFrame aguarda a recalculação completa do layout do DOM pós-lazy load
+        requestAnimationFrame(function() {
+            requestAnimationFrame(function() {
+                var headerHeight = header ? header.offsetHeight : 72;
+                var rect = targetEl.getBoundingClientRect();
+                var targetTop = window.scrollY + rect.top - headerHeight - 16;
+
+                window.scrollTo({
+                    top: Math.max(0, targetTop),
+                    behavior: 'smooth'
+                });
+
+                try {
+                    history.pushState(null, null, '#' + targetId);
+                } catch(e) {}
+            });
+        });
+    }
+
+    // Interceptador global para todos os links internos de âncora (#)
+    document.addEventListener('click', function(e) {
+        var a = e.target.closest('a[href^="#"]');
+        if (!a) return;
+        var href = a.getAttribute('href');
+        if (!href || href === '#' || href === 'javascript:void(0)') return;
+
+        var targetId = href.replace(/^#/, '');
+        if (targetId) {
+            e.preventDefault();
+            smoothScrollToSection(targetId);
+
+            var nav = document.getElementById('mobileNav');
+            var btn = document.getElementById('hamburgerBtn');
+            if (nav) nav.classList.remove('open');
+            if (btn) btn.classList.remove('open');
+        }
+    });
+
+    /* HAMBURGER & MOBILE NAV */
     function toggleMobileNav(){ var btn=document.getElementById('hamburgerBtn'); var nav=document.getElementById('mobileNav'); var isOpen=btn.classList.toggle('open'); if(isOpen) nav.classList.add('open'); else nav.classList.remove('open'); }
-    function buildMobileNav(){ var nav=document.getElementById('mobileNav'); var links=document.querySelectorAll('#mainMenu a, #mainMenu .dropdown-menu-rich a'); nav.innerHTML=''; links.forEach(function(a){ var c=a.cloneNode(true); c.addEventListener('click',function(e){ document.getElementById('hamburgerBtn').classList.remove('open'); nav.classList.remove('open'); if(c.getAttribute('href')==='#home'){ e.preventDefault(); window.scrollTo({top:0,behavior:'smooth'}); } }); nav.appendChild(c); }); var tBtn=document.createElement('a'); tBtn.href='javascript:void(0)'; tBtn.innerHTML='📋 Termos de uso'; tBtn.style.color='var(--menta-viva)'; tBtn.style.fontWeight='700'; tBtn.addEventListener('click',function(){ document.getElementById('hamburgerBtn').classList.remove('open'); nav.classList.remove('open'); abrirTermosModal(); }); nav.appendChild(tBtn); }
+    function buildMobileNav(){
+        var nav=document.getElementById('mobileNav');
+        var links=document.querySelectorAll('#mainMenu a, #mainMenu .dropdown-menu-rich a');
+        nav.innerHTML='';
+        links.forEach(function(a){
+            var c=a.cloneNode(true);
+            c.addEventListener('click',function(e){
+                document.getElementById('hamburgerBtn').classList.remove('open');
+                nav.classList.remove('open');
+                var href = c.getAttribute('href') || '';
+                if (href.startsWith('#')) {
+                    e.preventDefault();
+                    var targetId = href.replace(/^#/, '');
+                    smoothScrollToSection(targetId);
+                }
+            });
+            nav.appendChild(c);
+        });
+        var tBtn=document.createElement('a');
+        tBtn.href='javascript:void(0)';
+        tBtn.innerHTML='📋 Termos de uso';
+        tBtn.style.color='var(--menta-viva)';
+        tBtn.style.fontWeight='700';
+        tBtn.addEventListener('click',function(){
+            document.getElementById('hamburgerBtn').classList.remove('open');
+            nav.classList.remove('open');
+            abrirTermosModal();
+        });
+        nav.appendChild(tBtn);
+    }
     document.addEventListener('click',function(e){ var nav=document.getElementById('mobileNav'); var btn=document.getElementById('hamburgerBtn'); if(nav&&nav.classList.contains('open')&&!nav.contains(e.target)&&!btn.contains(e.target)){ nav.classList.remove('open'); btn.classList.remove('open'); } });
 
     /* SKELETON */
@@ -3389,7 +3479,18 @@
             });
         },{passive:true});
         var _bF=renderFullSite;
-        renderFullSite=function(r){ _bF(r); setTimeout(buildMap,400); };
+        renderFullSite=function(r){
+            _bF(r);
+            setTimeout(buildMap,400);
+            setTimeout(function() {
+                if (window.location.hash) {
+                    var hashId = window.location.hash.replace(/^#/, '');
+                    if (hashId && hashId !== 'home') {
+                        smoothScrollToSection(hashId);
+                    }
+                }
+            }, 450);
+        };
     })();
 
     /* ── ACOMPANHAMENTO DE APROVAÇÃO DO DRIVER (REPORTES) ───────────── */
