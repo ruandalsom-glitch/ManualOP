@@ -326,12 +326,13 @@
             background: linear-gradient(90deg, transparent, rgba(44, 234, 188, 0.7), rgba(44, 103, 234, 0.7), transparent);
             z-index: 1;
         }
+        .logo-box { display: inline-flex; align-items: center; gap: 12px; flex-shrink: 0; text-decoration: none; transition: transform var(--transition-fast); }
         .logo-box:hover { transform: scale(1.02); }
-        .logo-img { height: 44px; width: auto; max-height: 48px; object-fit: contain; filter: drop-shadow(0 0 16px rgba(44,234,188,0.5)); transition: transform 0.25s ease, filter 0.25s ease; }
-        .logo-box:hover .logo-img { transform: scale(1.06); filter: drop-shadow(0 0 24px rgba(44,234,188,0.8)); }
-        .logo-texto { font-weight: 800; font-size: 17px; letter-spacing: -0.4px; color: var(--branco); white-space: nowrap; }
+        .logo-img { height: 42px; width: 42px; max-height: 42px; object-fit: contain; border-radius: 10px; filter: drop-shadow(0 0 16px rgba(44, 103, 234, 0.6)); transition: transform 0.25s ease, filter 0.25s ease; display: block; }
+        .logo-box:hover .logo-img { transform: scale(1.06); filter: drop-shadow(0 0 24px rgba(44, 103, 234, 0.88)); }
+        .logo-texto { font-weight: 800; font-size: 17px; letter-spacing: -0.4px; color: var(--branco); white-space: nowrap; display: flex; align-items: center; line-height: 1; }
         
-        nav { position: absolute; left: 50%; transform: translateX(-50%); max-width: 100%; z-index: 101; }
+        nav { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); max-width: 100%; z-index: 101; }
         .menu { list-style: none; display: flex; gap: 2px; align-items: center; position: relative; width: max-content; }
         .menu-indicator {
             position: absolute; top: 0; left: 0; height: 100%;
@@ -783,7 +784,7 @@
         .login-remember { display: flex; align-items: center; gap: 10px; color: var(--azul-gelo); font-size: 13px; cursor: pointer; align-self: flex-start; opacity: 0.75; margin-bottom: 6px; width: 100%; font-weight: 500; }
         .login-remember input[type="checkbox"] { accent-color: var(--menta-viva); width: 15px; height: 15px; cursor: pointer; }
 
-        @media (max-width: 1024px) { header { flex-wrap: wrap; padding: 14px 4%; gap: 12px; } .search-box { order: 3; max-width: 100%; flex: 1 1 100%; } nav { order: 2; position: relative; left: auto; transform: none; margin: 0 auto; } }
+        @media (max-width: 1024px) { header { flex-wrap: wrap; padding: 14px 4%; gap: 12px; } .search-box { order: 3; max-width: 100%; flex: 1 1 100%; } nav { order: 2; position: relative; left: auto; top: auto; transform: none; margin: 0 auto; } }
         @media (max-width: 768px) {
             header { flex-direction: row; flex-wrap: wrap; align-items: center; } header nav { display: none; } .hamburger { display: flex; } .search-box { order: 3; flex: 1 1 100%; max-width: 100%; } .mobile-nav { display: flex; } .menu { flex-wrap: wrap; gap: 4px; justify-content: center; } .menu a { font-size: 13px; padding: 7px 12px; } .logo-texto { font-size: 16px; } .hero h1 { font-size: clamp(42px, 12vw, 72px); } section { padding: var(--space-lg) 4%; } .grid-container { grid-template-columns: 1fr; } .flip-card { min-height: 480px; }
         }
