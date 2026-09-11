@@ -17,6 +17,10 @@
     <!-- FontAwesome icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <!-- Supabase JS Client Integration -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabaseClient.js"></script>
+
     <style>
         img { content-visibility: auto; }
         :root {
@@ -38,6 +42,8 @@
             --status-blue-text: #2CEABC;
             --status-green-bg: rgba(16, 185, 129, 0.15);
             --status-green-text: #10b981;
+            --status-red-bg: rgba(239, 68, 68, 0.18);
+            --status-red-text: #f87171;
         }
 
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -176,7 +182,7 @@
 
         .card-stat-icon.total { background: rgba(44,234,188,0.12); color: var(--menta-viva); border: 1px solid rgba(44,234,188,0.25); }
         .card-stat-icon.open { background: rgba(245, 158, 11, 0.12); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.25); }
-        .card-stat-icon.progress { background: rgba(44, 103, 234, 0.15); color: var(--azul-gelo); border: 1px solid rgba(44, 103, 234, 0.3); }
+        .card-stat-icon.progress { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
         .card-stat-icon.done { background: rgba(16, 185, 129, 0.12); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.25); }
 
         .card-stat-val h3 {
@@ -347,7 +353,7 @@
         .issue-desc {
             font-weight: 600;
             color: var(--branco);
-            max-width: 540px;
+            max-width: 480px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -366,6 +372,7 @@
         .badge-status.aberto { background: var(--status-amber-bg); color: var(--status-amber-text); }
         .badge-status.andamento { background: var(--status-blue-bg); color: var(--status-blue-text); }
         .badge-status.concluido { background: var(--status-green-bg); color: var(--status-green-text); }
+        .badge-status.atrasado { background: var(--status-red-bg); color: var(--status-red-text); }
 
         .btn-view-resp {
             background: rgba(44,234,188,0.12);
@@ -509,7 +516,7 @@
             background: rgba(13,20,65,0.95);
             border: 1px solid rgba(44,234,188,0.25);
             border-radius: var(--radius-lg);
-            width: 100%; max-width: 680px;
+            width: 100%; max-width: 720px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 30px rgba(44,234,188,0.15);
             display: flex; flex-direction: column; overflow: hidden;
             transform: translateY(20px); transition: transform 0.3s ease;
@@ -548,7 +555,7 @@
         .modal-body {
             padding: 26px;
             display: flex; flex-direction: column; gap: 20px;
-            max-height: 70vh; overflow-y: auto;
+            max-height: 75vh; overflow-y: auto;
         }
 
         .modal-info-grid {
@@ -631,7 +638,7 @@
             <img src="logo.png" class="logo-img" alt="Logo GO Sumarezinho" decoding="async" loading="eager" style="border-radius: 8px;">
             <div class="logo-title-group">
                 <h1>Acompanhamento de Reportes</h1>
-                <p>Portal de Chamados EntreGô (SMENTGO)</p>
+                <p>Portal de Chamados & Supabase (reportes_colaboradores)</p>
             </div>
         </a>
         <div class="header-actions">
@@ -669,11 +676,11 @@
 
             <div class="card-stat">
                 <div class="card-stat-icon progress">
-                    <i class="fa-solid fa-spinner"></i>
+                    <i class="fa-solid fa-triangle-exclamation"></i>
                 </div>
                 <div class="card-stat-val">
-                    <h3 id="statProgress">0</h3>
-                    <p>Em Verificação / Atendimento</p>
+                    <h3 id="statDelayed">0</h3>
+                    <p>Em Atraso (Fora do SLA)</p>
                 </div>
             </div>
 
@@ -688,17 +695,16 @@
             </div>
         </div>
 
-        <!-- Jira Replicated Filter Toolbar -->
+        <!-- Jira & Supabase Replicated Filter Toolbar -->
         <div class="jira-toolbar">
             <div class="search-field">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="searchInput" placeholder="Buscar por código (ex: SMENTGO-1740), resumo ou resposta..." oninput="onFilterChange()">
+                <input type="text" id="searchInput" placeholder="Buscar por código (ex: SMENTGO-1740), atendente, resumo ou resposta..." oninput="onFilterChange()">
             </div>
 
             <div class="filters-row">
-                <!-- Dropdown exato com as 4 categorias solicitadas -->
                 <select class="filter-badge-select" id="typeFilter" onchange="onFilterChange()">
-                    <option value="">Tipo de solicitação (Todas as 4)</option>
+                    <option value="">Tipo de solicitação (Todas)</option>
                     <option value="Contestação de Promoção">Contestação de Promoção</option>
                     <option value="Problemas Cadastrais">Problemas Cadastrais / Bugs</option>
                     <option value="Contestação de Garantido FE">Contestação de Garantido FE</option>
@@ -708,17 +714,17 @@
                 <select class="filter-badge-select" id="statusFilter" onchange="onFilterChange()">
                     <option value="">Status (Todos)</option>
                     <option value="aberto">Aberto / Pendente</option>
-                    <option value="andamento">Em verificação / atendimento</option>
+                    <option value="atrasado">Em Atraso</option>
                     <option value="concluido">Concluído / Resolvido</option>
                 </select>
 
                 <select class="filter-badge-select" id="reporterFilter" onchange="onFilterChange()">
-                    <option value="">Solicitante: Tudo</option>
+                    <option value="">Atendente / Colaborador: Todos</option>
                 </select>
             </div>
         </div>
 
-        <!-- Table Display without Activity Column -->
+        <!-- Table Display -->
         <div class="table-card">
             <table>
                 <thead>
@@ -727,7 +733,8 @@
                         <th>Referência</th>
                         <th>Resumo do Reporte</th>
                         <th>Status</th>
-                        <th>Solicitante</th>
+                        <th>Prazo / SLA</th>
+                        <th>Atendente / Colaborador</th>
                         <th style="text-align: center;">Ação</th>
                     </tr>
                 </thead>
@@ -767,25 +774,33 @@
             <div class="modal-body">
                 <div class="modal-info-grid">
                     <div class="modal-info-item">
-                        <label>Referência</label>
+                        <label>Referência (Ticket)</label>
                         <p id="modalRef">SMENTGO-000</p>
                     </div>
                     <div class="modal-info-item">
-                        <label>Tipo</label>
+                        <label>Tipo / Categoria</label>
                         <p id="modalType">Geral</p>
                     </div>
                     <div class="modal-info-item">
-                        <label>Status</label>
+                        <label>Status Atual</label>
                         <p id="modalStatus">Aberto</p>
                     </div>
                     <div class="modal-info-item">
-                        <label>Solicitante</label>
+                        <label>Atendente Responsável</label>
                         <p id="modalReporter">N/A</p>
+                    </div>
+                    <div class="modal-info-item">
+                        <label>Data de Abertura</label>
+                        <p id="modalCreatedDate">N/A</p>
+                    </div>
+                    <div class="modal-info-item">
+                        <label>Prazo (SLA)</label>
+                        <p id="modalPrazo">N/A</p>
                     </div>
                 </div>
 
                 <div style="background: rgba(8,14,46,0.6); padding: 16px; border-radius: var(--radius-sm); border: 1px solid rgba(44,234,188,0.1);">
-                    <label style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--menta-viva); letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Resumo do Chamado</label>
+                    <label style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--menta-viva); letter-spacing: 0.5px; display: block; margin-bottom: 4px;">Resumo da Solicitação</label>
                     <p id="modalSummary" style="font-size: 14px; font-weight: 600; color: var(--branco);"></p>
                 </div>
 
@@ -794,7 +809,7 @@
                         <div class="author-details">
                             <div class="user-avatar-circle" id="modalAuthorAvatar">A</div>
                             <div>
-                                <h4 id="modalAuthor">Atendente Jira</h4>
+                                <h4 id="modalAuthor">Atendente / Suporte</h4>
                                 <span id="modalDate">Data/Hora</span>
                             </div>
                         </div>
@@ -809,7 +824,7 @@
     </div>
 
     <footer>
-        <p>ManualOP &copy; 2026 — Central de Acompanhamento de Reportes EntreGô</p>
+        <p>ManualOP &copy; 2026 — Central de Acompanhamento de Reportes (Supabase & Jira)</p>
     </footer>
 
     <script>
@@ -838,12 +853,13 @@
             const solicitantes = new Set();
 
             dados.forEach(d => {
-                if (d.reporter && d.reporter.trim()) {
-                    solicitantes.add(d.reporter.trim());
+                const r = d.reporter || d.atendente;
+                if (r && r.trim()) {
+                    solicitantes.add(r.trim());
                 }
             });
 
-            selectReporter.innerHTML = '<option value="">Solicitante: Tudo</option>';
+            selectReporter.innerHTML = '<option value="">Atendente / Colaborador: Todos</option>';
             
             Array.from(solicitantes).sort().forEach(nome => {
                 const opt = document.createElement('option');
@@ -860,7 +876,7 @@
             if (!filteredData || filteredData.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="6">
+                        <td colspan="7">
                             <div class="empty-box">
                                 <i class="fa-solid fa-inbox"></i>
                                 <p>Nenhum reporte encontrado para os filtros selecionados.</p>
@@ -891,12 +907,23 @@
                 const st = (item.status || '').toLowerCase();
                 if (st.includes('atendimento') || st.includes('andamento') || st.includes('progresso') || st.includes('verificação') || st.includes('verificacao')) {
                     statusClass = 'andamento';
-                } else if (st.includes('conclu') || st.includes('resolv') || st.includes('fechad')) {
+                } else if (st.includes('conclu') || st.includes('resolv') || st.includes('fechad') || st.includes('finaliz')) {
                     statusClass = 'concluido';
                 }
 
-                const iconHtml = getIconForType(item.type, item.summary);
-                const nome = item.reporter || 'N/A';
+                // Classe e renderização de Prazo (SLA)
+                let prazoBadge = '<span class="badge-status concluido"><i class="fa-solid fa-check"></i> No prazo</span>';
+                const prz = (item.prazo || '').toLowerCase();
+                if (prz.includes('atraso')) {
+                    prazoBadge = `<span class="badge-status atrasado"><i class="fa-solid fa-triangle-exclamation"></i> ${item.prazo}</span>`;
+                } else if (prz.includes('finaliz')) {
+                    prazoBadge = '<span class="badge-status andamento"><i class="fa-solid fa-circle-check"></i> Finalizado</span>';
+                } else if (prz) {
+                    prazoBadge = `<span class="badge-status concluido"><i class="fa-solid fa-clock"></i> ${item.prazo}</span>`;
+                }
+
+                const iconHtml = getIconForType(item.type || item.categoria, item.summary || item.descricao);
+                const nome = item.reporter || item.atendente || 'Não Identificado';
                 const inicial = nome.charAt(0).toUpperCase();
 
                 tr.innerHTML = `
@@ -904,16 +931,19 @@
                         ${iconHtml}
                     </td>
                     <td onclick="abrirModal(${globalIdx})">
-                        <span class="issue-ref-badge">${item.issue_key}</span>
+                        <span class="issue-ref-badge">${item.issue_key || item.ticket}</span>
                     </td>
                     <td onclick="abrirModal(${globalIdx})">
-                        <div class="issue-desc" title="${item.summary}">${item.summary}</div>
+                        <div class="issue-desc" title="${item.summary || item.descricao}">${item.summary || item.descricao}</div>
                     </td>
                     <td onclick="abrirModal(${globalIdx})">
                         <span class="badge-status ${statusClass}">
                             <i class="fa-solid fa-circle" style="font-size: 6px;"></i>
                             ${item.status}
                         </span>
+                    </td>
+                    <td onclick="abrirModal(${globalIdx})">
+                        ${prazoBadge}
                     </td>
                     <td onclick="abrirModal(${globalIdx})">
                         <div class="user-tag">
@@ -939,18 +969,20 @@
             const item = filteredData[index];
             if (!item) return;
 
-            document.getElementById('modalRef').innerText = item.issue_key || 'N/A';
-            document.getElementById('modalType').innerText = item.type || 'Geral';
+            document.getElementById('modalRef').innerText = item.issue_key || item.ticket || 'N/A';
+            document.getElementById('modalType').innerText = item.type || item.categoria || 'Geral';
             document.getElementById('modalStatus').innerText = item.status || 'Pendente';
-            document.getElementById('modalReporter').innerText = item.reporter || 'N/A';
-            document.getElementById('modalSummary').innerText = item.summary || 'Sem resumo disponível';
+            document.getElementById('modalReporter').innerText = item.reporter || item.atendente || 'Não Identificado';
+            document.getElementById('modalSummary').innerText = item.summary || item.descricao || 'Sem resumo disponível';
+            document.getElementById('modalCreatedDate').innerText = item.created_date || item.data || 'Não informada';
+            document.getElementById('modalPrazo').innerText = item.prazo || 'No prazo';
 
-            const authorName = item.response_author || 'Atendente / Sistema';
+            const authorName = item.response_author || 'Atendente / Suporte';
             document.getElementById('modalAuthor').innerText = authorName;
             document.getElementById('modalAuthorAvatar').innerText = authorName.charAt(0).toUpperCase();
-            document.getElementById('modalDate').innerText = item.response_date || 'Data não registrada';
+            document.getElementById('modalDate').innerText = item.response_date || item.data || 'Data não registrada';
 
-            document.getElementById('modalResponseText').innerText = item.response_text || 'Nenhuma atividade ou resposta manuscrita encontrada até o momento para este chamado.';
+            document.getElementById('modalResponseText').innerText = item.response_text || item.dados || 'Nenhuma atividade ou resposta manuscrita encontrada até o momento para este chamado.';
 
             document.getElementById('responseModal').classList.add('active');
         }
@@ -1003,15 +1035,17 @@
         function atualizarMetrics(dados) {
             let total = dados.length;
             let open = 0;
-            let progress = 0;
+            let delayed = 0;
             let done = 0;
 
             dados.forEach(item => {
                 const st = (item.status || '').toLowerCase();
-                if (st.includes('atendimento') || st.includes('andamento') || st.includes('progresso') || st.includes('verificação') || st.includes('verificacao')) {
-                    progress++;
-                } else if (st.includes('conclu') || st.includes('resolv') || st.includes('fechad')) {
+                const prz = (item.prazo || '').toLowerCase();
+
+                if (st.includes('conclu') || st.includes('resolv') || st.includes('fechad') || st.includes('finaliz')) {
                     done++;
+                } else if (prz.includes('atraso')) {
+                    delayed++;
                 } else {
                     open++;
                 }
@@ -1019,7 +1053,7 @@
 
             document.getElementById('statTotal').innerText = total;
             document.getElementById('statOpen').innerText = open;
-            document.getElementById('statProgress').innerText = progress;
+            document.getElementById('statDelayed').innerText = delayed;
             document.getElementById('statDone').innerText = done;
         }
 
@@ -1041,31 +1075,38 @@
             const reporterFilter = document.getElementById('reporterFilter').value;
 
             filteredData = reportesData.filter(item => {
-                const matchQuery = (item.issue_key || '').toLowerCase().includes(query) ||
-                                   (item.summary || '').toLowerCase().includes(query) ||
-                                   (item.response_text || '').toLowerCase().includes(query) ||
-                                   (item.reporter || '').toLowerCase().includes(query);
+                const ref = item.issue_key || item.ticket || '';
+                const sum = item.summary || item.descricao || '';
+                const resp = item.response_text || item.dados || '';
+                const rep = item.reporter || item.atendente || '';
+
+                const matchQuery = ref.toLowerCase().includes(query) ||
+                                   sum.toLowerCase().includes(query) ||
+                                   resp.toLowerCase().includes(query) ||
+                                   rep.toLowerCase().includes(query);
 
                 let matchType = true;
                 if (typeFilter) {
-                    const t = (item.type || '').toLowerCase();
+                    const t = (item.type || item.categoria || '').toLowerCase();
                     const filterLower = typeFilter.toLowerCase();
-                    matchType = t.includes(filterLower) || (item.summary || '').toLowerCase().includes(filterLower);
+                    matchType = t.includes(filterLower) || sum.toLowerCase().includes(filterLower);
                 }
 
                 let matchStatus = true;
                 const st = (item.status || '').toLowerCase();
+                const prz = (item.prazo || '').toLowerCase();
+                
                 if (statusFilter === 'aberto') {
-                    matchStatus = !st.includes('atendimento') && !st.includes('andamento') && !st.includes('verificação') && !st.includes('verificacao') && !st.includes('conclu') && !st.includes('resolv');
-                } else if (statusFilter === 'andamento') {
-                    matchStatus = st.includes('atendimento') || st.includes('andamento') || st.includes('progresso') || st.includes('verificação') || st.includes('verificacao');
+                    matchStatus = !st.includes('conclu') && !st.includes('resolv') && !st.includes('fechad') && !st.includes('finaliz') && !prz.includes('atraso');
+                } else if (statusFilter === 'atrasado') {
+                    matchStatus = prz.includes('atraso');
                 } else if (statusFilter === 'concluido') {
-                    matchStatus = st.includes('conclu') || st.includes('resolv') || st.includes('fechad');
+                    matchStatus = st.includes('conclu') || st.includes('resolv') || st.includes('fechad') || st.includes('finaliz');
                 }
 
                 let matchReporter = true;
                 if (reporterFilter) {
-                    matchReporter = (item.reporter || '').trim() === reporterFilter;
+                    matchReporter = rep.trim() === reporterFilter;
                 }
 
                 return matchQuery && matchType && matchStatus && matchReporter;
@@ -1083,13 +1124,49 @@
             txt.innerHTML = '<span class="spinner"></span> Carregando...';
 
             try {
+                // 1. Tentar buscar da tabela 'reportes_colaboradores' no Supabase
+                if (typeof supabaseClient !== 'undefined') {
+                    const { data, error } = await supabaseClient
+                        .from('reportes_colaboradores')
+                        .select('*');
+
+                    if (!error && data && data.length > 0) {
+                        reportesData = data.map(item => ({
+                            issue_key: item.ticket || 'N/A',
+                            ticket: item.ticket || 'N/A',
+                            type: item.categoria || 'Geral',
+                            categoria: item.categoria || 'Geral',
+                            summary: item.descricao || 'Sem descrição',
+                            descricao: item.descricao || 'Sem descrição',
+                            status: item.status || 'Aberto',
+                            reporter: item.atendente || 'Não Identificado',
+                            atendente: item.atendente || 'Não Identificado',
+                            created_date: item.data || '',
+                            data: item.data || '',
+                            response_author: item.dados ? (item.dados.split(':')[0] || 'Atendente') : '',
+                            response_text: item.dados || 'Sem observações registradas',
+                            dados: item.dados || 'Sem observações registradas',
+                            response_date: item.data || '',
+                            prazo: item.prazo || 'No prazo',
+                            sla: item.sla || '2 dias',
+                            plataforma: item.plataforma || 'EntreGô / Jira'
+                        }));
+                        popularFiltroSolicitantes(reportesData);
+                        onFilterChange();
+                        btn.disabled = false;
+                        txt.innerText = 'Atualizar Dados';
+                        return;
+                    }
+                }
+
+                // 2. Fallback para arquivo JSON se a tabela do Supabase estiver vazia ou offline
                 const response = await fetch('jira_reports_data.json?cache=' + Date.now());
                 if (response.ok) {
                     reportesData = await response.json();
                     popularFiltroSolicitantes(reportesData);
                 }
             } catch (e) {
-                console.log("Erro ao carregar jira_reports_data.json:", e);
+                console.log("Erro ao carregar dados do Supabase/JSON:", e);
             }
 
             onFilterChange();
