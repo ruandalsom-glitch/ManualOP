@@ -268,7 +268,7 @@
             display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 0;
             transition: opacity 0.5s ease;
         }
-        .loader-logo { width: 80px; height: 80px; margin-bottom: 28px; opacity: 0; transform: translateY(12px); animation: loaderLogoIn 0.5s 0.1s ease forwards; filter: drop-shadow(0 0 25px rgba(44, 103, 234, 0.7)); border-radius: 18px; }
+        .loader-logo { width: 80px; height: 80px; margin-bottom: 28px; opacity: 0; transform: translateY(12px); animation: loaderLogoIn 0.5s 0.1s ease forwards; filter: drop-shadow(0 0 25px rgba(0, 180, 255, 0.75)); border-radius: 20px; }
         @keyframes loaderLogoIn { to { opacity: 1; transform: translateY(0); } }
         .loader-label { font-size: 12px; font-weight: 800; letter-spacing: 3.5px; color: rgba(180, 228, 255, 0.6); text-transform: uppercase; margin-bottom: 20px; opacity: 0; animation: loaderLogoIn 0.5s 0.3s ease forwards; }
         .loader-bar-wrap { width: 200px; height: 3px; background: rgba(44, 234, 188, 0.12); border-radius: 99px; overflow: hidden; opacity: 0; animation: loaderLogoIn 0.4s 0.4s ease forwards; }
@@ -328,8 +328,8 @@
         }
         .logo-box { display: inline-flex; align-items: center; gap: 10px; flex-shrink: 0; text-decoration: none; transition: transform var(--transition-fast); }
         .logo-box:hover { transform: scale(1.02); }
-        .logo-img { height: 30px; width: 30px; max-height: 30px; object-fit: contain; border-radius: 7px; filter: drop-shadow(0 0 10px rgba(44, 103, 234, 0.55)); transition: transform 0.25s ease, filter 0.25s ease; display: block; }
-        .logo-box:hover .logo-img { transform: scale(1.06); filter: drop-shadow(0 0 18px rgba(44, 103, 234, 0.85)); }
+        .logo-img { height: 32px; width: 32px; max-height: 32px; object-fit: contain; border-radius: 8px; filter: drop-shadow(0 0 12px rgba(0, 180, 255, 0.6)); transition: transform 0.25s ease, filter 0.25s ease; display: block; }
+        .logo-box:hover .logo-img { transform: scale(1.06); filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.9)); }
         .logo-texto { font-weight: 800; font-size: 15px; letter-spacing: -0.3px; color: var(--branco); white-space: nowrap; display: flex; align-items: center; line-height: 1; }
         
         nav { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); max-width: 100%; z-index: 101; }
