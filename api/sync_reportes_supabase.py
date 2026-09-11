@@ -117,8 +117,9 @@ def sincronizar_jira_com_supabase():
         data_reporte = item.get("created_date", "") or item.get("response_date", "") or datetime.datetime.now().strftime("%d/%m/%Y")
         
         dados_resp = ""
-        if item.get("response_text"):
-            dados_resp = f"{item.get('response_author', 'Atendente')}: {item.get('response_text')}"
+        raw_resp = item.get("response_text", "")
+        if raw_resp and not raw_resp.lower().startswith("abrir ") and not raw_resp.lower().endswith(".jpg"):
+            dados_resp = f"{item.get('response_author', 'Atendente')}: {raw_resp}"
 
         plataforma = "EntreGô / Jira"
         sla = "2 dias"
@@ -142,8 +143,8 @@ def sincronizar_jira_com_supabase():
         print("Nenhum chamado válido para enviar.")
         return
 
-    # Fazer Upsert no Supabase via REST API (on_conflict=ticket, resolution=merge-duplicates)
-    url = f"{SUPABASE_URL.rstrip('/')}/rest/v1/reportes_colaboradores?on_conflict=ticket"
+    # Tenta ON CONFLICT=ticket primeiro
+    url_upsert = f"{SUPABASE_URL.rstrip('/')}/rest/v1/reportes_colaboradores?on_conflict=ticket"
     headers = {
         "apikey": SUPABASE_KEY,
         "Authorization": f"Bearer {SUPABASE_KEY}",
@@ -151,23 +152,72 @@ def sincronizar_jira_com_supabase():
         "Prefer": "resolution=merge-duplicates"
     }
 
-    # Enviar em lotes de 100
-    lote_size = 100
-    for i in range(0, len(payload), lote_size):
-        lote = payload[i:i+lote_size]
-        body_bytes = json.dumps(lote, ensure_ascii=False).encode('utf-8')
-        req = urllib.request.Request(url, data=body_bytes, headers=headers, method="POST")
+    try:
+        body_bytes = json.dumps(payload[:50], ensure_ascii=False).encode('utf-8')
+        req = urllib.request.Request(url_upsert, data=body_bytes, headers=headers, method="POST")
+        with urllib.request.urlopen(req) as resp:
+            print(f"  [Upsert Direto] {len(payload)} registros processados (Status: {resp.status})")
+            
+            # Se funcionou para os primeiros 50, envia o resto em lotes
+            for i in range(50, len(payload), 100):
+                lote = payload[i:i+100]
+                b_bytes = json.dumps(lote, ensure_ascii=False).encode('utf-8')
+                req_l = urllib.request.Request(url_upsert, data=b_bytes, headers=headers, method="POST")
+                with urllib.request.urlopen(req_l) as r_l:
+                    print(f"  [Lote {i//100 + 1}] {len(lote)} registros atualizados (Status: {r_l.status})")
+            
+            print("✅ Sincronização direta Jira -> Supabase finalizada com sucesso!")
+            return
+    except urllib.error.HTTPError as e:
+        err_body = e.read().decode('utf-8', errors='ignore')
+        if "42P10" in err_body or "unique constraint" in err_body.lower():
+            print("ℹ️ Chave UNIQUE em 'ticket' ainda não criada. Utilizando modo de busca e atualização por linha...")
+        else:
+            print(f"⚠️ Erro no Upsert inicial ({e.code}): {err_body}")
 
-        try:
-            with urllib.request.urlopen(req) as resp:
-                print(f"  [Lote {i//lote_size + 1}] {len(lote)} registros salvos/atualizados no Supabase (Status: {resp.status})")
-        except urllib.error.HTTPError as e:
-            err_body = e.read().decode('utf-8', errors='ignore')
-            print(f"❌ Erro HTTP ao enviar para o Supabase ({e.code}): {err_body}")
-        except Exception as e:
-            print(f"❌ Erro ao conectar com o Supabase: {e}")
+    # Fallback resiliente: Busca registros existentes e faz PATCH para existentes e POST para novos
+    try:
+        url_get = f"{SUPABASE_URL.rstrip('/')}/rest/v1/reportes_colaboradores?select=id,ticket"
+        req_get = urllib.request.Request(url_get, headers={"apikey": SUPABASE_KEY, "Authorization": f"Bearer {SUPABASE_KEY}"})
+        
+        existentes_map = {}
+        with urllib.request.urlopen(req_get) as resp:
+            raw_res = json.loads(resp.read().decode('utf-8'))
+            for r in raw_res:
+                t = (r.get("ticket") or "").strip()
+                if t:
+                    existentes_map[t] = r.get("id")
 
-    print("✅ Sincronização direta Jira -> Supabase finalizada com sucesso!")
+        novos = []
+        atualizados_cnt = 0
+
+        for item in payload:
+            t_key = item["ticket"]
+            if t_key in existentes_map:
+                # Atualizar via PATCH por id/ticket
+                row_id = existentes_map[t_key]
+                url_patch = f"{SUPABASE_URL.rstrip('/')}/rest/v1/reportes_colaboradores?id=eq.{row_id}"
+                body_patch = json.dumps(item, ensure_ascii=False).encode('utf-8')
+                req_patch = urllib.request.Request(url_patch, data=body_patch, headers=headers, method="PATCH")
+                try:
+                    with urllib.request.urlopen(req_patch) as r_p:
+                        atualizados_cnt += 1
+                except Exception:
+                    pass
+            else:
+                novos.append(item)
+
+        if novos:
+            url_post = f"{SUPABASE_URL.rstrip('/')}/rest/v1/reportes_colaboradores"
+            body_post = json.dumps(novos, ensure_ascii=False).encode('utf-8')
+            req_post = urllib.request.Request(url_post, data=body_post, headers=headers, method="POST")
+            with urllib.request.urlopen(req_post) as r_post:
+                print(f"  [Fallback] {len(novos)} novos registros inseridos no Supabase.")
+
+        print(f"✅ Sincronização Fallback finalizada com sucesso! ({atualizados_cnt} atualizados, {len(novos)} inseridos)")
+
+    except Exception as e:
+        print(f"❌ Erro na sincronização com Supabase: {e}")
 
 if __name__ == "__main__":
     sincronizar_jira_com_supabase()
