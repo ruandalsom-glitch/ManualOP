@@ -326,9 +326,9 @@
             background: linear-gradient(90deg, transparent, rgba(44, 234, 188, 0.7), rgba(44, 103, 234, 0.7), transparent);
             z-index: 1;
         }
-        .logo-box { display: flex; align-items: center; gap: 12px; flex-shrink: 0; text-decoration: none; transition: transform var(--transition-fast); }
         .logo-box:hover { transform: scale(1.02); }
-        .logo-img { height: 48px; width: auto; max-height: 56px; object-fit: contain; filter: drop-shadow(0 0 12px rgba(44,234,188,0.35)); transform: scale(1.2); transform-origin: left center; }
+        .logo-img { height: 44px; width: auto; max-height: 48px; object-fit: contain; filter: drop-shadow(0 0 16px rgba(44,234,188,0.5)); transition: transform 0.25s ease, filter 0.25s ease; }
+        .logo-box:hover .logo-img { transform: scale(1.06); filter: drop-shadow(0 0 24px rgba(44,234,188,0.8)); }
         .logo-texto { font-weight: 800; font-size: 17px; letter-spacing: -0.4px; color: var(--branco); white-space: nowrap; }
         
         nav { position: absolute; left: 50%; transform: translateX(-50%); max-width: 100%; z-index: 101; }
@@ -995,7 +995,7 @@
     <div id="login-container">
         <div class="login-box" id="loginBox">
             <div id="login-success-icon">✅</div>
-            <img src="https://i.imgur.com/ZEox7rf.png" alt="Logo EntreGô" id="loginLogo" loading="eager" fetchpriority="high" style="width:160px; margin: 0 auto 10px; display: block;">
+            <img src="logo.png" alt="Logo EntreGô" id="loginLogo" loading="eager" fetchpriority="high" style="width:110px; height:auto; margin: 0 auto 16px; display: block; border-radius: 18px; filter: drop-shadow(0 0 24px rgba(44, 234, 188, 0.45));">
             <h2>Bem-vindo de volta</h2>
             <p class="login-subtitle">Acesso restrito à equipe operacional</p>
             <div class="login-field">
@@ -1018,14 +1018,14 @@
     </div>
 
     <div id="loader" style="display:none;">
-        <img src="https://i.imgur.com/ZEox7rf.png" alt="Logo" class="loader-logo" loading="eager">
+        <img src="logo.png" alt="Logo" class="loader-logo" loading="eager" style="border-radius: 16px;">
         <p class="loader-label">Sincronizando</p>
         <div class="loader-bar-wrap"><div class="loader-bar-fill"></div></div>
     </div>
 
     <header id="main-header" style="display:none;">
         <div class="logo-box">
-            <img class="logo-img" src="https://i.imgur.com/ZEox7rf.png" alt="Logo" loading="eager">
+            <img class="logo-img" src="logo.png" alt="Logo" loading="eager">
             <span class="logo-texto">Manual de Operações</span>
         </div>
         <nav>
