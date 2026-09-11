@@ -275,52 +275,55 @@
         .loader-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--azul-principal), var(--menta-viva)); border-radius: 99px; animation: loaderProgress 1.8s 0.5s cubic-bezier(.4,0,.2,1) forwards; box-shadow: 0 0 16px rgba(44, 234, 188, 0.7); }
         @keyframes loaderProgress { 0% { width: 0% } 40% { width: 55% } 70% { width: 78% } 90% { width: 90% } 100% { width: 100% } }
 
-        /* HEADER DINÂMICO COM AMBIENT GLOW NA ROLAGEM (INSPIRADO NO LOVABLE) */
+        /* HEADER TRANSITION: CLARO/COLORIDO NO TOPO -> ESCURO AO ROLAR (MEADOW / LOVABLE INSPIRED) */
         header {
-            background: rgba(4, 8, 28, 0.45);
+            background: transparent;
             padding: 0 4%;
             display: flex; justify-content: space-between; align-items: center;
             position: sticky; top: 0; z-index: 100;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            min-height: 76px; gap: 14px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            min-height: 78px; gap: 14px;
+            box-shadow: none;
             transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
                         border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
                         box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
                         backdrop-filter 0.4s ease;
-            overflow: hidden;
         }
+
+        /* BRILHO AMBIENTE NO TOPO DO SITE (INICIAL - IMAGE 1) */
         header::after {
             content: '';
             position: absolute;
-            top: 50%;
+            top: -40px;
             left: 50%;
-            transform: translate(-50%, -50%);
-            width: 550px;
-            height: 120px;
-            background: radial-gradient(ellipse at center, rgba(44, 234, 188, 0.25) 0%, rgba(44, 103, 234, 0.15) 50%, transparent 75%);
+            transform: translateX(-50%);
+            width: 750px;
+            height: 220px;
+            background: radial-gradient(ellipse at top center, rgba(44, 234, 188, 0.35) 0%, rgba(44, 103, 234, 0.22) 50%, transparent 80%);
             pointer-events: none;
-            opacity: 0;
+            opacity: 1;
             transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            filter: blur(28px);
+            filter: blur(32px);
             z-index: 0;
         }
+
+        /* AO ROLAR: MENU FICA ESCURO & COMPACTO (IMAGE 2) */
         header.scrolled {
-            background: rgba(8, 14, 44, 0.88) !important;
-            border-bottom-color: rgba(44, 234, 188, 0.35) !important;
-            box-shadow: 0 10px 36px rgba(0, 0, 0, 0.5), 0 0 30px rgba(44, 234, 188, 0.2) !important;
-        }
-        @supports (backdrop-filter: blur(1px)) {
-            header { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
-            header.scrolled { backdrop-filter: blur(24px) !important; -webkit-backdrop-filter: blur(24px) !important; }
+            background: rgba(4, 8, 26, 0.94) !important;
+            border-bottom-color: rgba(44, 234, 188, 0.25) !important;
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7), 0 0 20px rgba(44, 234, 188, 0.1) !important;
         }
         header.scrolled::after {
-            opacity: 1;
+            opacity: 0; /* apaga o brilho claro do topo ao rolar para as seções escuras */
+        }
+        @supports (backdrop-filter: blur(1px)) {
+            header { backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+            header.scrolled { backdrop-filter: blur(26px) !important; -webkit-backdrop-filter: blur(26px) !important; }
         }
         header > * { position: relative; z-index: 1; }
         header::before {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1.5px;
-            background: linear-gradient(90deg, transparent, rgba(44, 234, 188, 0.6), rgba(44, 103, 234, 0.6), transparent);
+            background: linear-gradient(90deg, transparent, rgba(44, 234, 188, 0.7), rgba(44, 103, 234, 0.7), transparent);
             z-index: 1;
         }
         .logo-box { display: flex; align-items: center; gap: 12px; flex-shrink: 0; text-decoration: none; transition: transform var(--transition-fast); }
