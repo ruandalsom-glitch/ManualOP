@@ -972,6 +972,54 @@
         .zoom-controls { position: absolute; bottom: -50px; display: flex; gap: 10px; background: rgba(11, 18, 52, 0.9); border: 1px solid rgba(44, 234, 188, 0.3); border-radius: 999px; padding: 6px 16px; backdrop-filter: blur(10px); }
         .zoom-controls button { background: none; border: none; color: #fff; font-size: 18px; font-weight: 800; cursor: pointer; padding: 4px 12px; transition: color 0.2s ease; }
         .zoom-controls button:hover { color: var(--menta-viva); }
+
+        /* BOTÃO E MODAL TERMOS DE USO E CONFIDENCIALIDADE */
+        .header-right { display: flex; align-items: center; gap: 12px; z-index: 2; flex-shrink: 0; }
+        .btn-termos {
+            display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+            padding: 7px 16px; border-radius: var(--radius-full);
+            border: 1px solid rgba(44, 234, 188, 0.4);
+            background: rgba(44, 234, 188, 0.08);
+            color: var(--menta-viva); font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            font-size: 12.5px; font-weight: 700; cursor: pointer; transition: all 0.22s ease;
+            letter-spacing: 0.2px; white-space: nowrap; outline: none;
+        }
+        .btn-termos:hover {
+            background: rgba(44, 234, 188, 0.18);
+            border-color: var(--menta-viva);
+            box-shadow: 0 0 18px rgba(44, 234, 188, 0.35);
+            transform: translateY(-1px);
+            color: #ffffff;
+        }
+        @media (max-width: 600px) {
+            .btn-termos { padding: 6px 12px; font-size: 11.5px; }
+        }
+
+        .termos-modal-box {
+            max-width: 780px; width: 100%; max-height: 85vh; display: flex; flex-direction: column;
+            padding: 32px; background: linear-gradient(145deg, #0b1234 0%, #060a22 100%);
+            border: 1.5px solid rgba(44, 234, 188, 0.35); border-radius: 28px;
+            box-shadow: 0 24px 70px rgba(0,0,0,0.8), 0 0 40px rgba(44, 234, 188, 0.15);
+            animation: contentFadeIn 0.3s cubic-bezier(.4,0,.2,1); position: relative;
+        }
+        .termos-header { margin-bottom: 18px; padding-bottom: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+        .termos-badge { display: inline-block; padding: 4px 12px; border-radius: 99px; background: rgba(44, 234, 188, 0.12); border: 1px solid rgba(44, 234, 188, 0.3); color: var(--menta-viva); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+        .termos-header h2 { font-size: 22px; font-weight: 800; color: #ffffff; margin: 0 0 6px 0; letter-spacing: -0.4px; }
+        .termos-sub { font-size: 13px; color: var(--azul-gelo); opacity: 0.8; margin: 0; }
+        .termos-sub span { color: var(--menta-viva); font-weight: 600; }
+        .termos-body { flex: 1; overflow-y: auto; padding-right: 12px; color: var(--azul-gelo); font-size: 13.5px; line-height: 1.7; }
+        .termos-body::-webkit-scrollbar { width: 6px; }
+        .termos-body::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.03); border-radius: 4px; }
+        .termos-body::-webkit-scrollbar-thumb { background: rgba(44, 234, 188, 0.3); border-radius: 4px; }
+        .termos-body p { margin-bottom: 12px; opacity: 0.9; }
+        .termos-section-title { font-size: 14.5px; font-weight: 800; color: #ffffff; margin: 20px 0 10px 0; display: flex; align-items: center; gap: 8px; border-left: 3.5px solid var(--menta-viva); padding-left: 10px; }
+        .termos-list { margin: 8px 0 14px 20px; padding: 0; }
+        .termos-list li { margin-bottom: 6px; opacity: 0.9; list-style-type: disc; }
+        .termos-roman-list { margin: 10px 0 14px 20px; padding: 0; list-style-type: upper-roman; }
+        .termos-roman-list li { margin-bottom: 8px; opacity: 0.9; font-weight: 500; }
+        .termos-footer { margin-top: 18px; padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.08); display: flex; justify-content: flex-end; }
+        .btn-termos-entendido { padding: 10px 28px; border-radius: var(--radius-full); background: linear-gradient(135deg, var(--menta-viva), #00c49a); color: #04081c; border: none; font-size: 13.5px; font-weight: 800; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 16px rgba(44, 234, 188, 0.3); text-transform: uppercase; letter-spacing: 0.5px; }
+        .btn-termos-entendido:hover { background: linear-gradient(135deg, #42ffd4, var(--menta-viva)); box-shadow: 0 0 24px rgba(44, 234, 188, 0.6); transform: translateY(-1px); }
     </style>
 </head>
 <body>
@@ -1097,9 +1145,12 @@
                 </li>
             </ul>
         </nav>
-        <button class="hamburger" id="hamburgerBtn" aria-label="Menu" onclick="toggleMobileNav()">
-            <span></span><span></span><span></span>
-        </button>
+        <div class="header-right">
+            <button class="btn-termos" onclick="abrirTermosModal()">Termos de uso</button>
+            <button class="hamburger" id="hamburgerBtn" aria-label="Menu" onclick="toggleMobileNav()">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
     </header>
 
     <main id="main-content" style="display:none;"></main>
@@ -1112,11 +1163,284 @@
         </div>
     </div>
 
-    <!-- MODAL DETALHES DE REPORTE DO DRIVER (MENSAGEM DE RESPOSTA) -->
-    <div id="reporteModal" class="news-modal" onclick="fecharReporteModal(event)">
-        <div class="news-modal-box" onclick="event.stopPropagation()" style="max-width: 650px;">
-            <button class="news-modal-close" onclick="fecharReporteModal()">✕</button>
-            <div id="reporteModalBody"></div>
+    <!-- MODAL TERMOS DE USO E CONFIDENCIALIDADE -->
+    <div id="termosModal" class="news-modal" onclick="fecharTermosModal(event)">
+        <div class="news-modal-box termos-modal-box" onclick="event.stopPropagation()">
+            <button class="news-modal-close" onclick="fecharTermosModal()">✕</button>
+            <div class="termos-header">
+                <div class="termos-badge">Documento Oficial</div>
+                <h2>TERMOS DE USO E CONFIDENCIALIDADE</h2>
+                <p class="termos-sub">Manual de Operações &bull; <span>Última atualização: 11/09/2026</span></p>
+            </div>
+            <div class="termos-body">
+                <p>Bem-vindo ao <strong>Manual de Operações</strong>.</p>
+                <p>Este ambiente foi desenvolvido exclusivamente para apoiar as atividades operacionais, administrativas e de gestão dos usuários devidamente autorizados, disponibilizando informações, procedimentos, orientações, indicadores, materiais internos, mapas, regras, campanhas e demais conteúdos relacionados às atividades da operação.</p>
+                <p>O acesso e a utilização deste site implicam na ciência, concordância e compromisso com os presentes Termos de Uso, bem como com todas as regras de confidencialidade e segurança aplicáveis às informações disponibilizadas neste ambiente.</p>
+
+                <div class="termos-section-title">1. FINALIDADE DO MANUAL</div>
+                <p>O Manual de Operações tem como finalidade centralizar e facilitar o acesso a informações necessárias para a execução, acompanhamento e padronização das atividades da operação.</p>
+                <p>Os conteúdos disponibilizados podem incluir, entre outros:</p>
+                <ul class="termos-list">
+                    <li>Procedimentos operacionais;</li>
+                    <li>Orientações internas;</li>
+                    <li>Informações estratégicas;</li>
+                    <li>Indicadores e métricas;</li>
+                    <li>Dashboards e resultados;</li>
+                    <li>Informações relacionadas a entregadores;</li>
+                    <li>Informações sobre praças e regiões de atuação;</li>
+                    <li>Mapas operacionais;</li>
+                    <li>Programas, campanhas e promoções;</li>
+                    <li>Regras e critérios internos;</li>
+                    <li>Informações relacionadas à Frota Estratégica e Dedicados;</li>
+                    <li>Materiais de treinamento;</li>
+                    <li>Comunicados e atualizações;</li>
+                    <li>Outras informações destinadas ao uso interno.</li>
+                </ul>
+                <p>Todo conteúdo disponibilizado neste ambiente deve ser considerado de uso interno e restrito aos usuários autorizados, salvo quando expressamente indicado o contrário.</p>
+
+                <div class="termos-section-title">2. ACESSO RESTRITO</div>
+                <p>O acesso ao Manual de Operações é destinado exclusivamente a pessoas que possuam autorização para consultar seus conteúdos.</p>
+                <p>O usuário é responsável por utilizar seu acesso de maneira adequada e exclusivamente para finalidades relacionadas às suas atividades autorizadas.</p>
+                <p>É expressamente proibido:</p>
+                <ul class="termos-list">
+                    <li>Compartilhar credenciais, links restritos ou formas de acesso com terceiros;</li>
+                    <li>Permitir que pessoas não autorizadas utilizem sua sessão ou acesso;</li>
+                    <li>Compartilhar conteúdos internos com pessoas que não tenham autorização para recebê-los;</li>
+                    <li>Utilizar o acesso de outra pessoa;</li>
+                    <li>Tentar contornar mecanismos de autenticação ou restrição de acesso;</li>
+                    <li>Tentar acessar áreas, informações ou funcionalidades para as quais não possua autorização;</li>
+                    <li>Utilizar falhas, vulnerabilidades ou comportamentos inesperados do sistema para obter acesso a informações restritas.</li>
+                </ul>
+                <p>O usuário deverá comunicar à administração do Manual qualquer suspeita de acesso indevido, compartilhamento de credenciais ou comprometimento de seu acesso.</p>
+
+                <div class="termos-section-title">3. CONFIDENCIALIDADE DAS INFORMAÇÕES</div>
+                <p>Todas as informações disponibilizadas no Manual que não sejam expressamente classificadas como públicas devem ser tratadas como confidenciais e de uso interno.</p>
+                <p>O usuário compromete-se a manter sigilo sobre as informações às quais tiver acesso em razão da utilização do Manual.</p>
+                <p>É proibido divulgar, disponibilizar, encaminhar, publicar ou compartilhar informações internas com:</p>
+                <ul class="termos-list">
+                    <li>Pessoas externas à operação;</li>
+                    <li>Empresas ou organizações não autorizadas;</li>
+                    <li>Concorrentes;</li>
+                    <li>Fornecedores ou parceiros sem autorização;</li>
+                    <li>Grupos, comunidades ou canais externos;</li>
+                    <li>Redes sociais;</li>
+                    <li>Sites ou fóruns públicos;</li>
+                    <li>Aplicativos de mensagens, quando o compartilhamento não estiver relacionado a uma finalidade operacional autorizada.</li>
+                </ul>
+                <p>A obrigação de confidencialidade aplica-se independentemente do formato da informação.</p>
+
+                <div class="termos-section-title">4. PROIBIÇÃO DE CÓPIA, EXTRAÇÃO E REUTILIZAÇÃO</div>
+                <p>Os conteúdos disponibilizados no Manual destinam-se exclusivamente à finalidade para a qual foram disponibilizados.</p>
+                <p>É expressamente proibido copiar, reproduzir, extrair, coletar, armazenar, distribuir ou reutilizar, sem autorização, informações ou materiais presentes no site.</p>
+                <p>Isso inclui, mas não se limita a:</p>
+                <ul class="termos-list">
+                    <li>Textos;</li>
+                    <li>Tabelas;</li>
+                    <li>Indicadores;</li>
+                    <li>Métricas;</li>
+                    <li>Dashboards;</li>
+                    <li>Dados;</li>
+                    <li>Imagens;</li>
+                    <li>Mapas;</li>
+                    <li>Procedimentos;</li>
+                    <li>Documentos;</li>
+                    <li>Vídeos;</li>
+                    <li>Prints de tela;</li>
+                    <li>Estruturas de páginas;</li>
+                    <li>Regras internas;</li>
+                    <li>Critérios operacionais;</li>
+                    <li>Informações sobre campanhas;</li>
+                    <li>Informações sobre desempenho;</li>
+                    <li>Bases ou conjuntos de informações disponibilizados pelo sistema.</li>
+                </ul>
+                <p>Também é proibida a utilização de ferramentas, scripts, robôs, extensões, automações ou outros mecanismos destinados à extração automatizada ou em massa de informações do Manual, salvo quando expressamente autorizado.</p>
+
+                <div class="termos-section-title">5. PROIBIÇÃO DE USO PARA BENEFÍCIO PRÓPRIO OU DE TERCEIROS</div>
+                <p>As informações disponibilizadas no Manual não poderão ser utilizadas para obtenção de vantagem pessoal, comercial, financeira ou estratégica, direta ou indiretamente, em benefício próprio ou de terceiros.</p>
+                <p>É proibido utilizar informações obtidas através do Manual para:</p>
+                <ul class="termos-list">
+                    <li>Desenvolver produtos ou serviços concorrentes;</li>
+                    <li>Criar materiais comerciais ou operacionais externos;</li>
+                    <li>Comercializar informações;</li>
+                    <li>Prestar consultoria ou serviços a terceiros;</li>
+                    <li>Criar bases de dados particulares;</li>
+                    <li>Realizar análises comerciais não autorizadas;</li>
+                    <li>Obter vantagem competitiva;</li>
+                    <li>Negociar ou explorar informações internas;</li>
+                    <li>Compartilhar informações com concorrentes;</li>
+                    <li>Criar conteúdos, treinamentos ou materiais externos utilizando informações internas;</li>
+                    <li>Reproduzir ou adaptar processos internos para exploração comercial;</li>
+                    <li>Qualquer outra finalidade que extrapole as atividades autorizadas do usuário.</li>
+                </ul>
+                <p>A autorização para consultar determinada informação não significa autorização para utilizá-la livremente fora da finalidade operacional para a qual foi disponibilizada.</p>
+
+                <div class="termos-section-title">6. PRINTS, FOTOS, GRAVAÇÕES E COMPARTILHAMENTO</div>
+                <p>A realização de capturas de tela, fotografias, gravações ou qualquer outra forma de reprodução de conteúdos internos deverá observar as mesmas regras de confidencialidade previstas nestes Termos.</p>
+                <p>É proibido publicar ou compartilhar externamente:</p>
+                <ul class="termos-list">
+                    <li>Prints do Manual;</li>
+                    <li>Capturas de dashboards;</li>
+                    <li>Indicadores internos;</li>
+                    <li>Dados operacionais;</li>
+                    <li>Mapas internos;</li>
+                    <li>Procedimentos;</li>
+                    <li>Campanhas;</li>
+                    <li>Informações de desempenho;</li>
+                    <li>Informações de entregadores;</li>
+                    <li>Informações estratégicas;</li>
+                    <li>Conteúdos obtidos através de áreas restritas.</li>
+                </ul>
+                <p>Quando a utilização de uma captura de tela for necessária para uma finalidade operacional, seu compartilhamento deverá ocorrer somente com pessoas autorizadas e pelos canais adequados.</p>
+
+                <div class="termos-section-title">7. DADOS E INFORMAÇÕES DE TERCEIROS</div>
+                <p>O usuário deverá tratar com responsabilidade qualquer informação que possa identificar ou estar relacionada a pessoas, entregadores, colaboradores, parceiros ou terceiros.</p>
+                <p>É proibido utilizar, copiar, armazenar ou compartilhar informações pessoais ou operacionais para finalidades diferentes daquelas autorizadas.</p>
+                <p>Quando aplicável, o tratamento dessas informações deverá observar as políticas internas de segurança e privacidade e a legislação vigente, incluindo as normas aplicáveis à proteção de dados pessoais.</p>
+
+                <div class="termos-section-title">8. PROPRIEDADE INTELECTUAL</div>
+                <p>Todos os conteúdos, materiais, textos, elementos visuais, estruturas, layouts, marcas, logotipos, imagens, procedimentos, documentos e demais materiais disponibilizados no Manual pertencem aos seus respectivos titulares ou são utilizados mediante autorização.</p>
+                <p>O acesso ao Manual não concede ao usuário qualquer direito de propriedade, licença comercial ou autorização para reprodução, distribuição ou exploração dos conteúdos.</p>
+                <p>Salvo autorização expressa, nenhum conteúdo poderá ser:</p>
+                <ul class="termos-list">
+                    <li>Comercializado;</li>
+                    <li>Reproduzido integralmente ou parcialmente;</li>
+                    <li>Redistribuído;</li>
+                    <li>Publicado;</li>
+                    <li>Incorporado a outros produtos ou serviços;</li>
+                    <li>Utilizado em materiais comerciais;</li>
+                    <li>Modificado para posterior distribuição;</li>
+                    <li>Utilizado para criação de materiais destinados a terceiros.</li>
+                </ul>
+
+                <div class="termos-section-title">9. SEGURANÇA DO SISTEMA</div>
+                <p>O usuário compromete-se a utilizar o Manual de maneira responsável, não realizando ações que possam comprometer seu funcionamento, segurança ou disponibilidade.</p>
+                <p>É proibido:</p>
+                <ul class="termos-list">
+                    <li>Tentar invadir ou explorar vulnerabilidades;</li>
+                    <li>Interferir no funcionamento do site;</li>
+                    <li>Introduzir códigos maliciosos;</li>
+                    <li>Realizar ataques ou testes de segurança sem autorização;</li>
+                    <li>Utilizar scripts para sobrecarregar o sistema;</li>
+                    <li>Realizar consultas automatizadas não autorizadas;</li>
+                    <li>Tentar acessar bancos de dados ou informações diretamente;</li>
+                    <li>Manipular requisições para acessar conteúdos restritos;</li>
+                    <li>Alterar, excluir ou modificar informações sem autorização.</li>
+                </ul>
+                <p>Qualquer vulnerabilidade ou comportamento anormal identificado deverá ser comunicado à administração responsável pelo Manual.</p>
+
+                <div class="termos-section-title">10. RESPONSABILIDADE DO USUÁRIO</div>
+                <p>O usuário é responsável por todas as ações realizadas através de seu acesso, respeitadas as circunstâncias e mecanismos de segurança aplicáveis.</p>
+                <p>O usuário compromete-se a:</p>
+                <ul class="termos-list">
+                    <li>Utilizar as informações de forma responsável;</li>
+                    <li>Manter o sigilo das informações acessadas;</li>
+                    <li>Respeitar as restrições de acesso;</li>
+                    <li>Não compartilhar conteúdos indevidamente;</li>
+                    <li>Não utilizar informações para benefício próprio ou de terceiros;</li>
+                    <li>Seguir as orientações internas aplicáveis;</li>
+                    <li>Comunicar incidentes de segurança;</li>
+                    <li>Utilizar o Manual exclusivamente para finalidades autorizadas.</li>
+                </ul>
+
+                <div class="termos-section-title">11. MONITORAMENTO E SEGURANÇA</div>
+                <p>Para fins de segurança, auditoria, prevenção de uso indevido e manutenção do ambiente, determinadas informações relacionadas à utilização do Manual poderão ser registradas e analisadas, respeitando as políticas aplicáveis e a legislação vigente.</p>
+                <p>O monitoramento poderá ser utilizado para identificar, entre outras situações:</p>
+                <ul class="termos-list">
+                    <li>Tentativas de acesso indevido;</li>
+                    <li>Uso incompatível com a finalidade do Manual;</li>
+                    <li>Compartilhamento irregular de acesso;</li>
+                    <li>Tentativas de extração de informações;</li>
+                    <li>Comportamentos que possam comprometer a segurança do sistema;</li>
+                    <li>Acessos incompatíveis com as permissões concedidas.</li>
+                </ul>
+
+                <div class="termos-section-title">12. CONTEÚDO E ATUALIZAÇÕES</div>
+                <p>As informações disponibilizadas no Manual podem ser alteradas, atualizadas, complementadas ou removidas a qualquer momento, conforme necessidade da operação.</p>
+                <p>A administração poderá modificar:</p>
+                <ul class="termos-list">
+                    <li>Procedimentos;</li>
+                    <li>Regras;</li>
+                    <li>Indicadores;</li>
+                    <li>Campanhas;</li>
+                    <li>Mapas;</li>
+                    <li>Informações operacionais;</li>
+                    <li>Critérios;</li>
+                    <li>Estrutura do Manual;</li>
+                    <li>Funcionalidades;</li>
+                    <li>Permissões de acesso.</li>
+                </ul>
+                <p>O usuário é responsável por consultar as versões mais recentes das informações antes de executar procedimentos que dependam de orientações atualizadas.</p>
+
+                <div class="termos-section-title">13. SUSPENSÃO OU REVOGAÇÃO DO ACESSO</div>
+                <p>O acesso ao Manual poderá ser suspenso, limitado ou revogado caso sejam identificados indícios de:</p>
+                <ul class="termos-list">
+                    <li>Uso indevido;</li>
+                    <li>Compartilhamento não autorizado;</li>
+                    <li>Violação de confidencialidade;</li>
+                    <li>Extração de informações;</li>
+                    <li>Utilização para benefício próprio ou de terceiros;</li>
+                    <li>Tentativa de acesso não autorizado;</li>
+                    <li>Violação de regras de segurança;</li>
+                    <li>Descumprimento destes Termos;</li>
+                    <li>Outras condutas incompatíveis com a finalidade do ambiente.</li>
+                </ul>
+                <p>A suspensão ou revogação do acesso não impede a adoção de outras medidas administrativas, contratuais ou judiciais que possam ser cabíveis.</p>
+
+                <div class="termos-section-title">14. VIOLAÇÃO DOS TERMOS</div>
+                <p>O descumprimento destes Termos poderá resultar, conforme a natureza e gravidade da situação, em:</p>
+                <ul class="termos-list">
+                    <li>Advertência;</li>
+                    <li>Suspensão ou bloqueio de acesso;</li>
+                    <li>Revogação definitiva do acesso;</li>
+                    <li>Comunicação aos responsáveis pela operação;</li>
+                    <li>Aplicação de medidas administrativas ou contratuais cabíveis;</li>
+                    <li>Apuração interna;</li>
+                    <li>Responsabilização por eventuais prejuízos causados;</li>
+                    <li>Adoção das medidas legais cabíveis.</li>
+                </ul>
+                <p>A utilização indevida de informações confidenciais poderá ser considerada uma violação grave, especialmente quando houver divulgação, comercialização, extração ou utilização das informações em benefício próprio ou de terceiros.</p>
+
+                <div class="termos-section-title">15. COMUNICAÇÃO DE INCIDENTES</div>
+                <p>Caso o usuário identifique ou suspeite de:</p>
+                <ul class="termos-list">
+                    <li>Vazamento de informações;</li>
+                    <li>Compartilhamento indevido;</li>
+                    <li>Acesso não autorizado;</li>
+                    <li>Comprometimento de credenciais;</li>
+                    <li>Falha de segurança;</li>
+                    <li>Exposição acidental de informações;</li>
+                    <li>Extração indevida de dados;</li>
+                </ul>
+                <p>deverá comunicar imediatamente a equipe ou responsável pelo Manual de Operações.</p>
+                <p>O usuário não deverá explorar, reproduzir ou divulgar uma vulnerabilidade identificada.</p>
+
+                <div class="termos-section-title">16. ACEITE DOS TERMOS</div>
+                <p>Ao acessar ou utilizar o Manual de Operações, o usuário declara que:</p>
+                <ol class="termos-roman-list">
+                    <li>está ciente de que determinadas informações disponibilizadas são internas e confidenciais;</li>
+                    <li>utilizará o conteúdo exclusivamente para as finalidades autorizadas;</li>
+                    <li>não compartilhará informações internas com pessoas não autorizadas;</li>
+                    <li>não realizará cópia, extração ou reprodução indevida dos conteúdos;</li>
+                    <li>não utilizará informações do Manual para obtenção de vantagem pessoal, comercial, financeira ou estratégica;</li>
+                    <li>respeitará as regras de segurança e acesso;</li>
+                    <li>comunicará eventuais incidentes ou acessos indevidos;</li>
+                    <li>está ciente de que o descumprimento destas regras poderá resultar na suspensão ou revogação do acesso e na adoção das medidas cabíveis.</li>
+                </ol>
+
+                <div class="termos-section-title">17. ALTERAÇÕES DESTES TERMOS</div>
+                <p>Estes Termos de Uso poderão ser atualizados sempre que necessário para refletir alterações na estrutura, finalidade, segurança ou funcionamento do Manual.</p>
+                <p>A versão vigente será aquela disponibilizada neste ambiente.</p>
+                <p>Recomenda-se que os usuários consultem periodicamente esta página para verificar eventuais atualizações.</p>
+
+                <div class="termos-section-title">18. DISPOSIÇÕES FINAIS</div>
+                <p>O Manual de Operações é um ambiente destinado ao uso interno e controlado, e seu conteúdo deve ser utilizado de maneira compatível com as responsabilidades atribuídas a cada usuário.</p>
+                <p>O acesso a uma informação não representa autorização para sua divulgação, reprodução, comercialização, distribuição ou utilização fora da finalidade operacional correspondente.</p>
+                <p>Em caso de dúvida sobre a possibilidade de utilizar, copiar, compartilhar ou divulgar determinado conteúdo, o usuário deverá solicitar autorização previamente ao responsável pelo Manual ou pela área responsável pela informação.</p>
+                <p>Na ausência de autorização expressa, deverá ser adotado o princípio de uso restrito e confidencial.</p>
+            </div>
+            <div class="termos-footer">
+                <button class="btn-termos-entendido" onclick="fecharTermosModal()">Entendido</button>
+            </div>
         </div>
     </div>
 
@@ -2882,9 +3206,13 @@
         window.addEventListener('scroll',function(){ btn.classList.toggle('visible',window.scrollY>400); },{passive:true});
     })();
 
+    /* MODAL TERMOS DE USO */
+    function abrirTermosModal(){ var m=document.getElementById('termosModal'); if(m) m.style.display='flex'; }
+    function fecharTermosModal(e){ if(e&&e.target&&e.target!==e.currentTarget&&!e.target.classList.contains('news-modal-close')&&!e.target.classList.contains('btn-termos-entendido')) return; var m=document.getElementById('termosModal'); if(m) m.style.display='none'; }
+
     /* HAMBURGER */
     function toggleMobileNav(){ var btn=document.getElementById('hamburgerBtn'); var nav=document.getElementById('mobileNav'); var isOpen=btn.classList.toggle('open'); if(isOpen) nav.classList.add('open'); else nav.classList.remove('open'); }
-    function buildMobileNav(){ var nav=document.getElementById('mobileNav'); var links=document.querySelectorAll('#mainMenu a, #mainMenu .dropdown-menu-rich a'); nav.innerHTML=''; links.forEach(function(a){ var c=a.cloneNode(true); c.addEventListener('click',function(e){ document.getElementById('hamburgerBtn').classList.remove('open'); nav.classList.remove('open'); if(c.getAttribute('href')==='#home'){ e.preventDefault(); window.scrollTo({top:0,behavior:'smooth'}); } }); nav.appendChild(c); }); }
+    function buildMobileNav(){ var nav=document.getElementById('mobileNav'); var links=document.querySelectorAll('#mainMenu a, #mainMenu .dropdown-menu-rich a'); nav.innerHTML=''; links.forEach(function(a){ var c=a.cloneNode(true); c.addEventListener('click',function(e){ document.getElementById('hamburgerBtn').classList.remove('open'); nav.classList.remove('open'); if(c.getAttribute('href')==='#home'){ e.preventDefault(); window.scrollTo({top:0,behavior:'smooth'}); } }); nav.appendChild(c); }); var tBtn=document.createElement('a'); tBtn.href='javascript:void(0)'; tBtn.innerHTML='📋 Termos de uso'; tBtn.style.color='var(--menta-viva)'; tBtn.style.fontWeight='700'; tBtn.addEventListener('click',function(){ document.getElementById('hamburgerBtn').classList.remove('open'); nav.classList.remove('open'); abrirTermosModal(); }); nav.appendChild(tBtn); }
     document.addEventListener('click',function(e){ var nav=document.getElementById('mobileNav'); var btn=document.getElementById('hamburgerBtn'); if(nav&&nav.classList.contains('open')&&!nav.contains(e.target)&&!btn.contains(e.target)){ nav.classList.remove('open'); btn.classList.remove('open'); } });
 
     /* SKELETON */
