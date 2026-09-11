@@ -32,8 +32,19 @@
             --transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             
             --shadow-glow: 0 0 25px rgba(44, 234, 188, 0.22);
-            --shadow-card: 0 12px 36px rgba(0, 0, 0, 0.38), 0 1px 0 rgba(255, 255, 255, 0.05) inset;
-            --shadow-card-hover: 0 20px 50px rgba(0, 0, 0, 0.45), 0 0 24px rgba(44, 234, 188, 0.2), 0 0 0 1px rgba(44, 234, 188, 0.3);
+            --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.32), 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+            --shadow-card-hover: 0 14px 34px rgba(0, 0, 0, 0.4), 0 0 14px rgba(44, 234, 188, 0.14), 0 0 0 1px rgba(44, 234, 188, 0.28);
+
+            /* Tokens semânticos (aliases) — design system v2, aditivo, não remove nada acima */
+            --bg: #04081c;
+            --surface: rgba(11, 18, 52, 0.65);
+            --surface-flat: rgba(13, 22, 60, 0.55);
+            --text: var(--branco);
+            --text-muted: var(--azul-gelo);
+            --accent: var(--menta-viva);
+            --accent-soft: rgba(44, 234, 188, 0.12);
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-accent: rgba(44, 234, 188, 0.24);
         }
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         *:focus-visible { outline: 2.5px solid var(--menta-viva) !important; outline-offset: 3px !important; }
@@ -104,7 +115,7 @@
         /* PAINEL GLASS PREMIUM */
         .glass-panel {
             background: var(--azul-card);
-            border: 1px solid rgba(44, 234, 188, 0.16);
+            border: 1px solid rgba(255, 255, 255, 0.09);
             box-shadow: var(--shadow-card);
             border-radius: var(--radius-lg);
             transition: border-color var(--transition-base), box-shadow var(--transition-base), transform var(--transition-base);
@@ -114,8 +125,8 @@
         @supports (backdrop-filter: blur(1px)) {
             .glass-panel {
                 background: rgba(11, 18, 52, 0.65);
-                backdrop-filter: blur(24px);
-                -webkit-backdrop-filter: blur(24px);
+                backdrop-filter: blur(18px);
+                -webkit-backdrop-filter: blur(18px);
             }
         }
         /* DRIVER APPROVAL / REPORTES STYLES */
@@ -165,7 +176,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, 0.06) 50%, transparent 65%);
+            background: linear-gradient(110deg, transparent 40%, rgba(255, 255, 255, 0.04) 50%, transparent 60%);
             background-size: 200% 100%;
             background-position: -100% 0;
             transition: background-position 0.6s ease;
@@ -178,9 +189,9 @@
         .glass-panel:hover::after { background-position: 200% 0; }
         .glass-panel > * { position: relative; z-index: 1; }
         .glass-panel:hover:not(.flip-front):not(.flip-back) {
-            border-color: rgba(44, 234, 188, 0.42);
+            border-color: rgba(44, 234, 188, 0.32);
             box-shadow: var(--shadow-card-hover);
-            transform: translateY(-5px);
+            transform: translateY(-3px);
         }
 
         .icon-glow {
@@ -208,21 +219,21 @@
 
         /* HEADER REFINADO */
         header {
-            background: rgba(4, 8, 28, 0.88);
+            background: rgba(4, 8, 28, 0.9);
             padding: 0 3%;
             display: flex; justify-content: space-between; align-items: center;
             position: sticky; top: 0; z-index: 100;
-            border-bottom: 1px solid rgba(44, 234, 188, 0.12);
-            min-height: 84px; gap: 14px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+            min-height: 76px; gap: 14px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
             transition: all var(--transition-base);
         }
         @supports (backdrop-filter: blur(1px)) {
-            header { backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); background: rgba(4, 8, 28, 0.82); }
+            header { backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); background: rgba(4, 8, 28, 0.84); }
         }
         header::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1.5px;
-            background: linear-gradient(90deg, transparent, var(--menta-viva), var(--azul-principal), transparent);
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(44, 234, 188, 0.5), rgba(44, 103, 234, 0.5), transparent);
         }
         .logo-box { display: flex; align-items: center; gap: 12px; flex-shrink: 0; text-decoration: none; transition: transform var(--transition-fast); }
         .logo-box:hover { transform: scale(1.02); }
@@ -233,10 +244,10 @@
         .menu { list-style: none; display: flex; gap: 2px; align-items: center; position: relative; width: max-content; }
         .menu-indicator {
             position: absolute; top: 0; left: 0; height: 100%;
-            background: linear-gradient(135deg, rgba(44, 234, 188, 0.15), rgba(44, 103, 234, 0.1));
+            background: rgba(44, 234, 188, 0.1);
             border-radius: var(--radius-full);
-            border: 1px solid rgba(44, 234, 188, 0.35);
-            box-shadow: 0 0 16px rgba(44, 234, 188, 0.15);
+            border: 1px solid rgba(44, 234, 188, 0.3);
+            box-shadow: 0 0 10px rgba(44, 234, 188, 0.1);
             transition: transform 0.35s cubic-bezier(.4,0,.2,1), width 0.35s cubic-bezier(.4,0,.2,1);
             pointer-events: none; z-index: 0; opacity: 0;
         }
@@ -448,16 +459,15 @@
         /* SELECTORES EM CÁPSULA (PILLS) ESTILO PRAÇAS */
         .praca-selector { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: var(--space-lg); }
         .praca-btn {
-            padding: 11px 26px; border-radius: var(--radius-full); border: 1.5px solid rgba(44, 234, 188, 0.25);
+            padding: 10px 22px; border-radius: var(--radius-full); border: 1.5px solid rgba(255, 255, 255, 0.12);
             background: rgba(13, 22, 60, 0.55); color: var(--azul-gelo); font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-            font-size: 13px; font-weight: 700; cursor: pointer; transition: all var(--transition-base); text-transform: uppercase; letter-spacing: 0.8px;
+            font-size: 13.5px; font-weight: 600; cursor: pointer; transition: all var(--transition-base); letter-spacing: 0.1px;
         }
-        .praca-btn:hover { border-color: var(--menta-viva); color: var(--menta-viva); background: rgba(44, 234, 188, 0.1); transform: translateY(-2px); box-shadow: 0 0 20px rgba(44, 234, 188, 0.18); }
+        .praca-btn:hover { border-color: var(--menta-viva); color: var(--menta-viva); background: rgba(44, 234, 188, 0.08); transform: translateY(-1px); }
         .praca-btn.active {
-            background: linear-gradient(135deg, rgba(44, 234, 188, 0.24), rgba(44, 103, 234, 0.18));
-            border-color: var(--menta-viva); color: var(--menta-viva);
-            box-shadow: 0 0 26px rgba(44, 234, 188, 0.28), 0 0 12px rgba(44, 234, 188, 0.15) inset;
-            text-shadow: 0 0 12px rgba(44, 234, 188, 0.4);
+            background: rgba(44, 234, 188, 0.14);
+            border-color: var(--menta-viva); color: var(--menta-viva); font-weight: 700;
+            box-shadow: 0 0 0 1px rgba(44, 234, 188, 0.2) inset;
         }
 
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
@@ -467,12 +477,12 @@
         .mapa-master-dropdown { position: relative; display: inline-block; margin: 0 auto; }
         .mapa-master-btn {
             background: rgba(13, 22, 60, 0.85) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%232CEABC" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>') no-repeat right 20px center;
-            background-size: 18px; color: var(--menta-viva); padding: 15px 52px 15px 26px; font-size: 16px; font-weight: 800;
+            background-size: 18px; color: var(--menta-viva); padding: 15px 52px 15px 26px; font-size: 15px; font-weight: 700;
             font-family: 'Plus Jakarta Sans', system-ui, sans-serif; border-radius: var(--radius-full);
-            border: 1.5px solid rgba(44, 234, 188, 0.42); cursor: pointer; transition: all var(--transition-base); text-transform: uppercase; letter-spacing: 1.2px;
-            box-shadow: 0 0 20px rgba(44, 234, 188, 0.15);
+            border: 1.5px solid rgba(44, 234, 188, 0.35); cursor: pointer; transition: all var(--transition-base); letter-spacing: 0.2px;
+            box-shadow: 0 0 12px rgba(44, 234, 188, 0.08);
         }
-        .mapa-master-btn:hover, .mapa-master-dropdown.hover-lock .mapa-master-btn { border-color: var(--menta-viva); box-shadow: 0 0 30px rgba(44, 234, 188, 0.35); }
+        .mapa-master-btn:hover, .mapa-master-dropdown.hover-lock .mapa-master-btn { border-color: var(--menta-viva); box-shadow: 0 0 20px rgba(44, 234, 188, 0.2); }
         .mapa-master-dropdown::after { content: ''; position: absolute; top: 100%; left: 0; width: 100%; height: 20px; z-index: 90; pointer-events: auto; }
         .mapa-lv1-menu {
             display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); margin-top: 14px;
