@@ -642,7 +642,7 @@
             </div>
         </a>
         <div class="header-actions">
-            <button class="btn-sync" id="btnSync" onclick="carregarDadosReais()">
+            <button class="btn-sync" id="btnSync" onclick="carregarDadosReais(true)">
                 <i class="fa-solid fa-rotate"></i>
                 <span id="btnSyncText">Atualizar Dados</span>
             </button>
@@ -1110,12 +1110,28 @@
             renderTabela();
         }
 
-        async function carregarDadosReais() {
+        async function carregarDadosReais(forceRefresh = false) {
             const btn = document.getElementById('btnSync');
             const txt = document.getElementById('btnSyncText');
             
             btn.disabled = true;
             txt.innerHTML = '<span class="spinner"></span> Carregando...';
+
+            // Cache de 3 minutos para economizar Egress do Supabase
+            const cachedData = sessionStorage.getItem('cache_reportes_colaboradores');
+            const cachedTime = sessionStorage.getItem('cache_reportes_colaboradores_time');
+            const now = Date.now();
+
+            if (!forceRefresh && cachedData && cachedTime && (now - parseInt(cachedTime) < 3 * 60 * 1000)) {
+                try {
+                    reportesData = JSON.parse(cachedData);
+                    popularFiltroSolicitantes(reportesData);
+                    onFilterChange();
+                    btn.disabled = false;
+                    txt.innerText = 'Atualizar Dados';
+                    return;
+                } catch(e) {}
+            }
 
             try {
                 // 1. Tentar buscar da tabela 'reportes_colaboradores' no Supabase
@@ -1145,6 +1161,11 @@
                             sla: item.sla || '2 dias',
                             plataforma: item.plataforma || 'EntreGô / Jira'
                         }));
+
+                        // Salvar no sessionStorage para economizar chamadas no Supabase
+                        sessionStorage.setItem('cache_reportes_colaboradores', JSON.stringify(reportesData));
+                        sessionStorage.setItem('cache_reportes_colaboradores_time', Date.now().toString());
+
                         popularFiltroSolicitantes(reportesData);
                         onFilterChange();
                         btn.disabled = false;
