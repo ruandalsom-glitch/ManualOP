@@ -23,7 +23,7 @@ BASE_DIR         = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 JSON_DATA_PATH   = os.path.join(BASE_DIR, "jira_reports_data.json")
 
 COLUNAS = [
-    "Data", "Categoria", "descricao", "ticket", "Plataforma", "SLA", "Prazo", "Status", "Dados", "Atendente", "Obs"
+    "Data", "Categoria", "descricao", "ticket", "Plataforma", "SLA", "Prazo", "Status", "Setor", "Dados", "Atendente", "Obs"
 ]
 
 MESES_MAP = {
@@ -192,6 +192,7 @@ def sincronizar_jira_com_sheets():
         plataforma = "EntreGô / Jira"
         sla = "2 dias"
         prazo = calcular_prazo(data_reporte, status, sla_dias=2)
+        setor = item.get("setor", "Geral")
         obs = ""
 
         linha_desejada = [
@@ -203,29 +204,33 @@ def sincronizar_jira_com_sheets():
             sla,           # Coluna F: SLA
             prazo,         # Coluna G: Prazo (ex: Em atraso (3 dias), Finalizado, No prazo)
             status,        # Coluna H: Status
-            dados_resp,    # Coluna I: Dados
-            atendente,     # Coluna J: Atendente (Nome do Colaborador)
-            obs            # Coluna K: Obs
+            setor,         # Coluna I: Setor
+            dados_resp,    # Coluna J: Dados
+            atendente,     # Coluna K: Atendente (Nome do Colaborador)
+            obs            # Coluna L: Obs
         ]
 
         if ticket in ticket_row_map:
             row_idx = ticket_row_map[ticket]
-            # Atualiza apenas os campos dinâmicos preservando SLA / Obs se editados
+            # Atualiza apenas os campos dinâmicos preservando SLA / Setor / Obs se editados na planilha
             row_existente = todas_linhas[row_idx - 1]
             plataforma_exist = row_existente[4] if len(row_existente) > 4 and row_existente[4] else plataforma
             sla_exist = row_existente[5] if len(row_existente) > 5 and row_existente[5] else sla
-            obs_exist = row_existente[10] if len(row_existente) > 10 else obs
+            setor_exist = row_existente[8] if len(row_existente) > 8 and row_existente[8] else setor
+            dados_exist = row_existente[9] if len(row_existente) > 9 else dados_resp
+            atendente_exist = row_existente[10] if len(row_existente) > 10 else atendente
+            obs_exist = row_existente[11] if len(row_existente) > 11 else obs
 
             prazo_calc = calcular_prazo(data_reporte, status, sla_exist)
 
             linha_atualizada = [
                 data_reporte, categoria, descricao, ticket,
                 plataforma_exist, sla_exist, prazo_calc, status,
-                dados_resp, atendente, obs_exist
+                setor_exist, dados_exist, atendente_exist, obs_exist
             ]
 
             atualizacoes.append({
-                "range": f"A{row_idx}:K{row_idx}",
+                "range": f"A{row_idx}:L{row_idx}",
                 "values": [linha_atualizada]
             })
         else:

@@ -388,6 +388,20 @@
         .badge-status.no-prazo { background: var(--status-green-bg); color: var(--status-green-text); border: 1px solid rgba(16, 185, 129, 0.3); }
         .badge-status.alerta { background: var(--status-amber-bg); color: var(--status-amber-text); border: 1px solid rgba(245, 158, 11, 0.3); }
 
+        .badge-setor {
+            background: rgba(44, 103, 234, 0.18);
+            color: var(--azul-gelo);
+            border: 1px solid rgba(44, 103, 234, 0.35);
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 11.5px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+        }
+
         .btn-view-resp {
             background: rgba(44,234,188,0.12);
             color: var(--menta-viva);
@@ -759,6 +773,10 @@
                 <select class="filter-badge-select" id="reporterFilter" onchange="onFilterChange()">
                     <option value="">Solicitante (Planilha): Todos</option>
                 </select>
+
+                <select class="filter-badge-select" id="setorFilter" onchange="onFilterChange()">
+                    <option value="">Setor (Planilha): Todos</option>
+                </select>
             </div>
         </div>
 
@@ -772,6 +790,7 @@
                             <th style="white-space: nowrap;">Referência</th>
                             <th style="white-space: nowrap;">Data Reporte</th>
                             <th style="white-space: nowrap;">Resumo do Reporte</th>
+                            <th style="white-space: nowrap;">Setor</th>
                             <th style="white-space: nowrap;">Status</th>
                             <th style="white-space: nowrap;">Prazo / SLA</th>
                             <th style="white-space: nowrap;">Solicitante (Planilha)</th>
@@ -829,6 +848,10 @@
                     <div class="modal-info-item">
                         <label>Solicitante (Planilha)</label>
                         <p id="modalReporter">N/A</p>
+                    </div>
+                    <div class="modal-info-item">
+                        <label>Setor / Departamento</label>
+                        <p id="modalSetor">Geral</p>
                     </div>
                     <div class="modal-info-item">
                         <label>Atendente Suporte (Jira)</label>
@@ -914,6 +937,28 @@
             });
         }
 
+        function popularFiltroSetores(dados) {
+            const selectSetor = document.getElementById('setorFilter');
+            if (!selectSetor) return;
+            const setores = new Set();
+
+            dados.forEach(d => {
+                const s = d.setor || 'Geral';
+                if (s && s.trim()) {
+                    setores.add(s.trim());
+                }
+            });
+
+            selectSetor.innerHTML = '<option value="">Setor (Planilha): Todos</option>';
+            
+            Array.from(setores).sort().forEach(nome => {
+                const opt = document.createElement('option');
+                opt.value = nome;
+                opt.innerText = nome;
+                selectSetor.appendChild(opt);
+            });
+        }
+
         function renderTabela() {
             const tbody = document.getElementById('reportsTableBody');
             tbody.innerHTML = '';
@@ -921,7 +966,7 @@
             if (!filteredData || filteredData.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="8">
+                        <td colspan="9">
                             <div class="empty-box">
                                 <i class="fa-solid fa-inbox"></i>
                                 <p>Nenhum reporte encontrado para os filtros selecionados.</p>
@@ -980,6 +1025,9 @@
                 const nomeSuporte = item.response_author || 'Suporte Jira';
                 const inicialSuporte = nomeSuporte.charAt(0).toUpperCase();
 
+                // Setor
+                const setorNome = item.setor || 'Geral';
+
                 tr.innerHTML = `
                     <td style="text-align: center; white-space: nowrap;" onclick="abrirModal(${globalIdx})">
                         ${iconHtml}
@@ -992,6 +1040,9 @@
                     </td>
                     <td onclick="abrirModal(${globalIdx})">
                         <div class="issue-desc" title="${item.summary || item.descricao}">${item.summary || item.descricao}</div>
+                    </td>
+                    <td onclick="abrirModal(${globalIdx})" style="white-space: nowrap;">
+                        <span class="badge-setor"><i class="fa-solid fa-building-user" style="font-size: 10px; margin-right: 4px;"></i>${setorNome}</span>
                     </td>
                     <td onclick="abrirModal(${globalIdx})" style="white-space: nowrap;">
                         <span class="badge-status ${statusClass}">
@@ -1031,6 +1082,7 @@
             document.getElementById('modalType').innerText = item.type || item.categoria || 'Geral';
             document.getElementById('modalStatus').innerText = item.status || 'Pendente';
             document.getElementById('modalReporter').innerText = item.reporter || item.atendente || 'Não Identificado';
+            document.getElementById('modalSetor').innerText = item.setor || 'Geral';
             document.getElementById('modalSuporte').innerText = item.response_author || 'Suporte Jira';
             document.getElementById('modalSummary').innerText = item.summary || item.descricao || 'Sem resumo disponível';
             document.getElementById('modalCreatedDate').innerText = item.created_date || item.data || 'Não informada';
@@ -1138,6 +1190,7 @@
             const typeFilter = document.getElementById('typeFilter').value;
             const statusFilter = document.getElementById('statusFilter').value;
             const reporterFilter = document.getElementById('reporterFilter').value;
+            const setorFilter = document.getElementById('setorFilter')?.value;
 
             filteredData = reportesData.filter(item => {
                 const ref = item.issue_key || item.ticket || '';
@@ -1146,12 +1199,14 @@
                 const rep = item.reporter || item.atendente || '';
                 const respAuth = item.response_author || '';
                 const plat = item.plataforma || '';
+                const setorVal = item.setor || 'Geral';
 
                 const matchQuery = ref.toLowerCase().includes(query) ||
                                    sum.toLowerCase().includes(query) ||
                                    resp.toLowerCase().includes(query) ||
                                    rep.toLowerCase().includes(query) ||
-                                   respAuth.toLowerCase().includes(query);
+                                   respAuth.toLowerCase().includes(query) ||
+                                   setorVal.toLowerCase().includes(query);
 
                 let matchPlatform = true;
                 if (platformFilter === 'jira') {
@@ -1184,7 +1239,12 @@
                     matchReporter = rep.trim() === reporterFilter;
                 }
 
-                return matchQuery && matchPlatform && matchType && matchStatus && matchReporter;
+                let matchSetor = true;
+                if (setorFilter) {
+                    matchSetor = setorVal.trim().toLowerCase() === setorFilter.trim().toLowerCase();
+                }
+
+                return matchQuery && matchPlatform && matchType && matchStatus && matchReporter && matchSetor;
             });
 
             atualizarMetrics(filteredData);
@@ -1218,6 +1278,7 @@
                 try {
                     reportesData = JSON.parse(cachedData);
                     popularFiltroSolicitantes(reportesData);
+                    popularFiltroSetores(reportesData);
                     onFilterChange();
                     btn.disabled = false;
                     txt.innerText = 'Atualizar Dados';
@@ -1278,6 +1339,7 @@
                                 summary: item.descricao || jiraItem.summary || 'Sem descrição',
                                 descricao: item.descricao || jiraItem.summary || 'Sem descrição',
                                 status: item.status || jiraItem.status || 'Aberto',
+                                setor: item.setor || jiraItem.setor || 'Geral',
                                 reporter: solicitante,
                                 atendente: solicitante,
                                 created_date: item.data || jiraItem.created_date || '',
@@ -1297,6 +1359,7 @@
                         sessionStorage.setItem('cache_reportes_colaboradores_time', Date.now().toString());
 
                         popularFiltroSolicitantes(reportesData);
+                        popularFiltroSetores(reportesData);
                         onFilterChange();
                         btn.disabled = false;
                         txt.innerText = 'Atualizar Dados';
