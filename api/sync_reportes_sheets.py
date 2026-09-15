@@ -128,7 +128,7 @@ def conectar_sheets():
         print(f"Aba '{ABA_NOME}' não encontrada. Criando nova aba...")
         aba = planilha.add_worksheet(title=ABA_NOME, rows="500", cols="15")
         aba.append_row(COLUNAS)
-        aba.format("A1:K1", {
+        aba.format("A1:L1", {
             "backgroundColor": {"red": 0.172, "green": 0.403, "blue": 0.917}, # Azul #2C67EA
             "horizontalAlignment": "CENTER",
             "textFormat": {
