@@ -1,14 +1,80 @@
 [
   {
+    "issue_key": "SMENTGO-1798",
+    "type": "Problemas Cadastrais",
+    "summary": "Erro na localização das promoções",
+    "status": "Aberto",
+    "reporter": "Estefany Delogo",
+    "created_date": "15/09/2026 08:44",
+    "response_author": "Aberto",
+    "response_date": "",
+    "response_text": "Problemas Cadastrais"
+  },
+  {
+    "issue_key": "SMENTGO-1571",
+    "type": "Problemas Cadastrais",
+    "summary": "Opção de conexão com maquininha não aparece",
+    "status": "Concluído",
+    "reporter": "Davis Marques - Master",
+    "created_date": "25/08/2026 09:29",
+    "response_author": "Sexta-feira 17:40",
+    "response_date": "",
+    "response_text": "Sexta-feira 17:40"
+  },
+  {
+    "issue_key": "SMENTGO-1057",
+    "type": "Contestação de Garantido FE",
+    "summary": "Contestação de Garantido FE",
+    "status": "Concluído",
+    "reporter": "Davis Marques - Master",
+    "created_date": "14/07/2026 10:46",
+    "response_author": "Mostrar 3 mais",
+    "response_date": "",
+    "response_text": "Sexta-feira 17:29"
+  },
+  {
+    "issue_key": "SMENTGO-1478",
+    "type": "Contestação de Garantido FE",
+    "summary": "Contestação de Garantido FE",
+    "status": "Concluído",
+    "reporter": "Estefany Delogo",
+    "created_date": "17/08/2026 08:34",
+    "response_author": "Mostrar 3 mais",
+    "response_date": "",
+    "response_text": "Sexta-feira 17:29"
+  },
+  {
+    "issue_key": "SMENTGO-1398",
+    "type": "Contestação de Garantido FE",
+    "summary": "Contestação de Garantido FE",
+    "status": "Concluído",
+    "reporter": "Estefany Delogo",
+    "created_date": "10/08/2026 09:27",
+    "response_author": "Mostrar 3 mais",
+    "response_date": "",
+    "response_text": "Sexta-feira 17:29"
+  },
+  {
+    "issue_key": "SMENTGO-1340",
+    "type": "Contestação de Garantido FE",
+    "summary": "Contestação de Garantido FE",
+    "status": "Concluído",
+    "reporter": "Estefany Delogo",
+    "created_date": "04/08/2026 08:21",
+    "response_author": "Estefany Delogo",
+    "response_date": "04/ago/26 08:21",
+    "response_text": "04/ago/26 08:21"
+  },
+  {
     "issue_key": "SMENTGO-1729",
     "type": "Problemas Cadastrais",
     "summary": "Entregador em pausa desde o dia 5.",
-    "status": "Aberto",
+    "status": "Em verificação",
     "reporter": "Davis Marques - Master",
-    "created_date": "Terça-feira 12:20",
+    "created_date": "08/09/2026 12:20",
     "response_author": "Ruan Dalsom - Master",
-    "response_date": "Hoje 17:08",
-    "response_text": "Hoje 17:08"
+    "response_date": "Sexta-feira 17:08",
+    "response_text": "Sexta-feira 17:08"
   },
   {
     "issue_key": "SMENTGO-1769",
@@ -16,7 +82,7 @@
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "created_date": "10/09/2026 14:46",
+    "created_date": "Quinta-feira 14:46",
     "response_author": "Aberto",
     "response_date": "",
     "response_text": "Contestação de Promoção"
@@ -27,7 +93,7 @@
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "created_date": "10/09/2026 14:34",
+    "created_date": "Quinta-feira 14:34",
     "response_author": "Aberto",
     "response_date": "",
     "response_text": "Contestação de Promoção"
@@ -38,10 +104,10 @@
     "summary": "Controle de Promo | EntreGô - Looker Studio",
     "status": "Aberto",
     "reporter": "Estefany Delogo",
-    "created_date": "10/09/2026 10:53",
+    "created_date": "Quinta-feira 10:53",
     "response_author": "Estefany Delogo",
-    "response_date": "Ontem 10:53",
-    "response_text": "Ontem 10:53"
+    "response_date": "Quinta-feira 10:53",
+    "response_text": "Quinta-feira 10:53"
   },
   {
     "issue_key": "SMENTGO-1751",
@@ -49,7 +115,7 @@
     "summary": "Driver com critérios atingidos não virou ELITE",
     "status": "Aberto",
     "reporter": "Estefany Delogo",
-    "created_date": "10/09/2026 10:07",
+    "created_date": "Quinta-feira 10:07",
     "response_author": "Aberto",
     "response_date": "",
     "response_text": "Reportar Bug na tela do entregador - Programa Elite"
@@ -62,8 +128,8 @@
     "reporter": "Davis Marques - Master",
     "created_date": "29/08/2026 12:47",
     "response_author": "Ruan Dalsom - Master",
-    "response_date": "Segunda-feira 16:37",
-    "response_text": "Segunda-feira 16:37"
+    "response_date": "07/set/26 16:37",
+    "response_text": "07/set/26 16:37"
   },
   {
     "issue_key": "SMENTGO-1736",
@@ -93,7 +159,7 @@
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "created_date": "Terça-feira 18:58",
+    "created_date": "08/09/2026 18:58",
     "response_author": "Aberto",
     "response_date": "",
     "response_text": "Contestação de Promoção"
@@ -104,7 +170,7 @@
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "created_date": "Terça-feira 15:45",
+    "created_date": "08/09/2026 15:45",
     "response_author": "Aberto",
     "response_date": "",
     "response_text": "Contestação de Promoção"
@@ -128,8 +194,8 @@
     "reporter": "Davis Marques - Master",
     "created_date": "27/08/2026 12:00",
     "response_author": "Gabrielle Crixina Teixeira Farias",
-    "response_date": "Domingo 09:21",
-    "response_text": "Domingo 09:21"
+    "response_date": "06/set/26 09:21",
+    "response_text": "06/set/26 09:21"
   },
   {
     "issue_key": "SMENTGO-1629",
@@ -139,8 +205,8 @@
     "reporter": "Davis Marques - Master",
     "created_date": "28/08/2026 12:47",
     "response_author": "Gabrielle Crixina Teixeira Farias",
-    "response_date": "Domingo 09:21",
-    "response_text": "Domingo 09:21"
+    "response_date": "06/set/26 09:21",
+    "response_text": "06/set/26 09:21"
   },
   {
     "issue_key": "SMENTGO-1598",
@@ -150,8 +216,8 @@
     "reporter": "Davis Marques - Master",
     "created_date": "26/08/2026 11:55",
     "response_author": "Gabrielle Crixina Teixeira Farias",
-    "response_date": "Domingo 09:21",
-    "response_text": "Domingo 09:21"
+    "response_date": "06/set/26 09:21",
+    "response_text": "06/set/26 09:21"
   },
   {
     "issue_key": "SMENTGO-1697",
@@ -159,7 +225,7 @@
     "summary": "Contestação de Promoção",
     "status": "Aberto",
     "reporter": "Davis Marques - Master",
-    "created_date": "Sábado 17:29",
+    "created_date": "05/09/2026 17:29",
     "response_author": "Aberto",
     "response_date": "",
     "response_text": "Contestação de Promoção"
@@ -374,17 +440,6 @@
     "response_text": "Gabrielle Crixina Teixeira Farias"
   },
   {
-    "issue_key": "SMENTGO-1571",
-    "type": "Problemas Cadastrais",
-    "summary": "Opção de conexão com maquininha não aparece",
-    "status": "Aberto",
-    "reporter": "Davis Marques - Master",
-    "created_date": "25/08/2026 09:29",
-    "response_author": "Aberto",
-    "response_date": "",
-    "response_text": "Problemas Cadastrais"
-  },
-  {
     "issue_key": "SMENTGO-1597",
     "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
@@ -500,10 +555,10 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "created_date": "11/07/2026 11:31",
-    "response_author": "Mostrar 3 mais",
+    "created_date": "",
+    "response_author": "",
     "response_date": "",
-    "response_text": "12/ago/26 16:54"
+    "response_text": ""
   },
   {
     "issue_key": "SMENTGO-1442",
@@ -511,10 +566,10 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "created_date": "13/08/2026 12:04",
-    "response_author": "Gabrielle Crixina Teixeira Farias",
-    "response_date": "14/ago/26 08:59",
-    "response_text": "14/ago/26 08:59"
+    "created_date": "",
+    "response_author": "",
+    "response_date": "",
+    "response_text": ""
   },
   {
     "issue_key": "SMENTGO-1441",
@@ -522,10 +577,10 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Estefany Delogo",
-    "created_date": "13/08/2026 11:18",
-    "response_author": "Gabrielle Crixina Teixeira Farias",
-    "response_date": "14/ago/26 08:59",
-    "response_text": "14/ago/26 08:59"
+    "created_date": "",
+    "response_author": "",
+    "response_date": "",
+    "response_text": ""
   },
   {
     "issue_key": "SMENTGO-1437",
@@ -533,10 +588,10 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "created_date": "12/08/2026 17:24",
-    "response_author": "Mostrar 5 mais",
+    "created_date": "",
+    "response_author": "",
     "response_date": "",
-    "response_text": "14/ago/26 09:05"
+    "response_text": ""
   },
   {
     "issue_key": "SMENTGO-1431",
@@ -544,10 +599,10 @@
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "created_date": "12/08/2026 10:54",
-    "response_author": "Mostrar 3 mais",
+    "created_date": "",
+    "response_author": "",
     "response_date": "",
-    "response_text": "12/ago/26 17:00"
+    "response_text": ""
   },
   {
     "issue_key": "SMENTGO-1424",
@@ -594,44 +649,11 @@
     "response_text": ""
   },
   {
-    "issue_key": "SMENTGO-1340",
-    "type": "Contestação de Garantido FE",
-    "summary": "Contestação de Garantido FE",
-    "status": "Em verificação",
-    "reporter": "Estefany Delogo",
-    "created_date": "",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
     "issue_key": "SMENTGO-1368",
     "type": "Contestação de Promoção",
     "summary": "Contestação de Promoção",
     "status": "Concluído",
     "reporter": "Davis Marques - Master",
-    "created_date": "",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1398",
-    "type": "Contestação de Garantido FE",
-    "summary": "Contestação de Garantido FE",
-    "status": "Em verificação",
-    "reporter": "Estefany Delogo",
-    "created_date": "",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1478",
-    "type": "Contestação de Garantido FE",
-    "summary": "Contestação de Garantido FE",
-    "status": "Em verificação",
-    "reporter": "Estefany Delogo",
     "created_date": "",
     "response_author": "",
     "response_date": "",
@@ -653,17 +675,6 @@
     "type": "Dúvidas Gerais",
     "summary": "Dedicado abrindo apenas ás 11h no agendamento",
     "status": "Aberto",
-    "reporter": "Davis Marques - Master",
-    "created_date": "",
-    "response_author": "",
-    "response_date": "",
-    "response_text": ""
-  },
-  {
-    "issue_key": "SMENTGO-1057",
-    "type": "Contestação de Garantido FE",
-    "summary": "Contestação de Garantido FE",
-    "status": "Em verificação",
     "reporter": "Davis Marques - Master",
     "created_date": "",
     "response_author": "",

@@ -1209,12 +1209,12 @@
             btn.disabled = true;
             txt.innerHTML = '<span class="spinner"></span> Carregando...';
 
-            // Cache de 3 minutos para economizar Egress do Supabase
+            // Cache de 30 segundos para manter a interface ultra veloz sem travar atualizações
             const cachedData = sessionStorage.getItem('cache_reportes_colaboradores');
             const cachedTime = sessionStorage.getItem('cache_reportes_colaboradores_time');
             const now = Date.now();
 
-            if (!forceRefresh && cachedData && cachedTime && (now - parseInt(cachedTime) < 3 * 60 * 1000)) {
+            if (!forceRefresh && cachedData && cachedTime && (now - parseInt(cachedTime) < 30 * 1000)) {
                 try {
                     reportesData = JSON.parse(cachedData);
                     popularFiltroSolicitantes(reportesData);
@@ -1250,10 +1250,11 @@
                             const ticketKey = (item.ticket || '').trim();
                             const jiraItem = jiraMap[ticketKey] || {};
 
-                            // Solicitante da Planilha (coluna 'atendente' no Supabase)
-                            const solicitante = (item.atendente && item.atendente.trim()) ? item.atendente.trim() : 'Não Identificado';
+                            // Solicitante da Planilha (exclusivo da coluna 'atendente' da planilha no Supabase)
+                            const rawAtendente = (item.atendente && item.atendente.trim()) ? item.atendente.trim() : '';
+                            const solicitante = (rawAtendente && rawAtendente !== 'Não Identificado') ? rawAtendente : 'Não informado';
 
-                            // Atendente Suporte do Jira (100% do Webscraping Jira)
+                            // Atendente Suporte / Criador no Jira (100% do Webscraping Jira)
                             let suporteJira = jiraItem.reporter || jiraItem.response_author || '';
                             if (!suporteJira || suporteJira === 'Aberto' || suporteJira.startsWith('Mostrar ')) {
                                 if (jiraItem.response_author && !jiraItem.response_author.startsWith('Mostrar ') && jiraItem.response_author !== 'Aberto') {

@@ -141,7 +141,7 @@ def sincronizar_jira_com_supabase():
             "prazo": prazo,
             "status": status,
             "dados": dados_resp,
-            "atendente": atendente_jira, # Solicitante fallback
+            "atendente": "", # Solicitante da planilha (apenas preenchido via Google Sheets)
             "obs": ""
         })
 
@@ -185,9 +185,7 @@ def sincronizar_jira_com_supabase():
                     "plataforma": item["plataforma"],
                     "sla": item["sla"]
                 }
-                # Atualiza apenas se na tabela do Supabase estiver vazio/null
-                if not row_info["atendente"]:
-                    update_fields["atendente"] = item["atendente"]
+                # Preenche a data se estiver vazia no Supabase
                 if not row_info["data"]:
                     update_fields["data"] = item["data"]
 
