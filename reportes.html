@@ -1215,6 +1215,19 @@
             }
 
             try {
+                // 0. Carregar mapa do Jira Webscraping (para obter o Atendente/Reporter oficial do Jira)
+                let jiraMap = {};
+                try {
+                    const jResp = await fetch('jira_reports_data.json?cache=' + Date.now());
+                    if (jResp.ok) {
+                        const jList = await jResp.json();
+                        jList.forEach(j => {
+                            const key = (j.issue_key || j.ticket || '').trim();
+                            if (key) jiraMap[key] = j;
+                        });
+                    }
+                } catch (e) {}
+
                 // 1. Tentar buscar da tabela 'reportes_colaboradores' no Supabase
                 if (typeof supabaseClient !== 'undefined') {
                     const { data, error } = await supabaseClient
@@ -1223,39 +1236,41 @@
 
                     if (!error && data && data.length > 0) {
                         reportesData = data.map(item => {
-                            let respTxt = item.dados || '';
-                            let respAuthor = 'Atendente do Suporte (Jira)';
+                            const ticketKey = (item.ticket || '').trim();
+                            const jiraItem = jiraMap[ticketKey] || {};
 
-                            if (respTxt && respTxt.includes(':')) {
-                                const firstColonIdx = respTxt.indexOf(':');
-                                const candAuthor = respTxt.substring(0, firstColonIdx).trim();
-                                const candMsg = respTxt.substring(firstColonIdx + 1).trim();
-                                if (candAuthor.length < 50 && !candAuthor.includes('\n')) {
-                                    respAuthor = candAuthor;
-                                    respTxt = candMsg;
-                                }
+                            // Solicitante da Planilha (coluna 'atendente' no Supabase)
+                            const solicitante = item.atendente || 'Não Identificado';
+
+                            // Atendente Suporte do Jira (do webscraping)
+                            let suporteJira = jiraItem.reporter || jiraItem.response_author || 'Suporte Jira';
+                            if (!suporteJira || suporteJira === 'Aberto' || suporteJira.startsWith('Mostrar ')) {
+                                suporteJira = (jiraItem.response_author && !jiraItem.response_author.startsWith('Mostrar ') && jiraItem.response_author !== 'Aberto') 
+                                    ? jiraItem.response_author 
+                                    : 'Suporte Jira';
                             }
 
+                            let respTxt = jiraItem.response_text || item.dados || '';
                             if (!respTxt || respTxt.toLowerCase().startsWith('abrir ') || /^[0-9a-f-]{30,}\.(jpg|png|jpeg)$/i.test(respTxt.trim()) || respTxt.trim().endsWith('.jpg')) {
                                 respTxt = 'Nenhuma observação ou resposta manuscrita encontrada até o momento para este chamado.';
                             }
 
                             return {
-                                issue_key: item.ticket || 'N/A',
-                                ticket: item.ticket || 'N/A',
-                                type: item.categoria || 'Geral',
-                                categoria: item.categoria || 'Geral',
-                                summary: item.descricao || 'Sem descrição',
-                                descricao: item.descricao || 'Sem descrição',
-                                status: item.status || 'Aberto',
-                                reporter: item.atendente || 'Não Identificado',
-                                atendente: item.atendente || 'Não Identificado',
-                                created_date: item.data || '',
-                                data: item.data || '',
-                                response_author: respAuthor,
+                                issue_key: ticketKey || 'N/A',
+                                ticket: ticketKey || 'N/A',
+                                type: item.categoria || jiraItem.type || 'Geral',
+                                categoria: item.categoria || jiraItem.type || 'Geral',
+                                summary: item.descricao || jiraItem.summary || 'Sem descrição',
+                                descricao: item.descricao || jiraItem.summary || 'Sem descrição',
+                                status: item.status || jiraItem.status || 'Aberto',
+                                reporter: solicitante,
+                                atendente: solicitante,
+                                created_date: item.data || jiraItem.created_date || '',
+                                data: item.data || jiraItem.created_date || '',
+                                response_author: suporteJira,
                                 response_text: respTxt,
                                 dados: respTxt,
-                                response_date: item.data || '',
+                                response_date: jiraItem.response_date || item.data || '',
                                 prazo: item.prazo || 'No prazo',
                                 sla: item.sla || '2 dias',
                                 plataforma: item.plataforma || 'EntreGô / Jira'
