@@ -1331,15 +1331,35 @@
                                 respTxt = 'Nenhuma observação ou resposta registrada no Jira até o momento.';
                             }
 
+                            const cat = item.categoria || jiraItem.type || 'Geral';
+                            const desc = item.descricao || jiraItem.summary || 'Sem descrição';
+                            let setorResolved = (item.setor && item.setor.trim() !== 'Geral') ? item.setor.trim() : (jiraItem.setor && jiraItem.setor.trim() !== 'Geral') ? jiraItem.setor.trim() : '';
+
+                            if (!setorResolved) {
+                                const cLower = cat.toLowerCase();
+                                const dLower = desc.toLowerCase();
+                                if (cLower.includes('cadastrais') || cLower.includes('cadastro') || dLower.includes('modal') || dLower.includes('bug')) {
+                                    setorResolved = 'Cadastro';
+                                } else if (cLower.includes('promoção') || cLower.includes('promocao') || dLower.includes('promo')) {
+                                    setorResolved = 'Promoções';
+                                } else if (cLower.includes('garantido') || cLower.includes('fe')) {
+                                    setorResolved = 'Garantido';
+                                } else if (cLower.includes('dúvidas') || cLower.includes('duvidas') || cLower.includes('gerais')) {
+                                    setorResolved = 'Suporte';
+                                } else {
+                                    setorResolved = 'Operação';
+                                }
+                            }
+
                             return {
                                 issue_key: ticketKey || 'N/A',
                                 ticket: ticketKey || 'N/A',
-                                type: item.categoria || jiraItem.type || 'Geral',
-                                categoria: item.categoria || jiraItem.type || 'Geral',
-                                summary: item.descricao || jiraItem.summary || 'Sem descrição',
-                                descricao: item.descricao || jiraItem.summary || 'Sem descrição',
+                                type: cat,
+                                categoria: cat,
+                                summary: desc,
+                                descricao: desc,
                                 status: item.status || jiraItem.status || 'Aberto',
-                                setor: item.setor || jiraItem.setor || 'Geral',
+                                setor: setorResolved,
                                 reporter: solicitante,
                                 atendente: solicitante,
                                 created_date: item.data || jiraItem.created_date || '',

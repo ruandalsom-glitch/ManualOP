@@ -139,6 +139,21 @@ def conectar_sheets():
 
     return aba
 
+def map_setor_by_categoria(categoria_str, summary_str=""):
+    cat = (categoria_str or "").strip().lower()
+    sum_txt = (summary_str or "").strip().lower()
+    
+    if "cadastrais" in cat or "cadastro" in cat or "modal" in sum_txt or "bug" in sum_txt:
+        return "Cadastro"
+    if "promoção" in cat or "promocao" in cat or "promo" in sum_txt:
+        return "Promoções"
+    if "garantido" in cat or "fe" in cat:
+        return "Garantido"
+    if "dúvidas" in cat or "duvidas" in cat or "gerais" in cat:
+        return "Suporte"
+        
+    return "Operação"
+
 def sincronizar_jira_com_sheets():
     print("=" * 60)
     print("📊 Sincronizando Chamados do Jira com a planilha ReportesColaboradores...")
@@ -192,7 +207,8 @@ def sincronizar_jira_com_sheets():
         plataforma = "EntreGô / Jira"
         sla = "2 dias"
         prazo = calcular_prazo(data_reporte, status, sla_dias=2)
-        setor = item.get("setor", "Geral")
+        setor_default = map_setor_by_categoria(categoria, descricao)
+        setor = item.get("setor") or setor_default
         obs = ""
 
         linha_desejada = [
@@ -216,7 +232,8 @@ def sincronizar_jira_com_sheets():
             row_existente = todas_linhas[row_idx - 1]
             plataforma_exist = row_existente[4] if len(row_existente) > 4 and row_existente[4] else plataforma
             sla_exist = row_existente[5] if len(row_existente) > 5 and row_existente[5] else sla
-            setor_exist = row_existente[8] if len(row_existente) > 8 and row_existente[8] else setor
+            raw_setor_exist = row_existente[8] if len(row_existente) > 8 else ""
+            setor_exist = raw_setor_exist if raw_setor_exist and raw_setor_exist != "Geral" else setor_default
             dados_exist = row_existente[9] if len(row_existente) > 9 else dados_resp
             atendente_exist = row_existente[10] if len(row_existente) > 10 else atendente
             obs_exist = row_existente[11] if len(row_existente) > 11 else obs

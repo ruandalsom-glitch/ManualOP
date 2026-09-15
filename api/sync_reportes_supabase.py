@@ -90,6 +90,21 @@ def calcular_prazo(created_date_str, status_str, sla_dias=2):
     else:
         return "No prazo"
 
+def map_setor_by_categoria(categoria_str, summary_str=""):
+    cat = (categoria_str or "").strip().lower()
+    sum_txt = (summary_str or "").strip().lower()
+    
+    if "cadastrais" in cat or "cadastro" in cat or "modal" in sum_txt or "bug" in sum_txt:
+        return "Cadastro"
+    if "promoção" in cat or "promocao" in cat or "promo" in sum_txt:
+        return "Promoções"
+    if "garantido" in cat or "fe" in cat:
+        return "Garantido"
+    if "dúvidas" in cat or "duvidas" in cat or "gerais" in cat:
+        return "Suporte"
+        
+    return "Operação"
+
 def sincronizar_jira_com_supabase():
     print("=" * 60)
     print("⚡ Sincronizando Webscraping do Jira e Google Sheets com a tabela 'reportes_colaboradores' no Supabase...")
@@ -115,15 +130,20 @@ def sincronizar_jira_com_supabase():
                 for r in rows[1:]:
                     t_key = r[3].strip() if len(r) > 3 else ""
                     if t_key:
+                        cat_val = r[1] if len(r) > 1 else ""
+                        desc_val = r[2] if len(r) > 2 else ""
+                        setor_raw = r[8] if len(r) > 8 and r[8].strip() else ""
+                        setor_val = setor_raw if setor_raw and setor_raw != "Geral" else map_setor_by_categoria(cat_val, desc_val)
+
                         sheets_data_map[t_key] = {
                             "data": r[0] if len(r) > 0 else "",
-                            "categoria": r[1] if len(r) > 1 else "",
-                            "descricao": r[2] if len(r) > 2 else "",
+                            "categoria": cat_val,
+                            "descricao": desc_val,
                             "plataforma": r[4] if len(r) > 4 else "",
                             "sla": r[5] if len(r) > 5 else "",
                             "prazo": r[6] if len(r) > 6 else "",
                             "status": r[7] if len(r) > 7 else "",
-                            "setor": r[8] if len(r) > 8 and r[8].strip() else "Geral",
+                            "setor": setor_val,
                             "dados": r[9] if len(r) > 9 else "",
                             "atendente": r[10] if len(r) > 10 else "",
                             "obs": r[11] if len(r) > 11 else ""
