@@ -1191,6 +1191,17 @@
             renderTabela();
         }
 
+        function isPersonName(str) {
+            if (!str || typeof str !== 'string') return false;
+            const s = str.trim();
+            if (!s || s.length < 2 || s.length > 50) return false;
+            if (/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i.test(s)) return false;
+            if (/\d{4,}/.test(s)) return false;
+            const lower = s.toLowerCase();
+            if (lower.startsWith('sem ') || lower.startsWith('abrir ') || lower.includes('solução') || lower.includes('solucao') || lower.includes('.jpg') || lower.includes('.png')) return false;
+            return /^[a-zA-ZÀ-ÿ\s\-]+$/.test(s);
+        }
+
         async function carregarDadosReais(forceRefresh = false) {
             const btn = document.getElementById('btnSync');
             const txt = document.getElementById('btnSyncText');
@@ -1242,16 +1253,36 @@
                             // Solicitante da Planilha (coluna 'atendente' no Supabase)
                             const solicitante = item.atendente || 'Não Identificado';
 
-                            // Atendente Suporte do Jira (do webscraping)
-                            let suporteJira = jiraItem.reporter || jiraItem.response_author || 'Suporte Jira';
-                            if (!suporteJira || suporteJira === 'Aberto' || suporteJira.startsWith('Mostrar ')) {
+                            // 1. Tentar obter Atendente Suporte do Jira pelo webscraping
+                            let suporteJira = jiraItem.reporter || jiraItem.response_author || '';
+                            if (suporteJira === 'Aberto' || suporteJira.startsWith('Mostrar ')) {
                                 suporteJira = (jiraItem.response_author && !jiraItem.response_author.startsWith('Mostrar ') && jiraItem.response_author !== 'Aberto') 
                                     ? jiraItem.response_author 
-                                    : 'Suporte Jira';
+                                    : '';
                             }
 
-                            let respTxt = jiraItem.response_text || item.dados || '';
-                            if (!respTxt || respTxt.toLowerCase().startsWith('abrir ') || /^[0-9a-f-]{30,}\.(jpg|png|jpeg)$/i.test(respTxt.trim()) || respTxt.trim().endsWith('.jpg')) {
+                            // 2. Se o webscraping não trouxe atendente (ex: ticket recente na planilha), checar se item.dados contém um nome válido
+                            let dadosIsAuthorName = false;
+                            let rawDados = (item.dados || '').trim();
+
+                            if (!suporteJira || suporteJira === 'Não Identificado') {
+                                if (isPersonName(rawDados)) {
+                                    suporteJira = rawDados;
+                                    dadosIsAuthorName = true;
+                                } else {
+                                    suporteJira = 'Suporte Jira';
+                                }
+                            }
+
+                            // 3. Definir texto da resposta/observação
+                            let respTxt = '';
+                            if (jiraItem.response_text) {
+                                respTxt = jiraItem.response_text;
+                            } else if (!dadosIsAuthorName && rawDados) {
+                                respTxt = rawDados;
+                            }
+
+                            if (!respTxt || respTxt.toLowerCase().startsWith('abrir ') || /^[0-9a-f-]{30,}\.(jpg|png|jpeg)$/i.test(respTxt) || respTxt.endsWith('.jpg') || isPersonName(respTxt)) {
                                 respTxt = 'Nenhuma observação ou resposta manuscrita encontrada até o momento para este chamado.';
                             }
 
