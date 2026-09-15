@@ -118,19 +118,15 @@ def map_and_filter_type(type_raw, summary):
 
     return None
 
-def is_valid_comment_text(text):
-    if not text:
+def is_author_name(s):
+    if not s or len(s) < 2 or len(s) > 50:
         return False
-    t = text.strip().lower()
-    if t.startswith("abrir "):
+    if re.search(r'\d', s):
         return False
-    if re.search(r'\.(jpg|png|jpeg|gif|webp|pdf|mp4|zip|rar)$', t):
+    s_lower = s.lower()
+    if s_lower in ['resposta automática', 'atividade', 'ocultar informações', 'mostrar informações']:
         return False
-    if re.search(r'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}', t):
-        return False
-    if t in ["adicionar comentário", "status", "atividade", "resposta automática", "notificações desativadas", "tipo de solicitação", "compartilhada com", "criador"]:
-        return False
-    if "o status da sua" in t or "criou essa solicitação" in t or "voltar para central" in t:
+    if any(w in s_lower for w in ['status', 'alterado', 'solicitação', 'feira', 'hoje', 'ontem', 'horas', 'minutos', 'jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez']):
         return False
     return True
 
@@ -163,25 +159,51 @@ async def fetch_issue_response(page, issue_key):
         if "Atividade" in lines:
             idx = lines.index("Atividade")
             sub_lines = lines[idx + 1:]
-            
-            for i in range(len(sub_lines) - 1):
-                author = sub_lines[i]
-                if author == "Resposta automática" or "Adicionar comentário" in author or author in ["Status", "Notificações desativadas"]:
-                    continue
 
-                date_candidate = sub_lines[i + 1] if i + 1 < len(sub_lines) else ""
-                
-                # Procura o primeiro comentário de texto válido
-                for j in range(i + 1, min(i + 5, len(sub_lines))):
-                    cand = sub_lines[j]
-                    if is_valid_comment_text(cand):
-                        response_author = author
-                        response_date = date_candidate if ("às" in date_candidate or ":" in date_candidate or "Ontem" in date_candidate or "Hoje" in date_candidate or re.search(r'\d{2}/\w{3}/\d{2}', date_candidate)) else ""
+            # Isola exclusivamente a subseção de Atividade até os seletores laterais
+            stop_markers = [
+                "Status", "Tipo de solicitação", "Compartilhada com", 
+                "Apps", "Desenvolvido por", "Notificações desativadas",
+                "Adicionar comentário"
+            ]
+
+            activity_lines = []
+            for line in sub_lines:
+                if line in stop_markers or any(line.startswith(sm) for sm in ["Status", "Tipo de solicitação", "Compartilhada com", "Desenvolvido por"]):
+                    break
+                activity_lines.append(line)
+
+            # 1. Procura primeiro por comentário de atendente humano (ex: Bruna Alves Da Silva)
+            human_found = False
+            for i in range(len(activity_lines)):
+                cand_author = activity_lines[i]
+                if is_author_name(cand_author):
+                    response_author = cand_author
+                    idx_msg = i + 1
+                    if i + 1 < len(activity_lines) and (re.search(r'\d', activity_lines[i+1]) or any(kw in activity_lines[i+1].lower() for kw in ['ontem', 'hoje', 'feira'])):
+                        response_date = activity_lines[i+1]
+                        idx_msg = i + 2
+                    
+                    msg_parts = []
+                    for j in range(idx_msg, len(activity_lines)):
+                        l = activity_lines[j]
+                        if is_author_name(l) or l == 'Resposta automática' or 'status da sua' in l.lower():
+                            break
+                        msg_parts.append(l)
+                    
+                    response_text = ' '.join(msg_parts)
+                    human_found = True
+                    break
+
+            # 2. Se não houver comentário humano, verifica se há notificação automática de alteração de status
+            if not human_found:
+                for i in range(len(activity_lines)):
+                    cand = activity_lines[i]
+                    if cand.startswith("O status da sua solicitação foi alterado para"):
+                        response_author = "Resposta automática"
+                        response_date = activity_lines[i - 1] if i > 0 and re.search(r'\d', activity_lines[i-1]) else ""
                         response_text = cand
                         break
-
-                if response_text:
-                    break
 
         return {
             "created_date": created_date,

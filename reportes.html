@@ -1264,11 +1264,10 @@
                                 }
                             }
 
-                            // Texto da resposta/observação
-                            let rawDados = (item.dados || '').trim();
-                            let respTxt = jiraItem.response_text || rawDados || '';
+                            // Texto da resposta/observação (100% vindo das Atividades do Jira)
+                            let respTxt = (jiraItem.response_text || '').trim();
                             if (!respTxt || respTxt.toLowerCase().startsWith('abrir ') || /^[0-9a-f-]{30,}\.(jpg|png|jpeg)$/i.test(respTxt) || respTxt.endsWith('.jpg')) {
-                                respTxt = 'Nenhuma observação ou resposta manuscrita encontrada até o momento para este chamado.';
+                                respTxt = 'Nenhuma observação ou resposta registrada no Jira até o momento.';
                             }
 
                             return {
