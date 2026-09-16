@@ -133,96 +133,101 @@ def is_author_name(s):
     return True
 
 async def fetch_issue_response(page, issue_key):
-    """Navega até o detalhe do chamado e extrai data de criação, solicitante e última resposta/atividade humana"""
+    """Navega até o detalhe do chamado e extrai a página INTEIRA: formulário, criador, atendente e 100% da seção de Atividades"""
     url = f"https://ifood.atlassian.net/helpcenter/entrego/portal/4623/{issue_key}"
     try:
-        await page.goto(url, wait_until="domcontentloaded", timeout=12000)
-        await page.wait_for_timeout(1800)
+        await page.goto(url, wait_until="domcontentloaded", timeout=15000)
+        await page.wait_for_timeout(2000)
+
+        # Clica em 'Expandir formulário' se presente para carregar todos os campos do formulário
+        exp_btn = await page.query_selector("button:has-text('Expandir formulário'), a:has-text('Expandir formulário')")
+        if exp_btn:
+            try:
+                await exp_btn.click()
+                await page.wait_for_timeout(1000)
+            except Exception:
+                pass
 
         content = await page.inner_text("body")
         lines = [l.strip() for l in content.split('\n') if l.strip()]
 
-        response_author = ""
-        response_date = ""
-        response_text = ""
-        created_date = ""
         reporter_found = ""
+        created_date = ""
+        form_lines = []
+        activity_lines = []
+        in_activity = False
+
+        stop_words = ["Desenvolvido por", "Apps", "Notificações desativadas", "Adicionar comentário", "Powered by Jira"]
 
         for line in lines:
             if "criou essa solicitação em" in line:
                 parts = line.split("criou essa solicitação em")
                 reporter_found = parts[0].strip()
                 created_date = parse_created_date(parts[1].strip())
-                break
-            elif "Solicitado em" in line:
-                created_date = parse_created_date(line)
-                break
+                continue
+            elif "Solicitado em" in line and not created_date:
+                created_date = parse_created_date(line.replace("Solicitado em", "").strip())
+                continue
 
-        if "Atividade" in lines:
-            idx = lines.index("Atividade")
-            sub_lines = lines[idx + 1:]
+            if line.startswith("Skip to:") or line.startswith("Portal de Chamados"):
+                continue
+            if line in ["Ocultar informações", "Ações"] or line.startswith("Expandir formulário") or line.startswith("Recolher formulário"):
+                continue
 
-            stop_markers = [
-                "Status", "Tipo de solicitação", "Compartilhada com", 
-                "Apps", "Desenvolvido por", "Notificações desativadas",
-                "Adicionar comentário"
-            ]
+            if line == "Atividade":
+                in_activity = True
+                continue
 
-            activity_lines = []
-            for line in sub_lines:
-                if line in stop_markers or any(line.startswith(sm) for sm in ["Status", "Tipo de solicitação", "Compartilhada com", "Desenvolvido por"]):
+            if in_activity:
+                if any(sw in line for sw in stop_words):
                     break
                 activity_lines.append(line)
+            else:
+                form_lines.append(line)
 
-            human_found = False
-            for i, line in enumerate(activity_lines):
-                # 1. Combinação Nome do Atendente + Data/Hora (ex: "Gabrielle Crixina Teixeira Farias 14/ago/26 08:59")
-                m_comb = re.search(r'^([A-Za-zÀ-ÿ\s\.\-\']+)\s+(\d{1,2}/[a-zA-Z0-9/]+(?:\s+\d{1,2}:\d{2})?)$', line)
-                if m_comb and is_author_name(m_comb.group(1).strip()):
-                    response_author = m_comb.group(1).strip()
-                    response_date = m_comb.group(2).strip()
-                    msg_parts = [l for l in activity_lines[i+1:] if not l.startswith("O status da sua solicitação")]
-                    response_text = '\n'.join(msg_parts)
-                    human_found = True
-                    break
+        response_author = ""
+        response_date = ""
 
-                # 2. Nome do Atendente em linha separada
-                if is_author_name(line):
-                    response_author = line
-                    idx_msg = i + 1
-                    if i + 1 < len(activity_lines) and (re.search(r'\d', activity_lines[i+1]) or any(kw in activity_lines[i+1].lower() for kw in ['ontem', 'hoje', 'feira'])):
-                        response_date = activity_lines[i+1]
-                        idx_msg = i + 2
-                    
-                    msg_parts = []
-                    for j in range(idx_msg, len(activity_lines)):
-                        l = activity_lines[j]
-                        if is_author_name(l) or l == 'Resposta automática' or 'status da sua' in l.lower():
-                            break
-                        msg_parts.append(l)
-                    
-                    response_text = '\n'.join(msg_parts)
-                    human_found = True
-                    break
+        # Identifica o atendente e data/hora da resposta
+        for i, l in enumerate(activity_lines):
+            m_comb = re.search(r'^([A-Za-zÀ-ÿ\s\.\-\']+)\s+(\d{1,2}/[a-zA-Z0-9/]+(?:\s+\d{1,2}:\d{2})?)$', l)
+            if m_comb and is_author_name(m_comb.group(1).strip()):
+                response_author = m_comb.group(1).strip()
+                response_date = m_comb.group(2).strip()
+                break
+            elif is_author_name(l) and not response_author:
+                response_author = l
+                if i + 1 < len(activity_lines) and (re.search(r'\d', activity_lines[i+1]) or any(kw in activity_lines[i+1].lower() for kw in ['ontem', 'hoje', 'feira'])):
+                    response_date = activity_lines[i+1]
+                break
 
-            if not human_found:
-                for i in range(len(activity_lines)):
-                    cand = activity_lines[i]
-                    if cand.startswith("O status da sua solicitação foi alterado para"):
-                        response_author = "Resposta automática"
-                        response_date = activity_lines[i - 1] if i > 0 and re.search(r'\d', activity_lines[i-1]) else ""
-                        response_text = cand
-                        break
+        full_activity_text = "\n".join(activity_lines).strip()
+        full_form_text = "\n".join(form_lines).strip()
+
+        if full_form_text and full_activity_text:
+            full_page_text = full_form_text + "\n\n" + "="*40 + "\nATIVIDADE DO CHAMADO\n" + "="*40 + "\n\n" + full_activity_text
+        elif full_activity_text:
+            full_page_text = full_activity_text
+        else:
+            full_page_text = full_form_text
 
         return {
             "created_date": created_date,
             "reporter": reporter_found,
-            "response_author": response_author,
+            "form_content": full_form_text,
+            "response_author": response_author or "Atendente Jira",
             "response_date": response_date,
-            "response_text": response_text
+            "response_text": full_page_text
         }
     except Exception as e:
-        return {"created_date": "", "reporter": "", "response_author": "", "response_date": "", "response_text": ""}
+        return {
+            "created_date": "",
+            "reporter": "",
+            "form_content": "",
+            "response_author": "Atendente Jira",
+            "response_date": "",
+            "response_text": ""
+        }
 
 async def sync_jira_reports():
     print("=" * 60)
@@ -330,6 +335,7 @@ async def sync_jira_reports():
                 item["created_date"] = resp_info["created_date"] or item.get("created_date", "")
                 if resp_info["reporter"]:
                     item["reporter"] = resp_info["reporter"]
+                item["form_content"] = resp_info["form_content"]
                 item["response_author"] = resp_info["response_author"]
                 item["response_date"] = resp_info["response_date"]
                 item["response_text"] = resp_info["response_text"]
