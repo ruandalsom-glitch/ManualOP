@@ -191,9 +191,15 @@ def sincronizar_jira_com_supabase():
         sheets_dados = (s_item.get("dados") or "").strip()
         dados_final = jira_resp if jira_resp else sheets_dados
 
-        jira_atendente = (j_item.get("response_author") or j_item.get("reporter") or "").strip()
+        # Atendente / Colaborador oficial VEM DA PLANILHA (coluna Atendente r[10] ou r[9])
         sheets_atendente = (s_item.get("atendente") or "").strip()
-        atendente_final = sheets_atendente if (sheets_atendente and sheets_atendente != "Não Identificado") else jira_atendente
+        if not sheets_atendente or sheets_atendente in ["Não Identificado", "Geral"]:
+            if sheets_dados and not ":" in sheets_dados and len(sheets_dados) < 50:
+                sheets_atendente = sheets_dados
+            else:
+                sheets_atendente = j_item.get("reporter", "")
+
+        atendente_final = sheets_atendente if sheets_atendente else "Não Identificado"
 
         item = {
             "data": j_item.get("created_date") or s_item["data"],

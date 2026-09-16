@@ -1953,14 +1953,13 @@
                             const ticketKey = (item.ticket || '').trim();
                             const jiraItem = jiraMap[ticketKey] || {};
 
-                            // Solicitante (Criador do chamado)
-                            const solicitanteOficial = jiraItem.reporter || (item.obs && item.obs.includes('Silva') ? item.obs.split('\n')[0].trim() : '') || 'Não informado';
+                            // Colaborador Oficial (Vem diretamente da Planilha: Atendente r[10]/r[9] ou Criador r[12])
+                            const colabPlanilha = (item.atendente && item.atendente !== 'Não Identificado' && item.atendente !== 'Geral') 
+                                ? item.atendente.trim() 
+                                : (jiraItem.reporter || 'Não informado');
 
-                            // Atendente Suporte (Agente que respondeu no Jira)
-                            let suporteJira = jiraItem.response_author || (item.atendente && item.atendente !== 'Não Identificado' ? item.atendente.trim() : '') || 'Suporte Jira';
-                            if (!suporteJira || suporteJira === 'Aberto' || suporteJira.startsWith('Mostrar ')) {
-                                suporteJira = 'Suporte Jira';
-                            }
+                            // Agente de Suporte que atendeu no Jira
+                            let suporteJira = (jiraItem.response_author && jiraItem.response_author !== 'Aberto') ? jiraItem.response_author.trim() : 'Suporte Jira';
 
                             // Texto da resposta/observação (Preservando quebras de linha das Atividades do Jira)
                             let respTxt = (jiraItem.response_text || item.dados || '').trim();
@@ -1997,10 +1996,12 @@
                                 descricao: desc,
                                 status: item.status || jiraItem.status || 'Aberto',
                                 setor: setorResolved,
-                                reporter: solicitanteOficial,
-                                solicitante: solicitanteOficial,
-                                atendente: suporteJira,
+                                reporter: colabPlanilha,
+                                solicitante: colabPlanilha,
+                                atendente: colabPlanilha,
+                                colaborador: colabPlanilha,
                                 response_author: suporteJira,
+                                suporte_jira: suporteJira,
                                 response_text: respTxt,
                                 dados: respTxt,
                                 created_date: jiraItem.created_date || item.data || '',
@@ -2031,6 +2032,7 @@
                     const rawData = await response.json();
                     reportesData = rawData.map(j => ({
                         ...j,
+                        colaborador: j.reporter || j.atendente || 'Não informado',
                         data: j.created_date || j.data || 'N/A',
                         created_date: j.created_date || j.data || 'N/A'
                     }));
@@ -2077,10 +2079,10 @@
         function popularDropdownColaboradores(data) {
             const colabSet = new Set();
             data.forEach(item => {
-                const rep = (item.reporter || item.solicitante || '').trim();
-                const aut = (item.response_author || item.atendente || '').trim();
-                if (rep && rep !== 'Não informado' && rep !== 'Não Identificado') colabSet.add(rep);
-                if (aut && aut !== 'Suporte Jira' && aut !== 'Não Identificado' && aut !== 'Aberto') colabSet.add(aut);
+                const c = (item.colaborador || item.atendente || item.solicitante || item.reporter || '').trim();
+                if (c && !['Não informado', 'Não Identificado', 'Suporte Jira', 'Atendente Jira', 'Aberto', 'Geral'].includes(c) && !c.startsWith('Mostrar ')) {
+                    colabSet.add(c);
+                }
             });
 
             const sortedColabs = Array.from(colabSet).sort();
@@ -2119,10 +2121,9 @@
             let colabItems = reportesData;
             if (selectedColab) {
                 colabItems = reportesData.filter(item => {
-                    const rep = (item.reporter || item.solicitante || '').trim().toLowerCase();
-                    const aut = (item.response_author || item.atendente || '').trim().toLowerCase();
+                    const colab = (item.colaborador || item.atendente || item.solicitante || item.reporter || '').trim().toLowerCase();
                     const target = selectedColab.toLowerCase();
-                    return rep === target || aut === target;
+                    return colab === target;
                 });
             }
 
