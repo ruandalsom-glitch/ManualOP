@@ -26,7 +26,7 @@ except ImportError:
 
 sys.stdout.reconfigure(encoding='utf-8')
 
-JIRA_USER = os.environ.get("JIRA_USER", "GestaoOperacao@masterdeliveryexpress.com.br")
+JIRA_USER = os.environ.get("JIRA_USER", "ruan.dalson@entregospsumarezinho.com.br")
 JIRA_PASS = os.environ.get("JIRA_PASS", "Ruankz100%")
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
