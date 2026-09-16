@@ -635,8 +635,128 @@
         }
 
         .modal-response-text {
-            font-size: 14.5px; line-height: 1.6; color: var(--branco);
-            font-weight: 500; white-space: pre-wrap; word-break: break-word;
+            font-size: 14px; line-height: 1.5; color: var(--branco);
+            font-weight: 500; word-break: break-word;
+        }
+
+        /* ===== ESTILOS DE TABELAS E CARDS DO JIRA ===== */
+        .jira-styled-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 10px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(44, 234, 188, 0.2);
+            background: rgba(8, 14, 46, 0.7);
+            font-size: 12.5px;
+        }
+        .jira-styled-table th {
+            background: rgba(44, 234, 188, 0.14);
+            color: var(--menta-viva);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+            padding: 7px 10px;
+            text-align: left;
+            border-bottom: 1px solid rgba(44, 234, 188, 0.2);
+        }
+        .jira-styled-table td {
+            padding: 7px 10px;
+            color: var(--branco);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .jira-styled-table tr:last-child td {
+            border-bottom: none;
+        }
+        .jira-styled-table tr.total-row {
+            background: rgba(44, 234, 188, 0.1);
+            font-weight: 700;
+            color: var(--menta-viva);
+        }
+        .jira-form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 8px;
+            margin: 10px 0 16px 0;
+        }
+        .jira-form-field {
+            background: rgba(13, 22, 68, 0.65);
+            border: 1px solid rgba(44, 234, 188, 0.15);
+            border-radius: 8px;
+            padding: 8px 12px;
+        }
+        .jira-form-label {
+            font-size: 10.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--menta-viva);
+            opacity: 0.9;
+            margin-bottom: 2px;
+            letter-spacing: 0.5px;
+        }
+        .jira-form-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--branco);
+            word-break: break-word;
+        }
+        .callout-card {
+            background: rgba(13, 22, 68, 0.85);
+            border-left: 4px solid var(--menta-viva);
+            padding: 10px 14px;
+            border-radius: 6px;
+            margin: 8px 0;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .callout-card.success {
+            border-left-color: #22c55e;
+            background: rgba(34, 197, 94, 0.12);
+            color: #f0fdf4;
+        }
+        .callout-card.warning {
+            border-left-color: #eab308;
+            background: rgba(234, 179, 8, 0.12);
+            color: #fefce8;
+        }
+        .callout-card.info {
+            border-left-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.12);
+            color: #eff6ff;
+        }
+        .modal-section-title {
+            font-size: 11.5px;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--menta-viva);
+            letter-spacing: 0.8px;
+            margin: 14px 0 6px 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-bottom: 1px solid rgba(44, 234, 188, 0.15);
+            padding-bottom: 4px;
+        }
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .status-pill.success {
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+            border: 1px solid rgba(34, 197, 94, 0.4);
+        }
+        .status-pill.warning {
+            background: rgba(234, 179, 8, 0.2);
+            color: #fde047;
+            border: 1px solid rgba(234, 179, 8, 0.4);
         }
 
         /* Loading Spinner */
@@ -1115,6 +1235,237 @@
             renderPaginaControles();
         }
 
+        function formatJiraContentToHTML(rawText) {
+            if (!rawText) return '<em style="color: var(--azul-gelo); opacity: 0.6;">Sem detalhes adicionais registrados.</em>';
+
+            let lines = rawText.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+
+            const ignoreHeaders = [
+                'a atlassian usa cookies', 'aviso de cookies', 'preferências', 'apenas o necessário',
+                'aceitar tudo', 'ir para o conteúdo principal', '(opens new window)', 'open', 'enviada', 'skip to:'
+            ];
+            lines = lines.filter(l => {
+                const lLower = l.toLowerCase();
+                if (ignoreHeaders.some(ig => lLower.includes(ig))) return false;
+                if (l === '========================================') return false;
+                return true;
+            });
+
+            let html = '';
+            let i = 0;
+            let formFields = [];
+
+            while (i < lines.length) {
+                let line = lines[i];
+
+                if (line.includes('ATIVIDADE DO CHAMADO') || line === 'Atividade') {
+                    if (formFields.length > 0) {
+                        html += renderFormGridHTML(formFields);
+                        formFields = [];
+                    }
+                    html += `<div class="modal-section-title"><i class="fa-solid fa-comments"></i> ATIVIDADE DO CHAMADO</div>`;
+                    i++;
+                    continue;
+                }
+
+                if (line === 'Entregas por dia') {
+                    html += `<div class="modal-section-title"><i class="fa-solid fa-calendar-check"></i> ENTREGAS POR DIA</div>`;
+                    i++;
+                    if (i < lines.length && lines[i] === 'Data') {
+                        let headers = [];
+                        while (i < lines.length && ['Data', 'Total', 'Concluídas', 'Canceladas', 'Rotas'].includes(lines[i])) {
+                            headers.push(lines[i]);
+                            i++;
+                        }
+                        
+                        let rows = [];
+                        let totalRow = null;
+
+                        while (i < lines.length) {
+                            if (lines[i] === 'Total' && i + 4 < lines.length && !isNaN(lines[i+1])) {
+                                totalRow = [lines[i], lines[i+1], lines[i+2], lines[i+3], lines[i+4]];
+                                i += 5;
+                                break;
+                            } else if (/^\d{4}-\d{2}-\d{2}$/.test(lines[i])) {
+                                if (i + 4 < lines.length) {
+                                    rows.push([lines[i], lines[i+1], lines[i+2], lines[i+3], lines[i+4]]);
+                                    i += 5;
+                                } else {
+                                    break;
+                                }
+                            } else {
+                                break;
+                            }
+                        }
+
+                        html += renderStyledTableHTML(headers, rows, totalRow);
+                        continue;
+                    }
+                }
+
+                if (line === 'Resumo') {
+                    html += `<div class="modal-section-title"><i class="fa-solid fa-chart-pie"></i> RESUMO DE MÉTRICAS</div>`;
+                    i++;
+                    if (i < lines.length && lines[i] === 'Métrica') {
+                        i += 2;
+                        let rows = [];
+                        const resumenKeys = ['Total', 'Concluídas', 'Canceladas/retornadas', 'Rotas', 'Dias ativos', 'Veículo', 'Cidade', 'Frota'];
+                        
+                        while (i < lines.length) {
+                            if (resumenKeys.includes(lines[i])) {
+                                let k = lines[i];
+                                let v = (i + 1 < lines.length && !resumenKeys.includes(lines[i+1]) && lines[i+1] !== 'Critérios vs. resultado') ? lines[i+1] : '';
+                                rows.push([k, v]);
+                                i += (v ? 2 : 1);
+                            } else {
+                                break;
+                            }
+                        }
+                        html += renderStyledTableHTML(['Métrica', 'Valor'], rows, null);
+                        continue;
+                    }
+                }
+
+                if (line === 'Critérios vs. resultado') {
+                    html += `<div class="modal-section-title"><i class="fa-solid fa-list-check"></i> CRITÉRIOS VS. RESULTADO</div>`;
+                    i++;
+                    if (i < lines.length && lines[i] === 'Critério') {
+                        i += 4;
+                        let rows = [];
+                        
+                        while (i < lines.length) {
+                            if (lines[i].includes('Conclusão:') || lines[i] === 'Resposta automática' || lines[i].includes('ATIVIDADE')) break;
+                            
+                            if (i + 3 < lines.length) {
+                                rows.push([lines[i], lines[i+1], lines[i+2], lines[i+3]]);
+                                i += 4;
+                            } else {
+                                break;
+                            }
+                        }
+                        html += renderCriteriosTableHTML(['Critério', 'Exigido', 'Atingido', 'Status'], rows);
+                        continue;
+                    }
+                }
+
+                if (line.startsWith('Conclusão:')) {
+                    let txt = line.replace('Conclusão:', '').trim();
+                    let isElegivel = txt.toUpperCase().includes('ELEGÍVEL') && !txt.toUpperCase().includes('INELEGÍVEL');
+                    html += `<div class="callout-card ${isElegivel ? 'success' : 'warning'}"><strong><i class="fa-solid fa-flag-checkered"></i> Conclusão:</strong> ${escapeHtmlStr(txt)}</div>`;
+                    i++;
+                    continue;
+                }
+
+                if (line.startsWith('Próximos passos:')) {
+                    let txt = line.replace('Próximos passos:', '').trim();
+                    html += `<div class="callout-card info"><strong><i class="fa-solid fa-arrow-right-long"></i> Próximos passos:</strong> ${escapeHtmlStr(txt)}</div>`;
+                    i++;
+                    continue;
+                }
+
+                if (line.startsWith('Dados da ação:')) {
+                    html += `<div class="callout-card dark" style="border-left: 4px solid var(--menta-viva); background: rgba(44, 234, 188, 0.08); font-size: 12.5px;">${escapeHtmlStr(line)}</div>`;
+                    i++;
+                    continue;
+                }
+
+                if (isJiraFormLabel(line)) {
+                    let label = line;
+                    i++;
+                    if (i < lines.length && lines[i] === '*') i++;
+                    let val = (i < lines.length && !isJiraFormLabel(lines[i]) && lines[i] !== 'Atividade') ? lines[i] : '';
+                    formFields.push({ label, val });
+                    if (val) i++;
+                    continue;
+                }
+
+                if (line === 'Resposta automática') {
+                    i++;
+                    let dt = (i < lines.length && lines[i].includes('/')) ? lines[i++] : '';
+                    let msg = (i < lines.length) ? lines[i++] : '';
+                    html += `<div style="font-size: 12px; color: var(--azul-gelo); opacity: 0.85; margin: 4px 0;"><i class="fa-solid fa-robot" style="color: var(--menta-viva); margin-right: 4px;"></i><strong>Resposta Automática (${escapeHtmlStr(dt)}):</strong> ${escapeHtmlStr(msg)}</div>`;
+                    continue;
+                }
+
+                html += `<p style="margin: 3px 0; font-size: 13.5px; line-height: 1.4;">${escapeHtmlStr(line)}</p>`;
+                i++;
+            }
+
+            if (formFields.length > 0) {
+                html = renderFormGridHTML(formFields) + html;
+            }
+
+            return html;
+        }
+
+        function isJiraFormLabel(str) {
+            const labels = ['Selecione sua franquia', 'Praça onde a ação foi realizada', 'Data de Início', 'Data de Término', 'Turno', 'Tipo de ação', 'Descreva os critérios da ação', 'Quantidade de drivers', 'Drivers UUID', 'Motivo da Contestação', 'Informe o valor', 'Anexe os prints'];
+            return labels.some(l => str.includes(l));
+        }
+
+        function renderFormGridHTML(fields) {
+            let grid = `<div class="modal-section-title"><i class="fa-solid fa-file-lines"></i> DETALHES DA SOLICITAÇÃO (FORMULÁRIO)</div><div class="jira-form-grid">`;
+            fields.forEach(f => {
+                grid += `<div class="jira-form-field">
+                    <div class="jira-form-label">${escapeHtmlStr(f.label)}</div>
+                    <div class="jira-form-value">${escapeHtmlStr(f.val || 'N/A')}</div>
+                </div>`;
+            });
+            grid += `</div>`;
+            return grid;
+        }
+
+        function renderStyledTableHTML(headers, rows, totalRow) {
+            let t = `<div style="overflow-x: auto;"><table class="jira-styled-table"><thead><tr>`;
+            headers.forEach(h => t += `<th>${escapeHtmlStr(h)}</th>`);
+            t += `</tr></thead><tbody>`;
+            
+            rows.forEach(r => {
+                t += `<tr>`;
+                r.forEach(c => t += `<td>${escapeHtmlStr(c)}</td>`);
+                t += `</tr>`;
+            });
+
+            if (totalRow) {
+                t += `<tr class="total-row">`;
+                totalRow.forEach(c => t += `<td>${escapeHtmlStr(c)}</td>`);
+                t += `</tr>`;
+            }
+
+            t += `</tbody></table></div>`;
+            return t;
+        }
+
+        function renderCriteriosTableHTML(headers, rows) {
+            let t = `<div style="overflow-x: auto;"><table class="jira-styled-table"><thead><tr>`;
+            headers.forEach(h => t += `<th>${escapeHtmlStr(h)}</th>`);
+            t += `</tr></thead><tbody>`;
+            
+            rows.forEach(r => {
+                t += `<tr>`;
+                t += `<td>${escapeHtmlStr(r[0])}</td>`;
+                t += `<td>${escapeHtmlStr(r[1])}</td>`;
+                t += `<td>${escapeHtmlStr(r[2])}</td>`;
+                
+                let st = r[3] || '';
+                let badge = st;
+                if (st.includes('✅')) {
+                    badge = `<span class="status-pill success"><i class="fa-solid fa-check"></i> ELEGÍVEL</span>`;
+                } else if (st.includes('⚠️')) {
+                    badge = `<span class="status-pill warning"><i class="fa-solid fa-triangle-exclamation"></i> ATENÇÃO</span>`;
+                }
+                t += `<td>${badge}</td>`;
+                t += `</tr>`;
+            });
+
+            t += `</tbody></table></div>`;
+            return t;
+        }
+
+        function escapeHtmlStr(str) {
+            return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
         function abrirModal(index) {
             const item = filteredData[index];
             if (!item) return;
@@ -1139,7 +1490,7 @@
                 responseMsg = 'Nenhuma observação ou resposta manuscrita encontrada até o momento para este chamado.';
             }
 
-            document.getElementById('modalResponseText').innerText = responseMsg;
+            document.getElementById('modalResponseText').innerHTML = formatJiraContentToHTML(responseMsg);
 
             document.getElementById('responseModal').classList.add('active');
         }
@@ -1395,6 +1746,8 @@
                                 response_author: suporteJira,
                                 response_text: respTxt,
                                 dados: respTxt,
+                                created_date: jiraItem.created_date || item.data || '',
+                                data: jiraItem.created_date || item.data || '',
                                 response_date: jiraItem.response_date || item.data || '',
                                 prazo: item.prazo || 'No prazo',
                                 sla: item.sla || '2 dias',
@@ -1417,7 +1770,12 @@
                 // 2. Fallback para arquivo JSON se a tabela do Supabase estiver vazia ou offline
                 const response = await fetch('jira_reports_data.json?cache=' + Date.now());
                 if (response.ok) {
-                    reportesData = await response.json();
+                    const rawData = await response.json();
+                    reportesData = rawData.map(j => ({
+                        ...j,
+                        data: j.created_date || j.data || 'N/A',
+                        created_date: j.created_date || j.data || 'N/A'
+                    }));
                     popularFiltroSolicitantes(reportesData);
                 }
             } catch (e) {
