@@ -1163,6 +1163,10 @@
                             <span class="dropdown-item-title">Cadastro</span>
                             <span class="dropdown-item-desc">Cadastro e status dos entregadores</span>
                         </a>
+                        <a href="reportes.html" class="dropdown-item-rich" id="menuReportesOperacaoLink">
+                            <span class="dropdown-item-title">Reportes / Chamados <i class="fas fa-external-link-alt" style="font-size:10px;"></i></span>
+                            <span class="dropdown-item-desc">Acompanhamento e suporte dos chamados da operação</span>
+                        </a>
                     </div>
                 </li>
 
@@ -1193,6 +1197,10 @@
                 <li class="menu-item-dropdown">
                     <a href="javascript:void(0)" class="dropdown-trigger">Gestão <span class="arrow-icon">▼</span></a>
                     <div class="dropdown-menu-rich">
+                        <a href="reportes.html" class="dropdown-item-rich" id="menuReportesDropdownLink">
+                            <span class="dropdown-item-title">Reportes / Chamados <i class="fas fa-external-link-alt" style="font-size:10px;"></i></span>
+                            <span class="dropdown-item-desc">Acompanhamento de solicitações e prazos de SLA</span>
+                        </a>
                         <a href="metricas.html" target="_blank" class="dropdown-item-rich">
                             <span class="dropdown-item-title">Métricas <i class="fas fa-external-link-alt" style="font-size:10px;"></i></span>
                             <span class="dropdown-item-desc">Indicadores e acompanhamento da operação</span>
@@ -1995,6 +2003,35 @@
                 }).join('');
                 if(cardsH) finalHTML += '<section><div class="grid-container">'+cardsH+'</div></section>';
             }
+
+            // ── BANNER DE AVISO: CENTRAL DE REPORTES DE CHAMADOS ──────────────
+            finalHTML += '<section id="banner-reportes" style="margin: 28px 0 10px;">' +
+                '<div class="glass-panel" style="background: linear-gradient(135deg, rgba(13, 22, 60, 0.88) 0%, rgba(27, 63, 172, 0.45) 55%, rgba(44, 234, 188, 0.18) 100%); border: 1px solid rgba(44, 234, 188, 0.38); padding: 24px 32px; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; box-shadow: 0 14px 38px rgba(0,0,0,0.38), 0 0 30px rgba(44,234,188,0.24); position: relative; overflow: hidden;">' +
+                    '<div style="position: absolute; right: -40px; top: -40px; width: 180px; height: 180px; background: radial-gradient(circle, rgba(44, 234, 188, 0.25) 0%, transparent 70%); pointer-events: none;"></div>' +
+                    '<div style="display: flex; align-items: center; gap: 20px; flex: 1 1 320px; position: relative; z-index: 1;">' +
+                        '<div style="width: 58px; height: 58px; border-radius: 18px; background: rgba(44, 234, 188, 0.18); border: 1px solid rgba(44, 234, 188, 0.45); display: flex; align-items: center; justify-content: center; font-size: 26px; color: var(--menta-viva); flex-shrink: 0; box-shadow: 0 0 22px rgba(44,234,188,0.35);">' +
+                            '<i class="fa-solid fa-headset"></i>' +
+                        '</div>' +
+                        '<div>' +
+                            '<div style="display: inline-flex; align-items: center; gap: 6px; background: rgba(44, 234, 188, 0.14); color: var(--menta-viva); padding: 4px 12px; border-radius: 20px; font-size: 11.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; border: 1px solid rgba(44, 234, 188, 0.3);">' +
+                                '<i class="fa-solid fa-circle" style="font-size: 6px; color: var(--menta-viva);"></i> NOVO RECURSO DA OPERAÇÃO' +
+                            '</div>' +
+                            '<h3 style="font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 4px; letter-spacing: -0.3px;">' +
+                                'Portal de Acompanhamento de Reportes & Chamados' +
+                            '</h3>' +
+                            '<p style="font-size: 13.5px; color: var(--azul-gelo); opacity: 0.92; margin: 0; max-width: 650px;">' +
+                                'Acompanhe em tempo real o status dos chamados do Jira, solicitações da planilha e prazos de SLA da equipe operacional.' +
+                            '</p>' +
+                        '</div>' +
+                    '</div>' +
+                    '<div style="flex-shrink: 0; position: relative; z-index: 1;">' +
+                        '<a href="reportes.html" style="display: inline-flex; align-items: center; gap: 10px; background: linear-gradient(135deg, var(--azul-principal), #1B3FAC); color: #fff; padding: 13px 26px; border-radius: var(--radius-full); font-size: 14px; font-weight: 700; text-decoration: none; border: 1px solid rgba(255,255,255,0.25); box-shadow: 0 4px 20px rgba(44, 103, 234, 0.45); transition: all 0.25s ease;" onmouseover="this.style.transform=\'translateY(-2px)\'; this.style.boxShadow=\'0 8px 28px rgba(44, 234, 188, 0.45)\';" onmouseout="this.style.transform=\'translateY(0)\'; this.style.boxShadow=\'0 4px 20px rgba(44, 103, 234, 0.45)\';">' +
+                            '<span>Acompanhar Reportes</span>' +
+                            '<i class="fa-solid fa-arrow-right"></i>' +
+                        '</a>' +
+                    '</div>' +
+                '</div>' +
+            '</section>';
 
             // ── SEÇÃO NEWS / NOVIDADES (ESTILO GOOGLE NEWS) ─────────────────
             var newsData = (dados.News !== null && dados.News !== undefined) ? dados.News : fallbackNews;
