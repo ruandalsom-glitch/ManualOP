@@ -4,12 +4,14 @@
     { "src": "api/escalas.py", "use": "@vercel/python", "config": { "maxDuration": 60 } },
     { "src": "api/metricas_coleta.py", "use": "@vercel/python", "config": { "maxDuration": 60 } },
     { "src": "api/pedidos.py", "use": "@vercel/python", "config": { "maxDuration": 60 } },
+    { "src": "api/reportes.py", "use": "@vercel/python", "config": { "maxDuration": 60 } },
     { "src": "**", "use": "@vercel/static" }
   ],
   "routes": [
     { "src": "/api/escalas", "dest": "api/escalas.py" },
     { "src": "/api/metricas_coleta", "dest": "api/metricas_coleta.py" },
     { "src": "/api/pedidos", "dest": "api/pedidos.py" },
+    { "src": "/api/reportes", "dest": "api/reportes.py" },
     { "src": "/api", "dest": "api/metricas_coleta.py" },
     { "src": "/garantido", "dest": "/garantido.html" },
     { "src": "/(.*)", "dest": "/$1" }
