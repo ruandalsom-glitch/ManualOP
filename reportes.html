@@ -1161,14 +1161,22 @@
         <div id="section-colaboradores" style="display: none;">
             <div class="colab-header-box">
                 <div class="colab-selector-group">
-                    <label for="colabSelect"><i class="fa-solid fa-user-check"></i> SELECIONE O COLABORADOR:</label>
+                    <label for="colabSelect"><i class="fa-solid fa-headset"></i> ATENDENTE (PLANILHA):</label>
                     <select id="colabSelect" class="colab-select-dropdown" onchange="renderCollaboratorDashboard()">
-                        <option value="">👥 Todos os Colaboradores (Visão Geral)</option>
+                        <option value="">👤 Todos os Atendentes (Planilha)</option>
                     </select>
                 </div>
+
+                <div class="colab-selector-group">
+                    <label for="solicitanteSelect"><i class="fa-solid fa-user-pen"></i> SOLICITANTE (JIRA):</label>
+                    <select id="solicitanteSelect" class="colab-select-dropdown" onchange="renderCollaboratorDashboard()">
+                        <option value="">📝 Todos os Solicitantes (Jira)</option>
+                    </select>
+                </div>
+
                 <div class="colab-search-box">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" id="colabSearchInput" placeholder="Buscar colaborador por nome..." oninput="filterColabDropdown()">
+                    <input type="text" id="colabSearchInput" placeholder="Buscar por nome..." oninput="filterColabDropdown()">
                 </div>
             </div>
 
@@ -2077,55 +2085,84 @@
         }
 
         function popularDropdownColaboradores(data) {
-            const colabSet = new Set();
+            const atendentesSet = new Set();
+            const solicitantesSet = new Set();
+
             data.forEach(item => {
-                const c = (item.colaborador || item.atendente || item.solicitante || item.reporter || '').trim();
-                if (c && !['Não informado', 'Não Identificado', 'Suporte Jira', 'Atendente Jira', 'Aberto', 'Geral'].includes(c) && !c.startsWith('Mostrar ')) {
-                    colabSet.add(c);
+                const at = (item.atendente || '').trim();
+                const sol = (item.solicitante || item.reporter || '').trim();
+
+                if (at && !['Não informado', 'Não Identificado', 'Suporte Jira', 'Atendente Jira', 'Aberto', 'Geral'].includes(at)) {
+                    atendentesSet.add(at);
+                }
+                if (sol && !['Não informado', 'Não Identificado', 'Suporte Jira', 'Atendente Jira', 'Aberto', 'Geral'].includes(sol)) {
+                    solicitantesSet.add(sol);
                 }
             });
 
-            const sortedColabs = Array.from(colabSet).sort();
-            const select = document.getElementById('colabSelect');
-            if (!select) return;
+            // Preenche Dropdown de Atendentes (Planilha)
+            const selectAtend = document.getElementById('colabSelect');
+            if (selectAtend) {
+                const curAt = selectAtend.value;
+                selectAtend.innerHTML = `<option value="">👤 Todos os Atendentes (Planilha)</option>`;
+                Array.from(atendentesSet).sort().forEach(name => {
+                    const opt = document.createElement('option');
+                    opt.value = name;
+                    opt.innerText = name;
+                    selectAtend.appendChild(opt);
+                });
+                if (curAt && atendentesSet.has(curAt)) selectAtend.value = curAt;
+            }
 
-            const currentVal = select.value;
-            select.innerHTML = `<option value="">👥 Todos os Colaboradores (Visão Geral)</option>`;
-            sortedColabs.forEach(name => {
-                const opt = document.createElement('option');
-                opt.value = name;
-                opt.innerText = name;
-                select.appendChild(opt);
-            });
-
-            if (currentVal && sortedColabs.includes(currentVal)) {
-                select.value = currentVal;
+            // Preenche Dropdown de Solicitantes (Jira)
+            const selectSol = document.getElementById('solicitanteSelect');
+            if (selectSol) {
+                const curSol = selectSol.value;
+                selectSol.innerHTML = `<option value="">📝 Todos os Solicitantes (Jira)</option>`;
+                Array.from(solicitantesSet).sort().forEach(name => {
+                    const opt = document.createElement('option');
+                    opt.value = name;
+                    opt.innerText = name;
+                    selectSol.appendChild(opt);
+                });
+                if (curSol && solicitantesSet.has(curSol)) selectSol.value = curSol;
             }
         }
 
         function filterColabDropdown() {
             const query = (document.getElementById('colabSearchInput').value || '').toLowerCase();
-            const select = document.getElementById('colabSelect');
-            if (!select) return;
-
-            const options = select.options;
-            for (let i = 1; i < options.length; i++) {
-                const txt = options[i].text.toLowerCase();
-                options[i].style.display = txt.includes(query) ? '' : 'none';
-            }
+            
+            ['colabSelect', 'solicitanteSelect'].forEach(id => {
+                const select = document.getElementById(id);
+                if (!select) return;
+                const options = select.options;
+                for (let i = 1; i < options.length; i++) {
+                    const txt = options[i].text.toLowerCase();
+                    options[i].style.display = txt.includes(query) ? '' : 'none';
+                }
+            });
         }
 
         function renderCollaboratorDashboard() {
-            const selectedColab = (document.getElementById('colabSelect')?.value || '').trim();
+            const selectedAtendente = (document.getElementById('colabSelect')?.value || '').trim().toLowerCase();
+            const selectedSolicitante = (document.getElementById('solicitanteSelect')?.value || '').trim().toLowerCase();
 
-            let colabItems = reportesData;
-            if (selectedColab) {
-                colabItems = reportesData.filter(item => {
-                    const colab = (item.colaborador || item.atendente || item.solicitante || item.reporter || '').trim().toLowerCase();
-                    const target = selectedColab.toLowerCase();
-                    return colab === target;
-                });
-            }
+            let colabItems = reportesData.filter(item => {
+                const at = (item.atendente || '').trim().toLowerCase();
+                const sol = (item.solicitante || item.reporter || '').trim().toLowerCase();
+
+                let matchAt = true;
+                if (selectedAtendente) {
+                    matchAt = (at === selectedAtendente);
+                }
+
+                let matchSol = true;
+                if (selectedSolicitante) {
+                    matchSol = (sol === selectedSolicitante);
+                }
+
+                return matchAt && matchSol;
+            });
 
             // KPIs
             const total = colabItems.length;

@@ -191,15 +191,10 @@ def sincronizar_jira_com_supabase():
         sheets_dados = (s_item.get("dados") or "").strip()
         dados_final = jira_resp if jira_resp else sheets_dados
 
-        # Atendente / Colaborador oficial VEM DA PLANILHA (coluna Atendente r[10] ou r[9])
+        # Atendente vem ESTRITAMENTE da coluna Atendente (r[10]) da planilha
         sheets_atendente = (s_item.get("atendente") or "").strip()
-        if not sheets_atendente or sheets_atendente in ["Não Identificado", "Geral"]:
-            if sheets_dados and not ":" in sheets_dados and len(sheets_dados) < 50:
-                sheets_atendente = sheets_dados
-            else:
-                sheets_atendente = j_item.get("reporter", "")
-
-        atendente_final = sheets_atendente if sheets_atendente else "Não Identificado"
+        if sheets_atendente in ["Não Identificado", "Geral"]:
+            sheets_atendente = ""
 
         item = {
             "data": j_item.get("created_date") or s_item["data"],
@@ -212,7 +207,7 @@ def sincronizar_jira_com_supabase():
             "status": j_item.get("status") or s_item["status"],
             "setor": s_item["setor"],
             "dados": dados_final,
-            "atendente": atendente_final,
+            "atendente": sheets_atendente,
             "obs": s_item["obs"]
         }
         if ticket in existentes_map:
