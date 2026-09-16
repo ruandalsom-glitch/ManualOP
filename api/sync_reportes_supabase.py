@@ -234,8 +234,9 @@ def sincronizar_jira_com_supabase():
 
         plataforma = "EntreGô / Jira"
         sla = "2 dias"
-        prazo = calcular_prazo(data_reporte, status, sla_dias=2)
-        setor = item_j.get("setor", "Geral")
+        setor_raw = item_j.get("setor", "")
+        setor = setor_raw if (setor_raw and setor_raw.lower() not in ["geral", ""]) else map_setor_by_categoria(categoria, descricao)
+        atendente = (item_j.get("response_author") or item_j.get("reporter") or "").strip()
 
         item = {
             "data": data_reporte,
@@ -248,7 +249,7 @@ def sincronizar_jira_com_supabase():
             "status": status,
             "setor": setor,
             "dados": dados_resp,
-            "atendente": "",
+            "atendente": atendente,
             "obs": ""
         }
         if ticket in existentes_map:

@@ -17,6 +17,9 @@
     <!-- FontAwesome icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <!-- Chart.js Integration -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <!-- Supabase JS Client Integration -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabaseClient.js"></script>
@@ -759,6 +762,140 @@
             border: 1px solid rgba(234, 179, 8, 0.4);
         }
 
+        /* ===== ESTILOS DO DASHBOARD DE COLABORADORES ===== */
+        .nav-tabs-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid rgba(44, 234, 188, 0.15);
+            padding-bottom: 12px;
+        }
+        .nav-tab-btn {
+            background: rgba(13, 20, 65, 0.6);
+            border: 1px solid rgba(44, 234, 188, 0.18);
+            color: var(--azul-gelo);
+            padding: 10px 22px;
+            border-radius: var(--radius-md);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .nav-tab-btn:hover {
+            background: rgba(44, 234, 188, 0.1);
+            color: var(--menta-viva);
+            border-color: rgba(44, 234, 188, 0.35);
+        }
+        .nav-tab-btn.active {
+            background: linear-gradient(135deg, rgba(44, 234, 188, 0.22), rgba(0, 196, 154, 0.15));
+            border-color: var(--menta-viva);
+            color: var(--menta-viva);
+            box-shadow: 0 0 16px rgba(44, 234, 188, 0.18);
+        }
+        .colab-header-box {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            background: rgba(13, 20, 65, 0.65);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(44, 234, 188, 0.2);
+            padding: 18px 24px;
+            border-radius: var(--radius-lg);
+            margin-bottom: 20px;
+        }
+        .colab-selector-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+            min-width: 280px;
+        }
+        .colab-selector-group label {
+            font-size: 11.5px;
+            font-weight: 800;
+            color: var(--menta-viva);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            white-space: nowrap;
+        }
+        .colab-select-dropdown {
+            width: 100%;
+            max-width: 400px;
+            padding: 10px 14px;
+            background: rgba(8, 14, 46, 0.88);
+            border: 1px solid rgba(44, 234, 188, 0.3);
+            border-radius: var(--radius-md);
+            color: var(--branco);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .colab-select-dropdown:focus {
+            border-color: var(--menta-viva);
+            box-shadow: 0 0 12px rgba(44, 234, 188, 0.2);
+        }
+        .colab-search-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(8, 14, 46, 0.7);
+            border: 1px solid rgba(44, 234, 188, 0.2);
+            padding: 8px 14px;
+            border-radius: var(--radius-md);
+            min-width: 260px;
+        }
+        .colab-search-box i { color: var(--menta-viva); }
+        .colab-search-box input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--branco);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 13.5px;
+            width: 100%;
+        }
+        .charts-grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .chart-card {
+            background: rgba(13, 20, 65, 0.65);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(44, 234, 188, 0.18);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        .chart-card-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            color: var(--menta-viva);
+        }
+        .chart-card-header h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--branco);
+        }
+        .chart-canvas-wrapper {
+            position: relative;
+            width: 100%;
+            height: 240px;
+        }
+
         /* Loading Spinner */
         .spinner {
             display: inline-block;
@@ -888,123 +1025,243 @@
     <!-- Main Content -->
     <main>
 
-        <!-- Metric Summary Cards -->
-        <div class="summary-cards">
-            <div class="card-stat">
-                <div class="card-stat-icon total">
-                    <i class="fa-solid fa-inbox"></i>
+        <!-- Navigation Tab Switcher Bar -->
+        <div class="nav-tabs-container">
+            <button class="nav-tab-btn active" id="tabViewGeral" onclick="switchMainTab('geral')">
+                <i class="fa-solid fa-list-check"></i> Visão Geral de Reportes
+            </button>
+            <button class="nav-tab-btn" id="tabViewColaboradores" onclick="switchMainTab('colaboradores')">
+                <i class="fa-solid fa-users"></i> Dashboard por Colaborador
+            </button>
+        </div>
+
+        <!-- VISÃO GERAL SECTION -->
+        <div id="section-geral">
+            <!-- Metric Summary Cards -->
+            <div class="summary-cards">
+                <div class="card-stat">
+                    <div class="card-stat-icon total">
+                        <i class="fa-solid fa-inbox"></i>
+                    </div>
+                    <div class="card-stat-val">
+                        <h3 id="statTotal">0</h3>
+                        <p>Total de Reportes (Jira)</p>
+                    </div>
                 </div>
-                <div class="card-stat-val">
-                    <h3 id="statTotal">0</h3>
-                    <p>Total de Reportes (Jira)</p>
+
+                <div class="card-stat">
+                    <div class="card-stat-icon open">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+                    <div class="card-stat-val">
+                        <h3 id="statOpen">0</h3>
+                        <p>Em Aberto / Pendentes</p>
+                    </div>
+                </div>
+
+                <div class="card-stat">
+                    <div class="card-stat-icon progress">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                    <div class="card-stat-val">
+                        <h3 id="statDelayed">0</h3>
+                        <p>Em Atraso (Fora do SLA)</p>
+                    </div>
+                </div>
+
+                <div class="card-stat">
+                    <div class="card-stat-icon done">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                    <div class="card-stat-val">
+                        <h3 id="statDone">0</h3>
+                        <p>Concluídos / Resolvidos</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="card-stat">
-                <div class="card-stat-icon open">
-                    <i class="fa-solid fa-clock"></i>
+            <!-- Jira & Supabase Replicated Filter Toolbar -->
+            <div class="jira-toolbar">
+                <div class="search-field">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="searchInput" placeholder="Buscar por código (ex: SMENTGO-1740), solicitante, resumo ou resposta..." oninput="onFilterChange()">
                 </div>
-                <div class="card-stat-val">
-                    <h3 id="statOpen">0</h3>
-                    <p>Em Aberto / Pendentes</p>
+
+                <div class="filters-row">
+                    <select class="filter-badge-select" id="platformFilter" onchange="onFilterChange()">
+                        <option value="jira" selected>Plataforma: Jira</option>
+                        <option value="">Plataforma: Todas</option>
+                    </select>
+
+                    <select class="filter-badge-select" id="typeFilter" onchange="onFilterChange()">
+                        <option value="">Tipo de solicitação (Todas)</option>
+                        <option value="Contestação de Promoção">Contestação de Promoção</option>
+                        <option value="Problemas Cadastrais">Problemas Cadastrais / Bugs</option>
+                        <option value="Contestação de Garantido FE">Contestação de Garantido FE</option>
+                        <option value="Dúvidas Gerais">Dúvidas Gerais</option>
+                    </select>
+
+                    <select class="filter-badge-select" id="statusFilter" onchange="onFilterChange()">
+                        <option value="">Status / SLA (Todos)</option>
+                        <option value="aberto">Aberto / Pendente</option>
+                        <option value="atrasado">Em Atraso (Fora do SLA)</option>
+                        <option value="concluido">Concluído / Resolvido</option>
+                    </select>
+
+                    <select class="filter-badge-select" id="reporterFilter" onchange="onFilterChange()">
+                        <option value="">Solicitante (Planilha): Todos</option>
+                    </select>
                 </div>
             </div>
 
-            <div class="card-stat">
-                <div class="card-stat-icon progress">
-                    <i class="fa-solid fa-triangle-exclamation"></i>
-                </div>
-                <div class="card-stat-val">
-                    <h3 id="statDelayed">0</h3>
-                    <p>Em Atraso (Fora do SLA)</p>
-                </div>
-            </div>
+            <!-- Table Display -->
+            <div class="table-card">
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 44px; text-align: center;">Tipo</th>
+                                <th style="white-space: nowrap;">Referência</th>
+                                <th style="white-space: nowrap;">Data Reporte</th>
+                                <th style="white-space: nowrap;">Resumo do Reporte</th>
 
-            <div class="card-stat">
-                <div class="card-stat-icon done">
-                    <i class="fa-solid fa-circle-check"></i>
+                                <th style="white-space: nowrap;">Status</th>
+                                <th style="white-space: nowrap;">Prazo / SLA</th>
+                                <th style="white-space: nowrap;">Solicitante (Planilha)</th>
+                                <th style="white-space: nowrap;">Atendente Suporte (Jira)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reportsTableBody">
+                            <!-- Populated via Javascript -->
+                        </tbody>
+                    </table>
                 </div>
-                <div class="card-stat-val">
-                    <h3 id="statDone">0</h3>
-                    <p>Concluídos / Resolvidos</p>
+
+                <!-- Pagination Controls Bar -->
+                <div class="pagination-bar">
+                    <div class="pagination-info">
+                        <span id="pageRangeText">Mostrando 0-0 de 0 reportes</span>
+                        <label style="margin-left: 12px;">Exibir: 
+                            <select class="page-size-selector" id="pageSizeSelect" onchange="onPageSizeChange()">
+                                <option value="15" selected>15 por página</option>
+                                <option value="30">30 por página</option>
+                                <option value="50">50 por página</option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <div class="pagination-controls" id="paginationButtons">
+                        <!-- Buttons generated dynamically -->
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Jira & Supabase Replicated Filter Toolbar -->
-        <div class="jira-toolbar">
-            <div class="search-field">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="searchInput" placeholder="Buscar por código (ex: SMENTGO-1740), solicitante, resumo ou resposta..." oninput="onFilterChange()">
+        <!-- DASHBOARD COLABORADORES SECTION -->
+        <div id="section-colaboradores" style="display: none;">
+            <div class="colab-header-box">
+                <div class="colab-selector-group">
+                    <label for="colabSelect"><i class="fa-solid fa-user-check"></i> SELECIONE O COLABORADOR:</label>
+                    <select id="colabSelect" class="colab-select-dropdown" onchange="renderCollaboratorDashboard()">
+                        <option value="">👥 Todos os Colaboradores (Visão Geral)</option>
+                    </select>
+                </div>
+                <div class="colab-search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="colabSearchInput" placeholder="Buscar colaborador por nome..." oninput="filterColabDropdown()">
+                </div>
             </div>
 
-            <div class="filters-row">
-                <select class="filter-badge-select" id="platformFilter" onchange="onFilterChange()">
-                    <option value="jira" selected>Plataforma: Jira</option>
-                    <option value="">Plataforma: Todas</option>
-                </select>
-
-                <select class="filter-badge-select" id="typeFilter" onchange="onFilterChange()">
-                    <option value="">Tipo de solicitação (Todas)</option>
-                    <option value="Contestação de Promoção">Contestação de Promoção</option>
-                    <option value="Problemas Cadastrais">Problemas Cadastrais / Bugs</option>
-                    <option value="Contestação de Garantido FE">Contestação de Garantido FE</option>
-                    <option value="Dúvidas Gerais">Dúvidas Gerais</option>
-                </select>
-
-                <select class="filter-badge-select" id="statusFilter" onchange="onFilterChange()">
-                    <option value="">Status / SLA (Todos)</option>
-                    <option value="aberto">Aberto / Pendente</option>
-                    <option value="atrasado">Em Atraso (Fora do SLA)</option>
-                    <option value="concluido">Concluído / Resolvido</option>
-                </select>
-
-                <select class="filter-badge-select" id="reporterFilter" onchange="onFilterChange()">
-                    <option value="">Solicitante (Planilha): Todos</option>
-                </select>
-
-
-            </div>
-        </div>
-
-        <!-- Table Display -->
-        <div class="table-card">
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width: 44px; text-align: center;">Tipo</th>
-                            <th style="white-space: nowrap;">Referência</th>
-                            <th style="white-space: nowrap;">Data Reporte</th>
-                            <th style="white-space: nowrap;">Resumo do Reporte</th>
-
-                            <th style="white-space: nowrap;">Status</th>
-                            <th style="white-space: nowrap;">Prazo / SLA</th>
-                            <th style="white-space: nowrap;">Solicitante (Planilha)</th>
-                            <th style="white-space: nowrap;">Atendente Suporte (Jira)</th>
-                        </tr>
-                    </thead>
-                    <tbody id="reportsTableBody">
-                        <!-- Populated via Javascript -->
-                    </tbody>
-                </table>
+            <!-- KPI Cards do Colaborador -->
+            <div class="summary-cards">
+                <div class="card-stat">
+                    <div class="card-stat-icon total"><i class="fa-solid fa-inbox"></i></div>
+                    <div class="card-stat-val">
+                        <h3 id="colabKpiTotal">0</h3>
+                        <p>Total de Reportes</p>
+                    </div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-icon done"><i class="fa-solid fa-circle-check"></i></div>
+                    <div class="card-stat-val">
+                        <h3 id="colabKpiDone">0 (0%)</h3>
+                        <p>Concluídos / Resolvidos</p>
+                    </div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-icon open"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="card-stat-val">
+                        <h3 id="colabKpiSla">100%</h3>
+                        <p>Cumprimento de SLA</p>
+                    </div>
+                </div>
+                <div class="card-stat">
+                    <div class="card-stat-icon progress"><i class="fa-solid fa-layer-group"></i></div>
+                    <div class="card-stat-val">
+                        <h3 id="colabKpiSector">-</h3>
+                        <p>Setor Principal</p>
+                    </div>
+                </div>
             </div>
 
-            <!-- Pagination Controls Bar -->
-            <div class="pagination-bar">
-                <div class="pagination-info">
-                    <span id="pageRangeText">Mostrando 0-0 de 0 reportes</span>
-                    <label style="margin-left: 12px;">Exibir: 
-                        <select class="page-size-selector" id="pageSizeSelect" onchange="onPageSizeChange()">
-                            <option value="15" selected>15 por página</option>
-                            <option value="30">30 por página</option>
-                            <option value="50">50 por página</option>
-                        </select>
-                    </label>
+            <!-- Gráficos Interativos (Chart.js) -->
+            <div class="charts-grid-container">
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        <h4>Status dos Reportes</h4>
+                    </div>
+                    <div class="chart-canvas-wrapper">
+                        <canvas id="chartColabStatus"></canvas>
+                    </div>
                 </div>
 
-                <div class="pagination-controls" id="paginationButtons">
-                    <!-- Buttons generated dynamically -->
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <i class="fa-solid fa-chart-column"></i>
+                        <h4>Volume por Setor</h4>
+                    </div>
+                    <div class="chart-canvas-wrapper">
+                        <canvas id="chartColabSector"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-card-header">
+                        <i class="fa-solid fa-gauge-high"></i>
+                        <h4>Desempenho SLA (No Prazo vs. Em Atraso)</h4>
+                    </div>
+                    <div class="chart-canvas-wrapper">
+                        <canvas id="chartColabSla"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabela de Reportes do Colaborador -->
+            <div class="table-card" style="margin-top: 24px;">
+                <div class="jira-toolbar" style="margin-bottom: 12px; background: transparent; padding: 12px 16px;">
+                    <div style="color: var(--menta-viva); font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-list-ul"></i> Reportes do Colaborador Selecionado
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="white-space: nowrap;">Referência</th>
+                                <th style="white-space: nowrap;">Data Reporte</th>
+                                <th style="white-space: nowrap;">Solicitante / Atendente</th>
+                                <th style="white-space: nowrap;">Categoria</th>
+                                <th style="white-space: nowrap;">Setor</th>
+                                <th style="white-space: nowrap;">Status</th>
+                                <th style="white-space: nowrap;">Prazo / SLA</th>
+                                <th style="white-space: nowrap; text-align: center;">Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody id="colabTableBody">
+                            <!-- Populated via Javascript -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -1760,6 +2017,7 @@
                         sessionStorage.setItem('cache_reportes_colaboradores_time', Date.now().toString());
 
                         popularFiltroSolicitantes(reportesData);
+                        popularDropdownColaboradores(reportesData);
                         onFilterChange();
                         btn.disabled = false;
                         txt.innerText = 'Atualizar Dados';
@@ -1777,14 +2035,330 @@
                         created_date: j.created_date || j.data || 'N/A'
                     }));
                     popularFiltroSolicitantes(reportesData);
+                    popularDropdownColaboradores(reportesData);
                 }
             } catch (e) {
                 console.log("Erro ao carregar dados do Supabase/JSON:", e);
             }
 
+            popularDropdownColaboradores(reportesData);
             onFilterChange();
             btn.disabled = false;
             txt.innerText = 'Atualizar Dados';
+        }
+
+        // ================= DASHBOARD DE COLABORADORES LOGIC =================
+        let chartStatusObj = null;
+        let chartSectorObj = null;
+        let chartSlaObj = null;
+
+        function switchMainTab(tab) {
+            const tabGeral = document.getElementById('tabViewGeral');
+            const tabColab = document.getElementById('tabViewColaboradores');
+            const secGeral = document.getElementById('section-geral');
+            const secColab = document.getElementById('section-colaboradores');
+
+            if (tab === 'colaboradores') {
+                tabGeral.classList.remove('active');
+                tabColab.classList.add('active');
+                secGeral.style.display = 'none';
+                secColab.style.display = 'block';
+
+                popularDropdownColaboradores(reportesData);
+                renderCollaboratorDashboard();
+            } else {
+                tabColab.classList.remove('active');
+                tabGeral.classList.add('active');
+                secColab.style.display = 'none';
+                secGeral.style.display = 'block';
+            }
+        }
+
+        function popularDropdownColaboradores(data) {
+            const colabSet = new Set();
+            data.forEach(item => {
+                const rep = (item.reporter || item.solicitante || '').trim();
+                const aut = (item.response_author || item.atendente || '').trim();
+                if (rep && rep !== 'Não informado' && rep !== 'Não Identificado') colabSet.add(rep);
+                if (aut && aut !== 'Suporte Jira' && aut !== 'Não Identificado' && aut !== 'Aberto') colabSet.add(aut);
+            });
+
+            const sortedColabs = Array.from(colabSet).sort();
+            const select = document.getElementById('colabSelect');
+            if (!select) return;
+
+            const currentVal = select.value;
+            select.innerHTML = `<option value="">👥 Todos os Colaboradores (Visão Geral)</option>`;
+            sortedColabs.forEach(name => {
+                const opt = document.createElement('option');
+                opt.value = name;
+                opt.innerText = name;
+                select.appendChild(opt);
+            });
+
+            if (currentVal && sortedColabs.includes(currentVal)) {
+                select.value = currentVal;
+            }
+        }
+
+        function filterColabDropdown() {
+            const query = (document.getElementById('colabSearchInput').value || '').toLowerCase();
+            const select = document.getElementById('colabSelect');
+            if (!select) return;
+
+            const options = select.options;
+            for (let i = 1; i < options.length; i++) {
+                const txt = options[i].text.toLowerCase();
+                options[i].style.display = txt.includes(query) ? '' : 'none';
+            }
+        }
+
+        function renderCollaboratorDashboard() {
+            const selectedColab = (document.getElementById('colabSelect')?.value || '').trim();
+
+            let colabItems = reportesData;
+            if (selectedColab) {
+                colabItems = reportesData.filter(item => {
+                    const rep = (item.reporter || item.solicitante || '').trim().toLowerCase();
+                    const aut = (item.response_author || item.atendente || '').trim().toLowerCase();
+                    const target = selectedColab.toLowerCase();
+                    return rep === target || aut === target;
+                });
+            }
+
+            // KPIs
+            const total = colabItems.length;
+            const done = colabItems.filter(i => {
+                const st = (i.status || '').toLowerCase();
+                return st.includes('conclu') || st.includes('resolv') || st.includes('finaliz');
+            }).length;
+
+            const pctDone = total > 0 ? Math.round((done / total) * 100) : 0;
+
+            const noPrazo = colabItems.filter(i => {
+                const pz = (i.prazo || '').toLowerCase();
+                const st = (i.status || '').toLowerCase();
+                return pz.includes('no prazo') || st.includes('conclu') || st.includes('resolv');
+            }).length;
+            const pctSla = total > 0 ? Math.round((noPrazo / total) * 100) : 100;
+
+            // Top Sector
+            const sectorCounts = {};
+            colabItems.forEach(i => {
+                const s = i.setor || 'Operação';
+                sectorCounts[s] = (sectorCounts[s] || 0) + 1;
+            });
+            let topSector = '-';
+            let maxSectorCount = 0;
+            for (const [sec, count] of Object.entries(sectorCounts)) {
+                if (count > maxSectorCount) {
+                    maxSectorCount = count;
+                    topSector = sec;
+                }
+            }
+
+            document.getElementById('colabKpiTotal').innerText = total;
+            document.getElementById('colabKpiDone').innerText = `${done} (${pctDone}%)`;
+            document.getElementById('colabKpiSla').innerText = `${pctSla}% no prazo`;
+            document.getElementById('colabKpiSector').innerText = topSector;
+
+            // Gráficos Chart.js
+            renderChartStatus(colabItems);
+            renderChartSector(colabItems);
+            renderChartSla(colabItems);
+
+            // Tabela do Colaborador
+            renderColabTable(colabItems);
+        }
+
+        function renderChartStatus(items) {
+            const canvas = document.getElementById('chartColabStatus');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            
+            let statusMap = {
+                'Concluído / Resolvido': 0,
+                'Em Atendimento': 0,
+                'Em Verificação': 0,
+                'Em Validação': 0,
+                'Outros / Pendentes': 0
+            };
+
+            items.forEach(i => {
+                const st = (i.status || '').toLowerCase();
+                if (st.includes('conclu') || st.includes('resolv') || st.includes('finaliz')) {
+                    statusMap['Concluído / Resolvido']++;
+                } else if (st.includes('atendimento')) {
+                    statusMap['Em Atendimento']++;
+                } else if (st.includes('verificação') || st.includes('verificacao')) {
+                    statusMap['Em Verificação']++;
+                } else if (st.includes('validação') || st.includes('validacao')) {
+                    statusMap['Em Validação']++;
+                } else {
+                    statusMap['Outros / Pendentes']++;
+                }
+            });
+
+            if (chartStatusObj) chartStatusObj.destroy();
+
+            chartStatusObj = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(statusMap),
+                    datasets: [{
+                        data: Object.values(statusMap),
+                        backgroundColor: ['#22c55e', '#3b82f6', '#a855f7', '#f59e0b', '#64748b'],
+                        borderWidth: 2,
+                        borderColor: '#0f1849'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { color: '#b4e4ff', font: { family: 'Plus Jakarta Sans', size: 11 } }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderChartSector(items) {
+            const canvas = document.getElementById('chartColabSector');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            
+            let sectorMap = { 'Cadastro': 0, 'Promoções': 0, 'Garantido': 0, 'Suporte': 0, 'Operação': 0 };
+            items.forEach(i => {
+                const s = i.setor || 'Operação';
+                sectorMap[s] = (sectorMap[s] || 0) + 1;
+            });
+
+            if (chartSectorObj) chartSectorObj.destroy();
+
+            chartSectorObj = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(sectorMap),
+                    datasets: [{
+                        label: 'Reportes por Setor',
+                        data: Object.values(sectorMap),
+                        backgroundColor: 'rgba(44, 234, 188, 0.75)',
+                        borderColor: '#2ceabc',
+                        borderWidth: 1.5,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { ticks: { color: '#b4e4ff', font: { family: 'Plus Jakarta Sans', size: 11 } }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                        y: { ticks: { color: '#b4e4ff', font: { family: 'Plus Jakarta Sans', size: 11 } }, grid: { color: 'rgba(255,255,255,0.05)' }, beginAtZero: true }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        function renderChartSla(items) {
+            const canvas = document.getElementById('chartColabSla');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            
+            let noPrazo = 0;
+            let emAtraso = 0;
+
+            items.forEach(i => {
+                const pz = (i.prazo || '').toLowerCase();
+                const st = (i.status || '').toLowerCase();
+                if (pz.includes('no prazo') || st.includes('conclu') || st.includes('resolv')) {
+                    noPrazo++;
+                } else {
+                    emAtraso++;
+                }
+            });
+
+            if (chartSlaObj) chartSlaObj.destroy();
+
+            chartSlaObj = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['No Prazo', 'Em Atraso'],
+                    datasets: [{
+                        data: [noPrazo, emAtraso],
+                        backgroundColor: ['rgba(34, 197, 94, 0.75)', 'rgba(239, 68, 68, 0.75)'],
+                        borderColor: ['#22c55e', '#ef4444'],
+                        borderWidth: 1.5,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { ticks: { color: '#b4e4ff', font: { family: 'Plus Jakarta Sans', size: 11 } }, grid: { color: 'rgba(255,255,255,0.05)' }, beginAtZero: true },
+                        y: { ticks: { color: '#b4e4ff', font: { family: 'Plus Jakarta Sans', size: 11 } }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        function renderColabTable(items) {
+            const tbody = document.getElementById('colabTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            if (items.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 24px; color: var(--azul-gelo);">Nenhum reporte encontrado para este colaborador.</td></tr>`;
+                return;
+            }
+
+            items.slice(0, 50).forEach((item) => {
+                const globalIdx = reportesData.indexOf(item);
+                const tr = document.createElement('tr');
+                
+                const solicitante = item.reporter || item.solicitante || 'Não Identificado';
+                const atendente = item.response_author || item.atendente || 'Suporte Jira';
+                
+                const st = item.status || 'Aberto';
+                let stBadgeClass = 'badge-open';
+                if (st.toLowerCase().includes('conclu') || st.toLowerCase().includes('resolv')) stBadgeClass = 'badge-done';
+                else if (st.toLowerCase().includes('atendimento')) stBadgeClass = 'badge-progress';
+                else if (st.toLowerCase().includes('verificação') || st.toLowerCase().includes('validação')) stBadgeClass = 'badge-hold';
+
+                const pz = item.prazo || 'No prazo';
+                let pzClass = 'sla-on-time';
+                if (pz.toLowerCase().includes('atraso')) pzClass = 'sla-delayed';
+                else if (pz.toLowerCase().includes('finaliz')) pzClass = 'sla-done';
+
+                tr.innerHTML = `
+                    <td><span class="ticket-badge">${item.issue_key || item.ticket || 'N/A'}</span></td>
+                    <td style="white-space: nowrap;"><i class="fa-regular fa-calendar-days" style="margin-right: 4px; opacity: 0.6;"></i>${item.created_date || item.data || 'N/A'}</td>
+                    <td>
+                        <div style="font-size: 12px; font-weight: 700; color: var(--branco);">${solicitante}</div>
+                        <div style="font-size: 11px; color: var(--azul-gelo); opacity: 0.7;">Atendente: ${atendente}</div>
+                    </td>
+                    <td><span class="type-pill">${item.type || item.categoria || 'Geral'}</span></td>
+                    <td><span class="type-pill" style="background: rgba(44, 234, 188, 0.12); color: var(--menta-viva);">${item.setor || 'Operação'}</span></td>
+                    <td><span class="status-badge ${stBadgeClass}">${st}</span></td>
+                    <td><span class="sla-badge ${pzClass}">${pz}</span></td>
+                    <td style="text-align: center;">
+                        <button class="btn-detalhes" onclick="abrirModal(${globalIdx >= 0 ? globalIdx : 0})">
+                            <i class="fa-solid fa-eye"></i> Detalhes
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
         }
 
         // ================= AUTHENTICATION & ACCESS CONTROL =================
