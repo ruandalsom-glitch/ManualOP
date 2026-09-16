@@ -1960,10 +1960,6 @@
         var pwd = (document.getElementById('loginPass').value || '').trim();
         if (!usr || !pwd) { mostrarErro('Preencha usuário e senha!'); return; }
 
-        if (!usr.includes('@')) {
-            usr = usr + '@masterdeliveryexpress.com.br';
-        }
-
         document.getElementById('login-error').style.display = 'none';
         var b = document.getElementById('btnEntrar');
         if(b){ b.disabled=true; document.getElementById('txtBtn').innerText='Sincronizando...'; document.getElementById('spinBtn').style.display='block'; }

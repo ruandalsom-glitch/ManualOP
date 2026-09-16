@@ -1455,10 +1455,6 @@
             var pwd = (document.getElementById('loginPass').value || '').trim();
             if (!usr || !pwd) { mostrarErroLogin('Preencha usuário e senha!'); return; }
 
-            if (!usr.includes('@')) {
-                usr = usr + '@masterdeliveryexpress.com.br';
-            }
-
             const errDiv = document.getElementById('login-error');
             if (errDiv) errDiv.style.display = 'none';
 
