@@ -317,20 +317,14 @@ async def sync_jira_reports():
 
             print(f"📋 Encontrados {len(raw_issues)} chamados pertencentes às 4 categorias. Extraindo respostas e detalhes...")
             for idx, item in enumerate(raw_issues):
-                if idx < 50:
-                    resp_info = await fetch_issue_response(page, item["issue_key"])
-                    item["created_date"] = resp_info["created_date"] or item.get("created_date", "")
-                    if resp_info["reporter"]:
-                        item["reporter"] = resp_info["reporter"]
-                    item["response_author"] = resp_info["response_author"]
-                    item["response_date"] = resp_info["response_date"]
-                    item["response_text"] = resp_info["response_text"]
-                    print(f"   [{idx+1}/{len(raw_issues)}] {item['issue_key']} ({item['type']}) -> Data: {item.get('created_date', 'N/A')} | Solicitante: {item['reporter']}")
-                else:
-                    item["created_date"] = ""
-                    item["response_author"] = ""
-                    item["response_date"] = ""
-                    item["response_text"] = ""
+                resp_info = await fetch_issue_response(page, item["issue_key"])
+                item["created_date"] = resp_info["created_date"] or item.get("created_date", "")
+                if resp_info["reporter"]:
+                    item["reporter"] = resp_info["reporter"]
+                item["response_author"] = resp_info["response_author"]
+                item["response_date"] = resp_info["response_date"]
+                item["response_text"] = resp_info["response_text"]
+                print(f"   [{idx+1}/{len(raw_issues)}] {item['issue_key']} ({item['type']}) -> Data: {item.get('created_date', 'N/A')} | Solicitante: {item['reporter']}")
 
                 extracted_reports.append(item)
 
