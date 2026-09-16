@@ -182,7 +182,7 @@ async def fetch_issue_response(page, issue_key):
                     response_author = m_comb.group(1).strip()
                     response_date = m_comb.group(2).strip()
                     msg_parts = [l for l in activity_lines[i+1:] if not l.startswith("O status da sua solicitação")]
-                    response_text = ' '.join(msg_parts)
+                    response_text = '\n'.join(msg_parts)
                     human_found = True
                     break
 
@@ -201,7 +201,7 @@ async def fetch_issue_response(page, issue_key):
                             break
                         msg_parts.append(l)
                     
-                    response_text = ' '.join(msg_parts)
+                    response_text = '\n'.join(msg_parts)
                     human_found = True
                     break
 

@@ -1061,12 +1061,12 @@
 
                 const iconHtml = getIconForType(item.type || item.categoria, item.summary || item.descricao);
                 
-                // Solicitante (Planilha)
-                const nomeSolicitante = item.reporter || item.atendente || 'Não Identificado';
+                // Solicitante (Criador do Chamado)
+                const nomeSolicitante = item.reporter || item.solicitante || 'Não Identificado';
                 const inicialSolicitante = nomeSolicitante.charAt(0).toUpperCase();
 
-                // Atendente Suporte (Jira)
-                const nomeSuporte = item.response_author || 'Suporte Jira';
+                // Atendente Suporte (Agente Jira)
+                const nomeSuporte = item.response_author || item.atendente || 'Suporte Jira';
                 const inicialSuporte = nomeSuporte.charAt(0).toUpperCase();
 
                 // Setor
@@ -1345,22 +1345,17 @@
                             const ticketKey = (item.ticket || '').trim();
                             const jiraItem = jiraMap[ticketKey] || {};
 
-                            // Solicitante da Planilha (exclusivo da coluna 'atendente' da planilha no Supabase)
-                            const rawAtendente = (item.atendente && item.atendente.trim()) ? item.atendente.trim() : '';
-                            const solicitante = (rawAtendente && rawAtendente !== 'Não Identificado') ? rawAtendente : 'Não informado';
+                            // Solicitante (Criador do chamado)
+                            const solicitanteOficial = jiraItem.reporter || (item.obs && item.obs.includes('Silva') ? item.obs.split('\n')[0].trim() : '') || 'Não informado';
 
-                            // Atendente Suporte / Criador no Jira (100% do Webscraping Jira)
-                            let suporteJira = jiraItem.reporter || jiraItem.response_author || '';
+                            // Atendente Suporte (Agente que respondeu no Jira)
+                            let suporteJira = jiraItem.response_author || (item.atendente && item.atendente !== 'Não Identificado' ? item.atendente.trim() : '') || 'Suporte Jira';
                             if (!suporteJira || suporteJira === 'Aberto' || suporteJira.startsWith('Mostrar ')) {
-                                if (jiraItem.response_author && !jiraItem.response_author.startsWith('Mostrar ') && jiraItem.response_author !== 'Aberto') {
-                                    suporteJira = jiraItem.response_author;
-                                } else {
-                                    suporteJira = 'Suporte Jira';
-                                }
+                                suporteJira = 'Suporte Jira';
                             }
 
-                            // Texto da resposta/observação (100% vindo das Atividades do Jira)
-                            let respTxt = (jiraItem.response_text || '').trim();
+                            // Texto da resposta/observação (Preservando quebras de linha das Atividades do Jira)
+                            let respTxt = (jiraItem.response_text || item.dados || '').trim();
                             if (!respTxt || respTxt.toLowerCase().startsWith('abrir ') || /^[0-9a-f-]{30,}\.(jpg|png|jpeg)$/i.test(respTxt) || respTxt.endsWith('.jpg')) {
                                 respTxt = 'Nenhuma observação ou resposta registrada no Jira até o momento.';
                             }
@@ -1394,10 +1389,9 @@
                                 descricao: desc,
                                 status: item.status || jiraItem.status || 'Aberto',
                                 setor: setorResolved,
-                                reporter: solicitante,
-                                atendente: solicitante,
-                                created_date: item.data || jiraItem.created_date || '',
-                                data: item.data || jiraItem.created_date || '',
+                                reporter: solicitanteOficial,
+                                solicitante: solicitanteOficial,
+                                atendente: suporteJira,
                                 response_author: suporteJira,
                                 response_text: respTxt,
                                 dados: respTxt,
