@@ -119,14 +119,16 @@ def map_and_filter_type(type_raw, summary):
     return None
 
 def is_author_name(s):
-    if not s or len(s) < 2 or len(s) > 50:
+    if not s or len(s) < 2 or len(s) > 60:
         return False
     if re.search(r'\d', s):
+        return False
+    if any(c in s for c in ['[', ']', '{', '}']):
         return False
     s_lower = s.lower()
     if s_lower in ['resposta automática', 'atividade', 'ocultar informações', 'mostrar informações']:
         return False
-    if any(w in s_lower for w in ['status', 'alterado', 'solicitação', 'feira', 'hoje', 'ontem', 'horas', 'minutos', 'jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez']):
+    if re.search(r'\b(status|alterado|solicitação|solicitacao|feira|hoje|ontem|horas|minutos|janeiro|fevereiro|março|marco|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\b', s_lower):
         return False
     return True
 
@@ -160,7 +162,6 @@ async def fetch_issue_response(page, issue_key):
             idx = lines.index("Atividade")
             sub_lines = lines[idx + 1:]
 
-            # Isola exclusivamente a subseção de Atividade até os seletores laterais
             stop_markers = [
                 "Status", "Tipo de solicitação", "Compartilhada com", 
                 "Apps", "Desenvolvido por", "Notificações desativadas",
@@ -173,12 +174,21 @@ async def fetch_issue_response(page, issue_key):
                     break
                 activity_lines.append(line)
 
-            # 1. Procura primeiro por comentário de atendente humano (ex: Bruna Alves Da Silva)
             human_found = False
-            for i in range(len(activity_lines)):
-                cand_author = activity_lines[i]
-                if is_author_name(cand_author):
-                    response_author = cand_author
+            for i, line in enumerate(activity_lines):
+                # 1. Combinação Nome do Atendente + Data/Hora (ex: "Gabrielle Crixina Teixeira Farias 14/ago/26 08:59")
+                m_comb = re.search(r'^([A-Za-zÀ-ÿ\s\.\-\']+)\s+(\d{1,2}/[a-zA-Z0-9/]+(?:\s+\d{1,2}:\d{2})?)$', line)
+                if m_comb and is_author_name(m_comb.group(1).strip()):
+                    response_author = m_comb.group(1).strip()
+                    response_date = m_comb.group(2).strip()
+                    msg_parts = [l for l in activity_lines[i+1:] if not l.startswith("O status da sua solicitação")]
+                    response_text = ' '.join(msg_parts)
+                    human_found = True
+                    break
+
+                # 2. Nome do Atendente em linha separada
+                if is_author_name(line):
+                    response_author = line
                     idx_msg = i + 1
                     if i + 1 < len(activity_lines) and (re.search(r'\d', activity_lines[i+1]) or any(kw in activity_lines[i+1].lower() for kw in ['ontem', 'hoje', 'feira'])):
                         response_date = activity_lines[i+1]
@@ -195,7 +205,6 @@ async def fetch_issue_response(page, issue_key):
                     human_found = True
                     break
 
-            # 2. Se não houver comentário humano, verifica se há notificação automática de alteração de status
             if not human_found:
                 for i in range(len(activity_lines)):
                     cand = activity_lines[i]

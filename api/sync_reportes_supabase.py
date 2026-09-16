@@ -179,21 +179,34 @@ def sincronizar_jira_com_supabase():
     payload_novos = []
     processed_tickets = set()
 
+    # Mapeia itens do Jira por issue_key
+    jira_map = {item.get("issue_key", "").strip(): item for item in jira_data if item.get("issue_key")}
+
     # Processa primeiro itens do Google Sheets (prioritário por conter setor/atendente)
     for ticket, s_item in sheets_data_map.items():
         processed_tickets.add(ticket)
+        j_item = jira_map.get(ticket, {})
+        
+        jira_resp = (j_item.get("response_text") or "").strip()
+        sheets_dados = (s_item.get("dados") or "").strip()
+        dados_final = jira_resp if jira_resp else sheets_dados
+
+        jira_atendente = (j_item.get("response_author") or j_item.get("reporter") or "").strip()
+        sheets_atendente = (s_item.get("atendente") or "").strip()
+        atendente_final = sheets_atendente if (sheets_atendente and sheets_atendente != "Não Identificado") else jira_atendente
+
         item = {
-            "data": s_item["data"],
+            "data": j_item.get("created_date") or s_item["data"],
             "categoria": s_item["categoria"],
             "descricao": s_item["descricao"],
             "ticket": ticket,
             "plataforma": s_item["plataforma"],
             "sla": s_item["sla"],
             "prazo": s_item["prazo"],
-            "status": s_item["status"],
+            "status": j_item.get("status") or s_item["status"],
             "setor": s_item["setor"],
-            "dados": s_item["dados"],
-            "atendente": s_item["atendente"],
+            "dados": dados_final,
+            "atendente": atendente_final,
             "obs": s_item["obs"]
         }
         if ticket in existentes_map:
