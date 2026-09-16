@@ -653,11 +653,70 @@
             to { transform: rotate(360deg); }
         }
 
-        footer {
-            padding: 20px; text-align: center; font-size: 12.5px;
-            color: var(--azul-gelo); opacity: 0.6;
-            border-top: 1px solid rgba(44,234,188,0.08);
-            background: rgba(8,14,46,0.9);
+        /* ===== LOGIN CONTAINER ===== */
+        #login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            position: relative;
+            z-index: 9999;
+        }
+        .login-box {
+            background: rgba(13, 20, 65, 0.78);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(44, 234, 188, 0.22);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.5), 0 0 25px rgba(44,234,188,0.15);
+            padding: 44px 40px;
+            width: 100%;
+            max-width: 420px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            animation: fadeInUp 0.45s ease;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .login-box img { width: 72px; height: auto; margin: 0 auto 4px; display: block; border-radius: 12px; filter: drop-shadow(0 0 20px rgba(44, 234, 188, 0.45)); }
+        .login-box h2 { font-size: 22px; font-weight: 800; text-align: center; color: #fff; }
+        .login-subtitle { font-size: 13px; color: var(--azul-gelo); opacity: 0.75; text-align: center; margin-top: -10px; }
+        .login-field { position: relative; }
+        .login-field label {
+            position: absolute; top: 50%; left: 18px; transform: translateY(-50%);
+            color: rgba(180,228,255,0.55); font-size: 14px; font-weight: 500;
+            pointer-events: none; transition: all 0.2s ease; background: transparent;
+        }
+        .login-field input:not(:placeholder-shown) ~ label,
+        .login-field input:focus ~ label {
+            top: -8px; font-size: 11px; font-weight: 700; color: var(--menta-viva);
+            background: #0d1441; padding: 0 6px; border-radius: 4px;
+        }
+        .login-input {
+            width: 100%; padding: 16px 18px 14px; border-radius: var(--radius-md);
+            border: 1px solid rgba(44,234,188,0.2); background: rgba(255,255,255,0.04);
+            color: var(--branco); font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 15px; font-weight: 500; outline: none;
+            transition: border-color var(--transition-base), box-shadow var(--transition-base);
+        }
+        .login-input:focus { border-color: rgba(44,234,188,0.55); background: rgba(255,255,255,0.06); box-shadow: 0 0 0 3px rgba(44,234,188,0.08); }
+        .login-btn {
+            width: 100%; padding: 15px; background: linear-gradient(135deg,var(--menta-viva),#00c49a);
+            color: var(--azul-escuro); border: none; border-radius: var(--radius-md);
+            font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; font-weight: 800;
+            cursor: pointer; transition: all var(--transition-base); margin-top: 4px;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .login-btn:hover:not(:disabled) { background: linear-gradient(135deg,#3dffd0,var(--menta-viva)); box-shadow: 0 0 32px rgba(44,234,188,0.5); transform: translateY(-2px); }
+        .login-btn:disabled { background: rgba(44,234,188,0.35); cursor: not-allowed; transform: none; box-shadow: none; }
+        .login-spinner { width:18px; height:18px; border:2.5px solid rgba(15,24,73,0.3); border-top-color: var(--azul-escuro); border-radius:50%; animation: spin 0.9s linear infinite; display: none; }
+        #login-error {
+            display: none; background: rgba(239, 68, 68, 0.18); border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #fca5a5; padding: 10px 14px; border-radius: 8px; font-size: 13px; text-align: center;
         }
     </style>
 </head>
@@ -665,8 +724,32 @@
 
     <div class="dot-grid"></div>
 
-    <!-- Header Navigation -->
-    <header>
+    <!-- Login Container (Bloqueio de Acesso) -->
+    <div id="login-container" style="display: flex;">
+        <div class="login-box" id="loginBox">
+            <img src="logo.png" alt="Logo EntreGô" id="loginLogo" loading="eager">
+            <h2>Acesso Restrito</h2>
+            <p class="login-subtitle">Faça login para acompanhar os Reportes da Operação</p>
+            <div class="login-field">
+                <input type="text" id="loginUser" class="login-input" placeholder=" " autocomplete="username" onkeypress="handleLoginKeyPress(event)">
+                <label for="loginUser">Usuário ou E-mail</label>
+            </div>
+            <div class="login-field">
+                <input type="password" id="loginPass" class="login-input" placeholder=" " autocomplete="current-password" onkeypress="handleLoginKeyPress(event)">
+                <label for="loginPass">Senha</label>
+            </div>
+            <button id="btnEntrar" class="login-btn" onclick="fazerLogin()">
+                <span id="txtBtn">Entrar no Sistema</span>
+                <div id="spinBtn" class="login-spinner"></div>
+            </button>
+            <div id="login-error"></div>
+        </div>
+    </div>
+
+    <!-- App Content (Protegido por Autenticação) -->
+    <div id="appContent" style="display: none;">
+        <!-- Header Navigation -->
+        <header>
         <a href="index.html" class="logo-box">
             <img src="logo.png" class="logo-img" alt="Logo GO Sumarezinho" decoding="async" loading="eager" style="border-radius: 8px;">
             <div class="logo-title-group">
@@ -1352,9 +1435,75 @@
             txt.innerText = 'Atualizar Dados';
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            carregarDadosReais();
+        // ================= AUTHENTICATION & ACCESS CONTROL =================
+        function mostrarErroLogin(msg) {
+            const errDiv = document.getElementById('login-error');
+            if (errDiv) {
+                errDiv.innerText = msg;
+                errDiv.style.display = 'block';
+            }
+        }
+
+        function handleLoginKeyPress(e) {
+            if (e.key === 'Enter') {
+                fazerLogin();
+            }
+        }
+
+        async function fazerLogin() {
+            var usr = (document.getElementById('loginUser').value || '').trim();
+            var pwd = (document.getElementById('loginPass').value || '').trim();
+            if (!usr || !pwd) { mostrarErroLogin('Preencha usuário e senha!'); return; }
+
+            if (!usr.includes('@')) {
+                usr = usr + '@masterdeliveryexpress.com.br';
+            }
+
+            const errDiv = document.getElementById('login-error');
+            if (errDiv) errDiv.style.display = 'none';
+
+            const btn = document.getElementById('btnEntrar');
+            const txtBtn = document.getElementById('txtBtn');
+            const spinBtn = document.getElementById('spinBtn');
+            if (btn) btn.disabled = true;
+            if (txtBtn) txtBtn.innerText = 'Autenticando...';
+            if (spinBtn) spinBtn.style.display = 'block';
+
+            if (typeof supabaseClient !== 'undefined') {
+                const { data, error } = await supabaseClient.auth.signInWithPassword({
+                    email: usr,
+                    password: pwd,
+                });
+
+                if (error) {
+                    if (btn) btn.disabled = false;
+                    if (txtBtn) txtBtn.innerText = 'Entrar no Sistema';
+                    if (spinBtn) spinBtn.style.display = 'none';
+                    mostrarErroLogin('Erro de Login: ' + (error.message === 'Invalid login credentials' ? 'Usuário ou senha incorretos' : error.message));
+                } else {
+                    document.getElementById('login-container').style.display = 'none';
+                    document.getElementById('appContent').style.display = 'block';
+                    await carregarDadosReais();
+                }
+            }
+        }
+
+        window.addEventListener('load', async function() {
+            if (typeof supabaseClient !== 'undefined') {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (session) {
+                    document.getElementById('login-container').style.display = 'none';
+                    document.getElementById('appContent').style.display = 'block';
+                    await carregarDadosReais();
+                } else {
+                    document.getElementById('login-container').style.display = 'flex';
+                    document.getElementById('appContent').style.display = 'none';
+                }
+            } else {
+                carregarDadosReais();
+            }
         });
     </script>
+    </div> <!-- End #appContent -->
 </body>
 </html>
