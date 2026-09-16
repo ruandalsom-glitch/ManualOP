@@ -573,13 +573,19 @@
             document.getElementById('login-container').style.display = 'none';
             document.getElementById('loader').style.display = 'flex';
             await carregarGarantido();
+        } else {
+            document.getElementById('login-container').style.display = 'flex';
+            document.getElementById('loader').style.display = 'none';
+            document.getElementById('main-header').style.display = 'none';
+            document.getElementById('main-content').style.display = 'none';
         }
     });
 
     async function fazerLogin() {
-        var usr = document.getElementById('loginUser').value;
-        var pwd = document.getElementById('loginPass').value;
+        var usr = (document.getElementById('loginUser').value || '').trim();
+        var pwd = (document.getElementById('loginPass').value || '').trim();
         if (!usr || !pwd) { mostrarErro('Preencha usuário e senha!'); return; }
+
         document.getElementById('btnEntrar').disabled = true;
         document.getElementById('txtBtn').innerText = 'Sincronizando...';
         document.getElementById('spinBtn').style.display = 'block';
@@ -591,7 +597,7 @@
 
         if (error) {
             restaurarBotaoLogin();
-            mostrarErro('Erro: ' + error.message);
+            mostrarErro('Erro de Login: ' + (error.message === 'Invalid login credentials' ? 'Usuário ou senha incorretos' : error.message));
         } else {
             document.getElementById('login-container').style.display = 'none';
             document.getElementById('loader').style.display = 'flex';

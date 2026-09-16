@@ -880,7 +880,7 @@
 </head>
 <body>
 
-    <div id="login-container" style="display:none;">
+    <div id="login-container">
         <div class="login-box">
             <img src="https://i.imgur.com/ZEox7rf.png" alt="Logo EntreGô" style="width:160px; margin-bottom: 20px;">
             <h2>Bem-vindo de volta</h2>
@@ -2570,9 +2570,18 @@
             }
         });
 
+        window.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                var lc = document.getElementById('login-container');
+                if (lc && lc.style.display !== 'none') {
+                    fazerLogin();
+                }
+            }
+        });
+
         async function fazerLogin() {
-            var usr = document.getElementById('loginUser').value;
-            var pwd = document.getElementById('loginPass').value;
+            var usr = (document.getElementById('loginUser').value || '').trim();
+            var pwd = (document.getElementById('loginPass').value || '').trim();
             if (!usr || !pwd) { alert('Preencha usuário e senha!'); return; }
             document.getElementById('btnEntrar').disabled = true;
             document.getElementById('txtBtn').innerText = 'Sincronizando...';
@@ -2585,7 +2594,7 @@
             if (error) {
                 document.getElementById('btnEntrar').disabled = false;
                 document.getElementById('txtBtn').innerText = 'Entrar';
-                alert('Erro: ' + error.message);
+                alert('Erro de Login: ' + (error.message === 'Invalid login credentials' ? 'Usuário ou senha incorretos' : error.message));
             } else {
                 document.getElementById('login-container').style.display = 'none';
                 document.getElementById('main-ui-header').style.display = 'flex';
