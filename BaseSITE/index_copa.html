@@ -83,6 +83,8 @@
         #promoContent .grid-container{justify-content:center;}
         #promoContent .flip-card{max-width:380px;}
         #promoContent .grid-container{grid-template-columns:repeat(auto-fill,minmax(280px,1fr));align-items:stretch;}
+        #promoContent .grid-container.single-card,#promoContent .grid-container:has(> .flip-card:only-child){grid-template-columns:minmax(270px,320px);justify-content:center;}
+        #promoContent .grid-container.single-card > .flip-card,#promoContent .grid-container:has(> .flip-card:only-child) > .flip-card{max-width:320px;width:100%;margin:0 auto;}
         .hero{padding-top:var(--space-2xl);padding-left:5%;padding-right:5%;text-align:center;min-height:72vh;display:flex;align-items:center;justify-content:center;position:relative;max-width:100% !important;width:100%;box-sizing:border-box;}
         .hero::before{content:'';position:absolute;top:10%;left:50%;transform:translateX(-50%);width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(29,185,84,0.18) 0%,transparent 65%);pointer-events:none;animation:heroOrb 6s ease-in-out infinite alternate;}
         @keyframes heroOrb{from{transform:translateX(-50%) scale(1);opacity:0.7;}to{transform:translateX(-50%) scale(1.12);opacity:1;}}
@@ -1081,7 +1083,8 @@
         if(itens.length>0){
             html += '<div class="praca-divider">'+praca+'</div>';
             if(cards.length>0){
-                html += '<div class="grid-container">';
+                var gridClass = 'grid-container' + (cards.length === 1 ? ' single-card' : '');
+                html += '<div class="' + gridClass + '">';
                 cards.forEach(function(p){
                     html += '<div class="flip-card"><div class="flip-inner"><div class="flip-front glass-panel card-standard"><div class="img-container">'+(p.Imagem_URL?'<img src="'+p.Imagem_URL+'" loading="lazy" class="responsive-img" onerror="this.onerror=null;this.outerHTML=\'<div class=\\\'icon-glow\\\'>🎁</div>\';" alt="'+p.Titulo+'">':'<div class="icon-glow">🎁</div>')+'</div><h3>'+p.Titulo+'</h3><p class="promo-text">'+p.Texto+'</p><p class="flip-hint">Clique para ver detalhes ↩</p></div>';
                     html += '<div class="flip-back glass-panel card-standard"><h3>Informações</h3><p class="promo-text">'+(p.Texto_Verso||'Sem informações adicionais.')+'</p><p class="flip-hint">Clique para voltar ↩</p></div></div></div>';

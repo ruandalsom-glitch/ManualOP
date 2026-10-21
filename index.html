@@ -501,6 +501,17 @@
 
         .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: var(--space-md); align-items: stretch; }
         #promoContent .grid-container { grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); }
+        #promoContent .grid-container.single-card,
+        #promoContent .grid-container:has(> .flip-card:only-child) {
+            grid-template-columns: minmax(270px, 320px);
+            justify-content: center;
+        }
+        #promoContent .grid-container.single-card > .flip-card,
+        #promoContent .grid-container:has(> .flip-card:only-child) > .flip-card {
+            max-width: 320px;
+            width: 100%;
+            margin: 0 auto;
+        }
 
         /* SEÇÃO INFORMAÇÕES - ALINHAMENTO CENTRALIZADO */
         #infoContent .grid-container, #info .grid-container {
@@ -3040,7 +3051,8 @@
         if(itens.length>0){
             html += '<div class="praca-divider">'+praca+'</div>';
             if(cards.length>0){
-                html += '<div class="grid-container">';
+                var gridClass = 'grid-container' + (cards.length === 1 ? ' single-card' : '');
+                html += '<div class="' + gridClass + '">';
                 cards.forEach(function(p){
                     html += '<div class="flip-card"><div class="flip-inner"><div class="flip-front glass-panel card-standard"><div class="img-container">'+(p.Imagem_URL?'<img src="'+p.Imagem_URL+'" loading="lazy" decoding="async" class="responsive-img" onerror="this.onerror=null;this.outerHTML=\'<div class=\\\'icon-glow\\\'>🎁</div>\';" alt="'+p.Titulo+'">':'<div class="icon-glow">🎁</div>')+'</div><h3>'+p.Titulo+'</h3><p class="promo-text">'+p.Texto+'</p><p class="flip-hint">Clique para ver detalhes ↩</p></div>';
                     html += '<div class="flip-back glass-panel card-standard"><h3>Informações</h3><p class="promo-text">'+(p.Texto_Verso||'Sem informações adicionais.')+'</p><p class="flip-hint">Clique para voltar ↩</p></div></div></div>';

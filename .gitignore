@@ -1,4 +1,6 @@
 token_escalas.pkl
 client_secret_*.json
-jwt_frota_*.txt
+jwt_*.txt
+scratch/
+*.xlsx
 __pycache__/
